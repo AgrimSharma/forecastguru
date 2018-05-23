@@ -25,7 +25,7 @@ SECRET_KEY = 'bnce$cl6%1)ork)k=)j7*h%vsrmx7lz4-#)0&et01#09+g#s^8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["103.91.90.249"]
 
 
 # Application definition
@@ -61,7 +61,7 @@ ROOT_URLCONF = 'fblogin.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["templates"],
+        'DIRS': ["/home/lawrato/forecastguru/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,8 +82,13 @@ WSGI_APPLICATION = 'fblogin.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'forecast',
+        "USER": "root",
+        "PASSWORD":"123456",
+        "HOST": "localhost",
+        "POST": ""
     }
 }
 
@@ -124,9 +129,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static/')
+#        os.path.join(BASE_DIR, 'static/')
+	"/home/lawrato/forecastguru/static"
     ]
 AUTHENTICATION_BACKENDS = (
 
@@ -143,6 +149,8 @@ MERCHANT_KEY = "gtKFFx"
 
 MERCHANT_SALT = "eCwWELxi"
 
-SUCCESS_URL = "http://localhost:8000/payubiz-success/"
-FAILURE_URL = "http://localhost:8000/payubiz-failure/"
-CANCEL_URL = "http://localhost:8000/payubiz-cancel/"
+SUCCESS_URL = "https://103.91.90.249/payubiz-success/"
+FAILURE_URL = "https://103.91.90.249/payubiz-failure/"
+CANCEL_URL = "https://103.91.90.249/payubiz-cancel/"
+
+
