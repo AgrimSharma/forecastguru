@@ -93,7 +93,7 @@ def live_forecast(request):
             percent_against = 0
             total = 0
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
-                         total=total, start=start))
+                         total=total, start=start, total_user=betting_for + betting_against))
     return render(request, 'live_forecast.html', {"live": data, 'banner': banner})
 
 
@@ -125,7 +125,6 @@ def forecast_result(request):
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f, total=betting_against+betting_for, start=start))
     return render(request, 'forecast_result.html', {"live": data, 'banner': banner, "user": request.user.username})
-
 
 
 def profile(request):
@@ -188,7 +187,6 @@ def betting(request, userid):
         return render(request, 'betting.html', {'forecast': forecast,"user": request.user.username})
 
 
-
 @csrf_exempt
 def bet_post(request):
     if request.method == 'POST':
@@ -218,7 +216,6 @@ def bet_post(request):
                 account.save()
                 b.save()
             return HttpResponse(json.dumps(dict(message='Bet Placed')))
-
 
 
 def allocate_points(request):
@@ -358,12 +355,10 @@ def payu_success(request):
     return HttpResponseRedirect("/accounts/profile/")
 
 
-
 @csrf_exempt
 def payu_failure(request):
     """ We are in payu failure mode"""
     return HttpResponseRedirect("/profile/")
-
 
 
 @csrf_exempt
@@ -372,11 +367,9 @@ def payu_cancel(request):
     return HttpResponseRedirect("/profile/")
 
 
-
 def category(request):
     category = Category.objects.all()
     return render(request, 'category.html',{'category': category, "user": request.user.username})
-
 
 
 def category_search(request, userid):
@@ -444,6 +437,7 @@ def my_forecast(request):
     except Exception:
         return render(request, 'my_friend.html', {"user": request.user.username})
 
+
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect("/login/")
@@ -451,3 +445,43 @@ def logout_view(request):
 
 def blank_page(request):
     return render(request, 'test.html', {})
+
+
+@csrf_exempt
+def search_result(request):
+    if request.method == "POST":
+
+        query = request.POST.get('point','')
+        if query == "":
+            return render(request, "search_data.html", {"data": "No result found"})
+        else:
+            data = []
+            forecast_live = ForeCast.objects.filter(heading__icontains=query).order_by("-created")
+            for f in forecast_live:
+                date = current.date()
+                bet_start = f.start.date()
+                if date == bet_start:
+                    start = f.start.time().strftime("%I:%M:%S")
+                else:
+                    start = f.start
+                betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
+                betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
+                try:
+
+                    total_wagered = betting_against + betting_for
+                    percent_for = (betting_for / total_wagered) * 100
+                    percent_against = (1 - (betting_for / total_wagered)) * 100
+
+                except Exception:
+                    total_wagered = 0
+                    percent_for = 0
+                    percent_against = 0
+
+                betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
+                betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
+                data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
+                                 total=betting_against + betting_for, start=start))
+            return render(request, 'search_data.html',
+                          {"live": data, "user": request.user.username})
+    else:
+        return HttpResponse("/live_forecast/")

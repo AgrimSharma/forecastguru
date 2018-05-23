@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^betting/(?P<userid>\d+)/$', betting, name='betting'),
     url(r'^bet_save/', bet_post, name='bet_save'),
     url(r'^allocate_points/', allocate_points, name='allocate_points'),
+    url(r'^search_result/', search_result, name='search_result'),
     url(r'^payu/', home, name='payu'),
     url(r'^payment/', payment, name='payment'),
     url(r'^payubiz-success/$', payu_success, name='payu_success'),
