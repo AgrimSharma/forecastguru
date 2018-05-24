@@ -8,6 +8,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="HandheldFriendly" content="true" />
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
+
+</head>
+<body class="home-bg">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+
+        <div class="login_container">
+
+            <div class="logo">
+                <img src="{% static 'images/logo-forcastguru.png' %}" alt="">
+            </div>
+            <div class="clearfix"></div>
+            <h1>Login</h1>
+            <div class="clearfix"></div>
+
+            <div class="formwrap">
+                <form>
+
+                <div class="form-group position-relative">
+                    <i><img src="{% static 'images/input-icon-user.png' %}" alt=""></i>
+                    <input type="text" placeholder="Username" class="form-control" name="email_login" id="email_login"/>
+                </div>
+                <div class="form-group position-relative">
+                        <i><img src="{% static 'images/input-icon-password.png' %}" alt=""></i>
+                        <input type="password" placeholder="Password" class="form-control" name="password_login" id="password_login"/>
+                </div>
+                <div class="form-group text-right">
+                    <p><input type="button" id="cancel_login" class="btn btn-ghost w-100 text-uppercase text-white" value="Cancel"/></p>
+                </div>
+                <div class="form-group position-relative">
+                    <input type="button" id="submit_login"  class="btn btn-orange w-100 text-uppercase" value="Sign In"/>
+                </div>
+                </form>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+        </div>
+    </div>
+<script>
+
+    $("#cancel_login").click(function(){
+       window.location.href = "{% url 'blank_page' %}";
+    });
+
+
+    $("#submit_login").click(function(){
+    var email = $("#email_login").val();
+    var password = $("#password_login").val();
+    $.ajax({
+        type: "POST",
+        url: "{% url 'login_page' %}",
+        data: {'password': password, "email":email},
+
+        success: function(resp){
+            var vals = JSON.parse(resp);
+            if(vals.status == 200){
+
+                window.location.href = "{% url 'live_forecast' %}";
+                }
+                else{
+                console.log(resp);
+                    alert(vals.message);
+                    }
+                    }
+    });
+
+    });
+</script>
+</body>
+</html>
+
+
+{% comment %}<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Forcastguru</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="HandheldFriendly" content="true" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
@@ -35,19 +131,19 @@
                     <label>Username</label>
                     <div class="btn_box btn_dotted mb-3">
 
-                <input class="w-100" type="text" id="email_login"/>
+                <!--<input class="w-100" type="text" id="email_login"/>-->
                 </div>
                 <label>Password</label>
                 <div class="btn_box mb-3">
 
-                    <input class="w-100" type="password" id="password_login"/>
+                    <!--<input class="w-100" type="password" id="password_login"/>-->
                 </div>
 
                     <div class="btn_box mb-3">
-                    <input class="btn btn-ghost w-100 text-uppercase" type="button" value="Cancel" id="cancel_login"/>
+                    <!--<input class="btn btn-ghost w-100 text-uppercase" type="button" value="Cancel" id="cancel_login"/>-->
                 </div>
                 <div class="btn_box mb-3">
-                    <input type="button" class="btn btn-ghost w-100 text-uppercase" id="submit_login" value="Submit"/>
+                    <!--<input type="button" class="btn btn-ghost w-100 text-uppercase" id="submit_login" value="Submit"/>-->
                 </div>
                 </form>
 
@@ -94,4 +190,4 @@
     });
 </script>
 </body>
-</html>
+</html>{% endcomment %}

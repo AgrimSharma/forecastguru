@@ -535,3 +535,8 @@ def login_page(request):
                 return HttpResponse(json.dumps(dict(message="Please try again.")))
     else:
         return render(request, 'login.html')
+
+
+
+def main_page(request):
+    return render(request, 'main_page.html')
