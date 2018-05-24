@@ -83,12 +83,11 @@ WSGI_APPLICATION = 'fblogin.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'NAME': 'forecast',
         "USER": "root",
         "PASSWORD":"123456",
         "HOST": "localhost",
-        "POST": ""
+        "PORT": ""
     }
 }
 
@@ -131,13 +130,14 @@ STATIC_URL = '/static/'
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = [
-#        os.path.join(BASE_DIR, 'static/')
-	"/home/lawrato/forecastguru/static"
-    ]
+    "/home/lawrato/forecastguru/static"
+]
+
 AUTHENTICATION_BACKENDS = (
 
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
+
 
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -149,8 +149,18 @@ MERCHANT_KEY = "gtKFFx"
 
 MERCHANT_SALT = "eCwWELxi"
 
-SUCCESS_URL = "https://103.91.90.249/payubiz-success/"
-FAILURE_URL = "https://103.91.90.249/payubiz-failure/"
-CANCEL_URL = "https://103.91.90.249/payubiz-cancel/"
 
+SUCCESS_URL = "http://localhost:8000/payubiz-success/"
+FAILURE_URL = "http://localhost:8000/payubiz-failure/"
+CANCEL_URL = "http://localhost:8000/payubiz-cancel/"
+LOGIN_REDIRECT_URL = '/live_forecast/'
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.SHA1PasswordHasher',
+    'django.contrib.auth.hashers.CryptPasswordHasher',
+]

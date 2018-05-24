@@ -22,44 +22,76 @@
 
             <div class="col-md-12">
 
-
-        <div class="login_container main">
+        <div class="login_container" >
 
             <div class="logo">
-<<<<<<< HEAD
                 <img src="{% static 'images/logo-forcastguru.png' %}" alt="">
-=======
-                <img src=" {% static 'images/logo-forcastguru.png' %}" alt="">
->>>>>>> master
             </div>
             <div class="clearfix"></div>
-            <h1>Home</h1>
+            <h1>Login</h1>
             <div class="clearfix"></div>
             <div class="btn_wrap">
+                <form>
+                    <label>Username</label>
+                    <div class="btn_box btn_dotted mb-3">
 
-                <div class="btn_box btn_dotted mb-3">
-                    <a href="#" class="btn btn-orange w-100 text-uppercase">Earn 10,000 points on Joining</a>
+                <input class="w-100" type="text" id="email_login"/>
                 </div>
-
+                <label>Password</label>
                 <div class="btn_box mb-3">
-                    <a href="https://fblogin.pythonanywhere.com/accounts/facebook/login/?process=login" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+
+                    <input class="w-100" type="password" id="password_login"/>
                 </div>
 
-                <div class="btn_box">
-                    <a href="{% url 'login_page' %}" class="btn btn-ghost w-100 text-uppercase" id="login">Login</a>
+                    <div class="btn_box mb-3">
+                    <input class="btn btn-ghost w-100 text-uppercase" type="button" value="Cancel" id="cancel_login"/>
                 </div>
-                <br>
-                <div class="btn_box">
-                    <a href="{% url 'signup_page' %}" class="btn btn-ghost w-100 text-uppercase" id="signup">SignUp</a>
+                <div class="btn_box mb-3">
+                    <input type="button" class="btn btn-ghost w-100 text-uppercase" id="submit_login" value="Submit"/>
                 </div>
+                </form>
+
 
             </div>
 
         </div>
 
 
+    </div>
+
+
         </div>
     </div>
-    </div>
+
+<script>
+
+    $("#cancel_login").click(function(){
+       window.location.href = "{% url 'blank_page' %}";
+    });
+
+
+    $("#submit_login").click(function(){
+    var email = $("#email_login").val();
+    var password = $("#password_login").val();
+    $.ajax({
+        type: "POST",
+        url: "{% url 'login_page' %}",
+        data: {'password': password, "email":email},
+
+        success: function(resp){
+            var vals = JSON.parse(resp);
+            if(vals.status == 200){
+
+                window.location.href = "{% url 'live_forecast' %}";
+                }
+                else{
+                console.log(resp);
+                    alert(vals.message);
+                    }
+                    }
+    });
+
+    });
+</script>
 </body>
 </html>

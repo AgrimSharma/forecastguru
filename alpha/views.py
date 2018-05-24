@@ -9,9 +9,9 @@ import datetime
 from payu_biz.views import make_transaction
 from uuid import uuid4
 from django.conf import settings
-from django.contrib.auth import logout
-
-
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.models import User
+import random
 current = datetime.datetime.now()
 
 
@@ -130,9 +130,10 @@ def forecast_result(request):
 def profile(request):
     try:
         user = request.user
+        print(user)
         profile = SocialAccount.objects.get(user__username=user)
         date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
-        total = profile.successful_forecast +profile.unsuccessful_forecast
+        total = profile.successful_forecast + profile.unsuccessful_forecast
         suc_per = (profile.successful_forecast / total) * 100
         unsuc_per = 100 - (profile.successful_forecast / total) * 100
         return render(request, 'user_profile.html', {"profile": profile, "date_joined":date_joined,
@@ -433,14 +434,13 @@ def my_forecast(request):
                              total=betting_against + betting_for, start=start))
         return render(request, 'my_friend.html', {"live": data, "user": request.user.username})
 
-
     except Exception:
         return render(request, 'my_friend.html', {"user": request.user.username})
 
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect("/login/")
+    return HttpResponseRedirect("/home/")
 
 
 def blank_page(request):
@@ -484,4 +484,50 @@ def search_result(request):
             return render(request, 'search_data.html',
                           {"live": data, "user": request.user.username})
     else:
-        return HttpResponse("/live_forecast/")
+        return HttpResponseRedirect("/live_forecast/")
+
+
+@csrf_exempt
+def signup_page(request):
+    if request.method == 'POST':
+
+        username = request.POST.get('username','')
+        password = request.POST.get('password','')
+        email = request.POST.get('email','')
+        if not username or not password or not email:
+            return HttpResponse(json.dumps(dict("Please fill all details")))
+        else:
+            try:
+                user = User.objects.get(email=email)
+                return HttpResponse(json.dumps(dict(message="User Already exists")))
+            except Exception:
+                user = User.objects.create(email=email, username=username)
+                user.set_password(password)
+                sa = SocialAccount.objects.create(user=user, uid = random.randint(1000, 100000),)
+                sa.save()
+                user.save()
+                return HttpResponse(json.dumps(dict(status=200)))
+    else:
+        return render(request, 'signup.html')
+
+
+@csrf_exempt
+def login_page(request):
+    if request.method == 'POST':
+        password = request.POST.get('password', '')
+        email = request.POST.get('email', '')
+        if not password or not email:
+            return HttpResponse(json.dumps(dict("Please fill all details")))
+        else:
+            try:
+                # user = User.objects.get(email=email)
+                users = authenticate(request, username=email, password=password)
+                login(request, users)
+                # if user.check_password(password):
+                #     pass
+
+                return HttpResponse(json.dumps(dict(status=200)))
+            except Exception:
+                return HttpResponse(json.dumps(dict(message="Please try again.")))
+    else:
+        return render(request, 'login.html')

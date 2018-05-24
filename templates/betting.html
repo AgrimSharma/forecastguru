@@ -121,11 +121,14 @@
     <div class="clearfix"></div>
     <div class="row mb-2">
       <div class="col-12">
-      {% if user == "" %}
+      {% if forecast.status.name == 'Closed' %}
 <button style="background: #403c55;color: white;" disabled type="button" class="btn w-100 btn-create" data-toggle="modal" data-target="#exampleModal">
 Predict</button>
-    {% else %}
-          <button style="background: #403c55;color: white;" disabled type="button" class="btn w-100 btn-create" data-toggle="modal" data-target="#exampleModal">
+    {% elif user == '' %}
+<button style="background: #403c55;color: white;" disabled type="button" class="btn w-100 btn-create" data-toggle="modal" data-target="#exampleModal">
+Predict</button>
+          {% else %}
+          <button style="background: #403c55;color: white;" type="button" class="btn w-100 btn-create" data-toggle="modal" data-target="#exampleModal">
 Predict</button> {% endif %}
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">

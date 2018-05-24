@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Forcastguru</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="HandheldFriendly" content="true" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
+
+</head>
+<body class="home-bg">
+                <form >
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+
+        <div class="login_container main">
+
+            <div class="logo">
+                <img src="{% static 'images/logo-forcastguru.png' %}" alt="">
+            </div>
+            <div class="clearfix"></div>
+            <h1>SignUp</h1>
+            <div class="clearfix"></div>
+            <div class="btn_wrap">
+                <label>UserName</label>
+                <div class="btn_box btn_dotted mb-3">
+                    <input class="w-100" type="text" id="user_signup"/>
+                </div>
+                <label>Email</label><div class="btn_box mb-3">
+                    <input class="w-100" type="email" id="email_signup"/>
+                </div>
+                <label>Password</label><div class="btn_box mb-3">
+                    <input class="w-100" type="password" id="password_signup"/>
+                </div>
+                <div class="btn_box mb-3">
+                    <input class="btn btn-ghost w-100 text-uppercase" type="button" value="Cancel" id="cancel_signup"/>
+                </div>
+                <div class="btn_box mb-3">
+                    <input type="button" class="btn btn-ghost w-100 text-uppercase" id="submit_signup" value="Submit"/>
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+        </div>
+    </div>
+                                    </form>
+
+<script>
+
+    $("#cancel_signup").click(function(){
+       window.location.href = "{% url 'blank_page' %}";
+    });
+
+    $("#submit_signup").click(function(){
+    var email = $("#email_signup").val();
+    var username = $("#user_signup").val();
+    var password = $("#password_signup").val();
+    $.ajax({
+        type: "POST",
+        url: "{% url 'signup_page' %}",
+        data: {'password': password, "email":email, "username":username},
+
+        success: function(resp){
+            var vals = JSON.parse(resp);
+            if(vals.status == 200){
+
+                window.location.href = "{% url 'login_page' %}";
+                }
+                else{
+                console.log(resp);
+                    alert(vals.message);
+                    }
+
+            }
+
+    });
+
+    });
+
+</script>
+</body>
+</html>
