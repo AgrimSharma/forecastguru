@@ -134,8 +134,12 @@ def profile(request):
         profile = SocialAccount.objects.get(user=user)
         date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
         total = profile.successful_forecast + profile.unsuccessful_forecast
-        suc_per = (profile.successful_forecast / total) * 100
-        unsuc_per = 100 - (profile.successful_forecast / total) * 100
+        if total == 0:
+            suc_per = 0
+            unsuc_per = 0
+        else:
+            suc_per = (profile.successful_forecast / total) * 100
+            unsuc_per = 100 - (profile.successful_forecast / total) * 100
         return render(request, 'user_profile.html', {"profile": profile, "date_joined":date_joined,
                                                      "success":int(suc_per),
                                                      "unsuccess": int(unsuc_per),
