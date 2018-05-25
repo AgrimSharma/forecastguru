@@ -48,7 +48,7 @@
 
         <div class="banner mt-3">
 
-            <img src="{% static 'images/banner.jpg' %}" class="img-fluid" alt="">
+            <img src="{% static 'images/banner.jpg' %}" class="img-fluid" alt=""/>
 
         </div>
 
@@ -63,7 +63,7 @@
                <img src="{{f.forecast.category.image}}" alt="" width="100px" height="75px"> <span><img src="{% static 'images/icon-local.png' %}" alt=""></span>
             </div>
             <div class="col-9 col-md-10">
-              <p class="title_desc"> {{f.forecast.heading}}</p>
+              <p class="mb-1"> {{f.forecast.heading}}</p>
             </div>
           </div>
           <div class="row">
@@ -85,7 +85,7 @@
                   <div class="col-3 pr-0 text-center">
                       <p class="pointsinplay m-0"> FG Points <span>{{f.total}}</span> </p>
                     </div>
-                    <div class="col-4 text-right"><button class="btn btn-orange" disabled>Participate</button></div>
+                  <div class="col-4 text-right"><button disabled class="btn btn-orange">Participate</button></div>
                 </div>
 
               </div>
@@ -99,6 +99,7 @@
     </div>
   </div>
 </div>
+</div>
 <footer class="sticky-footer">
     <nav class="navbar">
       <ul class="navbar-nav nav-fill w-100 text-center">
@@ -108,7 +109,7 @@
           Categories</a> </li>
         <li class="nav-item"> <a class="nav-link active" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
           Results</a> </li>
-        <li class="nav-item"> <a class="nav-link " href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
           My Account</a> </li>
       </ul>
     </nav>
@@ -128,4 +129,5 @@
     </script>
 </body>
 </html>
+
 
