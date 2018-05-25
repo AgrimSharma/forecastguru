@@ -43,7 +43,7 @@
 
       <div class="category_wrap">
 {% for c in category %}
-
+<a href="{% url 'category_search' c.id %}">
         <div class="cat_box">
           <div class="row align-items-center">
             <div class="col-3 text-center">
@@ -55,7 +55,7 @@
           </div>
         </div>
 {% endfor %}
-
+</a>
 
     </div>
   </div>
