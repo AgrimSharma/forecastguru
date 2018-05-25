@@ -99,7 +99,8 @@ def live_forecast(request):
             percent_against = 0
             total = 0
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
-                         total=total, start=start, total_user=betting_for + betting_against))
+                         total=total, start=start, total_user=betting_for + betting_against,
+                         betting_for=betting_for, betting_against=betting_against))
     return render(request, 'live_forecast.html', {"live": data, 'banner': banner})
 
 
