@@ -6,6 +6,7 @@ from .models import *
 from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy
 
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name']
 
