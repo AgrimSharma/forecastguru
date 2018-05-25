@@ -454,7 +454,7 @@ def my_forecast(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect("/home/")
+    return HttpResponseRedirect("/")
 
 
 def blank_page(request):
