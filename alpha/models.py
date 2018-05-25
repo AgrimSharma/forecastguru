@@ -35,6 +35,7 @@ class Status(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    image = models.URLField()
 
     class Meta:
         ordering = ['-name']
@@ -49,7 +50,6 @@ class Category(models.Model):
 
 class SubCategory(models.Model):
     name = models.CharField(max_length=100)
-    image = models.URLField()
 
     class Meta:
         ordering = ['-name']
