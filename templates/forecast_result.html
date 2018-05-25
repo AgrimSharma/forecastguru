@@ -17,7 +17,7 @@
   <div class="container">
     <div class="row align-items-center">
       <div class="col-12 text-center position-relative">
-        <div class="header-logo position-absolute"><img src="images/logo-small-white.png" alt=""></div>
+        <div class="header-logo position-absolute"><img src="{% static 'images/logo-small-white.png' %}" alt=""></div>
         <h1>Forecast</h1>
         <div class="header-right with-btn position-absolute">
             <a href="{% url 'create_forecast' %}" class="btn btn-orange">Create <br>Forecast</a>
@@ -60,7 +60,7 @@
         <div class="forcast_box">
           <div class="row align-items-center">
             <div class="col-3 col-md-2 text-center">
-               <img src="{{f.forecast.category.image}}" alt="" width="100px" height="75px"> <span><img src="{% static 'images/icon-local.png' %}" alt=""></span>
+               <img src="{{f.forecast.category.image}}" alt="" width="100px" height="100px"> <span><img src="{% static 'images/icon-local.png' %}" alt=""></span>
             </div>
             <div class="col-9 col-md-10">
               <p class="mb-1"> {{f.forecast.heading}}</p>
@@ -85,7 +85,7 @@
                   <div class="col-3 pr-0 text-center">
                       <p class="pointsinplay m-0"> FG Points <span>{{f.total}}</span> </p>
                     </div>
-                  <div class="col-4 text-right"><button disabled class="btn btn-orange">Participate</button></div>
+                    <div class="col-4 text-right"><a href="{% url 'betting' f.forecast.id %}" class="btn btn-orange">Participate</a></div>
                 </div>
 
               </div>
@@ -103,11 +103,11 @@
 <footer class="sticky-footer">
     <nav class="navbar">
       <ul class="navbar-nav nav-fill w-100 text-center">
-        <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+        <li class="nav-item"> <a class="nav-link active" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
           Forecasts</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
           Categories</a> </li>
-        <li class="nav-item"> <a class="nav-link active" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
           Results</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
           My Account</a> </li>
