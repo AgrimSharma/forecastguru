@@ -5,6 +5,20 @@ from django.db import models
 from allauth.socialaccount.models import SocialAccount
 
 
+class Source(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ['-name']
+        verbose_name_plural = 'Source'
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name
+
+
 class Status(models.Model):
     name = models.CharField(max_length=100)
 
@@ -55,7 +69,7 @@ class ForeCast(models.Model):
     heading = models.CharField(max_length=1000)
     start = models.DateTimeField(default=datetime.datetime.now())
     expire = models.DateTimeField()
-    source = models.CharField(max_length=100)
+    source = models.ForeignKey(to=Source, on_delete=models.CASCADE)
     status = models.ForeignKey(to=Status, on_delete=models.CASCADE)
     market_fee = models.IntegerField(default=0)
     won = models.CharField(max_length=100, default='bet_for')

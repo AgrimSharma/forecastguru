@@ -27,6 +27,7 @@ def test(request):
 def create_forecast(request):
     if request.method == 'POST':
         try:
+            import pdb;pdb.set_trace()
             user = request.POST.get('user', '')
             category = request.POST.get('categories', '')
             sub_category = request.POST.get('subcategories', '')
@@ -36,11 +37,14 @@ def create_forecast(request):
             start = request.POST.get('start', '')
             cat = Category.objects.get(id=category)
             sub_cat = SubCategory.objects.get(id=sub_category)
+            sources = Source.objects.get(id=source)
+            user = User.objects.get(username=user)
             users = SocialAccount.objects.get(user__username=user)
-            status = Status.objects.get(name='Closing Soon')
+            status = Status.objects.get(name='In-Progress')
             f = ForeCast.objects.create(category=cat, sub_category=sub_cat,
                                         user=users, heading=heading,
-                                        source=source, expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M"),
+                                        source=sources,
+                                        expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M"),
                                         start=datetime.datetime.strptime(start, "%Y-%m-%d %H:%M"), approved=False,
                                         status=status, created=current, private=False,
                                         )
@@ -53,8 +57,10 @@ def create_forecast(request):
     else:
         category = Category.objects.all()
         subcategory = SubCategory.objects.all()
+        source = Source.objects.all()
         return render(request, 'create_forecast.html', {'category':category,
                                                         "sub_category": subcategory,
+                                                        "source": source,
                                                         "user": request.user.username
                                                         })
 
@@ -130,8 +136,7 @@ def forecast_result(request):
 def profile(request):
     try:
         user = request.user
-        users = User.objects.get(username=user.username)
-        profile = SocialAccount.objects.get(user=user)
+        profile = SocialAccount.objects.get(user__username=user)
         date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
         total = profile.successful_forecast + profile.unsuccessful_forecast
         if total == 0:
@@ -535,7 +540,6 @@ def login_page(request):
                 return HttpResponse(json.dumps(dict(message="Please try again.")))
     else:
         return render(request, 'login.html')
-
 
 
 def main_page(request):
