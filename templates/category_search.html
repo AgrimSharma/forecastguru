@@ -2,11 +2,144 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Forecastguru</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="HandheldFriendly" content="true" />
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
+</head>
+<body class="gray-bg">
+<header class="position-fixed w-100">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-12 text-center position-relative">
+        <div class="header-logo position-absolute"><img src="images/logo-small-white.png" alt=""></div>
+        <h1>Forecast</h1>
+        <div class="header-right with-btn position-absolute">
+            <a href="{% url 'create_forecast' %}" class="btn btn-orange">Create <br>Forecast</a>
+          </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-12">
+        <div class="form-group has-search m-0"> <span class="fa fa-search form-control-feedback"></span>
+<form method="post" action="{% url 'search_result' %}">
+                                    <input type="text"  class="form-control" placeholder="Search Forecast" name='point' id="myInput"/>
+                                </form>        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="topspace"></div>
+<div class="container topnavlinks">
+  <nav class="navbar">
+    <ul class="navbar-nav nav-fill w-100 text-center">
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'create_forecast' %}">Create Forecast</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'payment' %}">Buy FG Point</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>
+    </ul>
+  </nav>
+</div>
+{% for f in live %}
+                        {% if forloop.counter|divisibleby:5 %}
+
+        <div class="banner mt-3">
+
+            <img src="{% static 'images/banner.jpg' %}" class="img-fluid" alt="">
+
+        </div>
+
+    {% else %}
+<div class="container fixed_p_footer">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="forcast_home">
+        <div class="forcast_box">
+          <div class="row align-items-center">
+            <div class="col-3 col-md-2 text-center">
+               <img src="{{f.forecast.category.image}}" alt="" width="100px" height="75px"> <span><img src="{% static 'images/icon-local.png' %}" alt=""></span>
+            </div>
+            <div class="col-9 col-md-10">
+              <p class="title_desc"> {{f.forecast.heading}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="progressbar_wrap">
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" style="width: {{ f.percent_for }}%" aria-valuenow="width: {{ f.percent_for }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-6"> <span class="vote_yes text-uppercase">Yes ({{ f.betting_for}})</span> </div>
+
+                  <div class="col-6 text-right"> <span class="vote_no text-uppercase">No ({{ f.betting_against}})</span> </div>
+                </div>
+                <hr class="mt-2 mb-2">
+                <div class="row align-items-center">
+                  <div class="col-5 pr-0">
+                    <div class="time textwithicon"> <img src="images/icon-time.png" alt=""> {{f.start}}</div>
+                  </div>
+                  <div class="col-3 pr-0 text-center">
+                      <p class="pointsinplay m-0"> FG Points <span>{{f.total}}</span> </p>
+                    </div>
+                    <div class="col-4 text-right"><a href="{% url 'betting' f.forecast.id %}" class="btn btn-orange">Participate</a></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+                  {% endif %}
+
+{% endfor %}
+
+    </div>
+  </div>
+</div>
+<footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link active" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="js/jquery-slim.min.js"><\/script>')</script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+    $(function(){
+           $('#nav-icon1').click(function(){
+            $(this).toggleClass('open');
+        });
+
+    });
+
+
+    </script>
+</body>
+</html>
+
+
+{% comment %}<!DOCTYPE html>
+<html>
+<head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Forcastguru</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="HandheldFriendly" content="true" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
@@ -14,7 +147,6 @@
 
 </head>
 <body class="gray-bg">
-
 
     <header class="position-fixed w-100">
         <div class="container">
@@ -28,7 +160,9 @@
                 <div class="col-12">
                         <div class="form-group has-search m-0">
                                 <span class="fa fa-search form-control-feedback"></span>
-                                <input type="text" class="form-control" placeholder="Search Forcast">
+                                <form method="post" action="{% url 'search_result' %}">
+                                    <input type="text"  class="form-control" placeholder="Search Forecast" name='point' id="myInput"/>
+                                </form>
                               </div>
                 </div>
             </div>
@@ -41,6 +175,7 @@
         <p>Please login to see this feature</p>
         <a href="/" class="btn btn-create">Login</a>
         {% else %}
+
     <div class="container topnavlinks">
 
         <nav class="navbar">
@@ -147,7 +282,7 @@
 
                                                     <div class="col-4">
                                                             <div class="entry textwithicon">
-                                                                <img src="{% static 'images/icon-user.png' %}" alt=""> Entry {{f.total}}
+                                                                <img src="{% static 'images/icon-user.png' %}" alt=""> Entry {{f.total_user}}
                                                             </div>
                                                         </div>
 
@@ -168,40 +303,22 @@
 
 
 
-
 <footer class="sticky-footer">
-
-    <nav class="navbar">
-            <ul class="navbar-nav nav-fill w-100 text-center">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'live_forecast' %}">
-                            <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
-                            Forecasts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'category' %}">
-                            <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
-                            Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'my_forecast' %}">
-                            <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
-                            Me & My <br>
-                                Friend </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'forecast_result' %}">
-                            <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
-                            Results</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'user_profile' %}">
-                            <img src="{% static 'images/menu-icon-settings.png' %}" alt=""><br>
-                            Settings</a>
-                    </li>
-                </ul>
-    </nav>
-
+  <nav class="navbar">
+    <ul class="navbar-nav nav-fill w-100 text-center">
+      <li class="nav-item"> <a class="nav-link active" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+        Forecasts</a> </li>
+      <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+        Categories</a> </li>
+      <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+        Me & My <br>
+        Friend </a> </li>
+      <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png'%}" alt=""><br>
+        Results</a> </li>
+      <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-settings.png'%}" alt=""><br>
+        Settings</a> </li>
+    </ul>
+  </nav>
 </footer>
 
 
@@ -219,5 +336,13 @@
 
     </script>
 {% endif %}
+<script>
+$('#myInput').keypress(function (e) {
+  if (e.which == 13) {
+    $('form').submit();
+    return false;
+  }
+});
+</script>
 </body>
-</html>
+</html>{% endcomment %}
