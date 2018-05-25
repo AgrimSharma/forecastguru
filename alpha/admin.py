@@ -14,10 +14,15 @@ class SubCategoryAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
+class SourceAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
 class ForeCastAdmin(admin.ModelAdmin):
-    list_display = ['category', 'sub_category', 'user', 'heading']
+    # pass
+    list_display = ['category', 'sub_category', 'source', 'user', 'heading']
     search_fields = ['category', 'sub_category', 'user']
-    list_filter = ('category', 'sub_category',)
+    list_filter = ('category', 'sub_category')
 
 
 class StatusAdmin(admin.ModelAdmin):
@@ -40,6 +45,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ('user', 'amount', 'order_date')
 
 
+admin.site.register(Source, SourceAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(ForeCast, ForeCastAdmin)
