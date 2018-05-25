@@ -90,7 +90,7 @@ h2 {
 	color: #fff;
 }
 .btn-lg {font-size: 18px; padding: 14px 12px}
-.btn-orange:focus, .btn-blue:focus, .btn-blue-dark:focus {color: #fff}
+.btn-orange:focus, .btn-orange:hover, .btn-blue:focus, .btn-blue:hover, .btn-blue-dark:focus, .btn-blue-dark:hover {color: #fff}
 .btn-ghost {
 	background: none;
 	border: solid 1px #fff;
@@ -135,8 +135,10 @@ header h1 {
 }
 .header-logo {left: 15px; top: 0px}
 .header-logo img{max-width: 50px;}
-header .goback{top: -4px}
-header .goback a{font-size: 30px; line-height: 1}
+.goback.position-absolute {top: 15px}
+.goback.position-absolute a{font-size: 30px; line-height: 1}
+header .goback.position-absolute{top: -4px}
+header .goback.position-absolute a{font-size: 30px; line-height: 1}
 .header-right {right: 15px; top: 0; text-align: right; font-size: 11px; line-height: 1; text-transform: uppercase}
 .header-right span {font-size: 14px;}
 .header-right a{color: #fff}
@@ -728,18 +730,13 @@ header .header-right.with-btn{top: -5px}
   .modal-open .modal.modal-center .modal-dialog {
 	flex-grow: 1;
   }
-  .tutorial-container {max-width: 540px; margin: 0 auto;}
-  .slick-dots {bottom: 6%}
+  .tutorial-container {max-width: 540px; margin: 0 auto; background-color: #f6f8fd; }
+  .slick-dots {bottom: 5%; left: 0; z-index: 1000}
   .tutorial-slider.slick-slider{margin-bottom: 0;}
-  .tutorial-slider .item img{display: inline-block; max-height: 100%}
-  .slick-list,
-.slick-track {
-    height: 100vh;
-}
+  .tutorial-slider .item img{display: inline-block; max-height: 100%; max-width: 100%}
+  .slick-list, .slick-track {height: 90vh;}
 .skip{position: absolute; right: 20px; bottom: 5px; font-size: 12px}
-.slick-dots li button::before {
-	width: 12px; height: 12px; background: #cbcbcb; content: ""; border-radius: 50%;
-}
+.slick-dots li button::before {width: 12px; height: 12px; background: #cbcbcb; content: ""; border-radius: 50%;}
 .slick-dots li {width: 12px; height: 12px;}
 .slick-dots li.slick-active {width: 24px;}
 .slick-dots li button:before {opacity: 1}
