@@ -106,8 +106,8 @@ def live_forecast(request):
 
 def forecast_result(request):
     data = []
-    forecast_live = ForeCast.objects.filter(approved=True, status__name='Closed').order_by("-created")
     banner = Banner.objects.all()
+    forecast_live = ForeCast.objects.filter(approved=True, status__name='Closed').order_by("-created")
     for f in forecast_live:
         date = current.date()
         bet_start = f.start.date()
@@ -115,6 +115,7 @@ def forecast_result(request):
             start = f.start.time().strftime("%I:%M:%S")
         else:
             start = f.start
+
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
         try:
@@ -122,17 +123,18 @@ def forecast_result(request):
             total_wagered = betting_against + betting_for
             percent_for = (betting_for / total_wagered) * 100
             percent_against = (1 - (betting_for / total_wagered)) * 100
-
+            betting_sum = Betting.objects.filter(forecast=f).aggregate(
+                bet_for=Sum('bet_for'), bet_against=Sum('bet_against'))
+            total = betting_sum['bet_for'] + betting_sum['bet_against']
         except Exception:
             total_wagered = 0
             percent_for = 0
             percent_against = 0
-
-        betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
-        betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
-        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f, total=betting_against+betting_for, start=start))
-    return render(request, 'forecast_result.html', {"live": data, 'banner': banner, "user": request.user.username})
-
+            total = 0
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
+                         total=total, start=start, total_user=betting_for + betting_against,
+                         betting_for=betting_for, betting_against=betting_against))
+    return render(request, 'forecast_result.html', {"live": data, 'banner': banner})
 
 def profile(request):
     try:
@@ -146,6 +148,7 @@ def profile(request):
         else:
             suc_per = (profile.successful_forecast / total) * 100
             unsuc_per = 100 - (profile.successful_forecast / total) * 100
+
         return render(request, 'user_profile.html', {"profile": profile, "date_joined":date_joined,
                                                      "success":int(suc_per),
                                                      "unsuccess": int(unsuc_per),
@@ -192,7 +195,8 @@ def betting(request, userid):
                                                 "end_date":end_date, "end_time":end_time,
                                                 'status':status, "percent": percent,
                                                 "success": success.successful_forecast,
-                                                "user": request.user.username
+                                                "user": request.user.username,
+                                                "sums": betting_against + betting_for
                                                 })
     except Exception:
         return render(request, 'betting.html', {'forecast': forecast,"user": request.user.username})
