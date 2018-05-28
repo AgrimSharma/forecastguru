@@ -177,11 +177,14 @@ def profile(request):
         else:
             suc_per = (profile.successful_forecast / total) * 100
             unsuc_per = 100 - (profile.successful_forecast / total) * 100
+        balance = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won - \
+            profile.fg_points_lost
 
         return render(request, 'user_profile.html', {"profile": profile, "date_joined":date_joined,
                                                      "success":int(suc_per),
                                                      "unsuccess": int(unsuc_per),
-                                                     "user": request.user.username
+                                                     "user": request.user.username,
+                                                     "total": balance
                                                      })
 
     except Exception:

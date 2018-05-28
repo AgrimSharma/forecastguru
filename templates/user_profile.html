@@ -21,7 +21,7 @@
         <div class="header-logo position-absolute"><img src="{% static 'images/logo-small-white.png' %}" alt=""></div>
         <h1>My Account</h1>
         <div class="header-right position-absolute">
-          FG Balance<br><span>{{profile.fg_points_total}}</span>
+          FG Balance<br><span>{% if balance %} {{fg_points_lost}} {% else%}{{profile.fg_points_total}}{% endif %}</span>
         </div>
       </div>
     </div>
@@ -183,7 +183,7 @@
         </div>
       </div>
       <div class="total_balance text-right">
-        <p>Balance : <span class="value-color font-weight-bold">{{profile.fg_points_total}}</span></p>
+        <p>Balance : <span class="value-color font-weight-bold">{% if balance %} {{fg_points_lost}} {% else%}{{profile.fg_points_total}}{% endif %}</span></p>
       </div>
       <div class="row mb-2 btn_wrap">
         <div class="col-12"> <a href="{% url 'logout_user' %}" class="text-uppercase">Logout</a> </div>
