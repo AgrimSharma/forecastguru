@@ -426,33 +426,6 @@ def category_search(request, userid):
     except Exception:
         return render(request, 'category_search.html', {"message": "Please try again."})
     data = []
-    forecast_live = ForeCast.objects.filter(approved=True, category=category).order_by("-created")
-    for f in forecast_live:
-        date = current.date()
-        bet_start = f.start.date()
-        if date == bet_start:
-            start = f.start.time().strftime("%I:%M:%S")
-        else:
-            start = f.start
-        betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
-        betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
-        try:
-
-            total_wagered = betting_against + betting_for
-            percent_for = (betting_for / total_wagered) * 100
-            percent_against = (1 - (betting_for / total_wagered)) * 100
-
-        except Exception:
-            total_wagered = 0
-            percent_for = 0
-            percent_against = 0
-
-        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
-                         total=betting_against + betting_for, start=start))
-    return render(request, 'category_search.html', {"live": data, "user": request.user.username})
-
-
-def my_forecast(request):
     try:
         account = SocialAccount.objects.get(user=request.user)
         return render(request, 'my_friend.html', {"live": live_forecast_data(account),
@@ -461,6 +434,17 @@ def my_forecast(request):
 
     except Exception:
         return render(request, 'my_friend.html', {"user": request.user.username})
+
+
+def my_forecast(request):
+    try:
+        account = SocialAccount.objects.get(user=request.user)
+        return render(request, 'category_search.html', {"live": live_forecast_data(account),
+                                                  "result": forecast_result_data(account),
+                                                  "user": request.user.username})
+
+    except Exception:
+        return render(request, 'category_search.html', {"user": request.user.username})
 
 
 def logout_view(request):
