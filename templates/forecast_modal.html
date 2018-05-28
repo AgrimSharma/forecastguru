@@ -1,0 +1,77 @@
+<h4>{{forecast.heading}}</h4><br>
+<div class="form-group form-inline">
+        <input type="text" class="form-control" id="awb" value="{{forecast.id}}" style="display:none;" ><br>
+
+        <div class="predictwrap">
+
+                <div style="display:flex;">
+                <input type="radio" id="contactChoice1" name="contact" value="email" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">Yes</label>
+
+                <input type="radio" id="contactChoice2" name="contact" value="phone" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice2" style="margin-bottom:5px;">No</label>
+                    </div>
+          <br>
+          <div style="display:none;" id="point_div">
+    <label for="points">FG Points</label>
+            <input type="text" value="1000" id="points" name="points"/>
+
+            <input type="button" id="sub" value="-"/>
+            <input type="button" id="add" value="+"/>
+            <input type="text" id="forecast" value="{{forecast.id}}" style="display:None">
+              </div>
+                <br>
+            <button class="btn btn-sm text-uppercase submit_forecast"> Submit</button>
+
+
+             </div>
+</div>
+<script>
+    $("#add").click(function(){
+        var awb = $("#points").val();
+        var vals = parseInt(awb) + 1000;
+        $("#points").val(vals);
+    });
+    $("#sub").click(function(){
+        var awb = $("#points").val();
+        var vals = parseInt(awb) - 1000;
+        if( vals < 100){
+               $("#points").val(1000);
+            }else{
+               $("#points").val(vals);
+            }
+    });
+
+$(".submit_forecast").click(function(){
+    var radioValue = $("input[name='contact']:checked").val();
+
+    var forecast = $("#forecast").val();
+    var point = $("#points").val();
+    if( parseInt(point) % 1000 === 0){
+        $.ajax({
+            type: "POST",
+            url: "{% url 'bet_save' %}",
+            data: {'vote': radioValue, "points":point, 'forecast':forecast},
+
+            success: function(resp){
+                console.log(resp);
+                var data = JSON.parse(resp);
+                alert(data.message);
+                }
+
+            });
+
+        }
+    else{
+        alert("Points should be multiple of 1000");
+
+        }
+    });
+
+
+$(document).ready(function(){
+    $('input[type="radio"]').click(function(){
+         $("#point_div").show();
+    });
+});
+</script>

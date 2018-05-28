@@ -42,6 +42,9 @@ urlpatterns = [
     url(r'^home/', blank_page, name='blank_page'),
     url(r'^login_page/', login_page, name='login_page'),
     url(r'^signup_page/', signup_page, name='signup_page'),
+    url(r'^get_forecast/', get_forecast, name='get_forecast'),
+
     url(r'^', main_page, name='main_page'),
+
 ]
 

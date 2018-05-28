@@ -36,7 +36,7 @@
 <div class="container topnavlinks">
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
-      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'create_forecast' %}">Create Forecast</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="{ create_forecast' %}">Create Forecast</a> </li>
       <li class="nav-item text-uppercase"> <a class="nav-link active" href="{% url 'payment' %}">Buy FG Point</a> </li>
       <li class="nav-item text-uppercase dropdown"> <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Sort by
 
@@ -119,27 +119,14 @@
 <footer class="sticky-footer">
   <nav class="navbar">
       <ul class="navbar-nav nav-fill w-100 text-center">
-        <li class="nav-item">
-                        <a class="nav-link" href="{% url 'live_forecast' %}">
-                            <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
-                            Forecasts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'category' %}">
-                            <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
-                            Categories</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'forecast_result' %}">
-                            <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
-                            Results</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'user_profile' %}">
-                            <img src="{% static 'images/menu-icon-settings.png' %}" alt=""><br>
-                            Settings</a>
-                    </li>
+          <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+            Forecasts</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+            Categories</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+            Results</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+            My Account</a> </li>
         </ul>
   </nav>
 </footer>

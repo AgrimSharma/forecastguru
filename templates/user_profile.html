@@ -109,7 +109,7 @@
             <p class="m-0">FG Points Won</p>
           </div>
           <div class="col-4 text-right value-color">
-            <p class="m-0">{{profile.fg_points_won}}</p>
+            <p class="m-0">0</p>
           </div>
         </div>
         <div class="clearfix"></div>
@@ -119,6 +119,15 @@
           </div>
           <div class="col-4 text-right value-color">
             <p class="m-0">1023</p>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+          <div class="col-8">
+            <p class="m-0">Market Fee Paid</p>
+          </div>
+          <div class="col-4 text-right value-color">
+            <p class="m-0">204</p>
           </div>
         </div>
         <div class="clearfix"></div>
@@ -177,7 +186,7 @@
         <p>Balance : <span class="value-color font-weight-bold">{{profile.fg_points_total}}</span></p>
       </div>
       <div class="row mb-2 btn_wrap">
-        <div class="col-12"> <a href="{% url 'logout_user' %}" class="btn w-100 btn-orange text-uppercase">Logout</a> </div>
+        <div class="col-12"> <a href="{% url 'logout_user' %}" class="text-uppercase">Logout</a> </div>
       </div>
     </div>
   </div>
@@ -191,6 +200,8 @@
         Categories</a> </li>
       <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
         Results</a> </li>
+      <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
       <li class="nav-item"> <a class="nav-link active" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
         My Account</a> </li>
     </ul>

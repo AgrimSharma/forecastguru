@@ -1,3 +1,5 @@
+
+@import url("https://use.fontawesome.com/releases/v4.7/css/all.css");
 * {
 	outline: none!important
 }
@@ -5,8 +7,9 @@ input:focus {
 	outline: none
 }
 body {
-	font-family: 'Poppins', sans-serif;
-	color: #7f7f7f
+	font-family: Helvetica, Arial, sans-serif;
+	color: #303030;
+	 font-size: 13px;
 }
 a, a:hover {
 	text-decoration: none
@@ -248,7 +251,7 @@ header h1 {
 	border-bottom: solid 4px #272535
 }
 .topnavlinks .navbar {
-	padding-bottom: 0
+	padding: .5rem 1rem 0 0;
 }
  @media (max-width: 480px) {
 .topnavlinks .navbar-nav {
@@ -260,6 +263,9 @@ header h1 {
 }
 .fixed_p_footer {
 	padding-bottom: 90px
+}
+@media (max-width: 480px){
+	.fixed_p_footer {padding-bottom: 50px}
 }
 .forcast_box {
 	padding: 20px 15px;
@@ -330,7 +336,7 @@ height: 6px;
 background-color: #e14938
 }
 .progressbar_wrap .pointsinplay {
-	font-size: 18px;
+	font-size: 13px;
 	color: #7a7a7a
 }
 
@@ -341,7 +347,8 @@ background-color: #e14938
 	color: #403c55
 }
 .progressbar_wrap .time {
-	color: #007fae
+	color: #2c82c9;
+	line-height: 1;
 }
 .progressbar_wrap .created_by {
 	color: #7a7a7a
@@ -352,27 +359,29 @@ background-color: #e14938
 .progressbar_wrap .textwithicon {
 	padding-left: 28px;
 	position: relative;
-	font-size: 14px
+	color: #2c82c9;
+	line-height: 1;
+	font-size: 13px
 }
+.progressbar_wrap .textwithicon .result_yes {color: #41a85f}
+.progressbar_wrap .textwithicon .result_no {color: #e14938}
 .progressbar_wrap .textwithicon img {
 	position: absolute;
 	left: 0;
 	top:0
 }
 @media (max-width: 480px) {
-.progressbar_wrap .pointsinplay {
-	font-size: 10px
-}
 .progressbar_wrap .textwithicon {
 	padding-left: 20px;
-	font-size: 10px
+
 }
 .progressbar_wrap .textwithicon img {
 	max-height: 14px;
 
 }
 .progressbar_wrap .btn{
-	font-size: 10px;
+	font-size: 13px;
+	padding: 4px 10px
 }
 }
 .sticky-footer {
@@ -402,9 +411,8 @@ background-color: #e14938
 }
 @media (max-width: 480px) {
 	.sticky-footer .navbar {padding:  0}
-	.sticky-footer .navbar-nav a {
-	font-size: 13px
-}
+	.sticky-footer .navbar-nav a {font-size: 12px; padding: 6px 0}
+.sticky-footer .navbar-nav a img {max-width: 30px; margin-bottom: 4px}
 }
 .topnavlinks .dropdown-menu {position: absolute; right: 0; left: auto;}
 /* ================== create forecast =================== */
@@ -706,6 +714,7 @@ padding: .375rem .75rem
 }
 header .btn-orange {padding: 4px 10px; font-size: 13px; text-transform: uppercase; line-height: 1.1; text-align: left}
 header .header-right.with-btn{top: -5px}
+header .btn-header {color: #fff; background: none; border: none; box-shadow: none; font-size: 13px; text-transform: none}
 .category_wrap {margin-top: 20px}
 .category_wrap .cat_box {background: #fff; padding: 10px 15px; margin-bottom: 7px; border-radius: 6px; box-shadow: 0px 0px 10px rgba(0,0,0,.1); font-size: 24px;}
 .category_wrap .cat_box img{max-width: 100%;}
@@ -720,7 +729,7 @@ header .header-right.with-btn{top: -5px}
 @media (max-width: 480px) {
 	.white_box {font-size: 13px;}
 }
-.modal-header {border: none; padding-bottom: 0}
+.modal-header {border: none; padding-bottom: 0; flex-direction: column}
 .modal-header h2{font-size: 20px}
 .modal-header .close {position: absolute; right: 10px; top: 5px}
 .modal-open .modal.modal-center {
@@ -741,3 +750,6 @@ header .header-right.with-btn{top: -5px}
 .slick-dots li.slick-active {width: 24px;}
 .slick-dots li button:before {opacity: 1}
 .slick-dots li.slick-active button:before {opacity: 1; background: #3982e8; width: 24px; border-radius: 6px}
+#predictModal .modal-header .modal-title {font-size: 18px}
+.btn-minus {border-radius: 4px 0 0 4px; background-color: #e14938; color: #fff}
+.btn-plus {border-radius: 0px 4px 4px 0px; background-color: #41a85f; color: #fff}
