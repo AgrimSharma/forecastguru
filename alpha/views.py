@@ -428,23 +428,23 @@ def category_search(request, userid):
     data = []
     try:
         account = SocialAccount.objects.get(user=request.user)
-        return render(request, 'my_friend.html', {"live": live_forecast_data(account),
-                                                  "result": forecast_result_data(account),
-                                                  "user": request.user.username})
-
-    except Exception:
-        return render(request, 'my_friend.html', {"user": request.user.username})
-
-
-def my_forecast(request):
-    try:
-        account = SocialAccount.objects.get(user=request.user)
         return render(request, 'category_search.html', {"live": live_forecast_data(account),
                                                   "result": forecast_result_data(account),
                                                   "user": request.user.username})
 
     except Exception:
         return render(request, 'category_search.html', {"user": request.user.username})
+
+
+def my_forecast(request):
+    try:
+        account = SocialAccount.objects.get(user=request.user)
+        return render(request, 'my_friend.html', {"live": live_forecast_data(account),
+                                                  "result": forecast_result_data(account),
+                                                  "user": request.user.username})
+
+    except Exception:
+        return render(request, 'my_friend.html', {"user": request.user.username})
 
 
 def logout_view(request):
