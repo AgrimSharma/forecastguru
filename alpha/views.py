@@ -27,7 +27,6 @@ def test(request):
 def create_forecast(request):
     if request.method == 'POST':
         try:
-            import pdb;pdb.set_trace()
             user = request.POST.get('user', '')
             category = request.POST.get('categories', '')
             sub_category = request.POST.get('subcategories', '')
@@ -422,7 +421,10 @@ def category(request):
 
 
 def category_search(request, userid):
-    category = Category.objects.get(id=userid)
+    try:
+        category = Category.objects.get(id=userid)
+    except Exception:
+        return render(request, 'category_search.html', {"message": "Please try again."})
     data = []
     forecast_live = ForeCast.objects.filter(approved=True, category=category).order_by("-created")
     for f in forecast_live:
