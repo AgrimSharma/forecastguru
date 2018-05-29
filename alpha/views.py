@@ -26,30 +26,30 @@ def test(request):
 @csrf_exempt
 def create_forecast(request):
     if request.method == 'POST':
-        try:
-            user = request.POST.get('user', '')
-            category = request.POST.get('categories', '')
-            sub_category = request.POST.get('subcategories', '')
-            heading = request.POST.get('heading', '')
-            # source = request.POST.get('source', '')
-            expire = request.POST.get('expire', '')
-            start = request.POST.get('start', '')
-            cat = Category.objects.get(id=category)
-            sub_cat = SubCategory.objects.get(id=sub_category)
-            # user = User.objects.get(username=user)
-            users = SocialAccount.objects.get(user=request.user)
-            status = Status.objects.get(name='In-Progress')
-            f = ForeCast.objects.create(category=cat, sub_category=sub_cat,
-                                        user=users, heading=heading,
-                                        expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M"),
-                                        start=datetime.datetime.strptime(start, "%Y-%m-%d %H:%M"), approved=False,
-                                        status=status, created=current, private=False,
-                                        )
-            f.save()
-            return HttpResponseRedirect("/live_forecast/")
-        except Exception:
+        # try:
+        user = request.POST.get('user', '')
+        category = request.POST.get('categories', '')
+        sub_category = request.POST.get('subcategories', '')
+        heading = request.POST.get('heading', '')
+        # source = request.POST.get('source', '')
+        expire = request.POST.get('expire', '')
+        start = request.POST.get('start', '')
+        cat = Category.objects.get(id=category)
+        sub_cat = SubCategory.objects.get(id=sub_category)
+        # user = User.objects.get(username=user)
+        users = SocialAccount.objects.get(user=request.user)
+        status = Status.objects.get(name='In-Progress')
+        f = ForeCast.objects.create(category=cat, sub_category=sub_cat,
+                                    user=users, heading=heading,
+                                    expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M"),
+                                    start=datetime.datetime.strptime(start, "%Y-%m-%d %H:%M"), approved=False,
+                                    status=status, created=current, private=False,
+                                    )
+        f.save()
+        return HttpResponseRedirect("/live_forecast/")
+        # except Exception:
 
-            return HttpResponse(json.dumps(dict(status=400, message='Try again later')))
+            # return HttpResponse(json.dumps(dict(status=400, message='Try again later')))
 
     else:
         category = Category.objects.all()
