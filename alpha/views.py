@@ -70,6 +70,7 @@ def closing_soon(request):
 
 
 def live_forecast(request):
+    return HttpResponse(request.user.username)
     data = []
     profile = SocialAccount.objects.get(user__username=request.user.username)
 
