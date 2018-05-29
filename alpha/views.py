@@ -273,8 +273,8 @@ def bet_post(request):
                     # bets = bets[0]
                     if bet.bet_for < points:
                         bet.bet_for = bet.bet_for + points
-                        bet.account.fg_points_total = bet.users.fg_points_total - points
-                        bet.account.save()
+                        bet.users.fg_points_total = bet.users.fg_points_total - points
+                        bet.users.save()
                         bet.save()
                     else:
                         bet.bet_for = bet.bet_for
