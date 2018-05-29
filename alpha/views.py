@@ -72,7 +72,7 @@ def closing_soon(request):
 
 def live_forecast(request):
     data = []
-    account = SocialAccount.objects.get(user=request.user)
+    profile = SocialAccount.objects.get(user__username=request.user.username)
 
     banner = Banner.objects.all()
     forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress').order_by("-created")
@@ -534,7 +534,7 @@ def signup_page(request):
             except Exception:
                 user = User.objects.create(email=email, username=username)
                 user.set_password(password)
-                sa = SocialAccount.objects.create(user=user, uid = random.randint(1000, 100000),)
+                sa = SocialAccount.objects.create(user=user, uid=random.randint(1000, 100000),)
                 sa.save()
                 user.save()
                 return HttpResponse(json.dumps(dict(status=200)))
@@ -554,7 +554,6 @@ def login_page(request):
                 users = authenticate(request, username=email, password=password)
                 if users:
                     login(request, users)
-                    # return HttpResponseRedirect("/live_forecast/")
                     return HttpResponse(json.dumps(dict(status=200)))
                 else:
                     return HttpResponse(json.dumps(dict(status="Please try again")))
