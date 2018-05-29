@@ -56,7 +56,13 @@ $(".submit_forecast").click(function(){
             success: function(resp){
                 console.log(resp);
                 var data = JSON.parse(resp);
-                alert(data.message);
+                if(data.message=="success"){
+                    alert("Forecast Places");
+                    location.reload();
+                    }
+                    else{
+                    alert("You have already placed a successful forecast");
+                    }
                 }
 
             });
