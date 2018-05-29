@@ -206,7 +206,7 @@ def profile(request):
         # profile = SocialAccount.objects.get(user=user)
         return render(request, 'user_profile.html', {
                                                      "user": user.username,
-                                                     
+
                                                      })
 
 
@@ -255,7 +255,7 @@ def betting(request, userid):
 def bet_post(request):
     if request.method == 'POST':
         try:
-            users = SocialAccount.objects.get(user=request.user)
+            account= SocialAccount.objects.get(user=request.user)
             vote = request.POST.get('vote')
             points = int(request.POST.get('points'))
             if int(points) % 1000 != 0:
