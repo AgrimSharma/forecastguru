@@ -556,7 +556,7 @@ def login_page(request):
                     login(request, users)
                     return HttpResponse(json.dumps(dict(status=200)))
                 else:
-                    return HttpResponse(json.dumps(dict(message="Please try again")))
+                    return HttpResponse(json.dumps(dict(message="Please enter correct username and password")))
 
             except Exception:
                 return HttpResponse(json.dumps(dict(message="Please try again.")))
