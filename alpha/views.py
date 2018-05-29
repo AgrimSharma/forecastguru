@@ -173,8 +173,8 @@ def forecast_result(request):
 def profile(request):
     try:
         user = request.user
-
-        profile = SocialAccount.objects.get(user__username=user.username)
+        users = User.objects.get(username=user.username)
+        profile = SocialAccount.objects.get(user=users)
 
         date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
         total = profile.successful_forecast + profile.unsuccessful_forecast
@@ -199,6 +199,7 @@ def profile(request):
     except Exception:
         user = request.user
         users = User.objects.get(username=user.username)
+        profile = SocialAccount.objects.get(user=users)
         return render(request, 'user_profile.html', {
                                                      "user": users.username
                                                      })
