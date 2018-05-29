@@ -27,23 +27,20 @@ def test(request):
 def create_forecast(request):
     if request.method == 'POST':
         try:
-            import pdb;pdb.set_trace()
             user = request.POST.get('user', '')
             category = request.POST.get('categories', '')
             sub_category = request.POST.get('subcategories', '')
             heading = request.POST.get('heading', '')
-            source = request.POST.get('source', '')
+            # source = request.POST.get('source', '')
             expire = request.POST.get('expire', '')
             start = request.POST.get('start', '')
             cat = Category.objects.get(id=category)
             sub_cat = SubCategory.objects.get(id=sub_category)
-            sources = Source.objects.get(id=source)
             user = User.objects.get(username=user)
             users = SocialAccount.objects.get(user__username=user)
             status = Status.objects.get(name='In-Progress')
             f = ForeCast.objects.create(category=cat, sub_category=sub_cat,
                                         user=users, heading=heading,
-                                        source=sources,
                                         expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M"),
                                         start=datetime.datetime.strptime(start, "%Y-%m-%d %H:%M"), approved=False,
                                         status=status, created=current, private=False,
@@ -57,10 +54,8 @@ def create_forecast(request):
     else:
         category = Category.objects.all()
         subcategory = SubCategory.objects.all()
-        source = Source.objects.all()
         return render(request, 'create_forecast.html', {'category':category,
                                                         "sub_category": subcategory,
-                                                        "source": source,
                                                         "user": request.user.username
                                                         })
 
