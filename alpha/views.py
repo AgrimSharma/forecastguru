@@ -550,7 +550,7 @@ def login_page(request):
         else:
             try:
                 user_obj = User.objects.get(username=email)
-                users = authenticate(username=user_obj.email, password=password)
+                users = authenticate(username=user_obj.username, password=password)
                 if users:
                     login(request, users)
                     return HttpResponse(json.dumps(dict(status=200)))
