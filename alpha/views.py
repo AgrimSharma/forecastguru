@@ -305,7 +305,7 @@ def bet_post(request):
             else:
                 return HttpResponse(json.dumps(dict(message='balance')))
         except Exception:
-            return HttpResponse(json.dumps(dict(message='login')))
+            return HttpResponse(json.dumps(dict(message='success')))
     else:
         return HttpResponse(json.dumps(dict(message='Please use POST')))
 
