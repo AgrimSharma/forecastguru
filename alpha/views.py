@@ -185,7 +185,9 @@ def profile(request):
         else:
             suc_per = (profile.successful_forecast / total) * 100
             unsuc_per = 100 - (profile.successful_forecast / total) * 100
-
+        if profile.fg_points_total == 0:
+            profile.fg_points_total = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won
+            profile.save()
         return render(request, 'user_profile.html', {"profile": profile, "date_joined":date_joined,
                                                      "success":int(suc_per),
                                                      "unsuccess": int(unsuc_per),
@@ -250,24 +252,26 @@ def bet_post(request):
         forecast = request.POST.get('forecast')
         forecasts = ForeCast.objects.get(id=forecast)
         account = SocialAccount.objects.get(user=request.user)
+        if account.fg_points_total - points > 0:
+            try:
+                Betting.objects.get(forecast=forecasts, users=account)
+                return HttpResponse(json.dumps(dict(message='Already Exists')))
 
-        try:
+            except Exception:
 
-            Betting.objects.get(forecast=forecasts, users=account)
-            return HttpResponse(json.dumps(dict(message='Already Exists')))
-        except Exception:
-
-            if vote == 'email':
-                b = Betting.objects.create(forecast=forecasts, users=account, bet_for=points, bet_against=0)
-                account.fg_points_total = account.fg_points_total - points
-                account.save()
-                b.save()
-            else:
-                b = Betting.objects.create(forecast=forecasts, users=account, bet_for=0, bet_against=points)
-                account.fg_points_total = account.fg_points_total - points
-                account.save()
-                b.save()
-            return HttpResponse(json.dumps(dict(message='success')))
+                if vote == 'email':
+                    b = Betting.objects.create(forecast=forecasts, users=account, bet_for=points, bet_against=0)
+                    account.fg_points_total = account.fg_points_total - points
+                    account.save()
+                    b.save()
+                else:
+                    b = Betting.objects.create(forecast=forecasts, users=account, bet_for=0, bet_against=points)
+                    account.fg_points_total = account.fg_points_total - points
+                    account.save()
+                    b.save()
+                return HttpResponse(json.dumps(dict(message='success')))
+        else:
+            return HttpResponse(json.dumps(dict(message='balance')))
     else:
         return HttpResponse(json.dumps(dict(message='Please use POST')))
 
