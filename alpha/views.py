@@ -277,14 +277,14 @@ def bet_post(request):
                         bet.account.save()
                         bet.save()
                     else:
-                        bets.bet_for = bets.bet_for
-                        bets.users.fg_points_total = bets.users.fg_points_total - points
-                        bets.users.save()
-                        bets.save()
+                        bet.bet_for = bet.bet_for
+                        bet.users.fg_points_total = bet.users.fg_points_total - points
+                        bet.users.save()
+                        bet.save()
                 else:
                     b = Betting.objects.create(forecast=forecasts, users=account, bet_for=points, bet_against=0)
-                    bets.users.fg_points_total = bets.users.fg_points_total - points
-                    bets.users.save()
+                    b.users.fg_points_total = bets.users.fg_points_total - points
+                    b.users.save()
                     b.save()
             else:
                 bets = Betting.objects.filter(forecast=forecasts, users=account, bet_for=0, bet_against__gt=0)
@@ -297,14 +297,14 @@ def bet_post(request):
                         bet.users.save()
                         bet.save()
                     else:
-                        bets.bet_against = bets.bet_against
-                        bets.users.fg_points_total = bets.users.fg_points_total  - points
-                        bets.users.save()
-                        bets.save()
+                        bet.bet_against = bet.bet_against
+                        bet.users.fg_points_total = bet.users.fg_points_total  - points
+                        bet.users.save()
+                        bet.save()
                 else:
                     b = Betting.objects.create(forecast=forecasts, users=account, bet_for=0, bet_against=points)
-                    bets.users.fg_points_total = bets.users.fg_points_total - points
-                    bets.users.save()
+                    b.users.fg_points_total = bets.users.fg_points_total - points
+                    b.users.save()
                     b.save()
             return HttpResponse(json.dumps(dict(message='success')))
         else:
