@@ -112,8 +112,11 @@
                       <form method="post">{% csrf_token %}
                     <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
 
+{% if btn_val == 'no' %}
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">Predict </button>
-                          </form>
+                          {% else %}
+                          <button type="button" class="btn btn-orange shipment_sold" disabled>Predict </button>
+                          {% endif %}                          </form>
                 </div>
               </div>
             </div>
