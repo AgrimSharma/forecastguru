@@ -254,9 +254,11 @@ def betting(request, userid):
 @csrf_exempt
 def bet_post(request):
     if request.method == 'POST':
-        # try:
-        user = request.user
-        account=SocialAccount.objects.get(user=user)
+        try:
+            user = request.user
+            account=SocialAccount.objects.get(user=user)
+        except Exception:
+            return HttpResponse(json.dumps(dict(message='login')))
         vote = request.POST.get('vote')
         points = int(request.POST.get('points'))
         if int(points) % 1000 != 0:
