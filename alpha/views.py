@@ -208,7 +208,7 @@ def profile(request):
     except Exception:
         user = request.user
         # users = User.objects.get(username=user.username)
-        # profile = SocialAccount.objects.get(user=user)
+        profile = SocialAccount.objects.get(user=user)
         return render(request, 'user_profile.html', {
                                                      "user": user.username,
                                                      # "profile":profile
