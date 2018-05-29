@@ -172,6 +172,7 @@ def forecast_result(request):
 
 def profile(request):
     try:
+        return HttpResponse(request.user)
         user = User.objects.get(username=request.user)
         profile = SocialAccount.objects.get(user=user)
         date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
@@ -190,13 +191,13 @@ def profile(request):
         return render(request, 'user_profile.html', {"profile": profile, "date_joined":date_joined,
                                                      "success":int(suc_per),
                                                      "unsuccess": int(unsuc_per),
-                                                     "user": request.user.username,
+                                                     "user": request.user,
                                                      "point": bet_against + bet_for
                                                      })
 
     except Exception:
         return render(request, 'user_profile.html', {
-                                                     "user": request.user.username
+                                                     "user": request.user
                                                      })
 
 
