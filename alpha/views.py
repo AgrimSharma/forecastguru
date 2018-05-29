@@ -36,8 +36,8 @@ def create_forecast(request):
             start = request.POST.get('start', '')
             cat = Category.objects.get(id=category)
             sub_cat = SubCategory.objects.get(id=sub_category)
-            user = User.objects.get(username=user)
-            users = SocialAccount.objects.get(user__username=user)
+            # user = User.objects.get(username=user)
+            users = SocialAccount.objects.get(user=request.user)
             status = Status.objects.get(name='In-Progress')
             f = ForeCast.objects.create(category=cat, sub_category=sub_cat,
                                         user=users, heading=heading,
