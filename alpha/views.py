@@ -27,7 +27,6 @@ def test(request):
 def create_forecast(request):
     if request.method == 'POST':
         try:
-            import pdb;pdb.set_trace()
             user = request.POST.get('user', '')
             category = request.POST.get('categories', '')
             sub_category = request.POST.get('subcategories', '')
@@ -481,7 +480,6 @@ def blank_page(request):
 @csrf_exempt
 def search_result(request):
     if request.method == "POST":
-        import pdb;pdb.set_trace()
         query = request.POST.get('point','')
         if query == "":
             return render(request, "search_data.html", {"data": "No result found"})
@@ -551,7 +549,8 @@ def login_page(request):
             return HttpResponse(json.dumps(dict("Please fill all details")))
         else:
             try:
-                users = authenticate(request, username=email, password=password)
+                user_obj = User.objects.get(username=email)
+                users = authenticate(username=user_obj.email, password=password)
                 if users:
                     login(request, users)
                     return HttpResponse(json.dumps(dict(status=200)))
