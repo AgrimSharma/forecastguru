@@ -174,7 +174,8 @@ def profile(request):
     try:
         user = request.user
 
-        profile = SocialAccount.objects.get(user=user)
+        profile = SocialAccount.objects.get(user__username=user.username)
+
         date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
         total = profile.successful_forecast + profile.unsuccessful_forecast
         bet_for = Betting.objects.filter(users=profile).aggregate(bet_for=Sum('bet_for'))['bet_for']
@@ -196,8 +197,10 @@ def profile(request):
                                                      })
 
     except Exception:
+        user = request.user
+        users = User.objects.get(username=user.username)
         return render(request, 'user_profile.html', {
-                                                     "user": request.user.username
+                                                     "user": users.username
                                                      })
 
 
