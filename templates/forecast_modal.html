@@ -70,6 +70,10 @@ $(".submit_forecast").click(function(){
                             alert("You ForeCast Guru Balance is low");
                             window.location.href = "{% url 'payment' %}";
                     }
+                    else if(data.message=="login"){
+                            alert("Please login!!");
+                            window.location.href = "{% url 'blank_page' %}";
+                    }
                         else{
                         alert("You have already placed a successful forecast");
                         }

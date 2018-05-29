@@ -21,7 +21,7 @@
         <div class="header-logo position-absolute"><img src="{% static 'images/logo-small-white.png' %}" alt=""></div>
         <h1>My Account</h1>
         <div class="header-right position-absolute">
-          FG Balance<br><span>{% if balance %} {{total}} {% else%}{{profile.fg_points_total}}{% endif %}</span>
+          FG Balance<br><span>{{profile.fg_points_total}}</span>
         </div>
       </div>
     </div>
@@ -55,10 +55,10 @@
       <div class="white_box mb-3">
           <div class="row">
             <div class="col-9">
-              <p class="m-0">Referral Points Earn</p>
+              <p class="m-0">Points in play</p>
             </div>
             <div class="col-3 text-right value-color">
-              <p class="m-0">9988</p>
+              <p class="m-0">{{point}}</p>
             </div>
           </div>
           <div class="clearfix"></div>
@@ -118,7 +118,7 @@
             <p class="m-0">Market Fee Earned</p>
           </div>
           <div class="col-4 text-right value-color">
-            <p class="m-0">1023</p>
+            <p class="m-0">{{profile.market_fee}}</p>
           </div>
         </div>
         <div class="clearfix"></div>
@@ -127,7 +127,7 @@
             <p class="m-0">Market Fee Paid</p>
           </div>
           <div class="col-4 text-right value-color">
-            <p class="m-0">204</p>
+            <p class="m-0">{{profile.market_fee_paid}}</p>
           </div>
         </div>
         <div class="clearfix"></div>
@@ -167,7 +167,7 @@
               <p class="m-0">FG Points Earned (Market Fee)</p>
             </div>
             <div class="col-4 text-right value-color">
-              <p class="m-0">2377</p>
+              <p class="m-0">{{profile.market_fee}}</p>
             </div>
           </div>
           <div class="clearfix"></div>
@@ -183,7 +183,7 @@
         </div>
       </div>
       <div class="total_balance text-right">
-        <p>Balance : <span class="value-color font-weight-bold">{% if balance %} {{total}} {% else%}{{profile.fg_points_total}}{% endif %}</span></p>
+        <p>Balance : <span class="value-color font-weight-bold">{{profile.fg_points_total}}</span></p>
       </div>
       <div class="row mb-2 btn_wrap">
         <div class="col-12"> <a href="{% url 'logout_user' %}" class="text-uppercase">Logout</a> </div>
