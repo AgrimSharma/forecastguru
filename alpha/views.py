@@ -72,8 +72,7 @@ def closing_soon(request):
 
 def live_forecast(request):
     data = []
-    user = request.user
-    profile = SocialAccount.objects.get(user__username=user)
+    account = SocialAccount.objects.get(user=request.user)
 
     banner = Banner.objects.all()
     forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress').order_by("-created")
@@ -552,13 +551,14 @@ def login_page(request):
             return HttpResponse(json.dumps(dict("Please fill all details")))
         else:
             try:
-                # user = User.objects.get(email=email)
                 users = authenticate(request, username=email, password=password)
-                login(request, users)
-                # if user.check_password(password):
-                #     pass
+                if users:
+                    login(request, users)
+                    return HttpResponseRedirect("/live_forecast/")
+                    # return HttpResponse(json.dumps(dict(status=200)))
+                else:
+                    return HttpResponse(json.dumps(dict(status="Please try again")))
 
-                return HttpResponse(json.dumps(dict(status=200)))
             except Exception:
                 return HttpResponse(json.dumps(dict(message="Please try again.")))
     else:
