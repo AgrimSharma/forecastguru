@@ -554,8 +554,8 @@ def login_page(request):
                 users = authenticate(request, username=email, password=password)
                 if users:
                     login(request, users)
-                    return HttpResponseRedirect("/live_forecast/")
-                    # return HttpResponse(json.dumps(dict(status=200)))
+                    # return HttpResponseRedirect("/live_forecast/")
+                    return HttpResponse(json.dumps(dict(status=200)))
                 else:
                     return HttpResponse(json.dumps(dict(status="Please try again")))
 
