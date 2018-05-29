@@ -255,7 +255,7 @@ def betting(request, userid):
 def bet_post(request):
     if request.method == 'POST':
         try:
-            account = SocialAccount.objects.get(user__username=request.user)
+            users = SocialAccount.objects.get(user=request.user)
             vote = request.POST.get('vote')
             points = int(request.POST.get('points'))
             if int(points) % 1000 != 0:
