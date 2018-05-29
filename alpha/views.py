@@ -573,6 +573,7 @@ def get_forecast(request):
 
 def live_forecast_data(user):
     data = []
+
     forecast_live = ForeCast.objects.filter(user=user, approved=True, status__name='In-Progress').order_by("-created")
     for f in forecast_live:
         date = current.date()
@@ -583,7 +584,11 @@ def live_forecast_data(user):
         else:
             start = f.start
             today = "no"
-
+        forx = Betting.objects.filter(forecast=f, users=user)
+        if len(forx) > 0:
+            btn_val = 'yes'
+        else:
+            btn_val = 'no'
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
         try:
@@ -604,7 +609,7 @@ def live_forecast_data(user):
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
-                         participants=total_wagered))
+                         participants=total_wagered, btn_val=btn_val))
     return data
 
 
