@@ -255,7 +255,8 @@ def betting(request, userid):
 def bet_post(request):
     if request.method == 'POST':
         try:
-            account= SocialAccount.objects.get(user=request.user)
+            user = request.user
+            account=SocialAccount.objects.get(user=user)
             vote = request.POST.get('vote')
             points = int(request.POST.get('points'))
             if int(points) % 1000 != 0:
@@ -305,7 +306,7 @@ def bet_post(request):
             else:
                 return HttpResponse(json.dumps(dict(message='balance')))
         except Exception:
-            return HttpResponse(json.dumps(dict(message='success')))
+            return HttpResponse(json.dumps(dict(message='login')))
     else:
         return HttpResponse(json.dumps(dict(message='Please use POST')))
 
