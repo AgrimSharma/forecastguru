@@ -283,7 +283,7 @@ def bet_post(request):
                         bet.save()
                 else:
                     b = Betting.objects.create(forecast=forecasts, users=account, bet_for=points, bet_against=0)
-                    b.users.fg_points_total = bets.users.fg_points_total - points
+                    b.users.fg_points_total = b.users.fg_points_total - points
                     b.users.save()
                     b.save()
             else:
@@ -303,7 +303,7 @@ def bet_post(request):
                         bet.save()
                 else:
                     b = Betting.objects.create(forecast=forecasts, users=account, bet_for=0, bet_against=points)
-                    b.users.fg_points_total = bets.users.fg_points_total - points
+                    b.users.fg_points_total = b.users.fg_points_total - points
                     b.users.save()
                     b.save()
             return HttpResponse(json.dumps(dict(message='success')))
