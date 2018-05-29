@@ -7,21 +7,30 @@ from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy
 
 
+# class SourceInline(admin.TabularInline):
+#     model = Source
+
+
+class SubCatInline(admin.TabularInline):
+    model = SubCategory
+
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name']
+    inlines = (SubCatInline,)
 
 
 class SubCategoryAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
-class SourceAdmin(admin.ModelAdmin):
-    list_display = ['name']
+# class SourceAdmin(admin.ModelAdmin):
+#     list_display = ['name']
 
 
 class ForeCastAdmin(admin.ModelAdmin):
     # pass
-    list_display = ['category', 'sub_category', 'source', 'user', 'heading']
+    list_display = ['category', 'sub_category', 'user', 'heading']
     search_fields = ['category', 'sub_category', 'user']
     list_filter = ('category', 'sub_category')
 
@@ -46,7 +55,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ('user', 'amount', 'order_date')
 
 
-admin.site.register(Source, SourceAdmin)
+# admin.site.register(Source, SourceAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(ForeCast, ForeCastAdmin)
