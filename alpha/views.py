@@ -268,13 +268,14 @@ def bet_post(request):
         if account.fg_points_total - points > 0:
             if vote == 'email':
                 bets =Betting.objects.filter(forecast=forecasts, users=account, bet_for__gt=0, bet_against=0)
-                if bets:
-                    bets = bets[0]
-                    if bets.bet_for < points:
-                        bets.bet_for = bets.bet_for + points
-                        bets.account.fg_points_total = bets.users.fg_points_total - points
-                        bets.account.save()
-                        bets.save()
+                for bet in bets:
+
+                    # bets = bets[0]
+                    if bet.bet_for < points:
+                        bet.bet_for = bet.bet_for + points
+                        bet.account.fg_points_total = bet.users.fg_points_total - points
+                        bet.account.save()
+                        bet.save()
                     else:
                         bets.bet_for = bets.bet_for
                         bets.users.fg_points_total = bets.users.fg_points_total - points
@@ -287,13 +288,14 @@ def bet_post(request):
                     b.save()
             else:
                 bets = Betting.objects.filter(forecast=forecasts, users=account, bet_for=0, bet_against__gt=0)
-                if bets:
-                    bets = bets[0]
-                    if bets.bet_against < points:
-                        bets.bet_against = bets.bet_against + points
-                        bets.users.fg_points_total = bets.users.fg_points_total  - points
-                        bets.users.save()
-                        bets.save()
+                for bet in bets:
+
+                    # bets = bets[0]
+                    if bet.bet_against < points:
+                        bet.bet_against = bet.bet_against + points
+                        bet.users.fg_points_total = bet.users.fg_points_total  - points
+                        bet.users.save()
+                        bet.save()
                     else:
                         bets.bet_against = bets.bet_against
                         bets.users.fg_points_total = bets.users.fg_points_total  - points
