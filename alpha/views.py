@@ -172,8 +172,8 @@ def forecast_result(request):
 
 def profile(request):
     try:
-        # user = User.objects.get(username=request.user)
-        profile = SocialAccount.objects.get(user=request.user)
+        user = request.user
+        profile = SocialAccount.objects.get(user=user)
         date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
         total = profile.successful_forecast + profile.unsuccessful_forecast
         bet_for = Betting.objects.filter(users=profile).aggregate(bet_for=Sum('bet_for'))['bet_for']
