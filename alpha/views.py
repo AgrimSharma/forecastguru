@@ -211,7 +211,7 @@ def profile(request):
         profile = SocialAccount.objects.get(user=user)
         return render(request, 'user_profile.html', {
                                                      "user": user.username,
-                                                     # "profile":profile
+                                                     "profile":profile
                                                      })
 
 
