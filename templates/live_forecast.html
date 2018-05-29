@@ -112,7 +112,6 @@
                   <div class="col-12 col-md-4 text-right pl-0">
 
                       <form method="post">{% csrf_token %}
-                          {{f.btn_val}}
                         {% if f.btn_val == 'no' %}
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">Predict </button>
                           {% else %}
