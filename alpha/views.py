@@ -70,9 +70,9 @@ def closing_soon(request):
 
 
 def live_forecast(request):
-    return HttpResponse(request.user)
+
     data = []
-    profile = SocialAccount.objects.get(user__username=request.user.username)
+    profile = SocialAccount.objects.get(user__username=request.user)
 
     banner = Banner.objects.all()
     forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress').order_by("-created")
