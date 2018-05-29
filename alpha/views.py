@@ -244,7 +244,7 @@ def bet_post(request):
     if request.method == 'POST':
         # import pdb;pdb.set_trace()
         vote = request.POST.get('vote')
-        points = request.POST.get('points')
+        points = int(request.POST.get('points'))
         if int(points) % 1000 != 0:
             return HttpResponse(json.dumps(dict(message='Points should be multiple of 1000')))
         forecast = request.POST.get('forecast')
@@ -267,7 +267,7 @@ def bet_post(request):
                 account.fg_points_total = account.fg_points_total - points
                 account.save()
                 b.save()
-            return HttpResponse(json.dumps(dict(message='Bet Placed')))
+            return HttpResponse(json.dumps(dict(message='success')))
     else:
         return HttpResponse(json.dumps(dict(message='Please use POST')))
 
