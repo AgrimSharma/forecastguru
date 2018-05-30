@@ -610,14 +610,14 @@ def live_forecast_data(forecast_live):
     for f in forecast_live:
         date = current.date()
         forecast = f.forecast
-        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
+        bet_start = forecast.expire.date()
 
         if date == bet_start:
-            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+            start = forecast.expire
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+            start = forecast.expire
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
