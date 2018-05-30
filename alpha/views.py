@@ -609,10 +609,10 @@ def live_forecast_data(user):
 
         if date == bet_start:
             start = f.expire
-            today = 'no'
+            start = start.time().strftime("%I:%M:%S")
+            today = 'yes'
         else:
             start = f.expire
-            start = start.time().strftime("%I:%M:%S")
 
             today = "no"
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
@@ -736,7 +736,6 @@ def forecast_live_view(category):
             totl = bet_against+ bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            print(percent_for, percent_against)
 
             total = Betting.objects.filter(forecast=f).count()
         except Exception:
