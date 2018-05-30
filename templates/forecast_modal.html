@@ -74,8 +74,8 @@ $(".submit_forecast").click(function(){
                             alert("Please login!!");
                             window.location.href = "{% url 'blank_page' %}";
                     }
-                        else{
-                        alert("You have already placed a successful forecast");
+                    else{
+                        alert(data.message);
                         }
                     }
 
