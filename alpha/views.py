@@ -170,41 +170,42 @@ def profile(request):
         user = request.user
         # users = User.objects.get(username=user.username)
         profile = SocialAccount.objects.get(user=user)
-
-        date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
-        total = profile.successful_forecast + profile.unsuccessful_forecast
-        try:
-            bet_for = Betting.objects.filter(users=profile).aggregate(bet_for=Sum('bet_for'))['bet_for']
-            bet_against = Betting.objects.filter(users=profile).aggregate(bet_against=Sum('bet_against'))['bet_against']
-        except Exception:
-            bet_for = 0
-            bet_against = 0
-        try:
-            suc_per = (profile.successful_forecast / total) * 100
-            unsuc_per = 100 - (profile.successful_forecast / total) * 100
-        except Exception:
-            suc_per = 0
-            unsuc_per = 0
-
-        if profile.fg_points_total == 0:
-            profile.fg_points_total = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won
-            profile.save()
-        return render(request, 'user_profile.html', {"profile": profile, "date_joined":date_joined,
-                                                     "success":int(suc_per),
-                                                     "unsuccess": int(unsuc_per),
-                                                     "user": request.user.username,
-                                                     "point": bet_against + bet_for
-
-                                                     })
-
     except Exception:
         user = request.user
         # users = User.objects.get(username=user.username)
         # profile = SocialAccount.objects.get(user=user)
         return render(request, 'user_profile.html', {
-                                                     "users": user.username,
+            "users": user.username,
 
-                                                     })
+        })
+
+    date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
+    total = profile.successful_forecast + profile.unsuccessful_forecast
+    try:
+        bet_for = Betting.objects.filter(users=profile).aggregate(bet_for=Sum('bet_for'))['bet_for']
+        bet_against = Betting.objects.filter(users=profile).aggregate(bet_against=Sum('bet_against'))['bet_against']
+    except Exception:
+        bet_for = 0
+        bet_against = 0
+    try:
+        suc_per = (profile.successful_forecast / total) * 100
+        unsuc_per = 100 - (profile.successful_forecast / total) * 100
+    except Exception:
+        suc_per = 0
+        unsuc_per = 0
+
+    if profile.fg_points_total == 0:
+        profile.fg_points_total = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won
+        profile.save()
+    return render(request, 'user_profile.html', {"profile": profile,
+                                                 "date_joined":date_joined,
+                                                 "success":int(suc_per),
+                                                 "unsuccess": int(unsuc_per),
+                                                 "user": request.user.username,
+                                                 "point": bet_against + bet_for
+
+                                                 })
+
 
 
 def betting(request, userid):
