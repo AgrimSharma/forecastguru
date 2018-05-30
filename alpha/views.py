@@ -605,7 +605,7 @@ def get_forecast(request):
 def live_forecast_data(user):
     data = []
 
-    forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress').order_by("-created")
+    forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress', user=user).order_by("-created")
     for f in forecast_live:
         date = current.date()
 
@@ -647,7 +647,7 @@ def live_forecast_data(user):
 
 def forecast_result_data(user):
     data = []
-    forecast_live = ForeCast.objects.filter(approved=True, status__name='Closed').order_by("-created")
+    forecast_live = ForeCast.objects.filter(approved=True, status__name='Closed', user=user).order_by("-created")
     for f in forecast_live:
         date = current.date()
         bet_start = f.start.date()
