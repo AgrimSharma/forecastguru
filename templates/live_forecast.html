@@ -98,9 +98,9 @@
                     <div class="time textwithicon pl-0">
                       <label><i class="fa fa-clock-o"></i> Expires on</label><br>
                         {% if f.today == "yes" %}
-                       <span>{{f.start}}</span>
+                       <span>Today {{f.start}}</span>
                       {% else %}
-                        <span>Today {{f.start}}</span>
+                        <span>{{f.start}}</span>
                         {% endif %}
                         </div>
                   </div>

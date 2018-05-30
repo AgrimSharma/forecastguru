@@ -76,11 +76,11 @@ def live_forecast(request):
 
         if date == bet_start:
             start = f.expire + datetime.timedelta(hours=5, minutes=30)
-            today = 'yes'
+            today = 'no'
         else:
             start = f.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time().strftime("%I:%M:%S")
-            today = "no"
+            today = "yes"
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
         try:
