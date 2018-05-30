@@ -481,17 +481,20 @@ def category_search(request, userid):
 
 def my_forecast(request):
     try:
+        user = request.user.id
+        users = User.objects.get(id=user)
+        account = SocialAccount.objects.get(user=users)
+        forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress', user=account).order_by(
+            "-created")
+        forecast_result = ForeCast.objects.filter(approved=True, status__name='Closed', user=account).order_by("-created")
 
-        user = request.user
-        account = SocialAccount.objects.get(user=user)
+        return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live),
+                                                  "result": forecast_result_data(forecast_result),
+                                                  "user": request.user.username})
 
     except Exception:
         return render(request, 'my_friend_nl.html', {"user": request.user.username})
 
-    return render(request, 'my_friend.html', {
-        "live": live_forecast_data(account),
-        #                                       "result": forecast_result_data(account),
-        "user": request.user.username})
 
 
 def logout_view(request):
@@ -599,42 +602,40 @@ def get_forecast(request):
         return HttpResponse(json.dumps(dict(error="Try again later")))
 
 
-def live_forecast_data(user):
+def live_forecast_data(forecast_live):
     data = []
 
-    forecast_live = Betting.objects.filter(forecast__approved=True, forecast__status__name='In-Progress',users=user).order_by("-expire")
     for f in forecast_live:
         date = current.date()
 
-        bet_start = f.forecast.expire.date()
+        bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
 
         if date == bet_start:
-            start = f.forecast.expire
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = f.forecast.expire
-
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
             today = "no"
-        betting_for = Betting.objects.filter(forecast=f.forecast, bet_for__gt=0).count()
-        betting_against = Betting.objects.filter(forecast=f.forecast, bet_against__gt=0).count()
+        betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
+        betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
         try:
             total_wagered = betting_against + betting_for
-            bet_for = Betting.objects.filter(forecast=f.forecast).aggregate(bet_for=Sum('bet_for'))['bet_for']
-            bet_against = Betting.objects.filter(forecast=f.forecast).aggregate(bet_against=Sum('bet_against'))['bet_against']
+            bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
             totl = bet_against+ bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
             print(percent_for, percent_against)
 
-            total = Betting.objects.filter(forecast=f.forecast).count()
+            total = Betting.objects.filter(forecast=f).count()
         except Exception:
             total_wagered = 0
             percent_for = 0
             percent_against = 0
             bet_for = 0
             bet_against = 0
-            total = Betting.objects.filter(forecast=f.forecast).count()
+            total = Betting.objects.filter(forecast=f).count()
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
@@ -643,17 +644,17 @@ def live_forecast_data(user):
     return data
 
 
-def forecast_result_data(user):
+def forecast_result_data(forecast_live):
     data = []
-    forecast_live = ForeCast.objects.filter(approved=True, status__name='Closed').order_by("-created")
+    # forecast_live = ForeCast.objects.filter(approved=True, status__name='Closed', user=user).order_by("-created")
     for f in forecast_live:
         date = current.date()
         bet_start = f.start.date()
         if date == bet_start:
-            start = f.expire.time().strftime("%I:%M:%S")
+            start = f.start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = f.expire
+            start = f.start
             today = 'no'
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
@@ -665,7 +666,7 @@ def forecast_result_data(user):
             totl = bet_against + bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            total = bet_against + bet_for
+            total = bet_for + bet_against
         except Exception:
             total_wagered = 0
             percent_for = 0
@@ -674,30 +675,31 @@ def forecast_result_data(user):
             bet_against = 0
             total = 0
         if f.won == 'bet_for':
-            won="Yes"
+            won = "Yes"
             # waggered = bet_for
             try:
                 if betting_against > 0:
-                    ratio = 1 + round((bet_for / total),2)
+                    ratio = 1 + round((bet_for / total), 2)
                 else:
                     ratio = 0
             except Exception:
                 ratio = 1
         else:
-            won="No"
+            won = "No"
             # waggered = bet_against
             try:
-                if betting_for> 0:
-                    ratio = 1 + round((bet_against / total),2)
+                if betting_for > 0:
+                    ratio = 1 + round((bet_against / total), 2)
                 else:
                     ratio = 0
             except Exception:
                 ratio = 1
-        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
-                         forecast=f, total=total, start=start,
-                         total_user=betting_for + betting_against,
+        print(ratio)
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
+                         total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
-                         participants=total_wagered,won=won, ratio=ratio,
+                         participants=total_wagered, won=won,  # waggered=waggered,
+                         ratio=ratio,
                          bet_against=bet_against, bet_for=bet_for))
 
     return data
