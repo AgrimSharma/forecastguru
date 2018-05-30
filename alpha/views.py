@@ -485,10 +485,10 @@ def my_forecast(request):
         users = User.objects.get(id=user)
         account = SocialAccount.objects.get(user=users)
         forecast_live = Betting.objects.filter(forecast__approved=True, forecast__status__name='In-Progress', users=account).order_by(
-            "-forecast__expire")
+            "forecast__expire")
     # return HttpResponse(live_forecast_data(forecast_live))
 
-        forecast_result = Betting.objects.filter(forecast__approved=True, forecast__status__name='Closed', users=account).order_by("-forecast__expire")
+        forecast_result = Betting.objects.filter(forecast__approved=True, forecast__status__name='Closed', users=account).order_by("forecast__expire")
 
         return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live),
                                                   "result": forecast_result_data(forecast_result),
