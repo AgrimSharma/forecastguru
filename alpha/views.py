@@ -169,7 +169,7 @@ def profile(request):
     try:
         user = request.user
         # users = User.objects.get(username=user.username)
-        profile = SocialAccount.objects.get(user=user)
+        profile = SocialAccount.objects.get(user__username=user.username)
 
         date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
         total = profile.successful_forecast + profile.unsuccessful_forecast
@@ -185,11 +185,7 @@ def profile(request):
         except Exception:
             suc_per = 0
             unsuc_per = 0
-        # if total == 0:
-        #
-        # else:
-        #     suc_per = (profile.successful_forecast / total) * 100
-        #     unsuc_per = 100 - (profile.successful_forecast / total) * 100
+
         if profile.fg_points_total == 0:
             profile.fg_points_total = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won
             profile.save()
