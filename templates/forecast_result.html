@@ -19,17 +19,21 @@
     <div class="row align-items-center">
       <div class="col-12 text-center position-relative">
         <div class="header-logo position-absolute"><img src="{% static 'images/logo-small-white.png' %}" alt=""></div>
-        <h1>Forecast Result</h1>
+        <h1>Results</h1>
         <div class="header-right with-btn position-absolute">
-<a href="{% url 'create_forecast' %}" class="btn btn-orange btn-sm"> Create New</a>          </div>          </div>
+            <!--<a href="{% url 'create_forecast' %}" class="btn btn-orange btn-sm"> Create New</a>-->
+            <div style="padding-top:16px;"><p>Hi {{request.user}}</p></div>
+        </div>
+          </div>
       </div>
     </div>
     <div class="row mt-2">
       <div class="col-12">
         <div class="form-group has-search m-0"> <span class="fa fa-search form-control-feedback"></span>
-<form method="post" action="{% url 'search_result' %}">
+          <form method="post" action="{% url 'search_result' %}">
               <input type="text"  class="form-control" placeholder="Search Forecast" name='point' id="myInput"/>
-          </form>        </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -101,7 +105,6 @@
           </div>
         </div>
         {% endfor %}
-        <div class="banner mt-4 mb-4"> <img src="{% static 'images/banner.jpg' %}" class="img-fluid" alt=""> </div>
       </div>
     </div>
   </div>

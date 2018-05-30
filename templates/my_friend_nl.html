@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +7,8 @@
 <title>Forecastguru</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="HandheldFriendly" content="true" />
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
@@ -21,7 +20,7 @@
     <div class="row align-items-center">
       <div class="col-12 text-center position-relative">
         <div class="header-logo position-absolute"><img src="{% static 'images/logo-small-white.png' %}" alt=""></div>
-        <h1>Categories</h1>
+        <h1>My Forecasts</h1>
         <div class="header-right with-btn position-absolute">
             <!--<a href="{% url 'create_forecast' %}" class="btn btn-orange btn-sm"> Create New</a>-->
             <div style="padding-top:16px;"><p>Hi {{request.user}}</p></div>
@@ -41,74 +40,26 @@
   </div>
 </header>
 <div class="topspace"></div>
-
+<div class="container topnavlinks">
+  <nav class="navbar">
+    <ul class="navbar-nav nav-fill w-100 text-center">
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'create_forecast' %}">Create Forecast</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'payment' %}">Buy FG Point</a> </li>
+      <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
+    </ul>
+  </nav>
+</div>
 <div class="container fixed_p_footer">
   <div class="row">
-    <div class="col-md-12">
 
-      <div class="category_wrap">
-        <a href=" {% url 'category_search' 1 %}">
-        <div class="cat_box">
-          <div class="row align-items-center">
-            <div class="col-3 text-center">
-                <img src="{% static 'images/category_1.jpg' %}" alt="">
-            </div>
-            <div class="col-9">
-              <p>Sports</p>
-            </div>
-          </div>
-        </div>
-        </a>
-          <a href=" {% url 'category_search' 4 %}">
-        <div class="cat_box">
-          <div class="row align-items-center">
-            <div class="col-3 text-center">
-                <img src="{% static 'images/category_2.jpg' %}" alt="">
-            </div>
-            <div class="col-9">
-              <p>Weather</p>
-            </div>
-          </div>
-        </div></a>
-          <a href=" {% url 'category_search' 2 %}">
+      <div class="col-md-12">
 
-        <div class="cat_box">
-          <div class="row align-items-center">
-            <div class="col-3 text-center">
-                <img src="{% static 'images/category_3.jpg' %}" alt="">
-            </div>
-            <div class="col-9">
-              <p>Stock Market</p>
-            </div>
-          </div>
-        </div></a>
-          <a href=" {% url 'category_search' 3 %}">
-
-        <div class="cat_box">
-          <div class="row align-items-center">
-            <div class="col-3 text-center">
-                <img src="{% static 'images/category_4.jpg' %}" alt="">
-            </div>
-            <div class="col-9">
-              <p>Crypto Currencies</p>
-            </div>
-          </div>
-        </div></a>
-          <a href=" {% url 'category_search' 5 %}">
-
-        <div class="cat_box">
-          <div class="row align-items-center">
-            <div class="col-3 text-center">
-                <img src="{% static 'images/category_5.jpg' %}" alt="">
-            </div>
-            <div class="col-9">
-              <p>Politics</p>
-            </div>
-          </div>
-        </div>
-          </a>
-      </div>
-
+      <div class="forcast_home" style="text-align:center;">
+          <div><h4>To View your forecasts.</h4>
+              <h4>Please login</h4></div>
+        <div class="btn_box mb-3" >
+                    <a href="https://www.forecast.guru/facebook/login/?process=login" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+                </div>
 
 
     </div>
@@ -119,17 +70,40 @@
       <ul class="navbar-nav nav-fill w-100 text-center">
         <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
           Forecasts</a> </li>
-        <li class="nav-item"> <a class="nav-link active" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
           Categories</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
           Results</a> </li>
-          <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+          <li class="nav-item"> <a class="nav-link active" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
             My Forecasts</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
           My Account</a> </li>
       </ul>
     </nav>
   </footer>
+
+  <div id="id_shipment_sold" class="modal modal-center fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="heading"></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title text-left heading"></h4>
+            <div class="clearfix"></div>
+
+          </div>
+          <div class="modal-body">
+            <div id="shipment_sold_preview">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
 <script>
 $('#myInput').keypress(function (e) {
   if (e.which == 13) {
@@ -137,6 +111,26 @@ $('#myInput').keypress(function (e) {
     return false;
   }
 });
+
+$(".shipment_sold").click(function(){
+var shipment_id=$(this).attr("shipment_id");
+$.ajax({
+    type:"POST",
+    url: "{% url 'get_forecast' %}",
+    data: {'id': shipment_id},
+    success: function(resp){
+        $("#id_shipment_sold").modal('show');
+
+        $("#shipment_sold_preview").html(resp);
+
+    }
+});
+});
+
 </script>
 </body>
 </html>
+
+
+
+

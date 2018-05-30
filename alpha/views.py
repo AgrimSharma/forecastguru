@@ -12,7 +12,9 @@ from django.conf import settings
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 import random
-current = datetime.datetime.now()
+
+
+current = datetime.datetime.now() + datetime.timedelta(hours=5, minutes=30)
 
 
 def test(request):
@@ -73,21 +75,27 @@ def live_forecast(request):
     forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress').order_by("-created")
     for f in forecast_live:
         date = current.date()
-        bet_start = f.start.date()
+
+        bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
+
         if date == bet_start:
-            start = f.start.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = f.start
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
             today = "no"
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
         try:
             total_wagered = betting_against + betting_for
-            percent_for = (betting_for / total_wagered) * 100
-            percent_against = (1 - (betting_for / total_wagered)) * 100
             bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
             bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
+            totl = bet_against+ bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
+            print(percent_for, percent_against)
+
             total = Betting.objects.filter(forecast=f).count()
         except Exception:
             total_wagered = 0
@@ -112,30 +120,29 @@ def forecast_result(request):
         date = current.date()
         bet_start = f.start.date()
         if date == bet_start:
-            start = f.start.time().strftime("%I:%M:%S")
+            start = f.expire.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = f.start
+            start = f.expire
             today = 'no'
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
-        bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
-        bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
-        try:
 
+        try:
+            bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
             total_wagered = betting_against + betting_for
-            percent_for = (betting_for / total_wagered) * 100
-            percent_against = (1 - (betting_for / total_wagered)) * 100
-            bet_for = bet_for
-            bet_against = bet_against
-            total = bet_for + bet_against
+            totl = bet_against + bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
+            total = bet_against + bet_for
         except Exception:
             total_wagered = 0
             percent_for = 0
             percent_against = 0
             bet_for = 0
             bet_against = 0
-            total = bet_for + bet_against
+            total = 0
         if f.won == 'bet_for':
             won="Yes"
             # waggered = bet_for
@@ -176,7 +183,7 @@ def profile(request):
         user = request.user
         # users = User.objects.get(username=user.username)
         # profile = SocialAccount.objects.get(user=user)
-        return render(request, 'user_profile.html', {
+        return render(request, 'user_profile_nl.html', {
             "users": user.username,
 
         })
@@ -197,9 +204,9 @@ def profile(request):
     except Exception:
         suc_per = 0
         unsuc_per = 0
-    if 0 <= profile.forecast_participated < 25:
+    if  0 < profile.forecast_participated < 25:
         status = "Beginner"
-    elif 25 <= profile.forecast_participated < 75:
+    elif 25<= profile.forecast_participated < 75:
         status = "Intermediate"
     elif profile.forecast_participated > 75:
         status = "Guru"
@@ -487,7 +494,7 @@ def my_forecast(request):
                                                   "user": request.user.username})
 
     except Exception:
-        return render(request, 'my_friend.html', {"user": request.user.username})
+        return render(request, 'my_friend_nl.html', {"user": request.user.username})
 
 
 def logout_view(request):
@@ -601,21 +608,27 @@ def live_forecast_data(user):
     forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress').order_by("-created")
     for f in forecast_live:
         date = current.date()
-        bet_start = f.start.date()
+
+        bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
+
         if date == bet_start:
-            start = f.start.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = f.start
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
             today = "no"
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
         try:
             total_wagered = betting_against + betting_for
-            percent_for = (betting_for / total_wagered) * 100
-            percent_against = (1 - (betting_for / total_wagered)) * 100
             bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
             bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
+            totl = bet_against+ bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
+            print(percent_for, percent_against)
+
             total = Betting.objects.filter(forecast=f).count()
         except Exception:
             total_wagered = 0
@@ -646,15 +659,14 @@ def forecast_result_data(user):
             today = 'no'
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
-        bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
-        bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
-        try:
 
+        try:
+            bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
             total_wagered = betting_against + betting_for
-            percent_for = (betting_for / total_wagered) * 100
-            percent_against = (1 - (betting_for / total_wagered)) * 100
-            bet_for = bet_for
-            bet_against = bet_against
+            totl = bet_against + bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
             total = bet_for + bet_against
         except Exception:
             total_wagered = 0
@@ -662,7 +674,7 @@ def forecast_result_data(user):
             percent_against = 0
             bet_for = 0
             bet_against = 0
-            total = bet_for + bet_against
+            total = 0
         if f.won == 'bet_for':
             won = "Yes"
             # waggered = bet_for
@@ -707,21 +719,27 @@ def forecast_live_view(category):
     live = ForeCast.objects.filter(approved=True, category=category, status__name='In-Progress').order_by("-created")
     for f in live:
         date = current.date()
-        bet_start = f.start.date()
+
+        bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
+
         if date == bet_start:
-            start = f.start.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = f.start
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
             today = "no"
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
         try:
             total_wagered = betting_against + betting_for
-            percent_for = (betting_for / total_wagered) * 100
-            percent_against = (1 - (betting_for / total_wagered)) * 100
             bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
             bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
+            totl = bet_against+ bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
+            print(percent_for, percent_against)
+
             total = Betting.objects.filter(forecast=f).count()
         except Exception:
             total_wagered = 0
@@ -753,15 +771,14 @@ def forecast_result_view(category):
             today = 'no'
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
-        bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
-        bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
-        try:
 
+        try:
+            bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
             total_wagered = betting_against + betting_for
-            percent_for = (betting_for / total_wagered) * 100
-            percent_against = (1 - (betting_for / total_wagered)) * 100
-            bet_for = bet_for
-            bet_against = bet_against
+            totl = bet_against + bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
             total = bet_for + bet_against
         except Exception:
             total_wagered = 0
@@ -769,7 +786,7 @@ def forecast_result_view(category):
             percent_against = 0
             bet_for = 0
             bet_against = 0
-            total = bet_for + bet_against
+            total = 0
         if f.won == 'bet_for':
             won = "YES"
             # waggered = bet_for

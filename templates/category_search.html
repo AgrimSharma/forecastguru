@@ -19,10 +19,13 @@
   <div class="container">
     <div class="row align-items-center">
       <div class="col-12 text-center position-relative">
-        <div class="header-logo position-absolute"><img src="images/logo-small-white.png" alt=""></div>
-        <h1>Category</h1>
+        <div class="header-logo position-absolute"><img src="{% static 'images/logo-small-white.png' %}" alt=""></div>
+        <h1>Categories</h1>
         <div class="header-right with-btn position-absolute">
-<a href="{% url 'create_forecast' %}" class="btn btn-orange btn-sm"> Create New</a>          </div>          </div>
+            <!--<a href="{% url 'create_forecast' %}" class="btn btn-orange btn-sm"> Create New</a>-->
+            <div style="padding-top:16px;"><p>Hi {{request.user}}</p></div>
+        </div>
+          </div>
       </div>
     </div>
     <div class="row mt-2">
