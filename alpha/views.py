@@ -187,7 +187,6 @@ def profile(request):
             "users": user.username,
 
         })
-    status = ""
     date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
     total = profile.successful_forecast + profile.unsuccessful_forecast
     try:
@@ -221,7 +220,8 @@ def profile(request):
                                                  "user": request.user.username,
                                                  "point": point,
                                                  "total": total,
-                                                 "status": status
+                                                 "status": "Beginner" if 0 < profile.forecast_participated < 25 else "        status = "Intermediate"
+"
 
 
                                                  })
