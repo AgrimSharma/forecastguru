@@ -52,10 +52,9 @@ def create_forecast(request):
             return HttpResponse(json.dumps(dict(status=400, message='Try again later')))
 
     else:
-        category = Category.objects.all()
-        subcategory = SubCategory.objects.all()
+        category = Category.objects.all().order_by('name')
         return render(request, 'create_forecast.html', {'category':category,
-                                                        "sub_category": subcategory,
+
                                                         "user": request.user.username
                                                         })
 
@@ -462,7 +461,7 @@ def payu_cancel(request):
 
 
 def category(request):
-    category = Category.objects.all()
+    category = Category.objects.all().order_by('name')
     return render(request, 'category.html',{'category': category, "user": request.user.username})
 
 
@@ -695,7 +694,7 @@ def forecast_result_data(user):
 def get_sub_cat(request):
     if request.method == "POST":
         cat = Category.objects.get(id=int(request.POST.get('identifier','')))
-        sub = SubCategory.objects.filter(category=cat)
+        sub = SubCategory.objects.filter(category=cat).order_by('name')
         data = [dict(id=x.id, name=x.name) for x in sub]
         return HttpResponse(json.dumps(data))
 
