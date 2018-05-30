@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 import random
 
 
-current = datetime.datetime.now() + datetime.timedelta(hours=5, minutes=30)
+current = datetime.datetime.now()
 
 
 def test(request):
@@ -600,18 +600,19 @@ def get_forecast(request):
 def live_forecast_data(user):
     data = []
 
-    forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress', user=user).order_by("-created")
+    forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress').order_by("-created")
     for f in forecast_live:
         date = current.date()
 
-        bet_start = f.expiredate()
+        bet_start = f.expire.date()
 
         if date == bet_start:
-            start = f.expire + datetime.timedelta(hours=5, minutes=30)
-            start = start.time().strftime("%I:%M:%S")
-            today = 'yes'
+            start = f.expire
+            today = 'no'
         else:
-            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = f.expire
+            start = start.time().strftime("%I:%M:%S")
+
             today = "no"
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
@@ -642,7 +643,7 @@ def live_forecast_data(user):
 
 def forecast_result_data(user):
     data = []
-    forecast_live = ForeCast.objects.filter(approved=True, status__name='Closed', user=user).order_by("-created")
+    forecast_live = ForeCast.objects.filter(approved=True, status__name='Closed').order_by("-created")
     for f in forecast_live:
         date = current.date()
         bet_start = f.start.date()
@@ -718,12 +719,13 @@ def forecast_live_view(category):
         bet_start = f.expire.date()
 
         if date == bet_start:
-            start = f.expire + datetime.timedelta(hours=5, minutes=30)
-            start = start.time().strftime("%I:%M:%S")
-            today = 'yes'
+            start = f.expire
+
+            today = 'no'
         else:
-            start = f.expire + datetime.timedelta(hours=5, minutes=30)
-            today = "no"
+            start = f.expire
+            start = start.time().strftime("%I:%M:%S")
+            today = "yes"
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
         try:
