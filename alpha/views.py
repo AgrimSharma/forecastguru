@@ -480,22 +480,22 @@ def category_search(request, userid):
 
 
 def my_forecast(request):
-    # try:
-    user = request.user.id
-    users = User.objects.get(id=user)
-    account = SocialAccount.objects.get(user=users)
-    forecast_live = Betting.objects.filter(forecast__approved=True, forecast__status__name='In-Progress', users=account).order_by(
-        "-forecast__expire")
-    return HttpResponse(live_forecast_data(forecast_live))
+    try:
+        user = request.user.id
+        users = User.objects.get(id=user)
+        account = SocialAccount.objects.get(user=users)
+        forecast_live = Betting.objects.filter(forecast__approved=True, forecast__status__name='In-Progress', users=account).order_by(
+            "-forecast__expire")
+    # return HttpResponse(live_forecast_data(forecast_live))
 
-        # forecast_result = ForeCast.objects.filter(approved=True, status__name='Closed', user=account).order_by("-created")
-        #
-        # return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live),
-        #                                           "result": forecast_result_data(forecast_result),
-        #                                           "user": request.user.username})
+        forecast_result = Betting.objects.filter(forecast__approved=True, forecast__status__name='Closed', users=account).order_by("-forecast__expire")
 
-    # except Exception:
-        # return render(request, 'my_friend_nl.html', {"user": request.user.username})
+        return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live),
+                                                  "result": forecast_result_data(forecast_result),
+                                                  "user": request.user.username})
+
+    except Exception:
+        return render(request, 'my_friend_nl.html', {"user": request.user.username})
 
 
 
@@ -648,22 +648,22 @@ def live_forecast_data(forecast_live):
 
 def forecast_result_data(forecast_live):
     data = []
-    # forecast_live = ForeCast.objects.filter(approved=True, status__name='Closed', user=user).order_by("-created")
     for f in forecast_live:
+        forecast = f.forecast
         date = current.date()
-        bet_start = f.start.date()
+        bet_start = forecast.start.date()
         if date == bet_start:
-            start = f.start.time().strftime("%I:%M:%S")
+            start = forecast.start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = f.start
+            start = forecast.start
             today = 'no'
-        betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
-        betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
+        betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
+        betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
 
         try:
-            bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
-            bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
+            bet_for = Betting.objects.filter(forecast=forecast).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=forecast).aggregate(bet_against=Sum('bet_against'))['bet_against']
             total_wagered = betting_against + betting_for
             totl = bet_against + bet_for
             percent_for = (bet_for / totl) * 100
@@ -697,7 +697,7 @@ def forecast_result_data(forecast_live):
             except Exception:
                 ratio = 1
         print(ratio)
-        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
                          participants=total_wagered, won=won,  # waggered=waggered,
