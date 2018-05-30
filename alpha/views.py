@@ -602,7 +602,7 @@ def get_forecast(request):
 def live_forecast_data(user):
     data = []
 
-    forecast_live = Betting.objects.filter(forecast__approved=True, forecast__status__name='In-Progress',user=user).order_by("-expire")
+    forecast_live = Betting.objects.filter(forecast__approved=True, forecast__status__name='In-Progress',users=user).order_by("-expire")
     for f in forecast_live:
         date = current.date()
 
