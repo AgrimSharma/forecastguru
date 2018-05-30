@@ -488,7 +488,9 @@ def category_search(request, userid):
 
 def my_forecast(request):
     try:
-        account = SocialAccount.objects.get(user=request.user)
+
+        user = request.user
+        account = SocialAccount.objects.get(user=user)
         return render(request, 'my_friend.html', {"live": live_forecast_data(account),
                                                   "result": forecast_result_data(account),
                                                   "user": request.user.username})
@@ -509,7 +511,7 @@ def blank_page(request):
 @csrf_exempt
 def search_result(request):
     if request.method == "POST":
-        import pdb;pdb.set_trace()
+
         query = request.POST.get('point','')
         if query == "":
             return render(request, "search_data.html", {"data": "No result found"})
