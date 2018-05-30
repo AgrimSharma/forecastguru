@@ -204,16 +204,16 @@ def profile(request):
     except Exception:
         suc_per = 0
         unsuc_per = 0
+
+    if profile.fg_points_total == 0:
+        profile.fg_points_total = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won
+        profile.save()
     if 0 < profile.forecast_participated < 25:
         status = "Beginner"
     elif 25 <= profile.forecast_participated < 75:
         status = "Intermediate"
     elif profile.forecast_participated > 75:
         status = "Guru"
-    if profile.fg_points_total == 0:
-        profile.fg_points_total = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won
-        profile.save()
-
     return render(request, 'user_profile.html', {"profile": profile,
                                                  "date_joined":date_joined,
                                                  "success":int(suc_per),
