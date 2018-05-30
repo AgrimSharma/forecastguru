@@ -488,11 +488,11 @@ def my_forecast(request):
             "-created")
         return HttpResponse(json.dumps(forecast_live))
 
-        forecast_result = ForeCast.objects.filter(approved=True, status__name='Closed', user=account).order_by("-created")
-
-        return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live),
-                                                  "result": forecast_result_data(forecast_result),
-                                                  "user": request.user.username})
+        # forecast_result = ForeCast.objects.filter(approved=True, status__name='Closed', user=account).order_by("-created")
+        #
+        # return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live),
+        #                                           "result": forecast_result_data(forecast_result),
+        #                                           "user": request.user.username})
 
     except Exception:
         return render(request, 'my_friend_nl.html', {"user": request.user.username})
