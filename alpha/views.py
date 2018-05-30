@@ -486,7 +486,7 @@ def my_forecast(request):
     account = SocialAccount.objects.get(user=users)
     forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress', user=account).order_by(
         "-created")
-    return HttpResponse(json.dumps(forecast_live))
+    return HttpResponse(json.dumps(live_forecast_data(forecast_live)))
 
         # forecast_result = ForeCast.objects.filter(approved=True, status__name='Closed', user=account).order_by("-created")
         #
