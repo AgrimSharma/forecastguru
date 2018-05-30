@@ -1,5 +1,4 @@
-
-@import url("https://use.fontawesome.com/releases/v4.7/css/all.css");
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 * {
 	outline: none!important
 }
@@ -17,6 +16,7 @@ a, a:hover {
 h2 {
 	color: #1d1d1d
 }
+.btn {font-family: 'Roboto', sans-serif;}
 .btn-primary, .btn-primary:focus {
 	display: inline-block;
 	padding: 6px 15px;
@@ -739,17 +739,30 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
   .modal-open .modal.modal-center .modal-dialog {
 	flex-grow: 1;
   }
-  .tutorial-container {max-width: 540px; margin: 0 auto; background-color: #f6f8fd; }
-  .slick-dots {bottom: 5%; left: 0; z-index: 1000}
-  .tutorial-slider.slick-slider{margin-bottom: 0;}
-  .tutorial-slider .item img{display: inline-block; max-height: 100%; max-width: 100%}
-  .slick-list, .slick-track {height: 90vh;}
+.tutorial-container {max-width: 540px; margin: 0 auto; background-color: #f6f8fd; padding-top: 5%}
+.tutorial-container h2{font-size: 33px; line-height: 1.2; margin: 0 0 10px 0; color: #403c55}
+.tutorial-container p{font-size: 23px; line-height: 1.2}
+.slick-dots {bottom: -25px; left: 0; z-index: 1000}
+.tutorial-slider.slick-slider{margin-bottom: 0;}
+.tutorial-slider .item img{display: inline-block; max-height: 100%; max-width: 100%}
 .skip{position: absolute; right: 20px; bottom: 5px; font-size: 12px}
 .slick-dots li button::before {width: 12px; height: 12px; background: #cbcbcb; content: ""; border-radius: 50%;}
 .slick-dots li {width: 12px; height: 12px;}
 .slick-dots li.slick-active {width: 24px;}
 .slick-dots li button:before {opacity: 1}
 .slick-dots li.slick-active button:before {opacity: 1; background: #3982e8; width: 24px; border-radius: 6px}
+.slick-initialized .slick-slide {display: flex; justify-content: center; align-items: center; flex-direction: column}
+.fixedbtn-btm {position: fixed; bottom: 5%; left: 0; width: 100%; padding: 15px;}
+.fixedbtn-btm .btn{padding: 7px 30px}
 #predictModal .modal-header .modal-title {font-size: 18px}
 .btn-minus {border-radius: 4px 0 0 4px; background-color: #e14938; color: #fff}
 .btn-plus {border-radius: 0px 4px 4px 0px; background-color: #41a85f; color: #fff}
+.homepage{background-color: #f6f8fd}
+.orange-color{color: #ff4d00}
+.btmskip{position: fixed; bottom: 2%; right: 15px; font-size: 18px}
+@media (max-width: 480px){
+	.tutorial-container {padding-top: 15%}
+	.tutorial-container h2, .tutorial-container p{max-width: 300px}
+	.tutorial-container h2{font-size: 24px}
+	.tutorial-container p{font-size: 18px}
+}

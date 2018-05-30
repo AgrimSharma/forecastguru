@@ -7,11 +7,13 @@
     <title>Forcastguru</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="HandheldFriendly" content="true" />
+    <script src="{% static 'js/jquery_new.js' %}"></script>
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
+
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick.css' %}" />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick-theme.css' %}" />
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
 
 </head>
 <body class="homepage home-bg">
@@ -97,7 +99,7 @@
         </div>
         </div>
 </div>
-        <script src="{% static 'js/jquery-slim.min.js' %}"></script>
+        <!--<script src="{% static 'js/jquery-slim.min.js' %}"></script>-->
         <script src="{% static 'slick/slick.min.js' %}"></script>
         <script>
         $(function(){
@@ -113,7 +115,7 @@
                 speed: 500,
                 slidesToShow: 1,
                 autoplay:true,
-                autoplaySpeed:10000,
+                autoplaySpeed:5000,
             });
         }, 5000);
 
