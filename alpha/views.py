@@ -194,6 +194,7 @@ def profile(request):
                                                      "unsuccess": int(unsuc_per),
                                                      "user": request.user.username,
                                                      "point": bet_against + bet_for
+
                                                      })
 
     except Exception:
