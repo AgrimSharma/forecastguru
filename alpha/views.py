@@ -488,9 +488,10 @@ def my_forecast(request):
     except Exception:
         return render(request, 'my_friend_nl.html', {"user": request.user.username})
 
-    return render(request, 'my_friend.html', {"live": live_forecast_data(account),
-                                              "result": forecast_result_data(account),
-                                              "user": request.user.username})
+    return render(request, 'my_friend.html', {
+        # "live": live_forecast_data(account),
+        #                                       "result": forecast_result_data(account),
+        "profile": account,"user": request.user.username})
 
 
 def logout_view(request):
