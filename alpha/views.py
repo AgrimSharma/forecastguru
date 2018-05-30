@@ -485,7 +485,7 @@ def my_forecast(request):
     users = User.objects.get(id=user)
     account = SocialAccount.objects.get(user=users)
     forecast_live = Betting.objects.filter(forecast__approved=True, forecast__status__name='In-Progress', users=account).order_by(
-        "-created")
+        "-forecast__expire")
     return HttpResponse(json.dumps(live_forecast_data(forecast_live)))
 
         # forecast_result = ForeCast.objects.filter(approved=True, status__name='Closed', user=account).order_by("-created")
