@@ -75,10 +75,10 @@ def live_forecast(request):
         bet_start = f.expire.date()
 
         if date == bet_start:
-            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = f.expire
             today = 'no'
         else:
-            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = f.expire
             start = start.time().strftime("%I:%M:%S")
             today = "yes"
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
