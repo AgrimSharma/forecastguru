@@ -169,7 +169,7 @@ def profile(request):
     try:
         user = request.user
         # users = User.objects.get(username=user.username)
-        profile = SocialAccount.objects.get(user__username=user.username)
+        profile = SocialAccount.objects.get(user=user)
 
         date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
         total = profile.successful_forecast + profile.unsuccessful_forecast
