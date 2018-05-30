@@ -135,6 +135,7 @@
             });
 
          $('#categories').on('change', function() {
+         $('#subcategories').val('');
             var id = this.value;
             $.ajax({
                     type: "POST",
@@ -145,7 +146,7 @@
                         console.log(data);
                         for(i=0; i < data.length; i++){
                              var values = JSON.parse(JSON.stringify(data[i]));
-                            $('#subcategories').html($('<option>', {
+                            $('#subcategories').append($('<option>', {
                                 value: values.id,
                                 text : values.name
                             }));
