@@ -184,9 +184,11 @@ def profile(request):
     try:
         bet_for = Betting.objects.filter(users=profile).aggregate(bet_for=Sum('bet_for'))['bet_for']
         bet_against = Betting.objects.filter(users=profile).aggregate(bet_against=Sum('bet_against'))['bet_against']
+        point = bet_against + bet_for
     except Exception:
         bet_for = 0
         bet_against = 0
+        point = 0
     try:
         suc_per = (profile.successful_forecast / total) * 100
         unsuc_per = 100 - (profile.successful_forecast / total) * 100
@@ -202,7 +204,7 @@ def profile(request):
                                                  "success":int(suc_per),
                                                  "unsuccess": int(unsuc_per),
                                                  "user": request.user.username,
-                                                 "point": bet_against + bet_for
+                                                 "point": 0
 
                                                  })
 
