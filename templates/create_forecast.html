@@ -135,7 +135,7 @@
             });
 
          $('#categories').on('change', function() {
-         $('#subcategories').val('');
+         $('#subcategories').html('');
             var id = this.value;
             $.ajax({
                     type: "POST",
