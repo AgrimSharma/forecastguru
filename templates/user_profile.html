@@ -33,7 +33,6 @@
     <div class="account_header d-flex flex-column align-items-center justify-content-center">
       <figure class="account-pic"> <img src="{% static 'images/account_image.jpg' %}" alt=""> </figure>
       <h2 class="title">{{profile.user}}</h2>
-      <h3 class="account_id">{{user}} -- {{ users }}</h3>
     </div>
     <div class="account_desc">
       <div class="white_box mb-3">
@@ -43,7 +42,7 @@
             <p class="mb-1"> Member Since </p>
             <p class="member_since"> {{date_joined}} </p>
             <p class="mb-1"> FG Status</p>
-            <p class="fb_status">Influencer</p>
+            <p class="fb_status">{{status}}</p>
           </div>
           <div class="col-6 text-center">
             <p class="mb-1">FG Balance</p>
