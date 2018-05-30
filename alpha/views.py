@@ -220,7 +220,7 @@ def profile(request):
                                                  "user": request.user.username,
                                                  "point": point,
                                                  "total": total,
-                                                 "status": "Beginner" if 0 < profile.forecast_participated < 25 else "Intermediate"
+                                                 "status": "Beginner" if 0 <= profile.forecast_participated < 25 else "Intermediate"
                                                  })
 
 
