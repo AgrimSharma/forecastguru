@@ -769,7 +769,7 @@ def forecast_result_view(category):
             bet_against = 0
             total = bet_for + bet_against
         if f.won == 'bet_for':
-            won = "Yes"
+            won = "YES"
             # waggered = bet_for
             try:
                 if betting_against > 0:
@@ -779,7 +779,7 @@ def forecast_result_view(category):
             except Exception:
                 ratio = 1
         else:
-            won = "No"
+            won = "NO"
             # waggered = bet_against
             try:
                 if betting_for > 0:
