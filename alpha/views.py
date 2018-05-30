@@ -266,41 +266,31 @@ def bet_post(request):
         forecast = request.POST.get('forecast')
         forecasts = ForeCast.objects.get(id=forecast)
         if account.fg_points_total - points > 0:
-            if vote == 'email':
-                bets =Betting.objects.filter(forecast=forecasts, users=account, bet_for__gt=0, bet_against=0)
-                for bet in bets:
-
-                    # bets = bets[0]
-                    if bet.bet_for < points:
-                        bet.bet_for = bet.bet_for + points
-                        bet.users.fg_points_total = bet.users.fg_points_total - points
-                        bet.users.save()
-                        bet.save()
+            try:
+                b = Betting.objects.get(forecast=forecasts, users=account)
+                if vote == 'email':
+                    if b.bet_for < points:
+                        b.bet_for = points
+                        b.users.fg_points_total = b.users.fg_points_total - points
+                        b.users.save()
+                        b.save()
                     else:
-                        bet.bet_for = bet.bet_for
-                        bet.users.fg_points_total = bet.users.fg_points_total - points
-                        bet.users.save()
-                        bet.save()
+                        return HttpResponse(json.dumps(dict(message="FG point for forecast should be greater than previous {}".format(b.bet_for))))
                 else:
+                    if b.bet_against < points:
+                        b.bet_against = b.bet_against + points
+                        b.users.fg_points_total = b.users.fg_points_total - points
+                        b.users.save()
+                        b.save()
+                    else:
+                        return HttpResponse(json.dumps(
+                            dict(message="FG point for forecast should be greater than previous {}".format(b.bet_against))))
+            except Exception:
+                if vote == 'email':
                     b = Betting.objects.create(forecast=forecasts, users=account, bet_for=points, bet_against=0)
                     b.users.fg_points_total = b.users.fg_points_total - points
                     b.users.save()
                     b.save()
-            else:
-                bets = Betting.objects.filter(forecast=forecasts, users=account, bet_for=0, bet_against__gt=0)
-                for bet in bets:
-
-                    # bets = bets[0]
-                    if bet.bet_against < points:
-                        bet.bet_against = bet.bet_against + points
-                        bet.users.fg_points_total = bet.users.fg_points_total  - points
-                        bet.users.save()
-                        bet.save()
-                    else:
-                        bet.bet_against = bet.bet_against
-                        bet.users.fg_points_total = bet.users.fg_points_total  - points
-                        bet.users.save()
-                        bet.save()
                 else:
                     b = Betting.objects.create(forecast=forecasts, users=account, bet_for=0, bet_against=points)
                     b.users.fg_points_total = b.users.fg_points_total - points
