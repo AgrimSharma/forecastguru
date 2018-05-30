@@ -21,10 +21,6 @@ def test(request):
     return render(request, 'main.html')
 
 
-# def home(request):
-#     return HttpResponseRedirect("/login/")
-
-
 @csrf_exempt
 def create_forecast(request):
     if request.method == 'POST':
@@ -94,7 +90,6 @@ def live_forecast(request):
             totl = bet_against+ bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            print(percent_for, percent_against)
 
             total = Betting.objects.filter(forecast=f).count()
         except Exception:
@@ -163,7 +158,6 @@ def forecast_result(request):
                     ratio = 0
             except Exception:
                 ratio = 1
-        print(ratio)
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
                          forecast=f, total=total, start=start,
                          total_user=betting_for + betting_against,
@@ -605,7 +599,7 @@ def get_forecast(request):
 def live_forecast_data(user):
     data = []
 
-    forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress', user=user).order_by("-created")
+    forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress', user__user=user).order_by("-created")
     for f in forecast_live:
         date = current.date()
 
