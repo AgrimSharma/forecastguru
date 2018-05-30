@@ -197,9 +197,9 @@ def profile(request):
     except Exception:
         suc_per = 0
         unsuc_per = 0
-    if  0 < profile.forecast_participated < 25:
+    if 0 <= profile.forecast_participated < 25:
         status = "Beginner"
-    elif 25<= profile.forecast_participated < 75:
+    elif 25 <= profile.forecast_participated < 75:
         status = "Intermediate"
     elif profile.forecast_participated > 75:
         status = "Guru"
