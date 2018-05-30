@@ -480,13 +480,13 @@ def category_search(request, userid):
 
 
 def my_forecast(request):
-    try:
-        user = request.user.id
-        users = User.objects.get(id=user)
-        account = SocialAccount.objects.get(user=users)
-        forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress', user=account).order_by(
-            "-created")
-        return HttpResponse(json.dumps(forecast_live))
+    # try:
+    user = request.user.id
+    users = User.objects.get(id=user)
+    account = SocialAccount.objects.get(user=users)
+    forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress', user=account).order_by(
+        "-created")
+    return HttpResponse(json.dumps(forecast_live))
 
         # forecast_result = ForeCast.objects.filter(approved=True, status__name='Closed', user=account).order_by("-created")
         #
@@ -494,8 +494,8 @@ def my_forecast(request):
         #                                           "result": forecast_result_data(forecast_result),
         #                                           "user": request.user.username})
 
-    except Exception:
-        return render(request, 'my_friend_nl.html', {"user": request.user.username})
+    # except Exception:
+        # return render(request, 'my_friend_nl.html', {"user": request.user.username})
 
 
 
