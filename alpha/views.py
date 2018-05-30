@@ -72,14 +72,14 @@ def live_forecast(request):
     for f in forecast_live:
         date = current.date()
 
-        bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
+        bet_start = f.expire.date()
 
         if date == bet_start:
-            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = f.expire
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = f.expire
             today = "no"
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
@@ -604,14 +604,14 @@ def live_forecast_data(user):
     for f in forecast_live:
         date = current.date()
 
-        bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
+        bet_start = f.expiredate()
 
         if date == bet_start:
-            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = f.expire
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = f.expire
             today = "no"
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
@@ -715,14 +715,14 @@ def forecast_live_view(category):
     for f in live:
         date = current.date()
 
-        bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
+        bet_start = f.expire.date()
 
         if date == bet_start:
-            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = f.expire
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = f.expire
             today = "no"
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
