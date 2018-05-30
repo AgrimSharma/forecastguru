@@ -650,10 +650,10 @@ def forecast_result_data(user):
         date = current.date()
         bet_start = f.start.date()
         if date == bet_start:
-            start = f.start.time().strftime("%I:%M:%S")
+            start = f.expire.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = f.start
+            start = f.expire
             today = 'no'
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
@@ -665,7 +665,7 @@ def forecast_result_data(user):
             totl = bet_against + bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            total = bet_for + bet_against
+            total = bet_against + bet_for
         except Exception:
             total_wagered = 0
             percent_for = 0
@@ -674,31 +674,30 @@ def forecast_result_data(user):
             bet_against = 0
             total = 0
         if f.won == 'bet_for':
-            won = "Yes"
+            won="Yes"
             # waggered = bet_for
             try:
                 if betting_against > 0:
-                    ratio = 1 + round((bet_for / total), 2)
+                    ratio = 1 + round((bet_for / total),2)
                 else:
                     ratio = 0
             except Exception:
                 ratio = 1
         else:
-            won = "No"
+            won="No"
             # waggered = bet_against
             try:
-                if betting_for > 0:
-                    ratio = 1 + round((bet_against / total), 2)
+                if betting_for> 0:
+                    ratio = 1 + round((bet_against / total),2)
                 else:
                     ratio = 0
             except Exception:
                 ratio = 1
-        print(ratio)
-        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
-                         total=total, start=start, total_user=betting_for + betting_against,
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
+                         forecast=f, total=total, start=start,
+                         total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
-                         participants=total_wagered, won=won,  # waggered=waggered,
-                         ratio=ratio,
+                         participants=total_wagered,won=won, ratio=ratio,
                          bet_against=bet_against, bet_for=bet_for))
 
     return data
