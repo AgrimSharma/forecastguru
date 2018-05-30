@@ -221,9 +221,6 @@ def profile(request):
                                                  "point": point,
                                                  "total": total,
                                                  "status": "Beginner" if 0 < profile.forecast_participated < 25 else "Intermediate"
-"
-
-
                                                  })
 
 
