@@ -638,7 +638,7 @@ def live_forecast_data(forecast_live):
             bet_for = 0
             bet_against = 0
             total = Betting.objects.filter(forecast=forecast).count()
-        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
                          participants=total_wagered, bet_for=bet_for,
