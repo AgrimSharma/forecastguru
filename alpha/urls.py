@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^login_page/', login_page, name='login_page'),
     url(r'^signup_page/', signup_page, name='signup_page'),
     url(r'^get_forecast/', get_forecast, name='get_forecast'),
+    url(r'^get_sub_cat/', get_sub_cat, name='get_sub_cat'),
 
     url(r'^', main_page, name='main_page'),
 
