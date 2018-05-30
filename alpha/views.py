@@ -68,7 +68,7 @@ def closing_soon(request):
 def live_forecast(request):
     data = []
 
-    forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress').order_by("-created")
+    forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress').order_by("-expire")
     for f in forecast_live:
         date = current.date()
 
@@ -601,7 +601,7 @@ def get_forecast(request):
 def live_forecast_data(user):
     data = []
 
-    forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress').order_by("-created")
+    forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress').order_by("-expire")
     for f in forecast_live:
         date = current.date()
 
