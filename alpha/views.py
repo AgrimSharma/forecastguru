@@ -13,7 +13,7 @@ from django.conf import settings
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 import random
-from background_task import background
+
 
 import hashlib
 
