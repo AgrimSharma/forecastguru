@@ -479,7 +479,7 @@ def get_hash_string(request, txnid, amount):
     name = so.user.username
 
     email = so.user.email
-    hash_string = config.KEY + "|" + txnid + "|" + str(float(constants.PAID_FEE_AMOUNT[amount])) + "|" + constants.PAID_FEE_PRODUCT_INFO + "|" + name + "|" + email + "|||||||||||" + config.SALT
+    hash_string = config.KEY + "|" + txnid + "|" + str(float(constants.PAID_FEE_AMOUNT[amount])) + "|" + constants.PAID_FEE_PRODUCT_INFO[amount] + "|" + name + "|" + email + "|||||||||||" + config.SALT
     print(hash_string)
     return hash_string
 
