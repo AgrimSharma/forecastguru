@@ -392,7 +392,6 @@ def allocate_points(request):
 
 def forecast_data(forecast, ratio, total, status):
     betting = Betting.objects.filter(forecast=forecast)
-    import pdb;pdb.set_trace()
     for b in betting:
         bet_for = b.bet_for
         bet_against = b.bet_against
