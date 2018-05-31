@@ -747,7 +747,7 @@ def forecast_live_view(category):
     forecast_live = ForeCast.objects.filter(approved=True, category=category, status__name='In-Progress').order_by("-created")
     for f in forecast_live:
         date = current.date()
-        forecast = f.forecast
+        forecast = f
         bet_start = forecast.expire.date()
 
         if date == bet_start:
