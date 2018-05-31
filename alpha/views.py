@@ -195,8 +195,11 @@ def profile(request):
     total = profile.successful_forecast + profile.unsuccessful_forecast
     try:
         bet_for = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_for=Sum('bet_for'))['bet_for']
+        bet_for_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_for=Sum('bet_for'))['bet_for']
         bet_against = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_against=Sum('bet_against'))['bet_against']
-        point = bet_against + bet_for
+        bet_against_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(
+            bet_against=Sum('bet_against'))['bet_against']
+        point = bet_against + bet_for + bet_for_close + bet_against_close
     except Exception:
         bet_for = 0
         bet_against = 0
@@ -797,23 +800,6 @@ def forecast_result_data(forecast_live):
             bet_for = 0
             bet_against = 0
             total = 0
-        if f.won == 'yes':
-            try:
-                if betting_against > 0:
-                    ratio = 1 + round((bet_against / total), 2)
-                else:
-                    ratio = 0
-            except Exception:
-                ratio = 1
-        elif f.won == "No":
-
-            try:
-                if betting_for > 0:
-                    ratio = 1 + round((bet_for / total), 2)
-                else:
-                    ratio = 0
-            except Exception:
-                ratio = 1
         status = 'yes' if forecast.won == "yes" else 'no'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
