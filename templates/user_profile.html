@@ -55,7 +55,7 @@
               <p class="m-0">Points in play</p>
             </div>
             <div class="col-3 text-right value-color">
-              <p class="m-0">{{balance}}</p>
+              <p class="m-0">{{point}}</p>
             </div>
           </div>
           <div class="clearfix"></div>
@@ -372,7 +372,7 @@
         </div>
       </div>
       <div class="total_balance text-right">
-        <p>Balance : <span class="value-color font-weight-bold">{{balance}}</span></p>
+        <p>Balance : <span class="value-color font-weight-bold">{{profile.fg_points_total}}</span></p>
       </div>
       <div class="row mb-2 btn_wrap">
         <div class="col-12"> <a href="{% url 'logout_user' %}" class="btn w-100 btn-create">Logout</a> </div>
