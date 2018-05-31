@@ -200,7 +200,6 @@ def profile(request):
         bet_against_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(
             bet_against=Sum('bet_against'))['bet_against']
         point = bet_against + bet_for + bet_for_close + bet_against_close
-        balance= profile.fg_points_total - point
     except Exception:
         bet_for = 0
         bet_against = 0
@@ -225,7 +224,7 @@ def profile(request):
                                                  "point": point,
                                                  "total": total,
                                                  "status": predict_status(profile),
-                                                 "balance": balance
+                                                 "balance": profile.fg_points_total - point
                                                  })
 
 
