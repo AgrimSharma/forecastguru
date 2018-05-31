@@ -588,7 +588,7 @@ def my_forecast(request):
     forecast_live = Betting.objects.filter(forecast__approved=True, forecast__status__name='In-Progress', users=account).order_by(
         "forecast__expire")
 
-    forecast_result = Betting.objects.filter(forecast__approved=True, forecast__status__name='Closed', users=account).order_by("forecast__expire")
+    forecast_result = Betting.objects.filter(forecast__approved=True, forecast__status__name='Result Declared', users=account).order_by("forecast__expire")
     forecast_approval = Betting.objects.filter(forecast__approved=False, users=account).order_by("forecast__expire")
 
     return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live),
