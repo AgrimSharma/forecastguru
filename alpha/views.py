@@ -13,6 +13,7 @@ import logging, traceback
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 import random
+from background_task import background
 from django.template import RequestContext
 import hashlib
 from . import constants
@@ -333,6 +334,7 @@ def bet_post(request):
         return HttpResponse(json.dumps(dict(message='Please use POST')))
 
 
+@background(schedule=datetime.timedelta(minutes=20))
 def allocate_points(request):
 
     forecast = ForeCast.objects.filter(status__name='Closed', verified=True)
@@ -543,19 +545,19 @@ def payu_success(request):
         account.fg_points_bought = account.fg_points_bought + 1000000
     account.fg_points_total += account.fg_points_bought
     account.save()
-    return render(request, 'success.html')
+    return HttpResponseRedirect("/user_profile/")
 
 
 @csrf_exempt
 def payu_failure(request):
     """ We are in payu failure mode"""
-    return render(request, 'Failure.html')
+    return HttpResponseRedirect("/user_profile/")
 
 
 @csrf_exempt
 def payu_cancel(request):
     """ We are in the Payu cancel mode"""
-    return render(request, 'Failure.html')
+    return HttpResponseRedirect("/user_profile/")
 
 
 def category(request):
