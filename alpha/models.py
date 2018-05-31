@@ -73,7 +73,7 @@ class ForeCast(models.Model):
     # source = models.ForeignKey(to=Source, on_delete=models.CASCADE)
     status = models.ForeignKey(to=Status, on_delete=models.CASCADE)
     market_fee = models.IntegerField(default=0)
-    won = models.CharField(max_length=100, default='bet_for')
+    won = models.CharField(max_length=100, null=True, blank=True)
     created = models.DateField()
     approved = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)

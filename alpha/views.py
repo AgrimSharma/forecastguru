@@ -2,7 +2,8 @@
 from __future__ import unicode_literals, division
 import json
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, render_to_response
-from django.views.decorators.csrf import csrf_exempt
+from django.template.context_processors import csrf
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from .models import *
 from django.db.models import Sum
 import datetime
@@ -12,8 +13,9 @@ from django.conf import settings
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 import random
-# from background_task import background
-
+from background_task import background
+from django.template import RequestContext
+import hashlib
 
 current = datetime.datetime.now()
 
@@ -329,7 +331,7 @@ def bet_post(request):
         return HttpResponse(json.dumps(dict(message='Please use POST')))
 
 
-# @background(schedule=datetime.timedelta(minutes=20))
+@background(schedule=datetime.timedelta(minutes=20))
 def allocate_points(request):
 
     forecast = ForeCast.objects.filter(status__name='Closed', verified=True)
@@ -504,19 +506,20 @@ def my_forecast(request):
         user = request.user.id
         users = User.objects.get(id=user)
         account = SocialAccount.objects.get(user=users)
-        forecast_live = Betting.objects.filter(forecast__approved=True, forecast__status__name='In-Progress', users=account).order_by(
-            "forecast__expire")
-
-        forecast_result = Betting.objects.filter(forecast__approved=True, forecast__status__name='Closed', users=account).order_by("forecast__expire")
-        forecast_approval = Betting.objects.filter(forecast__approved=False, users=account).order_by("forecast__expire")
-
-        return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live),
-                                                  "result": forecast_result_data(forecast_result),
-                                                  "approval": forecast_approval,
-                                                  "user": request.user.username})
-
     except Exception:
-        return render(request, 'my_friend_nl.html', {"user": request.user.username})
+        return render(request, 'my_friend_nl.html', {"user": request.user})
+
+    forecast_live = Betting.objects.filter(forecast__approved=True, forecast__status__name='In-Progress', users=account).order_by(
+        "forecast__expire")
+
+    forecast_result = Betting.objects.filter(forecast__approved=True, forecast__status__name='Closed', users=account).order_by("forecast__expire")
+    forecast_approval = Betting.objects.filter(forecast__approved=False, users=account).order_by("forecast__expire")
+
+    return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live),
+                                              "result": forecast_result_data(forecast_result),
+                                              "approval": forecast_approval,
+                                              "user": request.user.username})
+
 
 
 
