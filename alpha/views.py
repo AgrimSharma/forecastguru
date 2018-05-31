@@ -200,6 +200,7 @@ def profile(request):
         bet_against_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(
             bet_against=Sum('bet_against'))['bet_against']
         point = bet_against + bet_for + bet_for_close + bet_against_close
+        balance= profile.fg_points_total - point
     except Exception:
         bet_for = 0
         bet_against = 0
@@ -223,7 +224,8 @@ def profile(request):
                                                  "user": request.user.username,
                                                  "point": point,
                                                  "total": total,
-                                                 "status": predict_status(profile)
+                                                 "status": predict_status(profile),
+                                                 "balance": balance
                                                  })
 
 
@@ -441,7 +443,7 @@ def payments(request):
         hash_string = get_hash_string(request, txnid, amount)
         data["action"] = constants.PAYMENT_URL_LIVE
         data["amount"] = float(constants.PAID_FEE_AMOUNT[amount])
-        data["productinfo"] = constants.PAID_FEE_PRODUCT_INFO
+        data["productinfo"] = constants.PAID_FEE_PRODUCT_INFO[amount]
         data["key"] = config.KEY
         data["txnid"] = txnid
         data["hash"] = hash_
