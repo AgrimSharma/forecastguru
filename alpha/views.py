@@ -12,7 +12,7 @@ from django.conf import settings
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 import random
-from background_task import background
+# from background_task import background
 
 
 current = datetime.datetime.now()
@@ -329,7 +329,7 @@ def bet_post(request):
         return HttpResponse(json.dumps(dict(message='Please use POST')))
 
 
-@background(schedule=datetime.timedelta(minutes=20))
+# @background(schedule=datetime.timedelta(minutes=20))
 def allocate_points(request):
 
     forecast = ForeCast.objects.filter(status__name='Closed', verified=True)
