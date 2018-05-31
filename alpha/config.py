@@ -1,2 +1,2 @@
-SALT = 'MLBAvCFaA1'
-KEY = 'ZaS0JpU3'
+SALT = 'B27ayY3tln'
+KEY = 'r1dykxR5'
