@@ -445,7 +445,7 @@ def payments(request):
         data["hash_string"] = hash_string
         data["firstname"] = request.user.username
         data["email"] = str(email)
-        data["phone"] = "1111111111"
+        data["phone"] = ""
         data["service_provider"] = constants.SERVICE_PROVIDER
         data["furl"] = request.build_absolute_uri("/payubiz-failure/")
         data["surl"] = request.build_absolute_uri("/payubiz-success/")
