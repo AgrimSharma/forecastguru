@@ -55,9 +55,29 @@
       <div class="col-md-12">
 
       <div class="forcast_home">
+           {% for f in approval %}
+        <div class="forcast_box">
+          <div class="row align-items-center">
+            <div class="col-3 col-md-2 text-center">
+              <figure class="icon"> <img src="{% static 'images/icon-ipl.png' %}" alt=""> <span><img src="{% static 'images/icon-local.png' %}" alt=""></span> </figure>
+            </div>
+            <div class="col-9 col-md-10">
+              <p class="title_desc"> {{f.forecast.heading}}</p>
+            </div>
+          </div>
+             <div class="row" style="background: #f98b8b;padding-left: 68px;padding-top: 5px;height: 26px;/* text-align:  center; */">
+                      <p>Pending for <strong>ADMIN</strong> approval </p>
+
+                  </div>
+
+          </div>
+        </div>
+        {% endfor %}
 
    {% for f in live %}
-
+                              {% if forloop.counter|divisibleby:5 %}
+        <div class="banner mt-4 mb-4"> <img src="{% static 'images/banner.jpg' %}" class="img-fluid" alt=""> </div>
+{% else %}
         <div class="forcast_box">
 
             <div class="row align-items-center">
@@ -121,6 +141,7 @@
             </div>
           </div>
         </div>
+<!--{% endif %}-->
 
       </div>
           {% endfor %}
