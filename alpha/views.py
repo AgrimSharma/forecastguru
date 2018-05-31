@@ -387,7 +387,7 @@ def allocate_points(request):
         elif bet_for == 0 and bet_against == 0:
             f.won = "No Result."
             f.save()
-    return HttpResponse('Success')
+    return render(request, "success.html")
 
 
 def forecast_data(forecast, ratio, total, status):
