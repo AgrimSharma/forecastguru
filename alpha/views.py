@@ -192,9 +192,9 @@ def profile(request):
     date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
     total = profile.successful_forecast + profile.unsuccessful_forecast
     try:
-        bet_for = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_for=Sum('bet_for'))['bet_for']
-        bet_against = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_against=Sum('bet_against'))['bet_against']
-        point = bet_against + bet_for
+        bet_for = Betting.objects.filter(users=profile)
+
+        point = sum()
     except Exception:
         bet_for = 0
         bet_against = 0
@@ -210,7 +210,8 @@ def profile(request):
         profile.fg_points_total = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won -\
                                   profile.fg_points_lost + profile.market_fee - profile.market_fee_paid
         profile.save()
-
+    balance = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won -\
+                                  profile.fg_points_lost + profile.market_fee - profile.market_fee_paid
     return render(request, 'user_profile.html', {"profile": profile,
                                                  "date_joined":date_joined,
                                                  "success":int(suc_per),
@@ -218,7 +219,8 @@ def profile(request):
                                                  "user": request.user.username,
                                                  "point": point,
                                                  "total": total,
-                                                 "status": predict_status(profile)
+                                                 "status": predict_status(profile),
+                                                 'balance':balance
                                                  })
 
 
