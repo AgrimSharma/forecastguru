@@ -119,7 +119,7 @@ def forecast_result(request):
     data = []
     banner = Banner.objects.all()
     # import pdb;pdb.set_trace()
-    forecast_live = ForeCast.objects.filter(approved=True, status__name='Closed').order_by("-created")
+    forecast_live = ForeCast.objects.filter(approved=True, status__name='Result Declared').order_by("-created")
     for f in forecast_live:
         date = current.date()
         bet_start = f.start.date()
