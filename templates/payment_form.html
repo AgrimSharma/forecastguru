@@ -1,8 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
+
 </head>
 <body>
 <form action="{{ action }}"  name="payuForm" method="post">
@@ -49,15 +52,15 @@
             <!--Transaction ID : {{txnid}}-->
         <!--</div>-->
     <!--</div>-->
-    <div class="form-group">
-        <div class="col-md-12 col-sm-12" style="padding-bottom:20px;padding-top:20px;font-size:70px;">
-            After clicking 'Pay Now' button, you will be redirected to PayUMoney Secure Gateway.
-        </div>
-    </div>
+    <!--<div class="form-group">-->
+        <!--<div class="col-md-12 col-sm-12" style="padding-bottom:20px;padding-top:20px;font-size:70px;">-->
+            <!--After clicking 'Pay Now' button, you will be redirected to PayUMoney Secure Gateway.-->
+        <!--</div>-->
+    <!--</div>-->
 <br><br>
     <div class="form-group">
-        <div class="col-md-12 col-sm-12 ">
-            <input type="submit" class="btn btn-success" width="200px;height:150px;" value="Pay Now">
+        <div class="" style="padding-left: 250px;">
+            <input type="submit" class="btn btn-orange w-100" value="Pay Now" style="width: 400px;height: 100px;font-size: 50px;">
         </div>
     </div>
 </form>
