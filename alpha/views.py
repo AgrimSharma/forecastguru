@@ -9,14 +9,17 @@ from django.db.models import Sum
 import datetime
 from payu_biz.views import make_transaction
 from uuid import uuid4
-from django.conf import settings
+import logging, traceback
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 import random
-
-
+from background_task import background
+from django.template import RequestContext
 import hashlib
-
+from . import constants
+from django.core.urlresolvers import reverse
+from random import randint
+from . import config
 current = datetime.datetime.now()
 
 
@@ -193,10 +196,8 @@ def profile(request):
     total = profile.successful_forecast + profile.unsuccessful_forecast
     try:
         bet_for = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_for=Sum('bet_for'))['bet_for']
-        bet_for_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_for=Sum('bet_for'))['bet_for']
         bet_against = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_against=Sum('bet_against'))['bet_against']
-        bet_against_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_against=Sum('bet_against'))['bet_against']
-        point = bet_against + bet_for + bet_against_close + bet_for_close
+        point = bet_against + bet_for
     except Exception:
         bet_for = 0
         bet_against = 0
@@ -333,6 +334,7 @@ def bet_post(request):
         return HttpResponse(json.dumps(dict(message='Please use POST')))
 
 
+@background(schedule=datetime.timedelta(minutes=20))
 def allocate_points(request):
 
     forecast = ForeCast.objects.filter(status__name='Closed', verified=True)
@@ -424,10 +426,82 @@ def forecast_data(forecast, ratio, total, status):
                 b.users.save()
                 b.save()
 
+@csrf_exempt
+def payments(request):
+    if request.method == "POST":
+        data = {}
+        user = request.user
+        so = SocialAccount.objects.get(user=user)
+        email = so.user.email
+        amount = request.POST.get("button1")
+
+        txnid = get_transaction_id()
+        hash_ = generate_hash(request, txnid, amount)
+        hash_string = get_hash_string(request, txnid, amount)
+        data["action"] = constants.PAYMENT_URL_LIVE
+        data["amount"] = float(constants.PAID_FEE_AMOUNT[amount])
+        data["productinfo"] = constants.PAID_FEE_PRODUCT_INFO
+        data["key"] = config.KEY
+        data["txnid"] = txnid
+        data["hash"] = hash_
+        data["hash_string"] = hash_string
+        data["firstname"] = request.user.username
+        data["email"] = str(email)
+        data["phone"] = "1111111111"
+        data["service_provider"] = constants.SERVICE_PROVIDER
+        data["furl"] = request.build_absolute_uri("/payubiz-failure/")
+        data["surl"] = request.build_absolute_uri("/payubiz-success/")
+
+        return render(request, "payment_form.html", data)
 
 
-### PayuMoney
+# generate the hash
+def generate_hash(request, txnid, amount):
+    try:
+        # get keys and SALT from dashboard once account is created.
+        # hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10"
+        hash_string = get_hash_string(request, txnid, amount)
+        generated_hash = hashlib.sha512(hash_string.encode('utf-8')).hexdigest().lower()
+        return generated_hash
+    except Exception as e:
+        # log the error here.
+        # logging.getLogger("error_logger").error(traceback.format_exc())
+        return None
 
+
+# create hash string using all the fields
+def get_hash_string(request, txnid, amount):
+    user = request.user
+    so = SocialAccount.objects.get(user=user)
+    name = so.user.username
+
+    email = so.user.email
+    hash_string = config.KEY + "|" + txnid + "|" + str(float(constants.PAID_FEE_AMOUNT[amount])) + "|" + constants.PAID_FEE_PRODUCT_INFO + "|" + name + "|" + email + "|||||||||||" + config.SALT
+    print(hash_string)
+    return hash_string
+
+
+# generate a random transaction Id.
+def get_transaction_id():
+    hash_object = hashlib.sha256(str(randint(0, 9999)).encode("utf-8"))
+    # take approprite length
+    txnid = hash_object.hexdigest().lower()[0:32]
+    return txnid
+
+
+# no csrf token require to go to Success page.
+# This page displays the success/confirmation message to user indicating the completion of transaction.
+@csrf_exempt
+def payment_success(request):
+    data = {}
+    return render(request, "success.html", data)
+
+
+# no csrf token require to go to Failure page. This page displays the message and reason of failure.
+@csrf_exempt
+def payment_failure(request):
+    data = {}
+    return render(request, "failure.html", data)
 
 @csrf_exempt
 def home(request):
@@ -436,7 +510,7 @@ def home(request):
         account = SocialAccount.objects.get(user=request.user)
         """ DO your stuffs here and create a dictionary (key,value pair) """
         cleaned_data = {
-            "key": settings.MERCHANT_KEY, "salt": settings.MERCHANT_SALT,
+            "key": "r1dykxR5", "salt": "B27ayY3tln",
             'txnid': uuid4(), 'amount': int(amount), 'productinfo': "sample_produ",
             'firstname':account.user.username, 'email': "agrim.sharma@sirez.com", 'udf1': '',
             'udf2': '', 'udf3': '', 'udf4': '', 'udf5': '', 'udf6': '', 'udf7': '',
@@ -456,7 +530,7 @@ def payu_success(request):
     account = SocialAccount.objects.get(user=request.user)
 
     data = json.loads(json.dumps(request.POST))
-    Order.objects.create(user=account, order_date=current, txnid=data['txnid'], amount=data['net_amount_debit'])
+    Order.objects.create(user=account, order_date=current, txnid=data['txnid'], amount=data['amount'])
     amount = data['net_amount_debit']
     if amount == "49":
         account.fg_points_bought = account.fg_points_bought + 5000
@@ -477,13 +551,13 @@ def payu_success(request):
 @csrf_exempt
 def payu_failure(request):
     """ We are in payu failure mode"""
-    return HttpResponseRedirect("/profile/")
+    return HttpResponseRedirect("/user_profile/")
 
 
 @csrf_exempt
 def payu_cancel(request):
     """ We are in the Payu cancel mode"""
-    return HttpResponseRedirect("/profile/")
+    return HttpResponseRedirect("/user_profile/")
 
 
 def category(request):
@@ -725,12 +799,28 @@ def forecast_result_data(forecast_live):
             bet_for = 0
             bet_against = 0
             total = 0
+        if f.won == 'yes':
+            try:
+                if betting_against > 0:
+                    ratio = 1 + round((bet_against / total), 2)
+                else:
+                    ratio = 0
+            except Exception:
+                ratio = 1
+        elif f.won == "No":
 
+            try:
+                if betting_for > 0:
+                    ratio = 1 + round((bet_for / total), 2)
+                else:
+                    ratio = 0
+            except Exception:
+                ratio = 1
         status = 'yes' if forecast.won == "yes" else 'no'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
-                         participants=total_wagered, won="Yes" if forecast.won == 'yes' else 'No',  # waggered=waggered,
+                         participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',  # waggered=waggered,
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against, bet_for=bet_for))
 
     return data
@@ -749,7 +839,7 @@ def forecast_live_view(category):
     forecast_live = ForeCast.objects.filter(approved=True, category=category, status__name='In-Progress').order_by("-created")
     for f in forecast_live:
         date = current.date()
-        forecast = f
+        forecast = f.forecast
         bet_start = forecast.expire.date()
 
         if date == bet_start:
