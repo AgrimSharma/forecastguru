@@ -728,7 +728,7 @@ def forecast_result_data(forecast_live):
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
-                         participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',  # waggered=waggered,
+                         participants=total_wagered, won="Yes" if forecast.won == 'yes' else 'No',  # waggered=waggered,
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against, bet_for=bet_for))
 
     return data
