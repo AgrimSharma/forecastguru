@@ -543,19 +543,19 @@ def payu_success(request):
         account.fg_points_bought = account.fg_points_bought + 1000000
     account.fg_points_total += account.fg_points_bought
     account.save()
-    return HttpResponseRedirect("/user_profile/")
+    return render(request, 'success.html')
 
 
 @csrf_exempt
 def payu_failure(request):
     """ We are in payu failure mode"""
-    return HttpResponseRedirect("/user_profile/")
+    return render(request, 'Failure.html')
 
 
 @csrf_exempt
 def payu_cancel(request):
     """ We are in the Payu cancel mode"""
-    return HttpResponseRedirect("/user_profile/")
+    return render(request, 'Failure.html')
 
 
 def category(request):
