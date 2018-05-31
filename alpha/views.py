@@ -696,7 +696,7 @@ def live_forecast_data(forecast_live):
 def forecast_result_data(forecast_live):
     data = []
     for f in forecast_live:
-        forecast = f.forecast
+        forecast = f
         date = current.date()
         bet_start = forecast.start.date()
         if date == bet_start:
@@ -723,23 +723,7 @@ def forecast_result_data(forecast_live):
             bet_for = 0
             bet_against = 0
             total = 0
-        if f.won == 'yes':
-            try:
-                if betting_against > 0:
-                    ratio = 1 + round((bet_against / total), 2)
-                else:
-                    ratio = 0
-            except Exception:
-                ratio = 1
-        elif f.won == "No":
-
-            try:
-                if betting_for > 0:
-                    ratio = 1 + round((bet_for / total), 2)
-                else:
-                    ratio = 0
-            except Exception:
-                ratio = 1
+ 
         status = 'yes' if forecast.won == "yes" else 'no'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
