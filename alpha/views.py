@@ -198,7 +198,6 @@ def profile(request):
         })
     date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
 
-    import pdb;pdb.set_trace()
     bet_for = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_for=Sum('bet_for'))['bet_for']
 
     bet_for_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_for=Sum('bet_for'))['bet_for']
