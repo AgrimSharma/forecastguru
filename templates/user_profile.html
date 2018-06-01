@@ -44,22 +44,12 @@
           </div>
           <div class="col-6 text-center">
             <p class="mb-1">FG Balance</p>
-            <p class="balance">{{balance}}</p>
+            <p class="balance">{{total}}</p>
             <p class="btnwrap"> <a href="{% url 'payment' %}" class="btn btn-orange">Buy Now</a> </p>
           </div>
         </div>
       </div>
-      <div class="white_box mb-3">
-          <div class="row">
-            <div class="col-9">
-              <p class="m-0">Points in play</p>
-            </div>
-            <div class="col-3 text-right value-color">
-              <p class="m-0">{{point}}</p>
-            </div>
-          </div>
-          <div class="clearfix"></div>
-        </div>
+
       <div class="white_box mb-3">
         <div class="row mb-2">
           <div class="col-9">
@@ -130,7 +120,7 @@
         <div class="clearfix"></div>
       </div>
       <div class="points_leger">
-        <h2>FG Points Leger</h2>
+        <h2>FG Points Ledger</h2>
         <div class="white_box mb-3">
           <div class="row mb-2">
             <div class="col-8">
@@ -147,6 +137,15 @@
             </div>
             <div class="col-4 text-right value-color">
               <p class="m-0">{{profile.fg_points_bought}}</p>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="row mb-2">
+            <div class="col-8">
+              <p class="m-0">Points in Play</p>
+            </div>
+            <div class="col-4 text-right value-color">
+              <p class="m-0">{{point}}</p>
             </div>
           </div>
           <div class="clearfix"></div>
@@ -180,7 +179,7 @@
         </div>
       </div>
       <div class="total_balance text-right">
-        <p>Balance : <span class="value-color font-weight-bold">{{balance}}</span></p>
+        <p>Balance : <span class="value-color font-weight-bold">{{total}}</span></p>
       </div>
       <div class="row mb-2 btn_wrap">
         <div class="col-12"> <a href="{% url 'logout_user' %}" class="text-uppercase">Logout</a> </div>
@@ -256,7 +255,7 @@
           </div>
           <div class="col-6 text-center">
             <p class="mb-1">FG Balance</p>
-            <p class="balance">{{profile.fg_points_total}}</p>
+            <p class="balance">{{total}}</p>
             <p class="btnwrap"> <a href="{% url 'payment' %}" class="btn btn-buynow">Buy Now</a> </p>
           </div>
         </div>
@@ -372,7 +371,7 @@
         </div>
       </div>
       <div class="total_balance text-right">
-        <p>Balance : <span class="value-color font-weight-bold">{{profile.fg_points_total}}</span></p>
+        <p>Balance : <span class="value-color font-weight-bold">{{total}}</span></p>
       </div>
       <div class="row mb-2 btn_wrap">
         <div class="col-12"> <a href="{% url 'logout_user' %}" class="btn w-100 btn-create">Logout</a> </div>

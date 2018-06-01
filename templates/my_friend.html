@@ -62,7 +62,7 @@
               <figure class="icon"> <img src="{% static 'images/icon-ipl.png' %}" alt=""> <span><img src="{% static 'images/icon-local.png' %}" alt=""></span> </figure>
             </div>
             <div class="col-9 col-md-10">
-              <p class="title_desc"> {{f.forecast.heading}}</p>
+              <p class="title_desc"> {{f.heading}}</p>
             </div>
           </div>
              <div class="row" style="background: #f98b8b;padding-left: 68px;padding-top: 5px;height: 26px;/* text-align:  center; */">
@@ -74,10 +74,9 @@
         </div>
         {% endfor %}
 
+
    {% for f in live %}
-                              {% if forloop.counter|divisibleby:5 %}
-        <div class="banner mt-4 mb-4"> <img src="{% static 'images/banner.jpg' %}" class="img-fluid" alt=""> </div>
-{% else %}
+
         <div class="forcast_box">
 
             <div class="row align-items-center">
@@ -124,28 +123,18 @@
                         {% endif %}
                         </div>
                   </div>
-                  <div class="col-6 col-md-4 pl-0 text-right text-md-center mb-2">
-                      <div class="time textwithicon pl-0">
-                      <!--<label><i class="fa fa-users"></i> <span>{{f.total}}  </span> Participants</label><br>-->
-<form method="post">{% csrf_token %}
-                        {% comment %}{% if f.btn_val == 'no' %}{% endcomment %}
-                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">PLAY</button>
 
+                  <div class="col-12 col-md-4 text-right pl-0">
+                      <form method="post">{% csrf_token %}
+                    <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
+
+                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">PLAY </button>
                           </form>
-                      </div>
-                  </div>
-                  <!--<div class="col-12 col-md-4 text-right pl-0">-->
-<!---->
-                      <!--<form method="post">{% csrf_token %}-->
-                        <!--{% comment %}{% if f.btn_val == 'no' %}{% endcomment %}-->
-                        <!--<button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">Predict </button>-->
-<!---->
-                          <!--</form>-->
                 </div>
+              </div>
             </div>
           </div>
         </div>
-<!--{% endif %}-->
 
       </div>
           {% endfor %}
@@ -191,8 +180,11 @@
                   </div>
                   <div class="col-6 text-right">
                       <div class="time textwithicon pl-0">
+                          {% if f.ratio == "NA" %}
+                          <label>Win Ratio: </label> <span class="winratio">NA </span>
+                          {% else %}
                       <label>Win Ratio: </label> <span class="winratio">1:{{f.ratio}}  </span>
-
+{% endif %}
                       </div>
                   </div>
 

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, division
 import json
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, render_to_response
@@ -48,10 +48,10 @@ def create_forecast(request):
             f = ForeCast.objects.create(category=cat, sub_category=sub_cat,
                                         user=users, heading=heading,
                                         expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M"),
-                                        start=datetime.datetime.strptime(start, "%Y-%m-%d %H:%M"), approved=False,
-                                        status=status, created=current, private=False,
+                                        start=datetime.datetime.strptime(start, "%Y-%m-%d %H:%M"), approved__name="no",
+                                        status=status, created=current, private=False, verified__name='no'
                                         )
-            f.user.forecast_participated += 1
+            f.user.forecast_created += 1
 
             f.save()
             return HttpResponseRedirect("/live_forecast/")
@@ -68,25 +68,27 @@ def create_forecast(request):
 
 
 def closing_soon(request):
-    forecast = ForeCast.objects.filter(start__lte=current, approved=True, status__name='Closing Soon').order_by("-created")
+    forecast = ForeCast.objects.filter(start__lte=current, approved__name="yes", status__name='Closing Soon').order_by("-created")
     return render(request, 'closing_soon.html',{"forecast":forecast})
 
 
 def live_forecast(request):
     data = []
 
-    forecast_live = ForeCast.objects.filter(approved=True, status__name='In-Progress').order_by("-expire")
+    forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress').order_by("-expire")
     for f in forecast_live:
         date = current.date()
 
         bet_start = f.expire.date()
 
         if date == bet_start:
-            start = f.expire
-            start = start.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            print(start)
+            start = start.time()
             today = 'yes'
         else:
             start = f.expire
+
             today = "no"
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
@@ -117,13 +119,14 @@ def live_forecast(request):
 def forecast_result(request):
     data = []
     banner = Banner.objects.all()
-    # import pdb;pdb.set_trace()
-    forecast_live = ForeCast.objects.filter(approved=True, status__name='Result Declared').order_by("-created")
+
+    forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared').order_by("-expire")
     for f in forecast_live:
         date = current.date()
         bet_start = f.start.date()
         if date == bet_start:
-            start = f.expire.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time()
             today = 'yes'
         else:
             start = f.expire
@@ -159,7 +162,11 @@ def forecast_result(request):
 
 def get_ratio(bet_for, bet_against, total, status):
     ratio = 0
-    if status == 'yes':
+    if bet_against ==0 and bet_for == 0:
+        ratio = "NA"
+    elif bet_for == bet_against:
+        ratio = 1
+    elif status == 'yes':
         try:
             if bet_against > 0:
                 ratio = 1 + round((bet_against / bet_for), 2)
@@ -177,6 +184,7 @@ def get_ratio(bet_for, bet_against, total, status):
             ratio = 1
     return ratio
 
+
 def profile(request):
     try:
         user = request.user
@@ -191,7 +199,9 @@ def profile(request):
 
         })
     date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
-    total = profile.successful_forecast + profile.unsuccessful_forecast
+    total = profile.market_fee + profile.fg_points_won + profile.fg_points_bought + profile.fg_points_free - profile.fg_points_lost - profile.market_fee_paid
+    profile.fg_points_total = total
+
     try:
         bet_for = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_for=Sum('bet_for'))['bet_for']
         bet_for_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_for=Sum('bet_for'))['bet_for']
@@ -199,6 +209,7 @@ def profile(request):
         bet_against_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(
             bet_against=Sum('bet_against'))['bet_against']
         point = bet_against + bet_for + bet_for_close + bet_against_close
+
     except Exception:
         bet_for = 0
         bet_against = 0
@@ -213,7 +224,7 @@ def profile(request):
     if profile.fg_points_total == 0:
         profile.fg_points_total = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won -\
                                   profile.fg_points_lost + profile.market_fee - profile.market_fee_paid
-        profile.save()
+    profile.save()
 
     return render(request, 'user_profile.html', {"profile": profile,
                                                  "date_joined":date_joined,
@@ -338,13 +349,13 @@ def bet_post(request):
 
 def allocate_points(request):
 
-    forecast = ForeCast.objects.filter(status__name='Closed', verified=True)
-    status = Status.objects.get(name='Result Declared')
+    forecast = ForeCast.objects.filter(status__name='Closed', verified__name="yes")
+    # status = Status.objects.get(name='Result Declared')
     for f in forecast:
-        f.status = status
-
-        f.status.save()
-        f.save()
+        # f.status = status
+        #
+        # f.status.save()
+        # f.save()
 
         try:
             betting_sum = Betting.objects.filter(forecast=f).aggregate(
@@ -361,8 +372,14 @@ def allocate_points(request):
             bet_for = 0
             bet_against = 0
             total = 0
-
-        if bet_for > 0:
+        if bet_for == bet_against:
+            if f.won == "yes":
+                ratio = 1
+                forecast_data(f, ratio, total, "yes")
+            else:
+                ratio = 1
+                forecast_data(f, ratio, total, "no")
+        elif bet_for > 0:
             if bet_against == 0 and f.won == 'yes':
                 ratio = 1
                 forecast_data(f, ratio, total, "yes")
@@ -386,45 +403,93 @@ def allocate_points(request):
         elif bet_for == 0 and bet_against == 0:
             f.won = "No Result."
             f.save()
-    return render(request, "success.html")
+    return HttpResponse('Success')
 
 
 def forecast_data(forecast, ratio, total, status):
     betting = Betting.objects.filter(forecast=forecast)
+
     for b in betting:
         bet_for = b.bet_for
         bet_against = b.bet_against
-        if status == "yes":
+        if bet_for > 0 and bet_against == 0:
+            if status == "yes":
+                b.users.successful_forecast += 1
+                b.users.fg_points_won += b.bet_for
+                b.users.market_fee_paid += bet_for * 0.10
+                b.users.save()
+                b.save()
+            else:
+                b.users.unsuccessful_forecast += 1
+                b.users.fg_points_lost += b.bet_for
+                b.users.market_fee_paid += bet_for * 0.10
+                b.users.save()
+                b.save()
+        elif bet_against > 0 and bet_for == 0:
+            if status == "no":
+                b.users.successful_forecast += 1
+                b.users.fg_points_won += b.bet_against
+                b.users.successful_forecast += 1
+                b.users.market_fee_paid += bet_for * 0.10
+                b.users.save()
+                b.save()
+            else:
+                b.users.unsuccessful_forecast += 1
+                b.users.fg_points_lost += b.bet_against
+                b.users.market_fee_paid += bet_for * 0.10
+                b.users.save()
+                b.save()
+        elif bet_for == 0 and bet_against == 0:
+            b.forecast.won = "NA"
+            b.forecast.save()
+            b.save()
+        elif status == "yes":
             if bet_for > 0 and bet_against == 0:
-                b.users.fg_points_won += bet_for * ratio
+                b.users.fg_points_won += bet_for
                 b.users.market_fee_paid += bet_for * 0.10
                 b.users.successful_forecast += 1
                 b.users.save()
                 b.save()
             elif bet_for > 0 and bet_against > 0:
-                b.users.fg_points_won += bet_for * ratio
+                b.users.fg_points_won += bet_for
                 b.users.market_fee_paid += bet_for * 0.10
                 b.users.successful_forecast += 1
                 b.users.fg_points_lost += bet_against
                 b.users.unsuccessful_forecast += 1
                 b.users.save()
                 b.save()
+            elif bet_against == bet_for:
+                b.users.fg_points_won += bet_for
+                b.users.market_fee_paid += bet_for * 0.10
+                b.users.successful_forecast += 1
+                b.users.save()
+                b.save()
 
         elif status == "no":
             if bet_against > 0 and bet_for == 0:
-                b.users.fg_points_won += bet_against * ratio
+                b.users.fg_points_won += bet_against
                 b.users.market_fee_paid += bet_against * 0.10
                 b.users.successful_forecast += 1
                 b.users.save()
                 b.save()
             elif bet_for > 0 and bet_against > 0:
-                b.users.fg_points_won += bet_against * ratio
+                b.users.fg_points_won += bet_against
                 b.users.market_fee_paid += bet_against * 0.10
                 b.users.fg_points_lost += bet_for
                 b.users.successful_forecast += 1
                 b.users.unsuccessful_forecast += 1
                 b.users.save()
                 b.save()
+            elif bet_against == bet_for:
+                b.users.fg_points_won += bet_against
+                b.users.market_fee_paid += bet_against * 0.10
+                b.users.fg_points_lost += bet_for
+                b.users.successful_forecast += 1
+                b.users.unsuccessful_forecast += 1
+                b.users.save()
+                b.save()
+
+
 
 @csrf_exempt
 def payments(request):
@@ -584,15 +649,17 @@ def my_forecast(request):
     except Exception:
         return render(request, 'my_friend_nl.html', {"user": request.user})
 
-    forecast_live = Betting.objects.filter(forecast__approved=True, forecast__status__name='In-Progress', users=account).order_by(
+    forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress', users=account).order_by(
         "forecast__expire")
 
-    forecast_result = Betting.objects.filter(forecast__approved=True, forecast__status__name='Result Declared', users=account).order_by("forecast__expire")
-    forecast_approval = Betting.objects.filter(forecast__approved=False, users=account).order_by("forecast__expire")
+    forecast_result = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='Result Declared', users=account).order_by("forecast__expire")
+    forecast_approval = ForeCast.objects.filter(approved__name="no", user=account).order_by("-expire")
+    # forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account).order_by("-expire")
 
     return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live),
                                               "result": forecast_result_data(forecast_result),
                                               "approval": forecast_approval,
+                                              # "forecast": live_forecast_data_bet(forecast_no_bet),
                                               "user": request.user.username})
 
 
@@ -727,6 +794,49 @@ def not_approved(forecast):
     return data
 
 
+def live_forecast_data_bet(forecast_live):
+    data = []
+
+    for f in forecast_live:
+        date = current.date()
+        forecast = f
+        bet_start = forecast.expire.date()
+
+        if date == bet_start:
+            start = forecast.expire
+            start = start.time().strftime("%I:%M:%S")
+            today = 'yes'
+        else:
+            start = forecast.expire
+            today = "no"
+        betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
+        betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
+        try:
+            total_wagered = betting_against + betting_for
+            bet_for = Betting.objects.filter(forecast=forecast).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=forecast).aggregate(bet_against=Sum('bet_against'))['bet_against']
+            totl = bet_against+ bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
+            print(percent_for, percent_against)
+
+            total = Betting.objects.filter(forecast=forecast).count()
+        except Exception:
+            total_wagered = 0
+            percent_for = 0
+            percent_against = 0
+            bet_for = 0
+            bet_against = 0
+            total = Betting.objects.filter(forecast=forecast).count()
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
+                         total=total, start=start, total_user=betting_for + betting_against,
+                         betting_for=betting_for, betting_against=betting_against, today=today,
+                         participants=total_wagered, bet_for=bet_for,
+                         bet_against=bet_against))
+    return data
+
+
+
 def live_forecast_data(forecast_live):
     data = []
 
@@ -736,8 +846,8 @@ def live_forecast_data(forecast_live):
         bet_start = forecast.expire.date()
 
         if date == bet_start:
-            start = forecast.expire
-            start = start.time().strftime("%I:%M:%S")
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time()
             today = 'yes'
         else:
             start = forecast.expire
@@ -776,7 +886,8 @@ def forecast_result_data(forecast_live):
         date = current.date()
         bet_start = forecast.start.date()
         if date == bet_start:
-            start = forecast.start.time().strftime("%I:%M:%S")
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time()
             today = 'yes'
         else:
             start = forecast.start
@@ -819,7 +930,7 @@ def get_sub_cat(request):
 
 def forecast_live_view(category):
     data = []
-    forecast_live = ForeCast.objects.filter(approved=True, category=category, status__name='In-Progress').order_by("-created")
+    forecast_live = ForeCast.objects.filter(approved__name="yes", category=category, status__name='In-Progress').order_by("-created")
     for f in forecast_live:
         date = current.date()
         forecast = f
@@ -863,7 +974,7 @@ def forecast_live_view(category):
 def forecast_result_view(category):
     data = []
 
-    forecast_live = ForeCast.objects.filter(approved=True, category=category, status__name='Closed').order_by("-created")
+    forecast_live = ForeCast.objects.filter(approved__name="yes", category=category, status__name='Closed').order_by("-created")
     for f in forecast_live:
         forecast = f
         date = current.date()

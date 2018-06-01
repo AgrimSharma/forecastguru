@@ -24,15 +24,19 @@ class SubCategoryAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
-# class SourceAdmin(admin.ModelAdmin):
-#     list_display = ['name']
+class ApprovedAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
+class VerifiedAdmin(admin.ModelAdmin):
+    list_display = ['name']
 
 
 class ForeCastAdmin(admin.ModelAdmin):
     # pass
     list_display = ['category', 'sub_category', 'user', 'heading']
     search_fields = ['category', 'sub_category', 'user']
-    list_filter = ('category', 'sub_category')
+    list_filter = ("approved", "verified")
 
 
 class StatusAdmin(admin.ModelAdmin):
@@ -63,6 +67,8 @@ admin.site.register(Status, StatusAdmin)
 admin.site.register(Betting, BettingAdmin)
 admin.site.register(Banner, BannerAdmin)
 admin.site.register(Order, OrderAdmin)
+admin.site.register(Approved, ApprovedAdmin)
+admin.site.register(Verified, VerifiedAdmin)
 admin.site.site_title = 'ForeCast Guru'
 admin.site.site_header = 'ForeCast Guru'
 admin.site.index_title= 'Dashboard'

@@ -93,8 +93,11 @@
                   </div>
                   <div class="col-6 text-right">
                       <div class="time textwithicon pl-0">
+               {% if f.ratio == "NA" %}
+                          <label>Win Ratio: </label> <span class="winratio">NA</span>
+                          {% else %}
                       <label>Win Ratio: </label> <span class="winratio">1:{{f.ratio}}  </span>
-
+{% endif %}
                       </div>
                   </div>
 
