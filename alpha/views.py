@@ -1067,5 +1067,12 @@ def e_handler500(request):
     return response
 
 
+def update_close_status(request):
+    now = datetime.datetime.now()
+    status = Status.objects.get(name='Closed')
+    ForeCast.objects.filter(approved=True, expire__lte=now, status__name='In-Progress').update(status=status)
+    return HttpResponse("updated")
+
+
 def main_page(request):
     return render(request, 'main_page.html')

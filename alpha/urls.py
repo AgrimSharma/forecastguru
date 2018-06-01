@@ -47,6 +47,7 @@ urlpatterns = [
     url(r'^shoping/$', payments, name="payments"),
     url(r'^success$', payment_success, name="payment_success"),
     url(r'^failure$', payment_failure, name="payment_failure"),
+    url(r'^closed_status/', update_close_status, name="closed_status"),
     url(r'^', main_page, name='main_page'),
 
 ]
