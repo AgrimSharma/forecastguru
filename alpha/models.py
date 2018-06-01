@@ -89,8 +89,8 @@ class ForeCast(models.Model):
     market_fee = models.IntegerField(default=0)
     won = models.CharField(max_length=100, null=True, blank=True)
     created = models.DateField()
-    approved = models.ForeignKey(to=Approved, on_delete=models.CASCADE, default='No')
-    verified = models.ForeignKey(to=Verified, on_delete=models.CASCADE, default='No')
+    approved = models.ForeignKey(to=Approved, on_delete=models.CASCADE)
+    verified = models.ForeignKey(to=Verified, on_delete=models.CASCADE)
     private = models.BooleanField(default=False)
 
     class Meta:
