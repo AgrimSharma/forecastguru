@@ -121,13 +121,16 @@
                         <span>{{f.start}}</span>
                         {% endif %}
                         </div>
-                      <div class="col-12 col-md-4 text-right pl-0">
-                      <form method="post">{% csrf_token %}
-                    <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
+                      <div class="col-6 col-md-4 pl-0 text-right text-md-center mb-2">
+                      <div class="time textwithicon pl-0">
+                      <!--<label><i class="fa fa-users"></i> <span>{{f.total}}  </span> Participants</label><br>-->
+<form method="post">{% csrf_token %}
+                        {% comment %}{% if f.btn_val == 'no' %}{% endcomment %}
+                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">PLAY</button>
 
-                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.id}}" id="shipment_id{{f.id}}">PLAY </button>
                           </form>
-                </div>
+                      </div>
+                  </div>
                   </div>
 
 
@@ -187,13 +190,16 @@
                         <span>{{f.start}}</span>
                         {% endif %}
                         </div>
-                      <div class="col-12 col-md-4 text-right pl-0">
-                      <form method="post">{% csrf_token %}
-                    <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
+                      <div class="col-6 col-md-4 pl-0 text-right text-md-center mb-2">
+                      <div class="time textwithicon pl-0">
+                      <!--<label><i class="fa fa-users"></i> <span>{{f.total}}  </span> Participants</label><br>-->
+<form method="post">{% csrf_token %}
+                        {% comment %}{% if f.btn_val == 'no' %}{% endcomment %}
+                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">PLAY</button>
 
-                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">PLAY </button>
                           </form>
-                </div>
+                      </div>
+                  </div>
                   </div>
 
 
