@@ -670,12 +670,12 @@ def my_forecast(request):
     forecast_result = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='Result Declared',
                                              users=account).order_by("forecast__expire")
     forecast_approval = ForeCast.objects.filter(approved__name="no", user=account).order_by("-expire")
-    # forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account).order_by("-expire")
-
+    forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account).order_by("-expire")
+    not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
     return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live),
                                               "result": forecast_result_data(forecast_result),
                                               "approval": forecast_approval,
-                                              # "forecast": live_forecast_data_bet(forecast_no_bet),
+                                              "forecast": live_forecast_data_bet(not_bet),
                                               "user": request.user.username})
 
 
