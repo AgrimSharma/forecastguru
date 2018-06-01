@@ -208,7 +208,7 @@ def profile(request):
     if bet_against_close != None and bet_against != None and bet_for_close != None and bet_for !=None:
         point = bet_against + bet_for + bet_for_close + bet_against_close
     else:
-        point = bet_against + bet_for
+        point = 0
 
     total = profile.market_fee + profile.fg_points_won + profile.fg_points_bought + profile.fg_points_free - profile.fg_points_lost - profile.market_fee_paid - point
     profile.fg_points_total = total
