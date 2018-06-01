@@ -214,7 +214,11 @@ def profile(request):
     profile.fg_points_total = total
     try:
         suc_per = (profile.successful_forecast / total) * 100
-        unsuc_per = 100 - (profile.successful_forecast / total) * 100
+        unsuc_per = 100 - suc_per
+        if suc_per == 0:
+            suc_per = 0
+        if unsuc_per == 0:
+            unsuc_per = 0
     except Exception:
         suc_per = 0
         unsuc_per = 0
