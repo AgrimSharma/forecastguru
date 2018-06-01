@@ -1074,5 +1074,19 @@ def update_close_status(request):
     return HttpResponse("updated")
 
 
+def terms(request):
+    with open('/home/lawrato/forecastguru/static/docs/terms.pdf', 'r') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
+        response['Content-Disposition'] = 'inline;filename=some_file.pdf'
+        return response
+
+
+def faq(request):
+    with open('/home/lawrato/forecastguru/static/docs/FAQ.pdf', 'r') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
+        response['Content-Disposition'] = 'inline;filename=some_file.pdf'
+        return response
+
+
 def main_page(request):
     return render(request, 'main_page.html')
