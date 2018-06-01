@@ -699,7 +699,7 @@ def search_result(request):
         else:
             data = []
 
-            forecast_live = ForeCast.objects.filter(heading__contains=query).order_by(
+            forecast_live = ForeCast.objects.filter(heading__icontains=query).order_by(
                 "-expire")
             for f in forecast_live:
                 date = current.date()
