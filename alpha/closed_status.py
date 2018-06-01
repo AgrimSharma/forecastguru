@@ -22,7 +22,5 @@ def update_closing_soon():
     ForeCast.objects.filter(approved=True, start__lte=now, expire__gte=now).update(status=status)
     return "updated"
 
-
-update_close_status()
-# update_closing_soon()
-# update_in_progress()
+if __name__ == "__main__":
+    update_close_status()
