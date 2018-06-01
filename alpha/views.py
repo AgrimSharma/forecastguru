@@ -15,6 +15,7 @@ import hashlib
 from . import constants
 from random import randint
 from . import config
+from django.template import RequestContext
 
 current = datetime.datetime.now()
 
@@ -1034,6 +1035,20 @@ def forecast_result_view(category):
                          bet_against=bet_against, bet_for=bet_for))
         print(data)
     return data
+
+
+def e_handler404(request):
+    context = RequestContext(request)
+    response = render_to_response('404.html', context)
+    response.status_code = 404
+    return response
+
+
+def e_handler500(request):
+    context = RequestContext(request)
+    response = render_to_response('500.html', context)
+    response.status_code = 500
+    return response
 
 
 def main_page(request):
