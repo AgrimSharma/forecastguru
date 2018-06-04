@@ -279,7 +279,6 @@ def profile(request):
     except Exception:
         suc_per = 0
         unsuc_per = 0
-    print(suc_per, unsuc_per)
     if profile.fg_points_total == 0:
         profile.fg_points_total = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won - \
                                   profile.fg_points_lost + profile.market_fee - profile.market_fee_paid
@@ -370,18 +369,20 @@ def bet_post(request):
                 if vote == 'email':
                     if b.bet_for < points:
                         b.bet_for = points
-                        b.users.fg_points_total = b.users.fg_points_total - points
-                        b.users.save()
-                        b.save()
+                        deduct_points(account, points)
+                        # b.users.fg_points_total = b.users.fg_points_total - points
+                        # b.users.save()
+                        # b.save()
                     else:
                         return HttpResponse(json.dumps(
                             dict(message="FG point for forecast should be greater than previous {}".format(b.bet_for))))
                 else:
                     if b.bet_against < points:
                         b.bet_against = b.bet_against + points
-                        b.users.fg_points_total = b.users.fg_points_total - points
-                        b.users.save()
-                        b.save()
+                        deduct_points(account, points)
+                        # b.users.fg_points_total = b.users.fg_points_total - points
+                        # b.users.save()
+                        # b.save()
                     else:
                         return HttpResponse(json.dumps(
                             dict(message="FG point for forecast should be greater than previous {}".format(
@@ -392,16 +393,18 @@ def bet_post(request):
                 else:
                     if vote == 'email':
                         b = Betting.objects.create(forecast=forecasts, users=account, bet_for=points, bet_against=0)
-                        b.users.fg_points_total = b.users.fg_points_total - points
-                        b.users.forecast_participated += 1
-                        b.users.save()
-                        b.save()
+                        deduct_points(account, points)
+                        # b.users.fg_points_total = b.users.fg_points_total - points
+                        # b.users.forecast_participated += 1
+                        # b.users.save()
+                        # b.save()
                     else:
                         b = Betting.objects.create(forecast=forecasts, users=account, bet_for=0, bet_against=points)
-                        b.users.fg_points_total = b.users.fg_points_total - points
-                        b.users.forecast_participated += 1
-                        b.users.save()
-                        b.save()
+                        deduct_points(account, points)
+                        # b.users.fg_points_total = b.users.fg_points_total - points
+                        # b.users.forecast_participated += 1
+                        # b.users.save()
+                        # b.save()
                     return HttpResponse(json.dumps(dict(message='success')))
         else:
             return HttpResponse(json.dumps(dict(message='balance')))
@@ -409,6 +412,18 @@ def bet_post(request):
     else:
         return HttpResponse(json.dumps(dict(message='Please use POST')))
 
+
+def deduct_points(account, points):
+    if account.fg_points_bought > 0:
+        account.fg_points_bought -= points
+    elif account.fg_points_won > 0:
+        account.fg_points_won -= points
+    elif account.market_fee > 0:
+        account.market_fee -= account.market_fee - points
+    else:
+        account.fg_points_free -= points
+    account.fg_points_total = account.fg_points_won + account.fg_points_bought + account.market_fee + account.fg_points_free
+    account.save()
 
 def allocate_points(request):
     forecast = ForeCast.objects.filter(status__name='Closed', verified__name="yes")
