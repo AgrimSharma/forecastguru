@@ -1005,9 +1005,9 @@ def forecast_result_data(forecast_live):
 def get_sub_cat(request):
     if request.method == "POST":
         cat = Category.objects.get(id=int(request.POST.get('identifier', '')))
-        sub = SubCategory.objects.filter(category=cat).order_by('name')
+        sub = SubCategory.objects.filter(category=cat).order_by('-name')
         data = [dict(id=x.id, name=x.name) for x in sub]
-        return HttpResponse(json.dumps(data))
+        return HttpResponse(json.dumps(dict(data=data, source=sub[0].source)))
 
 
 def forecast_live_view(category):
