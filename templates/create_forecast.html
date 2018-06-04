@@ -146,7 +146,9 @@
                     success: function(resp){
 
                     var data = JSON.parse(resp);
+                    console.log(data);
                     var sub = data.data;
+                    
                         console.log(sub);
                         for(i=0; i < sub.length; i++){
                              var values = JSON.parse(JSON.stringify(sub[i]));
