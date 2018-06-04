@@ -395,14 +395,14 @@ def bet_post(request):
                         b = Betting.objects.create(forecast=forecasts, users=account, bet_for=points, bet_against=0)
                         deduct_points(account, points)
                         # b.users.fg_points_total = b.users.fg_points_total - points
-                        # b.users.forecast_participated += 1
+                        b.users.forecast_participated += 1
                         # b.users.save()
                         # b.save()
                     else:
                         b = Betting.objects.create(forecast=forecasts, users=account, bet_for=0, bet_against=points)
                         deduct_points(account, points)
                         # b.users.fg_points_total = b.users.fg_points_total - points
-                        # b.users.forecast_participated += 1
+                        b.users.forecast_participated += 1
                         # b.users.save()
                         # b.save()
                     return HttpResponse(json.dumps(dict(message='success')))
@@ -422,7 +422,7 @@ def deduct_points(account, points):
         account.market_fee -= account.market_fee - points
     elif account.fg_points_free > 0 and account.fg_points_free > points:
         account.fg_points_free -= points
-    account.forecast_participated += 1
+
     account.fg_points_total = account.fg_points_won + account.fg_points_bought + account.market_fee + account.fg_points_free
     account.save()
 
