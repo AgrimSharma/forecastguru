@@ -28,7 +28,6 @@ def test(request):
 def create_forecast(request):
     if request.method == 'POST':
         try:
-            import pdb;pdb.set_trace()
             user = request.POST.get('user', '')
             category = request.POST.get('category', '')
             sub_category = request.POST.get('sub_cat', '')
