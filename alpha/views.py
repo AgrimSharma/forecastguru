@@ -414,16 +414,17 @@ def bet_post(request):
 
 
 def deduct_points(account, points):
-    if account.fg_points_bought > 0:
+    if account.fg_points_bought > 0 and account.fg_points_bought > points:
         account.fg_points_bought -= points
-    elif account.fg_points_won > 0:
+    elif account.fg_points_won > 0 and account.fg_points_won> points:
         account.fg_points_won -= points
-    elif account.market_fee > 0:
+    elif account.market_fee > 0 and account.market_fee > points:
         account.market_fee -= account.market_fee - points
-    else:
+    elif account.fg_points_free > 0 and account.fg_points_free > points:
         account.fg_points_free -= points
     account.fg_points_total = account.fg_points_won + account.fg_points_bought + account.market_fee + account.fg_points_free
     account.save()
+
 
 def allocate_points(request):
     forecast = ForeCast.objects.filter(status__name='Closed', verified__name="yes")
