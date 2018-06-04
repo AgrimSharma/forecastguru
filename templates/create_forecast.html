@@ -137,9 +137,8 @@
             });
 
          $('#categories').on('change', function() {
-            $('#subcategories').html('');
+         $('#subcategories').html('');
             var id = this.value;
-            console.log(id);
             $.ajax({
                     type: "POST",
                     url: "{% url 'get_sub_cat' %}",
