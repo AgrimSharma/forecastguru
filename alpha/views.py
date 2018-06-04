@@ -28,33 +28,37 @@ def test(request):
 def create_forecast(request):
     if request.method == 'POST':
         try:
+            import pdb;pdb.set_trace()
             user = request.POST.get('user', '')
-            category = request.POST.get('categories', '')
-            sub_category = request.POST.get('subcategories', '')
+            category = request.POST.get('category', '')
+            sub_category = request.POST.get('sub_cat', '')
             heading = request.POST.get('heading', '')
-            # source = request.POST.get('source', '')
             expire = request.POST.get('expire', '')
-            start = request.POST.get('start', '')
             cat = Category.objects.get(id=category)
             sub_cat = SubCategory.objects.get(id=sub_category)
-            # user = User.objects.get(username=user)
             approved = Approved.objects.get(id=2)
             verified = Verified.objects.get(id=2)
+            expires = datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M")
+            if expires < current:
+                return HttpResponse(json.dumps(dict(status=400, message='end')))
             try:
                 users = SocialAccount.objects.get(user=request.user)
             except Exception:
-                return HttpResponseRedirect("/home/")
+                return HttpResponse(json.dumps(dict(status=400, message='Please Login')))
+
             status = Status.objects.get(name='In-Progress')
             f = ForeCast.objects.create(category=cat, sub_category=sub_cat,
                                         user=users, heading=heading,
                                         expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M"),
-                                        start=datetime.datetime.strptime(start, "%Y-%m-%d %H:%M"), approved=approved,
-                                        status=status, created=current, private=False, verified=verified
+                                        start=datetime.datetime.now(),
+                                        approved=approved,
+                                        status=status, created=current,
+                                        private=False, verified=verified
                                         )
             f.user.forecast_created += 1
 
             f.save()
-            return HttpResponseRedirect("/live_forecast/")
+            return HttpResponse(json.dumps(dict(status=200, message='Forecast Created')))
         except Exception:
 
             return HttpResponse(json.dumps(dict(status=400, message='Try again later')))
@@ -62,7 +66,7 @@ def create_forecast(request):
     else:
         category = Category.objects.all().order_by('name')
         return render(request, 'create_forecast.html', {'category': category,
-
+                                                        "current": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
                                                         "user": request.user.username
                                                         })
 
@@ -117,11 +121,13 @@ def live_forecast(request):
     return render(request, 'live_forecast.html', {"live": data})
 
 
+
 def forecast_result(request):
     data = []
     banner = Banner.objects.all()
 
     forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared').order_by("-expire")
+    forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='Closed', verified__name='no').order_by("-expire")
     for f in forecast_live:
         date = current.date()
         bet_start = f.start.date()
@@ -159,7 +165,48 @@ def forecast_result(request):
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for))
 
-    return render(request, 'forecast_result.html', {"live": data, 'banner': banner})
+    return render(request, 'forecast_result.html', {"live": data, "result": result_not_declared(forecast_result),'banner': banner})
+
+
+def result_not_declared(forecast_result):
+    data = []
+    for f in forecast_result:
+        date = current.date()
+        bet_start = f.start.date()
+        if date == bet_start:
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time()
+            today = 'yes'
+        else:
+            start = f.expire
+            today = 'no'
+        betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
+        betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
+
+        try:
+            bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
+            total_wagered = betting_against + betting_for
+            totl = bet_against + bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
+            total = bet_against + bet_for
+        except Exception:
+            total_wagered = 0
+            percent_for = 0
+            percent_against = 0
+            bet_for = 0
+            bet_against = 0
+            total = 0
+        status = "yes" if f.won == "yes" else "no"
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
+                         forecast=f, total=total, start=start,
+                         total_user=betting_for + betting_against,
+                         betting_for=betting_for, betting_against=betting_against, today=today,
+                         participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
+                         ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
+                         bet_for=bet_for))
+    return data
 
 
 def get_ratio(bet_for, bet_against, total, status):

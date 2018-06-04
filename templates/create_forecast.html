@@ -29,7 +29,8 @@
   </div>
 </header>
 <div class="topspace2"></div>
-<form action="{% url 'create_forecast' %}" method="post">
+<!--<form action="{% url 'create_forecast' %}" method="post">-->
+<form method="post">
 
 <div class="sel-cate fixed_p_footer">
   <div class="container">
@@ -48,41 +49,46 @@
    </div>
     <div class="row mb-3">
       <div class="col-12">
-        <select class="form-control" name="subcategories" id="subcategories">
-            <!--<option value="">Select</option>-->
-		<!--{% for c in sub_category %}-->
-                    <!--<option value="{{c.id}}">{{c.name}}</option>-->
-                <!--{% endfor %}-->
+        <select class="form-control" name="subcategories" id="subcategories" style="display:none;">
+
         </select>
       </div>
     </div>
-
     <div class="row mb-3">
       <div class="col-12">
-        <textarea class="form-control" rows="4" cols="50" name="heading" id="heading" placeholder="Enter Heading (max. length 100 characters)"></textarea>
+                    <div class="form-group" style="display:none;" id="srcs">
+
+          <label> Source</label>
+                        <div style="padding-left:10px;"><input type="text" id="source" readonly /></div>
+                    </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-12">
+        <textarea class="form-control" rows="4" cols="50" name="heading" id="heading" placeholder="Enter Heading (min 10 and max. length 100 characters)"></textarea>
       </div>
     </div>
     </div>
       <div style="display:flex;">
-      <div class="col-6">
-        <div class="position-relative">
-          <div class="form-group">
-                <label>Start Time</label>
-                    <div class='input-group date' id='datetimepicker7'>
-                        <input type='text' class="form-control" name="start" placeholder="Select start time"/>
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-            </div>
-      </div>
-    </div>
-      <div class="col-6">
+      <!--<div class="col-6">-->
+        <!--<div class="position-relative">-->
+          <!--<div class="form-group">-->
+                <!--<label>End Date</label>-->
+                    <!--<div class='input-group date' id='datetimepicker7'>-->
+                        <!--<input type='text' class="form-control" name="start" id="start" placeholder="Select start time"/>-->
+                        <!--<span class="input-group-addon">-->
+                            <!--<span class="glyphicon glyphicon-calendar"></span>-->
+                        <!--</span>-->
+                    <!--</div>-->
+            <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+      <div class="col-12">
         <div class="position-relative">
           <div class="form-group">
                 <label>End Time</label>
                     <div class='input-group date' id='datetimepicker6'>
-                        <input type='text' class="form-control" name="expire" placeholder="Select end time"/>
+                        <input type='text' class="form-control" name="expire" id="expire" placeholder="Select end time"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -93,7 +99,7 @@
       </div>
 
     <div class="row mb-2">
-      <div class="col-12"> <input type="submit" class="btn w-100 btn-orange text-uppercase" value="Create Forecast"/> </div>
+      <div class="col-12"> <input type="button" class="btn w-100 btn-orange text-uppercase create" value="Create Forecast"/> </div>
     </div>
     <div class="row mb-2">
       <div class="col-12">
@@ -138,19 +144,76 @@
                     url: "{% url 'get_sub_cat' %}",
                     data: {'identifier': id,},
                     success: function(resp){
+
                     var data = JSON.parse(resp);
-                        console.log(data);
-                        for(i=0; i < data.length; i++){
-                             var values = JSON.parse(JSON.stringify(data[i]));
+                    var sub = data.data;
+                        console.log(sub);
+                        for(i=0; i < sub.length; i++){
+                             var values = JSON.parse(JSON.stringify(sub[i]));
                             $('#subcategories').append($('<option>', {
                                 value: values.id,
                                 text : values.name
                             }));
                             }
+
+
+                            $("#source").val(data.source);
+                            $("#srcs").show();
+                            $("#subcategories").show();
                             }
                         });
 
                         });
+
+$(".create").click(function(){
+    var category = $("#categories").val();
+    var sub_cat = $("#subcategories").val();
+    var heading = $("#heading").val();
+    var expire = $("#expire").val();
+    var user = $("#user").val();
+     if(expire == "" || heading == "" || category=="" || sub_cat == ""){
+     alert('All fields are mandatory');
+     }
+    if(heading.length < 10){
+     alert('Minimum Heading should be greater than 10');
+     }
+     else if(heading.length > 70){
+     alert('Minimum Heading should be less than 70');
+    }
+
+
+
+    $.ajax({
+        type: "POST",
+        url: "{% url 'create_forecast' %}",
+        data: {'heading': heading, "category":category, 'sub_cat':sub_cat,"expire":expire,
+        "user":user},
+
+        success: function(resp){
+            console.log(resp);
+            var data = JSON.parse(resp);
+
+            if(data.message=="Forecast Created"){
+                 alert(data.message);
+                 window.location.href = "{% url 'my_forecast' %}";
+               }
+
+            else if(data.message == "Please Login"){
+                 alert(data.message);
+                 window.location.href = "{% url 'blank_page' %}";
+            }
+            else if(data.message == "end"){
+                 alert("End Time should be greater than Current Time");
+            }
+            else{
+                alert(data.message);
+            }
+           }
+
+    });
+
+    });
+
 
 
         });
