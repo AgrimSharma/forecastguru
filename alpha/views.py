@@ -165,7 +165,7 @@ def forecast_result(request):
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for))
 
-    return render(request, 'forecast_result.html', {"live": data, "result": result_not_declared(forecast_result),'banner': banner})
+    return render(request, 'forecast_result.html', {"live": data, 'banner': banner})
 
 
 def result_not_declared(forecast_result):
