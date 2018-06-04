@@ -1,7 +1,5 @@
-from .celery import app
 from .models import *
 from django.db.models import Sum
-import datetime
 
 
 def allocate_points():
@@ -69,34 +67,34 @@ def forecast_data(forecast, ratio, total, status):
     for b in betting:
         bet_for = b.bet_for
         bet_against = b.bet_against
-        if bet_for > 0 and bet_against == 0:
-            if status == "yes":
-                b.users.successful_forecast += 1
-                b.users.fg_points_won += b.bet_for * ratio
-                b.users.market_fee_paid += bet_for * 0.10
-                b.users.save()
-                b.save()
-            else:
-                b.users.unsuccessful_forecast += 1
-                b.users.fg_points_lost += b.bet_for * ratio
-                b.users.market_fee_paid += bet_for * 0.10
-                b.users.save()
-                b.save()
-        elif bet_against > 0 and bet_for == 0:
-            if status == "no":
-                b.users.successful_forecast += 1
-                b.users.fg_points_won += b.bet_against * ratio
-                b.users.successful_forecast += 1
-                b.users.market_fee_paid += bet_for * 0.10
-                b.users.save()
-                b.save()
-            else:
-                b.users.unsuccessful_forecast += 1
-                b.users.fg_points_lost += b.bet_against
-                b.users.market_fee_paid += bet_for * 0.10
-                b.users.save()
-                b.save()
-        elif bet_for == 0 and bet_against == 0:
+        # if bet_for > 0 and bet_against == 0:
+        #     if status == "yes":
+        #         b.users.successful_forecast += 1
+        #         b.users.fg_points_won += b.bet_for * ratio
+        #         b.users.market_fee_paid += bet_for * 0.10
+        #         b.users.save()
+        #         b.save()
+        #     else:
+        #         b.users.unsuccessful_forecast += 1
+        #         b.users.fg_points_lost += b.bet_for * ratio
+        #         b.users.market_fee_paid += bet_for * 0.10
+        #         b.users.save()
+        #         b.save()
+        # elif bet_against > 0 and bet_for == 0:
+        #     if status == "no":
+        #         b.users.successful_forecast += 1
+        #         b.users.fg_points_won += b.bet_against * ratio
+        #         b.users.successful_forecast += 1
+        #         b.users.market_fee_paid += bet_for * 0.10
+        #         b.users.save()
+        #         b.save()
+        #     else:
+        #         b.users.unsuccessful_forecast += 1
+        #         b.users.fg_points_lost += b.bet_against
+        #         b.users.market_fee_paid += bet_for * 0.10
+        #         b.users.save()
+        #         b.save()
+        if bet_for == 0 and bet_against == 0:
             b.forecast.won = "NA"
             b.forecast.save()
             b.save()
@@ -121,7 +119,12 @@ def forecast_data(forecast, ratio, total, status):
                 b.users.successful_forecast += 1
                 b.users.save()
                 b.save()
-
+            if bet_for == 0 and bet_against > 0:
+                b.users.fg_points_won += bet_for * ratio
+                b.users.market_fee_paid += bet_for * 0.10
+                b.users.unsuccessful_forecast += 1
+                b.users.save()
+                b.save()
         elif status == "no":
             if bet_against > 0 and bet_for == 0:
                 b.users.fg_points_won += bet_against * ratio
@@ -145,7 +148,12 @@ def forecast_data(forecast, ratio, total, status):
                 b.users.unsuccessful_forecast += 1
                 b.users.save()
                 b.save()
-
+            elif bet_for > 0 and bet_against == 0:
+                b.users.fg_points_won += bet_for * ratio
+                b.users.market_fee_paid += bet_for * 0.10
+                b.users.unsuccessful_forecast += 1
+                b.users.save()
+                b.save()
 
 if __name__ == "__main__":
     allocate_points()
