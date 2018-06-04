@@ -422,6 +422,7 @@ def deduct_points(account, points):
         account.market_fee -= account.market_fee - points
     elif account.fg_points_free > 0 and account.fg_points_free > points:
         account.fg_points_free -= points
+    account.forecast_participated += 1
     account.fg_points_total = account.fg_points_won + account.fg_points_bought + account.market_fee + account.fg_points_free
     account.save()
 
