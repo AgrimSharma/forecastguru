@@ -266,7 +266,7 @@ def profile(request):
     except Exception:
         point = 0
 
-    total = profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point
+    total = profile.fg_points_free + profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point
     profile.fg_points_total = total
     totals = profile.successful_forecast + profile.unsuccessful_forecast
     try:
