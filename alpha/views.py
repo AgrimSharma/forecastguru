@@ -485,7 +485,7 @@ def allocate_points(request):
             elif bet_for == 0 and bet_against == 0:
                 f.won = "No Result."
                 f.save()
-            f.user.market_fee += total * 0.05
+            f.user.market_fee += (bet_against + bet_for) * 0.05
             f.user.save()
             f.save()
             total -= total * 0.10
