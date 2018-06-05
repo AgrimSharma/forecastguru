@@ -462,7 +462,7 @@ def allocate_points(request):
             ratio = 1
             forecast_data(f, ratio, total, "yes")
         elif bet_against > 0 and bet_for > 0 and f.won == 'yes':
-            ratio = (int(1 + round((bet_against / total), 2)))
+            ratio = (int(round((bet_against / total), 2)))
             forecast_data(f, ratio, total, "yes")
         elif f.won == 'no' and bet_against == 0 and bet_for > 0:
             ratio = 0
@@ -472,7 +472,7 @@ def allocate_points(request):
             ratio = 1
             forecast_data(f, ratio, total, "no")
         elif bet_for > 0 and f.won == 'no' and bet_against > 0:
-            ratio = (int(1 + round((bet_for / total), 2)))
+            ratio = (int(round((bet_for / total), 2)))
             forecast_data(f, ratio, total, "no")
         elif f.won == 'yes' and bet_for > 0 and bet_against == 0:
             ratio = 0
