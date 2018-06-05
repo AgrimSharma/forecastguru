@@ -34,9 +34,9 @@ class VerifiedAdmin(admin.ModelAdmin):
 
 class ForeCastAdmin(admin.ModelAdmin):
     # pass
-    list_display = ['category', 'sub_category', 'user', 'heading']
-    search_fields = ['category', 'sub_category', 'user']
-    list_filter = ("approved", "verified", 'status')
+    list_display = ['heading', 'category', 'sub_category', 'user', 'expire', 'status']
+    search_fields = ['category', 'sub_category', 'user', 'heading']
+    list_filter = ("approved", "verified", 'status', 'category')
 
 
 class StatusAdmin(admin.ModelAdmin):
