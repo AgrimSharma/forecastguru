@@ -545,7 +545,7 @@ def forecast_data(forecast, ratio, total, status):
                 b.save()
             elif bet_against > 0 and bet_for == 0:
                 b.users.fg_points_lost += bet_against
-                b.users.market_fee_paid += bet_against * 0.10
+                # b.users.market_fee_paid += bet_against * 0.10
                 b.users.unsuccessful_forecast += 1
                 b.users.save()
                 b.save()
@@ -575,7 +575,7 @@ def forecast_data(forecast, ratio, total, status):
                 b.save()
             elif bet_for > 0 and bet_against == 0:
                 b.users.fg_points_lost += bet_for
-                b.users.market_fee_paid += bet_for * 0.10
+                # b.users.market_fee_paid += bet_for * 0.10
                 b.users.unsuccessful_forecast += 1
                 b.users.save()
                 b.save()
