@@ -23,7 +23,7 @@
       <div class="col-12 text-center position-relative">
           <div class="header-logo position-absolute"><img src="{% static 'images/logo-small-white.png' %}" alt=""></div>
         <h1>Forecast Detail</h1>
-        <!--<div class="header-right with-btn position-absolute"><a href="#" class="btn btn-orange"> Create <br>Forecast</a></div>-->
+        <div class="header-right with-btn position-absolute"><a href="#" class="btn btn-orange"> Create <br>Forecast</a></div>
       </div>
     </div>
   </div>
@@ -38,7 +38,7 @@
           <hr>
            <div class="form-group form-inline">
         <input type="text" class="form-control" id="awb" value="{{forecast.id}}" style="display:none;" ><br>
-        <div class="col-12"><p> Please select vote type</p></div>
+        <div class="col-12"><h4> Please select vote type</h4></div>
         <div class="predictwrap">
 
                 <div style="display:flex;">
@@ -49,7 +49,7 @@
                    &nbsp; <label for="contactChoice2" style="margin-bottom:5px;">No</label>
                     </div>
           <br>
-          <div style="display:none;" id="point_div">
+          <div id="point_div">
 
               <label for="points" style="justify-content: left; "><strong>FG Points</strong></label>
             <input type="button" class="btn btn-danger btn-sm" id="sub" value="-" style="width:26px;"/>
@@ -58,7 +58,7 @@
 
             <input type="button" class="btn btn-success btn-sm" id="add" value="+" />
             <input type="text" id="forecast" value="{{forecast.id}}" style="display:None">
-            <button class="btn btn-sm btn-orange text-uppercase submit_forecast"> Submit</button>
+            <button class="btn btn-sm btn-orange text-uppercase submit_forecast"> PLAY</button>
 
               </div>
 
@@ -69,7 +69,6 @@
 </div>
           <hr class="hr">
             <p>Status :  {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %} </p>
-          <hr class="hr">
           <p>Closes <img src="{% static 'images/calender-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_date}}</span> <img src="{% static 'images/time-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_time}}</span> </p>
       </div>
     </div>
@@ -183,16 +182,27 @@
 <footer class="sticky-footer">
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
-       <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
-          Forecasts</a> </li>
-        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
-          Categories</a> </li>
-        <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
-          Results</a> </li>
-          <li class="nav-item"> <a class="nav-link active" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
-            My Forecasts</a> </li>
-        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
-          My Account</a> </li>
+         <li class="nav-item">
+                        <a class="nav-link" href="{% url 'live_forecast' %}">
+                            <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+                            Forecasts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'category' %}">
+                            <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+                            Categories</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'forecast_result' %}">
+                            <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+                            Results</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user_profile' %}">
+                            <img src="{% static 'images/menu-icon-settings.png' %}" alt=""><br>
+                            Settings</a>
+                    </li>
     </ul>
   </nav>
 </footer>
@@ -261,11 +271,14 @@ $(".submit_forecast").click(function(){
 
 
 
-$(document).ready(function(){
-    $('input[type="radio"]').click(function(){
-         $("#point_div").show();
-    });
+<!--$(document).ready(function(){-->
+    <!--$('input[type="radio"]').click(function(){-->
+         <!--$("#point_div").show();-->
+    <!--});-->
 });
 </script>
 </body>
 </html>
+
+
+

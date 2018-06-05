@@ -42,28 +42,49 @@
 <div class="container topnavlinks">
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
-      <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'create_forecast' %}">Create Forecast</a> </li>
-      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'payment' %}" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;">Buy FG Point</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'create_forecast' %}">Create Forecast</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'payment' %}">Buy FG Point</a> </li>
       <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
     </ul>
   </nav>
 </div>
-
 <div class="container fixed_p_footer">
   <div class="row">
     <div class="col-md-12">
       <div class="forcast_home">
+             {% for f in result %}
+        <div class="forcast_box">
+          <div class="row align-items-center">
+            <div class="col-3 col-md-2 text-center">
+                <figure class="icon"> <img src="{{f.forecast.sub_category.image}}" alt="">
+
+                  <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
+                </figure>
+            </div>
+            <div class="col-9 col-md-10">
+                <a href="{% url 'betting' f.id %}"> <p class="title_desc">result {{f.heading}}</p></a>
+            </div>
+          </div>
+             <div class="row" style="background: #f98b8b;padding-left: 100px;padding-top: 5px;height: 26px;/* text-align:  center; */">
+                      <p>Result Awaited</p>
+
+                  </div>
+
+          </div>
+        </div>
+        {% endfor %}
+
         {% for f in live %}
         <div class="forcast_box">
           <div class="row align-items-center">
             <div class="col-3 col-md-2 text-center">
-                            <figure class="icon"> <img src="{{f.forecast.sub_category.image}}" alt="">
+                <figure class="icon"> <img src="{{f.forecast.sub_category.image}}" alt="">
 
-                  <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span>-->
-                            </figure>
+                  <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
+                </figure>
             </div>
             <div class="col-9 col-md-10">
-              <p class="title_desc"> {{f.forecast.heading}}</p>
+                <a href="{% url 'betting' f.forecast.id %}">  <p class="title_desc"> {{f.forecast.heading}}</p></a>
             </div>
           </div>
           <div class="row">
