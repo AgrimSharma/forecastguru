@@ -447,7 +447,7 @@ def allocate_points(request):
             bet_against = 0
             total = 0
         market_fee = total
-        if f.won == "yes"  and market_fee > bet_against:
+        if f.won == "yes" and market_fee > bet_against:
             f.user.market_fee = bet_against * 0.05
             f.user.save()
             f.save()
@@ -467,7 +467,7 @@ def allocate_points(request):
                 ratio = 1
                 forecast_data(f, ratio, total, "yes", bet_for)
             elif bet_against > 0 and bet_for > 0 and f.won == 'yes':
-                ratio = round(total/bet_for,2)
+                ratio = round(bet_against/bet_for,2)
                 forecast_data(f, ratio, total, "yes", bet_for)
             elif f.won == 'no' and bet_against == 0 and bet_for > 0:
                 ratio = 0
@@ -477,7 +477,7 @@ def allocate_points(request):
                 ratio = 1
                 forecast_data(f, ratio, total, "no", bet_against)
             elif bet_for > 0 and f.won == 'no' and bet_against > 0:
-                ratio = round( total/bet_against, 2)
+                ratio = round( bet_for/bet_against, 2)
                 forecast_data(f, ratio, total, "no",bet_against)
             elif f.won == 'yes' and bet_for > 0 and bet_against == 0:
                 ratio = 0
@@ -494,12 +494,80 @@ def allocate_points(request):
 
 def forecast_data(forecast, ratio, total, status, total_bets):
     betting = Betting.objects.filter(forecast=forecast)
-    ratio = ratio - 1
+
     for b in betting:
-
-
         bet_for = b.bet_for
         bet_against = b.bet_against
+        if bet_for == 0 and bet_against == 0:
+            b.forecast.won = "NA"
+            b.forecast.save()
+            b.save()
+        elif status == "yes":
+            if bet_for > 0 and bet_against == 0:
+                # bets = (bet_for/total_bets) * total
+                b.users.fg_points_won += bet_for * ratio
+                b.users.market_fee_paid += bet_for * 0.10
+                b.users.successful_forecast += 1
+                b.users.save()
+                b.save()
+            elif bet_for > 0 and bet_against > 0:
+                # bets = (bet_for / total_bets) * total
+                b.users.fg_points_won += bet_for * ratio
+                b.users.market_fee_paid += bet_for * 0.10
+                b.users.successful_forecast += 1
+                b.users.fg_points_lost += bet_against
+                b.users.unsuccessful_forecast += 1
+                b.users.save()
+                b.save()
+            elif bet_against == bet_for:
+                # bets = (bet_for / total_bets) * total
+                b.users.fg_points_won += bet_for * ratio
+                b.users.market_fee_paid += bet_for * 0.10
+                b.users.successful_forecast += 1
+                b.users.save()
+                b.save()
+            elif bet_against > 0 and bet_for == 0:
+                b.users.fg_points_lost += bet_against
+                # b.users.market_fee_paid += bet_against * 0.10
+                b.users.unsuccessful_forecast += 1
+                b.users.save()
+                b.save()
+
+        elif status == "no":
+            if bet_against > 0 and bet_for == 0:
+                # bets = (bet_against / total_bets) * total
+                b.users.fg_points_won += bet_against * ratio
+                b.users.market_fee_paid += bet_against * 0.10
+                b.users.successful_forecast += 1
+                b.users.save()
+                b.save()
+            elif bet_for > 0 and bet_against > 0:
+                # bets = (bet_against / total_bets) * total
+                b.users.fg_points_won += bet_against * ratio
+                b.users.market_fee_paid += bet_against * 0.10
+                b.users.fg_points_lost += bet_for
+                b.users.successful_forecast += 1
+                b.users.unsuccessful_forecast += 1
+                b.users.save()
+                b.save()
+            elif bet_against == bet_for:
+                # bets = (bet_against / total_bets) * total
+                b.users.fg_points_won += bet_against * ratio
+                b.users.market_fee_paid += bet_against * 0.10
+                b.users.fg_points_lost += bet_for
+                b.users.successful_forecast += 1
+                b.users.unsuccessful_forecast += 1
+                b.users.save()
+                b.save()
+            elif bet_for > 0 and bet_against == 0:
+                b.users.fg_points_lost += bet_for
+                # b.users.market_fee_paid += bet_for * 0.10
+                b.users.unsuccessful_forecast += 1
+                b.users.save()
+                b.save()
+
+
+
         # if bet_for > 0 and bet_against == 0:
         #     if status == "yes":
         #         b.users.successful_forecast += 1
@@ -527,73 +595,7 @@ def forecast_data(forecast, ratio, total, status, total_bets):
         #         b.users.market_fee_paid += bet_for * 0.10
         #         b.users.save()
         #         b.save()
-        if bet_for == 0 and bet_against == 0:
-            b.forecast.won = "NA"
-            b.forecast.save()
-            b.save()
-        elif status == "yes":
-            if bet_for > 0 and bet_against == 0:
-                bets = (bet_for/total_bets) * total
-                b.users.fg_points_won += bets
-                b.users.market_fee_paid += bet_for * 0.10
-                b.users.successful_forecast += 1
-                b.users.save()
-                b.save()
-            elif bet_for > 0 and bet_against > 0:
-                bets = (bet_for / total_bets) * total
-                b.users.fg_points_won += bets
-                b.users.market_fee_paid += bet_for * 0.10
-                b.users.successful_forecast += 1
-                b.users.fg_points_lost += bet_against
-                b.users.unsuccessful_forecast += 1
-                b.users.save()
-                b.save()
-            elif bet_against == bet_for:
-                bets = (bet_for / total_bets) * total
-                b.users.fg_points_won += bets
-                b.users.market_fee_paid += bet_for * 0.10
-                b.users.successful_forecast += 1
-                b.users.save()
-                b.save()
-            elif bet_against > 0 and bet_for == 0:
-                b.users.fg_points_lost += bet_against
-                # b.users.market_fee_paid += bet_against * 0.10
-                b.users.unsuccessful_forecast += 1
-                b.users.save()
-                b.save()
 
-        elif status == "no":
-            if bet_against > 0 and bet_for == 0:
-                bets = (bet_against / total_bets) * total
-                b.users.fg_points_won += bets
-                b.users.market_fee_paid += bet_against * 0.10
-                b.users.successful_forecast += 1
-                b.users.save()
-                b.save()
-            elif bet_for > 0 and bet_against > 0:
-                bets = (bet_against / total_bets) * total
-                b.users.fg_points_won += bets
-                b.users.market_fee_paid += bet_against * 0.10
-                b.users.fg_points_lost += bet_for
-                b.users.successful_forecast += 1
-                b.users.unsuccessful_forecast += 1
-                b.users.save()
-                b.save()
-            elif bet_against == bet_for:
-                bets = (bet_against / total_bets) * total
-                b.users.fg_points_won += bets
-                b.users.market_fee_paid += bet_against * 0.10
-                b.users.fg_points_lost += bet_for
-                b.users.successful_forecast += 1
-                b.users.unsuccessful_forecast += 1
-                b.users.save()
-                b.save()
-            elif bet_for > 0 and bet_against == 0:
-                b.users.fg_points_lost += bet_for
-                # b.users.market_fee_paid += bet_for * 0.10
-                b.users.unsuccessful_forecast += 1
-                b.users.save()
-                b.save()
 @csrf_exempt
 def payments(request):
     if request.method == "POST":
@@ -777,7 +779,7 @@ def search_result(request):
         else:
             data = []
 
-            forecast_live = ForeCast.objects.filter(heading__icontains=query).order_by(
+            forecast_live = ForeCast.objects.filter(heading__icontains=query, approved__name="yes").order_by(
                 "-expire")
             for f in forecast_live:
                 date = current.date()
