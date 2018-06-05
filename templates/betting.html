@@ -69,7 +69,7 @@
 </div>
           <hr class="hr">
             <p>Status :  {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %} </p>
-          <hr>
+          <hr class="hr">
           <p>Closes <img src="{% static 'images/calender-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_date}}</span> <img src="{% static 'images/time-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_time}}</span> </p>
       </div>
     </div>
