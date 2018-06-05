@@ -68,10 +68,11 @@
               <p class="title_desc"> {{f.heading}}</p>
             </div>
           </div>
+            <a href="{% url 'search_result' f.id %}">
              <div class="row" style="background: #f98b8b;padding-left: 68px;padding-top: 5px;height: 26px;/* text-align:  center; */">
                       <p>Pending for <strong>ADMIN</strong> approval </p>
 
-                  </div>
+             </div></a>
 
           </div>
         </div>
@@ -87,10 +88,10 @@
 
                   <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
                             </figure>
-            </div>
+            </div><a href="{% url 'search_result' f.forecast.id %}">
             <div class="col-9 col-md-10">
               <p class="title_desc"> {{ f.forecast.heading }}</p>
-            </div>
+            </div></a>
           </div>
           <div class="row">
             <div class="col-12">
@@ -155,10 +156,10 @@
 
                   <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
                             </figure>
-            </div>
+            </div><a href="{% url 'search_result' f.forecast.id %}">
             <div class="col-9 col-md-10">
               <p class="title_desc"> {{ f.forecast.heading }}</p>
-            </div>
+            </div></a>
           </div>
           <div class="row">
             <div class="col-12">
@@ -220,10 +221,10 @@
 
                   <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
                             </figure>
-            </div>
+            </div><a href="{% url 'search_result' f.forecast.id %}">
             <div class="col-9 col-md-10">
               <p class="title_desc"> {{f.forecast.heading}}</p>
-            </div>
+            </div></a>
           </div>
           <div class="row">
             <div class="col-12">
