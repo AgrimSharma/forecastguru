@@ -363,7 +363,7 @@ def bet_post(request):
             return HttpResponse(json.dumps(dict(message='Points should be multiple of 1000')))
         forecast = request.POST.get('forecast')
         forecasts = ForeCast.objects.get(id=forecast)
-        if account.fg_points_total - points > 0:
+        if account.fg_points_total > points:
             try:
                 b = Betting.objects.get(forecast=forecasts, users=account)
                 if vote == 'email':
