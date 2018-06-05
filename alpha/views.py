@@ -310,7 +310,6 @@ def predict_status(profile):
 
 def betting(request, userid):
     forecast = ForeCast.objects.get(id=userid)
-    user = SocialAccount.objects.get(id=forecast.user.id)
     try:
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -343,7 +342,7 @@ def betting(request, userid):
                                                 "end_date": end_date, "end_time": end_time,
                                                 'status': status, "percent": percent,
                                                 "success": success.successful_forecast,
-                                                "user": user.username,
+                                                "user": forecast.user.user.username,
                                                 "sums": betting_against + betting_for,
                                                 "approved": approved
                                                 })
