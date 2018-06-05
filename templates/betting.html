@@ -34,7 +34,8 @@
     <div class="row">
       <div class="col-12">
         <h2>{{forecast.heading}}</h2>
- <hr>
+ {% if forecast.approved.name == 'yes' %}
+          <hr>
            <div class="form-group form-inline">
         <input type="text" class="form-control" id="awb" value="{{forecast.id}}" style="display:none;" ><br>
         <div class="col-12"><p> Please select vote type</p></div>
@@ -64,10 +65,10 @@
 
              </div>
 
-
+{% endif %}
 </div>
           <hr class="hr">
-            <p>Status : <span>{{status}}</span></p>
+            <p>Status :  {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %} </p>
           <p>Closes <img src="{% static 'images/calender-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_date}}</span> <img src="{% static 'images/time-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_time}}</span> </p>
       </div>
     </div>
@@ -90,7 +91,8 @@
                       FG Status
                   </div>
                   <div class="col-7 text-right value-color">
-                      {{status}} ({{percent}}% success rate. {{sums}} Forecasts)
+                      {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %}
+                      ({{percent}}% success rate. {{sums}} Forecasts)
                   </div>
                 </div>
         </div>
@@ -172,9 +174,9 @@
       </div>
     </div>
     <div class="clearfix"></div>
-    <div class="row mb-2">
-        <div class="col-12"> <button class="btn w-100 btn-orange text-uppercase btn-lg submit"> Participate in the Forecast</button> </div>
-    </div>
+    <!--<div class="row mb-2">-->
+        <!--<div class="col-12"> <button class="btn w-100 btn-orange text-uppercase btn-lg submit"> Participate in the Forecast</button> </div>-->
+    <!--</div>-->
   </div>
 </div>
 <footer class="sticky-footer">
@@ -277,6 +279,3 @@ $(document).ready(function(){
 </script>
 </body>
 </html>
-
-
-
