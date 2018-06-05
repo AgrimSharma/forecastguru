@@ -95,7 +95,7 @@ class ForeCast(models.Model):
 
     class Meta:
         ordering = ['-category']
-        verbose_name_plural = "Fore Cast"
+        verbose_name_plural = "FORECAST"
 
     def __str__(self):
         return "{} : {} : {}".format(self.category, self.sub_category, self.heading)
@@ -112,7 +112,7 @@ class Betting(models.Model):
 
     class Meta:
         ordering = ['-bet_for']
-        verbose_name_plural = "Betting"
+        verbose_name_plural = "Points In Play"
 
     def __str__(self):
         return "{} : {}".format(self.forecast, self.users)
