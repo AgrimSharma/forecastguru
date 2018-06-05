@@ -68,7 +68,8 @@
 {% endif %}
 </div>
           <hr class="hr">
-            <p>Status :  {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %} </p><br>
+            <p>Status :  {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %} </p>
+          <hr>
           <p>Closes <img src="{% static 'images/calender-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_date}}</span> <img src="{% static 'images/time-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_time}}</span> </p>
       </div>
     </div>
@@ -182,27 +183,16 @@
 <footer class="sticky-footer">
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
-         <li class="nav-item">
-                        <a class="nav-link" href="{% url 'live_forecast' %}">
-                            <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
-                            Forecasts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'category' %}">
-                            <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
-                            Categories</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'forecast_result' %}">
-                            <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
-                            Results</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'user_profile' %}">
-                            <img src="{% static 'images/menu-icon-settings.png' %}" alt=""><br>
-                            Settings</a>
-                    </li>
+       <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link active" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
     </ul>
   </nav>
 </footer>
