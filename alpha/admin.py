@@ -37,6 +37,7 @@ class ForeCastAdmin(admin.ModelAdmin):
     list_display = ['heading', 'category', 'sub_category', 'user', 'expire', 'status']
     search_fields = ['category', 'sub_category', 'user', 'heading']
     list_filter = ("approved", "verified", 'status', 'category')
+    ordering = ('-expire',)
 
 
 class StatusAdmin(admin.ModelAdmin):
