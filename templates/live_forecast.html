@@ -54,9 +54,9 @@
   <div class="row">
 
       <div class="col-md-12">
-
+{% for f in live %}
       <div class="forcast_home">
-   {% for f in live %}
+
 
         <div class="forcast_box">
 
@@ -108,29 +108,24 @@
                   </div>
                   <div class="col-6 col-md-4 pl-0 text-right text-md-center mb-2">
                       <div class="time textwithicon pl-0">
-                      <!--<label><i class="fa fa-users"></i> <span>{{f.total}}  </span> Participants</label><br>-->
-<form method="post">{% csrf_token %}
+                      
+                        <form method="post">{% csrf_token %}
                         {% comment %}{% if f.btn_val == 'no' %}{% endcomment %}
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">PLAY</button>
 
                           </form>
                       </div>
                   </div>
-                  <!--<div class="col-12 col-md-4 text-right pl-0">-->
-<!---->
-                      <!--<form method="post">{% csrf_token %}-->
-                        <!--{% comment %}{% if f.btn_val == 'no' %}{% endcomment %}-->
-                        <!--<button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">Predict </button>-->
-<!---->
-                          <!--</form>-->
+
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-          {% endfor %}
+
     </div>
+      {% endfor %}
   </div>
 </div>
 <footer class="sticky-footer">
