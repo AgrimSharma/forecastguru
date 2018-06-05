@@ -686,23 +686,11 @@ def payu_success(request):
     account = SocialAccount.objects.get(user=request.user)
 
     data = json.loads(json.dumps(request.POST))
-    Order.objects.create(user=account, order_date=current, txnid=data['txnid'], amount=data['amount'])
-    amount = data['net_amount_debit']
-    if amount == "49":
-        account.fg_points_bought = account.fg_points_bought + 5000
-
-    elif amount == "99":
-        account.fg_points_bought = account.fg_points_bought + 10000
-    elif amount == "499":
-        account.fg_points_bought = account.fg_points_bought + 60000
-    elif amount == "999":
-        account.fg_points_bought = account.fg_points_bought + 150000
-    elif amount == "3999":
-        account.fg_points_bought = account.fg_points_bought + 1000000
+    account.fg_points_bought += int(constants.PAID_FEE_TOKENS[str(int(float(data['amount'])))])
     account.fg_points_total += account.fg_points_bought
     account.save()
+    Order.objects.create(user=account, order_date=current, txnid=data['txnid'], amount=int(float(data['amount'])))
     return HttpResponseRedirect("/user_profile/")
-
 
 @csrf_exempt
 def payu_failure(request):
