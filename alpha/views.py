@@ -334,7 +334,7 @@ def betting(request, userid):
         else:
             status = 'Waiting'
         success = SocialAccount.objects.get(user__username=request.user)
-        print(success)
+        approved = "yes" if forecast.approved.name == 'yes' and forecast.status.name=='In-Progress' else 'no'
         return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
                                                 'bet_for': betting_for if betting_for else 0,
                                                 'against': betting_against if betting_against else 0,
@@ -343,7 +343,8 @@ def betting(request, userid):
                                                 'status': status, "percent": percent,
                                                 "success": success.successful_forecast,
                                                 "user": request.user.username,
-                                                "sums": betting_against + betting_for
+                                                "sums": betting_against + betting_for,
+                                                "approved": approved
                                                 })
     except Exception:
         return render(request, 'betting.html', {'forecast': forecast, "user": request.user.username})
