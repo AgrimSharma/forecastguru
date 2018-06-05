@@ -34,25 +34,38 @@
     <div class="row">
       <div class="col-12">
         <h2>{{forecast.heading}}</h2>
-           <p>Please select your preferred voting type:</p>
-          <p style="color:red;"> **Vote count should be multiple of 1000</p>
-          <form method="post">
-    <input type="radio" id="contactChoice1"
-     name="contact" value="email">
-    <label for="contactChoice1">Vote Yes</label>
+ <hr>
+           <div class="form-group form-inline">
+        <input type="text" class="form-control" id="awb" value="{{forecast.id}}" style="display:none;" ><br>
+        <div class="col-12"><p> Please select vote type</p></div>
+        <div class="predictwrap">
 
-    <input type="radio" id="contactChoice2"
-     name="contact" value="phone">
-    <label for="contactChoice2">Vote No</label>
+                <div style="display:flex;">
+                <input type="radio" id="contactChoice1" name="contact" value="email" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">Yes</label>
+
+                <input type="radio" id="contactChoice2" name="contact" value="phone" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice2" style="margin-bottom:5px;">No</label>
+                    </div>
           <br>
           <div style="display:none;" id="point_div">
-    <label for="points">Points</label>
-            <input type="text" value="1000" id="points" name="points"/>
 
-            <input type="button" id="sub" value="-"/>
-            <input type="button" id="add" value="+"/>
+              <label for="points" style="justify-content: left; "><strong>FG Points</strong></label>
+            <input type="button" class="btn btn-danger btn-sm" id="sub" value="-" style="width:26px;"/>
+            &nbsp;
+            <input type="text" value="1000" id="points" name="points" style="height:30px;"/>
+
+            <input type="button" class="btn btn-success btn-sm" id="add" value="+" />
             <input type="text" id="forecast" value="{{forecast.id}}" style="display:None">
-              </div></form>
+            <button class="btn btn-sm btn-orange text-uppercase submit_forecast"> Submit</button>
+
+              </div>
+
+
+             </div>
+
+
+</div>
           <hr class="hr">
             <p>Status : <span>{{status}}</span></p>
           <p>Closes <img src="{% static 'images/calender-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_date}}</span> <img src="{% static 'images/time-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_time}}</span> </p>
@@ -207,25 +220,53 @@
             }
     });
 
-$(".submit").click(function(){
+$(".submit_forecast").click(function(){
     var radioValue = $("input[name='contact']:checked").val();
+
     var forecast = $("#forecast").val();
     var point = $("#points").val();
-    $.ajax({
-        type: "POST",
-        url: "{% url 'bet_save' %}",
-        data: {'vote': radioValue, "points":point, 'forecast':forecast},
+    if(radioValue === "email" || radioValue == "phone"){
+        if( parseInt(point) % 1000 === 0){
+            $.ajax({
+                type: "POST",
+                url: "{% url 'bet_save' %}",
+                data: {'vote': radioValue, "points":point, 'forecast':forecast},
 
-        success: function(resp){
-            console.log(resp);
-            var data = JSON.parse(resp);
-            alert(data.message);
-            location.reload();
+                success: function(resp){
+                    console.log(resp);
+                    var data = JSON.parse(resp);
+                    if(data.message=="success"){
+                    console.log(data.message);
+                        alert("Forecast Placed");
+                        location.reload();
+                        }
+                    else if(data.message=="balance"){
+                            alert("You ForeCast Guru Balance is low");
+                            window.location.href = "{% url 'payment' %}";
+                    }
+                    else if(data.message=="login"){
+                            alert("Please login!!");
+                            window.location.href = "{% url 'blank_page' %}";
+                    }
+                    else{
+                        alert(data.message);
+                        }
+                    }
+
+                });
+
+            }
+        else{
+            alert("Points should be multiple of 1000");
+            }
+            }
+        else{
+            alert("Please select vote type");
+
             }
 
     });
 
-    });
 
 
 $(document).ready(function(){
