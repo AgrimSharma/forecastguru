@@ -255,23 +255,23 @@ def profile(request):
         })
     date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
     try:
-        bet_for = \
-            Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(
-                bet_for=Sum('bet_for'))[
-                'bet_for']
-
-        bet_for_close = \
-            Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_for=Sum('bet_for'))[
-                'bet_for']
-        bet_against = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(
-            bet_against=Sum('bet_against'))['bet_against']
+        bet_for = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_for=Sum('bet_for'))['bet_for']
+    except Exception:
+        bet_for = 0
+    try:
+        bet_for_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_for=Sum('bet_for'))['bet_for']
+    except Exception:
+        bet_for_close = 0
+    try:
+        bet_against = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_against=Sum('bet_against'))['bet_against']
+    except Exception:
+        bet_against = 0
+    try:
         bet_against_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(
             bet_against=Sum('bet_against'))['bet_against']
-        point = bet_against + bet_for + bet_for_close + bet_against_close
-    # if bet_against_close != None and bet_against != None and bet_for_close != None and bet_for !=None:
-
     except Exception:
-        point = 0
+        bet_against_close = 0
+    point = bet_against + bet_for + bet_for_close + bet_against_close
 
     total = profile.fg_points_free + profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point
     profile.fg_points_total = total
