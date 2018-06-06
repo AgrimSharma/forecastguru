@@ -65,7 +65,7 @@
                             </figure>
             </div>
             <div class="col-9 col-md-10">
-              <a href="{% url 'betting' f.id %}"><p class="title_desc"> {{f.heading}}</p></a>
+              <p class="title_desc"> <a href="{% url 'betting' f.id %}">{{f.heading}}</a></p>
             </div>
           </div>
 
@@ -90,7 +90,7 @@
                             </figure>
             </div>
             <div class="col-9 col-md-10">
-             <a href="{% url 'betting' f.forecast.id %}"> <p class="title_desc"> {{ f.forecast.heading }}</p></a>
+             <p class="title_desc"><a href="{% url 'betting' f.forecast.id %}">  {{ f.forecast.heading }}</a></p>
             </div>
           </div>
           <div class="row">
@@ -158,7 +158,7 @@
                             </figure>
             </div>
             <div class="col-9 col-md-10">
-                <a href="{% url 'betting' f.forecast.id %}"><p class="title_desc"> {{ f.forecast.heading }}</p></a>
+                <p class="title_desc"><a href="{% url 'betting' f.forecast.id %}"> {{ f.forecast.heading }}</a></p>
             </div>
           </div>
           <div class="row">
@@ -223,7 +223,7 @@
                             </figure>
             </div>
             <div class="col-9 col-md-10">
-                <a href="{% url 'betting' f.forecast.id %}">   <p class="title_desc"> {{f.forecast.heading}}</p></a>
+               <p class="title_desc"> <a href="{% url 'betting' f.forecast.id %}">    {{f.forecast.heading}}</a></p>
             </div>
           </div>
           <div class="row">
