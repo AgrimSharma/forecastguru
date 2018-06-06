@@ -308,8 +308,8 @@ header h1 {
 }
  @media (max-width: 480px) {
 .forcast_box .icon {
-	width: 55px;
-	height: 55px;
+	width: 75px;
+	height: 75px;
 	line-height: 55px;
 }
 .forcast_box .icon img {
