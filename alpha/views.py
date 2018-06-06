@@ -61,9 +61,11 @@ def create_forecast(request):
             f.user.save()
             f.save()
             f.user.forecast_created += 1
-            yes = randrange(100, 2000, 100)
-            no = randrange(100, 2000, 100)
-            Betting.objects.create(forecast=f, users=users, bet_for=yes, bet_against=no)
+            yes = randrange(1000, 9000, 1000)
+            no = randrange(1000, 9000, 1000)
+            u = User.objects.get(username='admin')
+            admin = SocialAccount.objects.get(user=u)
+            Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created')))
         except Exception:
 
@@ -89,7 +91,7 @@ def closing_soon(request):
 def live_forecast(request):
     data = []
 
-    forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress').order_by("-expire")
+    forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress').order_by("expire")
     for f in forecast_live:
         date = current.date()
 
@@ -246,12 +248,9 @@ def get_ratio(bet_for, bet_against, total, status):
 def profile(request):
     try:
         user = request.user
-        # users = User.objects.get(username=user.username)
         profile = SocialAccount.objects.get(user=user)
     except Exception:
         user = request.user
-        # users = User.objects.get(username=user.username)
-        # profile = SocialAccount.objects.get(user=user)
         return render(request, 'user_profile_nl.html', {
             "users": user.username,
 
