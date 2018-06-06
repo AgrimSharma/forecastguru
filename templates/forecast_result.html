@@ -43,7 +43,7 @@
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
       <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'create_forecast' %}">Create Forecast</a> </li>
-      <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'payment' %}">Buy FG Point</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'payment' %}">Buy FG Points</a> </li>
       <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
     </ul>
   </nav>
@@ -54,7 +54,7 @@
       <div class="forcast_home">
              {% for f in result %}
         <div class="forcast_box">
-          <div class="row align-items-center" style="padding-bottom:  10px;">
+          <div class="row align-items-center" >
             <div class="col-3 col-md-2 text-center">
                 <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="" >
 
@@ -76,7 +76,7 @@
 
         {% for f in live %}
         <div class="forcast_box">
-          <div class="row align-items-center" style="padding-bottom:  10px;">
+          <div class="row align-items-center" >
             <div class="col-3 col-md-2 text-center">
                 <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="" >
 

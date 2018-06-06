@@ -63,12 +63,16 @@ def create_forecast(request):
             return HttpResponse(json.dumps(dict(status=400, message='Try again later')))
 
     else:
-        category = Category.objects.all().order_by('name')
-        return render(request, 'create_forecast.html', {'category': category,
+        try:
+            user = request.user
+            profile = SocialAccount.objects.get(user=user)
+            category = Category.objects.all().order_by('name')
+            return render(request, 'create_forecast.html', {'category': category,
                                                         "current": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
                                                         "user": request.user.username
                                                         })
-
+        except Exception:
+            return render(request, 'create_forecast_nl.html', {})
 
 def closing_soon(request):
     forecast = ForeCast.objects.filter(start__lte=current, approved__name="yes", status__name='Closing Soon').order_by(
