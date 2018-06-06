@@ -735,7 +735,7 @@ def payu_cancel(request):
 
 def category(request):
     category = Category.objects.all().order_by('name')
-    return render(request, 'category.html', {'category': category, "user": request.user.username})
+    return render(request, 'category.html', {'category': category, "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
 
 def category_search(request, userid):
@@ -745,7 +745,7 @@ def category_search(request, userid):
                   {
                       "live": forecast_live_view(category),
                       "result": forecast_result_view(category),
-                      "user": request.user.username
+                      "user": "GUEST" if request.user.is_anonymous() else request.user.username
                   })
 
 
@@ -755,7 +755,7 @@ def my_forecast(request):
         users = User.objects.get(id=user)
         account = SocialAccount.objects.get(user=users)
     except Exception:
-        return render(request, 'my_friend_nl.html', {"user": request.user})
+        return render(request, 'my_friend_nl.html', {"user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
     forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',
                                            users=account).order_by(
