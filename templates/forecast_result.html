@@ -113,7 +113,7 @@
                 <div class="row">
                   <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
-                      <label><i class="fa fa-clock-o"></i> Result: </label> <span class="result_yes">{{f.won}} <i class="fa fa-coins ml-1"></i></span>
+                      <label><i class="fa fa-clock-o"></i> Result: </label> <span class="result_yes">{% if f.ratio == 'NA' %} NA {% else %}{{f.won}} {% endif %}<i class="fa fa-coins ml-1"></i></span>
                        </div>
                   </div>
                   <div class="col-6 text-right">
