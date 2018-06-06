@@ -46,7 +46,7 @@ def create_forecast(request):
                 return HttpResponse(json.dumps(dict(status=400, message='Please Login')))
 
             status = Status.objects.get(name='In-Progress')
-            f = ForeCast.objects.create(category=cat, sub_category=sub_cat,
+            ForeCast.objects.create(category=cat, sub_category=sub_cat,
                                         user=users, heading=heading,
                                         expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M"),
                                         start=datetime.datetime.now(),
@@ -54,12 +54,16 @@ def create_forecast(request):
                                         status=status, created=current,
                                         private=False, verified=verified
                                         )
+            f = ForeCast.objects.get(category=cat, sub_category=sub_cat,
+                                     user=users, heading=heading,
+                                     )
+            f.user.forecast_created += 1
+            f.user.save()
+            f.save()
             f.user.forecast_created += 1
             yes = randrange(100, 2000, 100)
             no = randrange(100, 2000, 100)
             Betting.objects.create(forecast=f, users=users, bet_for=yes, bet_against=no)
-
-            f.save()
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created')))
         except Exception:
 
