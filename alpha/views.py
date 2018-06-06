@@ -306,9 +306,9 @@ def profile(request):
                                                  "unsuccess": int(unsuc_per),
                                                  "user": request.user.username,
                                                  "point": point,
-                                                 "total":  profile.fg_points_total,
+                                                 "total":  profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point,
                                                  "status": predict_status(profile),
-                                                 "balance": profile.fg_points_total - point
+                                                 "balance": profile.fg_points_total
                                                  })
 
 
