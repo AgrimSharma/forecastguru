@@ -60,11 +60,9 @@ def create_forecast(request):
             f.user.forecast_created += 1
             f.user.save()
             f.save()
-            f.user.forecast_created += 1
             yes = randrange(1000, 9000, 1000)
             no = randrange(1000, 9000, 1000)
-            u = User.objects.get(username='admin')
-            admin = SocialAccount.objects.get(user=u)
+            admin = SocialAccount.objects.get(user__username="admin")
             Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created')))
         except Exception:
