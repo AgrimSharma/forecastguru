@@ -299,13 +299,14 @@ def profile(request):
         profile.fg_points_total = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won - \
                                   profile.fg_points_lost + profile.market_fee - profile.market_fee_paid
     profile.save()
-
+    fore = ForeCast.objects.filter(user=profile).count()
     return render(request, 'user_profile.html', {"profile": profile,
                                                  "date_joined": date_joined,
                                                  "success": int(suc_per),
                                                  "unsuccess": int(unsuc_per),
                                                  "user": request.user.username,
                                                  "point": point,
+                                                 "created": fore,
                                                  "total":  profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point,
                                                  "status": predict_status(profile),
                                                  "balance": profile.fg_points_total
