@@ -314,6 +314,10 @@ def predict_status(profile):
 def betting(request, userid):
     forecast = ForeCast.objects.get(id=userid)
     try:
+        if request.user.is_anonymous():
+            users = "Guest"
+        else:
+            users = request.user.username
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
 
@@ -336,7 +340,11 @@ def betting(request, userid):
             status = 'Currently CLOSED'
         else:
             status = 'Waiting'
-        success = SocialAccount.objects.get(user__username=request.user)
+        try:
+            success = SocialAccount.objects.get(user__username=request.user)
+            success = success.successful_forecast
+        except Exception:
+            success = 0
         approved = "yes" if forecast.approved.name == 'yes' and forecast.status.name=='In-Progress' else 'no'
         return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
                                                 'bet_for': betting_for if betting_for else 0,
@@ -344,11 +352,11 @@ def betting(request, userid):
                                                 'total': total_wagered if total_wagered else 0,
                                                 "end_date": end_date, "end_time": end_time,
                                                 'status': status, "percent": percent,
-                                                "success": success.successful_forecast,
+                                                "success": success,
                                                 "user": forecast.user.user.username,
                                                 "sums": betting_against + betting_for,
                                                 "approved": approved,
-                                                "users": "GUEST" if request.user.is_anonymous() else request.user.username
+                                                "user_name": users
                                                 })
     except Exception:
         return render(request, 'betting.html', {'forecast': forecast, "user": request.user.username})
