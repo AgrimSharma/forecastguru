@@ -283,7 +283,7 @@ def profile(request):
 
     point = bet_against + bet_for + bet_for_close + bet_against_close
 
-    total = profile.fg_points_free + profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point
+    total = profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point
     profile.fg_points_total = total
     totals = profile.successful_forecast + profile.unsuccessful_forecast
     try:
@@ -428,24 +428,22 @@ def bet_post(request):
             return HttpResponse(json.dumps(dict(message='success')))
         else:
             return HttpResponse(json.dumps(dict(message='balance')))
-        # except Exception:
-        # return HttpResponse(json.dumps(dict(message='success')))
     else:
         return HttpResponse(json.dumps(dict(message='Please use POST')))
 
 
-def deduct_points(account, points):
-    if account.fg_points_bought > 0 and account.fg_points_bought > points:
-        account.fg_points_bought -= points
-    elif account.fg_points_won > 0 and account.fg_points_won> points:
-        account.fg_points_won -= points
-    elif account.market_fee > 0 and account.market_fee > points:
-        account.market_fee -= account.market_fee - points
-    elif account.fg_points_free > 0 and account.fg_points_free > points:
-        account.fg_points_free -= points
-
-    account.fg_points_total = account.fg_points_won + account.fg_points_bought + account.market_fee + account.fg_points_free
-    account.save()
+# def deduct_points(account, points):
+#     if account.fg_points_bought > 0 and account.fg_points_bought > points:
+#         account.fg_points_bought -= points
+#     elif account.fg_points_won > 0 and account.fg_points_won> points:
+#         account.fg_points_won -= points
+#     elif account.market_fee > 0 and account.market_fee > points:
+#         account.market_fee -= account.market_fee - points
+#     elif account.fg_points_free > 0 and account.fg_points_free > points:
+#         account.fg_points_free -= points
+#
+#     account.fg_points_total = account.fg_points_won + account.fg_points_bought + account.market_fee + account.fg_points_free
+#     account.save()
 
 
 def allocate_points(request):
