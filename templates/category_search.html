@@ -98,8 +98,8 @@
                   <div class="col-6 text-right"> <span class="vote_no text-uppercase">No ({{f.bet_against}})</span> </div>
                 </div>
                 <hr class="mt-2 mb-2">
-                 <div class="row">
-                  <div class="col-6 col-md-4 pr-0">
+                    <d<div class="row">
+                  <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
                       <label><i class="fa fa-clock-o"></i> Expires on</label><br>
                         {% if f.today == "yes" %}
@@ -109,24 +109,15 @@
                         {% endif %}
                         </div>
                   </div>
-                  <div class="col-6 col-md-4 pl-0 text-right text-md-center mb-2">
-                      <div class="time textwithicon pl-0">
-                      <!--<label><i class="fa fa-users"></i> <span>{{f.total}}  </span> Participants</label><br>-->
-<form method="post">{% csrf_token %}
-                        {% comment %}{% if f.btn_val == 'no' %}{% endcomment %}
-                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">PLAY</button>
 
+                  <div class="col-6 text-right pl-0">
+                      <form method="post">{% csrf_token %}
+                    <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
+
+                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">PLAY </button>
                           </form>
-                      </div>
-                  </div>
-                  <!--<div class="col-12 col-md-4 text-right pl-0">-->
-<!---->
-                      <!--<form method="post">{% csrf_token %}-->
-                        <!--{% comment %}{% if f.btn_val == 'no' %}{% endcomment %}-->
-                        <!--<button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">Predict </button>-->
-<!---->
-                          <!--</form>-->
                 </div>
+              </div>
               </div>
             </div>
           </div>
@@ -173,7 +164,7 @@
                 </div>
                 <hr class="mt-2 mb-2">
                 <div class="row">
-                  <div class="col-6 col-md-4 pr-0">
+                  <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
                         <label><i class="fa fa-clock-o"></i> Result: </label> <span class="result_yes"><strong>{{f.won}} </strong><i class="fa fa-coins ml-1"></i> {{f.waggered}}</span>
                        </div>
