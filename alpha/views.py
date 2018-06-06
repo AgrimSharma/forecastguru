@@ -271,6 +271,14 @@ def profile(request):
             bet_against=Sum('bet_against'))['bet_against']
     except Exception:
         bet_against_close = 0
+    if bet_against == None:
+        bet_against=0
+    elif bet_for == None:
+        bet_for = 0
+    elif bet_for_close == None:
+        bet_for_close = 0
+    elif bet_against_close == None:
+        bet_against_close = 0
     point = bet_against + bet_for + bet_for_close + bet_against_close
 
     total = profile.fg_points_free + profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point
