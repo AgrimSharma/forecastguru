@@ -287,7 +287,7 @@ def profile(request):
     totals = Betting.objects.filter(users=profile).count()
     try:
         suc_per = (profile.successful_forecast / totals) * 100
-        unsuc_per = 100 - suc_per
+        unsuc_per = (profile.unsuccessful_forecast / totals) * 100
         if suc_per == 0:
             suc_per = 0
         if unsuc_per == 0:
