@@ -69,8 +69,7 @@ def create_forecast(request):
             category = Category.objects.all().order_by('name')
             return render(request, 'create_forecast.html', {'category': category,
                                                         "current": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
-                                                        "user": request.user.username
-                                                        })
+                                                            "user": "GUEST" if request.user.is_anonymous() else request.user.username                                                        })
         except Exception:
             return render(request, 'create_forecast_nl.html', {})
 
@@ -168,7 +167,7 @@ def forecast_result(request):
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for))
 
-    return render(request, 'forecast_result.html', {"live": data, 'banner': banner})
+    return render(request, 'forecast_result.html', {"live": data, 'banner': banner, "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
 
 def result_not_declared(forecast_result):
@@ -348,7 +347,8 @@ def betting(request, userid):
                                                 "success": success.successful_forecast,
                                                 "user": forecast.user.user.username,
                                                 "sums": betting_against + betting_for,
-                                                "approved": approved
+                                                "approved": approved,
+                                                "users": "GUEST" if request.user.is_anonymous() else request.user.username
                                                 })
     except Exception:
         return render(request, 'betting.html', {'forecast': forecast, "user": request.user.username})
@@ -696,7 +696,7 @@ def payment(request):
 
         account = SocialAccount.objects.get(user=request.user)
 
-        return render(request, "payumoney.html", {"user": request.user.username})
+        return render(request, "payumoney.html", {"user": "GUEST" if request.user.is_anonymous() else request.user.username})
     except Exception:
         return render(request, "payumoney_nl.html", {})
 
@@ -762,7 +762,7 @@ def my_forecast(request):
                                               "result": forecast_result_data(forecast_result),
                                               "approval": forecast_approval,
                                               "forecast": live_forecast_data_bet(not_bet),
-                                              "user": request.user.username})
+                                              "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
 
 def logout_view(request):
@@ -825,7 +825,7 @@ def search_result(request):
                                  participants=total_wagered, bet_for=bet_for,
                                  bet_against=bet_against))
             return render(request, 'search_data.html',
-                          {"live": data, "user": request.user.username})
+                          {"live": data, "user": "GUEST" if request.user.is_anonymous() else request.user.username})
     else:
         return render(request, "search_data.html", {"data": "No result found"})
 
