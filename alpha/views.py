@@ -692,7 +692,13 @@ def home(request):
 
 
 def payment(request):
-    return render(request, "payumoney.html", {"user": request.user.username})
+    try:
+
+        account = SocialAccount.objects.get(user=request.user)
+
+        return render(request, "payumoney.html", {"user": request.user.username})
+    except Exception:
+        return render(request, "payumoney_nl.html", {})
 
 
 @csrf_exempt
