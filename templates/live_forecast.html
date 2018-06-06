@@ -98,7 +98,7 @@
                 </div>
                 <hr class="mt-2 mb-2">
                 <div class="row">
-                  <div class="col-6 col-md-4 pr-0">
+                  <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
                       <label><i class="fa fa-clock-o"></i> Expires on</label><br>
                         {% if f.today == "yes" %}
@@ -109,7 +109,7 @@
                         </div>
                   </div>
 
-                  <div class="col-12 col-md-4 text-right pl-0">
+                  <div class="col-6 text-right pl-0">
                       <form method="post">{% csrf_token %}
                     <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
 
