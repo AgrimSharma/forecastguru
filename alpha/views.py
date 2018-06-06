@@ -267,8 +267,7 @@ def profile(request):
     except Exception:
         bet_against = 0
     try:
-        bet_against_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(
-            bet_against=Sum('bet_against'))['bet_against']
+        bet_against_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_against=Sum('bet_against'))['bet_against']
     except Exception:
         bet_against_close = 0
 
@@ -307,7 +306,7 @@ def profile(request):
                                                  "unsuccess": int(unsuc_per),
                                                  "user": request.user.username,
                                                  "point": point,
-                                                 "total":  profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point,
+                                                 "total":  profile.fg_points_total,
                                                  "status": predict_status(profile),
                                                  "balance": profile.fg_points_total - point
                                                  })
