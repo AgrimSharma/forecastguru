@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 import random
 import hashlib
 from . import constants
-from random import randint
+from random import randint, randrange
 from . import config
 from django.template import RequestContext
 
@@ -55,6 +55,9 @@ def create_forecast(request):
                                         private=False, verified=verified
                                         )
             f.user.forecast_created += 1
+            yes = randrange(100, 2000, 100)
+            no = randrange(100, 2000, 100)
+            Betting.objects.create(forecast=f, users=users, bet_for=yes, bet_against=no)
 
             f.save()
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created')))
