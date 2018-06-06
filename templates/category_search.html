@@ -52,25 +52,22 @@
 
 <div class="container fixed_p_footer">
   <div class="row">
-
       <div class="col-md-12">
+          <div class="forcast_home">
 
-      <div class="forcast_home">
-   {% for f in live %}
-                              {% if forloop.counter|divisibleby:5 %}
-        <div class="banner mt-4 mb-4"> <img src="{% static 'images/banner.jpg' %}" class="img-fluid" alt=""> </div>
-{% else %}
+               {% for f in live %}
+
         <div class="forcast_box">
 
             <div class="row align-items-center">
             <div class="col-3 col-md-2 text-center">
-                            <figure class="icon"> <img src="{{f.forecast.sub_category.image}}" alt="" width="110px" height="110px">
+                            <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="" width="110px" height="110px" >
 
                   <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
                             </figure>
             </div>
             <div class="col-9 col-md-10">
-              <p class="title_desc"> {{ f.forecast.heading }}</p>
+                <a href="{% url 'betting' f.forecast.id %}"><p class="title_desc"> {{ f.forecast.heading }}</p></a>
             </div>
           </div>
           <div class="row">
@@ -98,7 +95,7 @@
                   <div class="col-6 text-right"> <span class="vote_no text-uppercase">No ({{f.bet_against}})</span> </div>
                 </div>
                 <hr class="mt-2 mb-2">
-                    <d<div class="row">
+                <div class="row">
                   <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
                       <label><i class="fa fa-clock-o"></i> Expires on</label><br>
@@ -118,26 +115,24 @@
                           </form>
                 </div>
               </div>
-              </div>
             </div>
           </div>
         </div>
-<!--{% endif %}-->
 
       </div>
           {% endfor %}
-    </div>
+
           {% for f in result %}
         <div class="forcast_box">
           <div class="row align-items-center">
             <div class="col-3 col-md-2 text-center">
-                            <figure class="icon"> <img src="{{f.forecast.sub_category.image}}" alt="" width="110px" height="110px">
+                            <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="" width="110px" height="110px">
 
                   <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
                             </figure>
             </div>
             <div class="col-9 col-md-10">
-              <p class="title_desc"> {{f.forecast.heading}}</p>
+                <a href="{% url 'betting' f.forecast.id %}">   <p class="title_desc"> {{f.forecast.heading}}</p></a>
             </div>
           </div>
           <div class="row">
@@ -166,13 +161,16 @@
                 <div class="row">
                   <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
-                        <label><i class="fa fa-clock-o"></i> Result: </label> <span class="result_yes"><strong>{{f.won}} </strong><i class="fa fa-coins ml-1"></i> {{f.waggered}}</span>
+                      <label><i class="fa fa-clock-o"></i> Result: </label> <span class="result_yes">{% if f.ratio == 'NA' %} NA {% else %}{{f.won}} {% endif %}<i class="fa fa-coins ml-1"></i> {{f.waggered}}</span>
                        </div>
                   </div>
                   <div class="col-6 text-right">
                       <div class="time textwithicon pl-0">
+                          {% if f.ratio == "NA" %}
+                          <label>Win Ratio: </label> <span class="winratio">NA </span>
+                          {% else %}
                       <label>Win Ratio: </label> <span class="winratio">1:{{f.ratio}}  </span>
-
+{% endif %}
                       </div>
                   </div>
 
@@ -183,6 +181,9 @@
           </div>
         </div>
         {% endfor %}
+
+          </div>
+      </div>
   </div>
 </div>
 <footer class="sticky-footer">
