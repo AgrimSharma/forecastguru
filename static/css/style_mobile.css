@@ -307,6 +307,7 @@ header h1 {
 	font-size: 18px
 	color: black;
 }
+
  @media (max-width: 480px) {
 .forcast_box .icon {
 	width: 75px;
