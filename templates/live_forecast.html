@@ -23,7 +23,7 @@
         <h1>Forecasts</h1>
         <div class="header-right with-btn position-absolute">
             <!--<a href="{% url 'create_forecast' %}" class="btn btn-orange btn-sm"> Create New</a>-->
-            <div style="padding-top:16px;"><p>Hi {% request.user.username == 'anonumoususer' %} GUEST {% else %}{{request.user}}{% endif %}</p></div>
+            <div style="padding-top:16px;"><p>Hi {% request.user.is_anonymous %} GUEST {% else %}{{request.user}}{% endif %}</p></div>
         </div>
           </div>
       </div>
