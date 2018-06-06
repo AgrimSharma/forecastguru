@@ -283,7 +283,7 @@ def profile(request):
 
     point = bet_against + bet_for + bet_for_close + bet_against_close
 
-    total = profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point
+    total = profile.fg_points_free + profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point
     profile.fg_points_total = total
     totals = profile.successful_forecast + profile.unsuccessful_forecast
     try:
@@ -307,7 +307,7 @@ def profile(request):
                                                  "unsuccess": int(unsuc_per),
                                                  "user": request.user.username,
                                                  "point": point,
-                                                 "total": total,
+                                                 "total":  profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point,
                                                  "status": predict_status(profile),
                                                  "balance": profile.fg_points_total - point
                                                  })
