@@ -24,7 +24,7 @@ class Private(models.Model):
 
     class Meta:
         ordering = ['-name']
-        verbose_name_plural = 'Approved'
+        verbose_name_plural = 'Private'
 
     def __str__(self):
         return self.name
