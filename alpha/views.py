@@ -1200,7 +1200,8 @@ def faq(request):
 
 def tester(request):
     import urllib2
-    social_user = request.user.social_auth.filter(
+
+    social_user = request.user.socialaccount_set.filter(
         provider='facebook',
     ).first()
 
