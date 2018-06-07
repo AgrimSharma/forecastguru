@@ -74,7 +74,7 @@ admin.site.register(Betting, BettingAdmin)
 admin.site.register(Banner, BannerAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Approved, ApprovedAdmin)
-admin.site.register(PrivateAdmin, PrivateAdmin)
+admin.site.register(Private, PrivateAdmin)
 admin.site.register(Verified, VerifiedAdmin)
 admin.site.site_title = 'ForeCast Guru'
 admin.site.site_header = 'ForeCast Guru'
