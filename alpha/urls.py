@@ -50,7 +50,6 @@ urlpatterns = [
     url(r'^closed_status/', update_close_status, name="closed_status"),
     url(r'^terms/', terms, name="terms"),
     url(r'^faq/', faq, name="faq"),
-    url(r'^proc/', profile_view, name="profile_view"),
 
     url(r'^', main_page, name='main_page'),
 

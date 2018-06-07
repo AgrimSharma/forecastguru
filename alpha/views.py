@@ -1198,17 +1198,5 @@ def faq(request):
         return response
 
 
-def profile_view(request):
-    context = {}
-    fb_uid = SocialAccount.objects.filter(user_id=request.user.id, provider='facebook')
-    if fb_uid.exists():
-        fb_uid = fb_uid[0].uid
-        tolken = SocialToken.objects.filter(account__user=request.user, account__provider='facebook').first()
-        target  = requests.get("https://graph.facebook.com/v2.9/" + fb_uid + "/friends?access_token=" + str(tolken))
-        target = target.json()
-        context['target'] = target
-    return render(request, 'profile_view.html', context)
-
-
 def main_page(request):
     return render(request, 'main_page.html')
