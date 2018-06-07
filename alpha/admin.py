@@ -20,6 +20,10 @@ class CategoryAdmin(admin.ModelAdmin):
     inlines = (SubCatInline,)
 
 
+class PrivateAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
 class SubCategoryAdmin(admin.ModelAdmin):
     list_display = ['name']
 
@@ -49,7 +53,6 @@ class BettingAdmin(admin.ModelAdmin):
     change_form_template = 'change_list.html'
     search_fields = ['users', 'forecast']
     list_filter = ("users",)
-
 
 
 class BannerAdmin(admin.ModelAdmin):

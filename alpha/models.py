@@ -19,6 +19,20 @@ class Approved(models.Model):
         return self.name
 
 
+class Private(models.Model):
+    name = models.CharField(max_length=10)
+
+    class Meta:
+        ordering = ['-name']
+        verbose_name_plural = 'Approved'
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name
+
+
 class Verified(models.Model):
     name = models.CharField(max_length=10)
 
@@ -91,7 +105,7 @@ class ForeCast(models.Model):
     created = models.DateField()
     approved = models.ForeignKey(to=Approved, on_delete=models.CASCADE)
     verified = models.ForeignKey(to=Verified, on_delete=models.CASCADE)
-    private = models.BooleanField(default=False)
+    private = models.ForeignKey(to=Private, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['-category']
