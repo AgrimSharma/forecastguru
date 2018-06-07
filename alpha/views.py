@@ -779,14 +779,10 @@ def my_forecast(request):
     except Exception:
         return render(request, 'my_friend_nl.html', {"user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
-    forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',
-                                           users=account, forecast__private__name='no').order_by(
-        "forecast__expire")
-
-    forecast_result = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='Result Declared',
-                                             users=account, forecast__private__name='no').order_by("forecast__expire")
-    forecast_approval = ForeCast.objects.filter(approved__name="no", user=account, private__name='no').order_by("-expire")
-    forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account, private__name='no').order_by("-expire")
+    forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',users=account, forecast__private__name='no').order_by("forecast__expire")
+    forecast_result = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='Result Declared',users=account, forecast__private__name='no').order_by("forecast__expire")
+    forecast_approval = ForeCast.objects.filter(approved__name="no", user=account, private__name='no').order_by("expire")
+    forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account, private__name='no').order_by("expire")
     not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
     return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live),
                                               "result": forecast_result_data(forecast_result),
@@ -1087,7 +1083,6 @@ def my_forecast_private(request):
                                              users=account,forecast__private__name='yes').order_by("forecast__expire")
     forecast_approval = ForeCast.objects.filter(approved__name="no", user=account,private__name='yes').order_by("-expire")
     forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account,private__name='yes').order_by("-expire")
-    forecast_private = ForeCast.objects.filter(approved__name="yes", user=account,private__name='yes').order_by("-expire")
     not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
     return render(request, 'my_friend_private.html', {"live": live_forecast_data(forecast_live),
                                               "result": forecast_result_data(forecast_result),
