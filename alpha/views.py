@@ -40,8 +40,12 @@ def create_forecast(request):
             sub_cat = SubCategory.objects.get(id=sub_category)
             approved = Approved.objects.get(id=2)
             verified = Verified.objects.get(id=2)
+            private_name = request.POST.get("private", '')
+            if private_name == "true":
+                private = Private.objects.get(id=1)
+            else:
+                private = Private.objects.get(id=2)
             expires = datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M")
-            private = Private.objects.get(id=2)
 
             if expires < current:
                 return HttpResponse(json.dumps(dict(status=400, message='end')))
@@ -84,6 +88,7 @@ def create_forecast(request):
                                                             "user": "GUEST" if request.user.is_anonymous() else request.user.username                                                        })
         except Exception:
             return render(request, 'create_forecast_nl.html', {})
+
 
 def closing_soon(request):
     forecast = ForeCast.objects.filter(start__lte=current, approved__name="yes", status__name='Closing Soon').order_by(
@@ -1082,6 +1087,7 @@ def my_forecast_private(request):
                                              users=account,forecast__private__name='yes').order_by("forecast__expire")
     forecast_approval = ForeCast.objects.filter(approved__name="no", user=account,private__name='yes').order_by("-expire")
     forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account,private__name='yes').order_by("-expire")
+    forecast_private = ForeCast.objects.filter(approved__name="yes", user=account,private__name='yes').order_by("-expire")
     not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
     return render(request, 'my_friend_private.html', {"live": live_forecast_data(forecast_live),
                                               "result": forecast_result_data(forecast_result),

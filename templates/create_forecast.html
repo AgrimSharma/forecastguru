@@ -97,7 +97,10 @@
       </div>
     </div>
       </div>
-
+<div class="row mb-2" style="padding-left:10px;">
+      <div class="col-12">
+        <label>Private</label> &nbsp;<input type="checkbox" id="private"/>
+      </div></div>
     <div class="row mb-2">
       <div class="col-12"> <input type="button" class="btn w-100 btn-orange text-uppercase create" value="Create Forecast"/> </div>
     </div>
@@ -173,6 +176,11 @@ $(".create").click(function(){
     var heading = $("#heading").val();
     var expire = $("#expire").val();
     var user = $("#user").val();
+    var test = $("#private").is(":checked");
+
+    console.log(test);
+    var private = $('input[type="checkbox"]').prop("checked");
+    var value = "";
      if(expire == "" || heading == "" || category=="" || sub_cat == ""){
      alert('All fields are mandatory');
      }
@@ -183,13 +191,10 @@ $(".create").click(function(){
      alert('Minimum Heading should be less than 70');
     }
 
-
-
     $.ajax({
         type: "POST",
         url: "{% url 'create_forecast' %}",
-        data: {'heading': heading, "category":category, 'sub_cat':sub_cat,"expire":expire,
-        "user":user},
+        data: {'heading': heading, "category":category, 'sub_cat':sub_cat,"expire":expire,"user":user, "private":test},
 
         success: function(resp){
             console.log(resp);
