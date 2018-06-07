@@ -31,7 +31,7 @@
     <div class="account_header d-flex flex-column align-items-center justify-content-center">
       <figure class="account-pic">
           <img src="{{ request.user.socialaccount_set.all.0.get_avatar_url}}" alt="" width="75px" height="75px">
-        
+
         <!--<img src="{% static 'images/logo-small-white.png' %}" alt=""> -->
       </figure>
       <h2 class="title">{{profile.user}}</h2>

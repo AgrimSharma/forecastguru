@@ -16,6 +16,9 @@ from . import constants
 from random import randint, randrange
 from . import config
 from django.template import RequestContext
+from allauth.socialaccount.models import SocialAccount, SocialToken
+import requests
+
 
 current = datetime.datetime.now()
 
@@ -1193,6 +1196,18 @@ def faq(request):
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = 'inline;filename=some_file.pdf'
         return response
+
+
+def profile_view(request):
+    context = {}
+    fb_uid = SocialAccount.objects.filter(user_id=request.user.id, provider='facebook')
+    if fb_uid.exists():
+        fb_uid = fb_uid[0].uid
+        tolken = SocialToken.objects.filter(account__user=request.user, account__provider='facebook').first()
+        target  = requests.get("https://graph.facebook.com/v2.9/" + fb_uid + "/friends?access_token=" + str(tolken))
+        target = target.json()
+        context['target'] = target
+    return render(request, 'profile_view.html', context)
 
 
 def main_page(request):
