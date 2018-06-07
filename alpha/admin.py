@@ -40,7 +40,7 @@ class ForeCastAdmin(admin.ModelAdmin):
     # pass
     list_display = ['heading', 'category', 'sub_category', 'user', 'expire', 'status']
     search_fields = ['category', 'sub_category', 'user', 'heading']
-    list_filter = ("approved", "verified", 'status', 'category')
+    list_filter = ("approved", "verified", 'status', 'category', 'private')
     ordering = ('-expire',)
 
 
@@ -74,6 +74,7 @@ admin.site.register(Betting, BettingAdmin)
 admin.site.register(Banner, BannerAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Approved, ApprovedAdmin)
+admin.site.register(PrivateAdmin, PrivateAdmin)
 admin.site.register(Verified, VerifiedAdmin)
 admin.site.site_title = 'ForeCast Guru'
 admin.site.site_header = 'ForeCast Guru'
