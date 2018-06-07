@@ -302,8 +302,18 @@
 <script>
 $('#myInput').keypress(function (e) {
   if (e.which == 13) {
-    $('form').submit();
-    return false;
+  var test = $("#myInput").val();
+
+  $.ajax({
+    type:"POST",
+    url: "{% url 'search_result' %}",
+    data: {'point': test},
+    success: function(resp){
+
+    }
+});
+    <!--$('form').submit();-->
+    <!--return false;-->
   }
 });
 
