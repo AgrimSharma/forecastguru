@@ -55,7 +55,7 @@ def create_forecast(request):
                                         start=datetime.datetime.now(),
                                         approved=approved,
                                         status=status, created=current,
-                                        private=False, verified=verified
+                                        private__name="no", verified=verified
                                         )
             f = ForeCast.objects.get(category=cat, sub_category=sub_cat,
                                      user=users, heading=heading,
