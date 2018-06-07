@@ -41,6 +41,8 @@ def create_forecast(request):
             approved = Approved.objects.get(id=2)
             verified = Verified.objects.get(id=2)
             expires = datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M")
+            private = Private.objects.get(id=2)
+
             if expires < current:
                 return HttpResponse(json.dumps(dict(status=400, message='end')))
             try:
@@ -55,7 +57,7 @@ def create_forecast(request):
                                         start=datetime.datetime.now(),
                                         approved=approved,
                                         status=status, created=current,
-                                        private__name="no", verified=verified
+                                        private=private, verified=verified
                                         )
             f = ForeCast.objects.get(category=cat, sub_category=sub_cat,
                                      user=users, heading=heading,
