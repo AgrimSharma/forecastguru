@@ -1198,5 +1198,17 @@ def faq(request):
         return response
 
 
+def tester(request):
+    import urllib2
+    social_user = request.user.social_auth.filter(
+        provider='facebook',
+    ).first()
+
+    if social_user:
+        url = """https://graph.facebook.com/{0}/friends?fields=id,name,location,picture&access;_token={1}""".format(social_user.uid,social_user.extra_data['access_token'],)
+        data = urllib2.Request(url)
+        return HttpResponse(json.dumps(data))
+
+
 def main_page(request):
     return render(request, 'main_page.html')
