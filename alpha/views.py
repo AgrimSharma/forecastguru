@@ -808,50 +808,30 @@ def search_result(request):
         if query == "":
             return render(request, "search_data.html", {"data": "No result found"})
         else:
-            data = []
+            try:
+                user = request.user.id
+                users = User.objects.get(id=user)
+                account = SocialAccount.objects.get(user=users)
+            except Exception:
+                return render(request, 'my_friend_nl.html',
+                              {"user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
-            forecast_live = ForeCast.objects.filter(heading__icontains=query, approved__name="yes").order_by(
-                "-expire")
-            for f in forecast_live:
-                date = current.date()
-
-                bet_start = f.expire.date()
-
-                if date == bet_start:
-                    start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                    print(start)
-                    start = start.time()
-                    today = 'yes'
-                else:
-                    start = f.expire
-
-                    today = "no"
-                betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
-                betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
-                try:
-                    total_wagered = betting_against + betting_for
-                    bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
-                    bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
-                        'bet_against']
-                    totl = bet_against + bet_for
-                    percent_for = (bet_for / totl) * 100
-                    percent_against = (100 - percent_for)
-
-                    total = Betting.objects.filter(forecast=f).count()
-                except Exception:
-                    total_wagered = 0
-                    percent_for = 0
-                    percent_against = 0
-                    bet_for = 0
-                    bet_against = 0
-                    total = Betting.objects.filter(forecast=f).count()
-                data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
-                                 total=total, start=start, total_user=betting_for + betting_against,
-                                 betting_for=betting_for, betting_against=betting_against, today=today,
-                                 participants=total_wagered, bet_for=bet_for,
-                                 bet_against=bet_against))
-            return render(request, 'search_data.html',
-                          {"live": data, "user": "GUEST" if request.user.is_anonymous() else request.user.username})
+            forecast_live = Betting.objects.filter(forecast__heading=query, forecast__status__name='In-Progress',
+                                                   users=account, forecast__private__name='no').order_by(
+                "forecast__expire")
+            forecast_result = Betting.objects.filter(forecast__heading=query,
+                                                     forecast__status__name='Result Declared', users=account,
+                                                     forecast__private__name='no').order_by("forecast__expire")
+            forecast_approval = ForeCast.objects.filter(heading=query, user=account, private__name='no').order_by(
+                "expire")
+            forecast_no_bet = ForeCast.objects.filter(heading=query, user=account, private__name='no').order_by(
+                "expire")
+            not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
+            return render(request, 'search_data.html', {"live": live_forecast_data(forecast_live),
+                                                      "result": forecast_result_data(forecast_result),
+                                                      "approval": forecast_approval,
+                                                      "forecast": live_forecast_data_bet(not_bet),
+                                                      "user": "GUEST" if request.user.is_anonymous() else request.user.username})
     else:
         return render(request, "search_data.html", {"data": "No result found"})
 
