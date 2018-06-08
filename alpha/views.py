@@ -424,24 +424,24 @@ def bet_post(request):
             try:
                 b = Betting.objects.get(forecast=forecasts, users=account)
                 if vote == 'email':
-                    if b.bet_for < points:
-                        b.bet_for += points
-                        b.users.fg_points_total = b.users.fg_points_total - points
-                        b.users.save()
-                        b.save()
-                    else:
-                        return HttpResponse(json.dumps(
-                            dict(message="FG point for forecast should be greater than previous {}".format(b.bet_for))))
+                    # if b.bet_for < points:
+                    b.bet_for += points
+                    b.users.fg_points_total = b.users.fg_points_total - points
+                    b.users.save()
+                    b.save()
+                    # else:
+                    #     return HttpResponse(json.dumps(
+                    #         dict(message="FG point for forecast should be greater than previous {}".format(b.bet_for))))
                 else:
-                    if b.bet_against < points:
-                        b.bet_against += points
-                        b.users.fg_points_total = b.users.fg_points_total - points
-                        b.users.save()
-                        b.save()
-                    else:
-                        return HttpResponse(json.dumps(
-                            dict(message="FG point for forecast should be greater than previous {}".format(
-                                b.bet_against))))
+                    # if b.bet_against < points:
+                    b.bet_against += points
+                    b.users.fg_points_total = b.users.fg_points_total - points
+                    b.users.save()
+                    b.save()
+                    # else:
+                    #     return HttpResponse(json.dumps(
+                    #         dict(message="FG point for forecast should be greater than previous {}".format(
+                    #             b.bet_against))))
             except Exception:
                 if vote == 'email':
                     b = Betting.objects.create(forecast=forecasts, users=account, bet_for=points, bet_against=0)
