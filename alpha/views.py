@@ -804,7 +804,8 @@ def my_forecast(request):
         users = User.objects.get(id=user)
         account = SocialAccount.objects.get(user=users)
     except Exception:
-        return render(request, 'my_friend_nl.html', {"user": "GUEST" if request.user.is_anonymous() else request.user.username})
+        return render(request, 'my_friend_nl.html', {"heading": "My Forecast",
+                                              "title": "My Forecast","user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
     forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',users=account, forecast__private__name='no').order_by("forecast__expire")
     forecast_result = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='Result Declared',users=account, forecast__private__name='no').order_by("forecast__expire")
