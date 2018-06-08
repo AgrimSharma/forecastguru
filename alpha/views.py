@@ -138,7 +138,7 @@ def live_forecast(request):
                          participants=total_wagered, bet_for=bet_for,
                          bet_against=bet_against))
     return render(request, 'live_forecast.html', {"live": data,
-                                                  "header": "Live Forecast",
+                                                  "heading": "Live Forecast",
                                                   "title": "Live Forecast",
                                                   "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
