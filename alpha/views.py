@@ -86,11 +86,11 @@ def create_forecast(request):
             return render(request, 'create_forecast.html', {'category': category,
                                                         "current": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
                                                             "user": "GUEST" if request.user.is_anonymous() else request.user.username,
-                                                            "header": "Create Forecast",
+                                                            "heading": "Create Forecast",
                                                             "title": "Create Forecast",
                                                             })
         except Exception:
-            return render(request, 'create_forecast_nl.html', {"header": "Create Forecast",
+            return render(request, 'create_forecast_nl.html', {"heading": "Create Forecast",
                                                   "title": "Create Forecast",})
 
 
@@ -142,7 +142,7 @@ def live_forecast(request):
                          participants=total_wagered, bet_for=bet_for,
                          bet_against=bet_against))
     return render(request, 'live_forecast.html', {"live": data,
-                                                  "header": "Forecasts",
+                                                  "heading": "Forecasts",
                                                   "title": "Forecasts",
                                                   "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
@@ -191,7 +191,7 @@ def forecast_result(request):
 
     return render(request, 'forecast_result.html', {"live": data,
                                                     "user": "GUEST" if request.user.is_anonymous() else request.user.username,
-                                                    "header": "Results",
+                                                    "heading": "Results",
                                                     "title": "Forecast Result",
                                                     })
 
@@ -238,7 +238,7 @@ def result_not_declared(request):
     return render(request, 'forecast_result_pending.html', {
         "result": data,
         "user": "GUEST" if request.user.is_anonymous() else request.user.username,
-        "header": "Results",
+        "heading": "Results",
         "title": "Forecast Result",
     })
 
@@ -396,12 +396,12 @@ def betting(request, userid):
                                                 "sums": betting_against + betting_for,
                                                 "approved": approved,
                                                 "user_name": users,
-                                                "header": "Forecast Details",
+                                                "heading": "Forecast Details",
                                                 "title": "Forecast Details",
                                                 })
     except Exception:
         return render(request, 'betting.html', {'forecast': forecast, "user": request.user.username,
-                                                "header": "Forecast Details",
+                                                "heading": "Forecast Details",
                                                 "title": "Forecast Details",
                                                 })
 
@@ -746,10 +746,10 @@ def payment(request):
 
         account = SocialAccount.objects.get(user=request.user)
 
-        return render(request, "payumoney.html", {"header": "Payments",
+        return render(request, "payumoney.html", {"heading": "Payments",
                                                   "title": "Payments","user": "GUEST" if request.user.is_anonymous() else request.user.username})
     except Exception:
-        return render(request, "payumoney_nl.html", {"header": "Payments",
+        return render(request, "payumoney_nl.html", {"heading": "Payments",
                                                   "title": "Payments",})
 
 
@@ -780,7 +780,7 @@ def payu_cancel(request):
 def category(request):
     category = Category.objects.all().order_by('name')
     return render(request, 'category.html', {'category': category,
-                                             "header": "Categories",
+                                             "heading": "Categories",
                                              "title": "Categories",
                                              "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
@@ -792,7 +792,7 @@ def category_search(request, userid):
                   {
                       "live": forecast_live_view(category),
                       "result": forecast_result_view(category),
-                      "header": "Categories",
+                      "heading": "Categories",
                       "title": "Categories",
                       "user": "GUEST" if request.user.is_anonymous() else request.user.username
                   })
@@ -815,7 +815,7 @@ def my_forecast(request):
                                               "result": forecast_result_data(forecast_result),
                                               "approval": forecast_approval,
                                               "forecast": live_forecast_data_bet(not_bet),
-                                              "header": "My Forecast",
+                                              "heading": "My Forecast",
                                               "title": "My Forecast",
                                               "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
@@ -882,11 +882,11 @@ def search_result(request):
             return render(request, 'search_data.html',
                           {"live": data,
                            "user": "GUEST" if request.user.is_anonymous() else request.user.username,
-                           "header": "Search Forecast",
+                           "heading": "Search Forecast",
                            "title": "Search Forecast",
                            })
     else:
-        return render(request, "search_data.html", {"data": "No result found","header": "Search Forecast",
+        return render(request, "search_data.html", {"data": "No result found","heading": "Search Forecast",
                                                   "title": "Search Forecast",})
 
 
@@ -1123,7 +1123,7 @@ def my_forecast_private(request):
                                               "approval": forecast_approval,
                                               "forecast": live_forecast_data_bet(not_bet),
                                               "user": "GUEST" if request.user.is_anonymous() else request.user.username,
-                                                      "header": "Forecast Private",
+                                                      "heading": "Forecast Private",
                                                       "title": "My Forecast",
                                                       })
 
