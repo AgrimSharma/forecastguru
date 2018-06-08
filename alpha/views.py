@@ -1284,6 +1284,7 @@ def facebook_category(request):
         login(request, u, backend='django.contrib.auth.backends.ModelBackend')
     # category = Category.objects.all().order_by('name')
     set_cookie(response, "sessionid", uid)
+    set_cookie(response, "csrftoken", "RPlsDgOhRDyJDHrJvfodNKw7dFMT8Jd1JHiuBCRQLrgqH7Z5i1wR8lk0q50OSTi4")
     return render(request, 'category.html', {'category': category,
                                              "heading": "Categories",
                                              "title": "Categories",
