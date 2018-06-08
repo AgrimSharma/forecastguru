@@ -309,7 +309,7 @@ def profile(request):
 
     total = profile.fg_points_free + profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point
     profile.fg_points_total = total
-    totals = Betting.objects.filter(users=profile).count()
+    totals = profile.successful_forecast + profile.unsuccessful_forecast
     try:
         suc_per = (profile.successful_forecast / totals) * 100
         unsuc_per = (profile.unsuccessful_forecast / totals) * 100
