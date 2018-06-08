@@ -30,53 +30,53 @@ def test(request):
 @csrf_exempt
 def create_forecast(request):
     if request.method == 'POST':
+        # try:
+        user = request.POST.get('user', '')
+        category = request.POST.get('category', '')
+        sub_category = request.POST.get('sub_cat', '')
+        heading = request.POST.get('heading', '')
+        expire = request.POST.get('expire', '')
+        cat = Category.objects.get(id=category)
+        sub_cat = SubCategory.objects.get(id=sub_category)
+        approved = Approved.objects.get(id=2)
+        verified = Verified.objects.get(id=2)
+        private_name = request.POST.get("private", '')
+        if private_name == "true":
+            private = Private.objects.get(id=1)
+        else:
+            private = Private.objects.get(id=2)
+        expires = datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M")
+
+        if expires < current:
+            return HttpResponse(json.dumps(dict(status=400, message='end')))
         try:
-            user = request.POST.get('user', '')
-            category = request.POST.get('category', '')
-            sub_category = request.POST.get('sub_cat', '')
-            heading = request.POST.get('heading', '')
-            expire = request.POST.get('expire', '')
-            cat = Category.objects.get(id=category)
-            sub_cat = SubCategory.objects.get(id=sub_category)
-            approved = Approved.objects.get(id=2)
-            verified = Verified.objects.get(id=2)
-            private_name = request.POST.get("private", '')
-            if private_name == "true":
-                private = Private.objects.get(id=1)
-            else:
-                private = Private.objects.get(id=2)
-            expires = datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M")
-
-            if expires < current:
-                return HttpResponse(json.dumps(dict(status=400, message='end')))
-            try:
-                users = SocialAccount.objects.get(user=request.user)
-            except Exception:
-                return HttpResponse(json.dumps(dict(status=400, message='Please Login')))
-
-            status = Status.objects.get(name='In-Progress')
-            ForeCast.objects.create(category=cat, sub_category=sub_cat,
-                                        user=users, heading=heading,
-                                        expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M"),
-                                        start=datetime.datetime.now(),
-                                        approved=approved,
-                                        status=status, created=current,
-                                        private=private, verified=verified
-                                        )
-            f = ForeCast.objects.get(category=cat, sub_category=sub_cat,
-                                     user=users, heading=heading,
-                                     )
-            f.user.forecast_created += 1
-            f.user.save()
-            f.save()
-            yes = randrange(1000, 9000, 1000)
-            no = randrange(1000, 9000, 1000)
-            admin = SocialAccount.objects.get(user__username="admin")
-            Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
-            return HttpResponse(json.dumps(dict(status=200, message='Forecast Created')))
+            users = SocialAccount.objects.get(user=request.user)
         except Exception:
+            return HttpResponse(json.dumps(dict(status=400, message='Please Login')))
 
-            return HttpResponse(json.dumps(dict(status=400, message='Try again later')))
+        status = Status.objects.get(name='In-Progress')
+        ForeCast.objects.create(category=cat, sub_category=sub_cat,
+                                    user=users, heading=heading,
+                                    expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M"),
+                                    start=datetime.datetime.now(),
+                                    approved=approved,
+                                    status=status, created=current,
+                                    private=private, verified=verified
+                                    )
+        f = ForeCast.objects.get(category=cat, sub_category=sub_cat,
+                                 user=users, heading=heading,
+                                 )
+        f.user.forecast_created += 1
+        f.user.save()
+        f.save()
+        yes = randrange(1000, 9000, 1000)
+        no = randrange(1000, 9000, 1000)
+        admin = SocialAccount.objects.get(user__username="admin")
+        Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
+        return HttpResponse(json.dumps(dict(status=200, message='Forecast Created')))
+        # except Exception:
+        #
+        #     return HttpResponse(json.dumps(dict(status=400, message='Try again later')))
 
     else:
         try:
@@ -1262,6 +1262,8 @@ def faq(request):
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = 'inline;filename=some_file.pdf'
         return response
+
+
 
 
 def main_page(request):
