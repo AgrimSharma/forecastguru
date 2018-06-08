@@ -1275,21 +1275,32 @@ def facebook_category(request):
     response = HttpResponse('test')
     try:
         user = User.objects.get(username=username, email=email, first_name=first_name, last_name=last_name)
-
+        set_cookie(response, "sessionid", uid)
+        set_cookie(response, "csrftoken", "RPlsDgOhRDyJDHrJvfodNKw7dFMT8Jd1JHiuBCRQLrgqH7Z5i1wR8lk0q50OSTi4")
+        hasher = hashlib.md5(str(user.id).encode())
+        request.session['_auth_user_hash'] = hasher.hexdigest()
+        request.session['_auth_user_id'] = user.id
+        request.session['_auth_user_backend'] = "django.contrib.auth.backends.ModelBackend"
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+
     except Exception:
         user = User.objects.create(username=username, email=email, first_name=first_name, last_name=last_name)
         social = SocialAccount.objects.create(user=user, provider='facebook', uid=uid, extra_data=extra_data)
         user = User.objects.get(username=username)
-
+        set_cookie(response, "sessionid", uid)
+        set_cookie(response, "csrftoken", "RPlsDgOhRDyJDHrJvfodNKw7dFMT8Jd1JHiuBCRQLrgqH7Z5i1wR8lk0q50OSTi4")
+        hasher = hashlib.md5(str(user.id).encode())
+        request.session['_auth_user_hash'] = hasher.hexdigest()
+        request.session['_auth_user_id'] = user.id
+        request.session['_auth_user_backend'] = "django.contrib.auth.backends.ModelBackend"
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
     # category = Category.objects.all().order_by('name')
-    set_cookie(response, "sessionid", uid)
-    set_cookie(response, "csrftoken", "RPlsDgOhRDyJDHrJvfodNKw7dFMT8Jd1JHiuBCRQLrgqH7Z5i1wR8lk0q50OSTi4")
-    hasher = hashlib.md5(str(user.id).encode())
-    request.session['_auth_user_hash'] = hasher.hexdigest()
-    request.session['_auth_user_id'] = user.id
-    request.session['_auth_user_backend'] = "django.contrib.auth.backends.ModelBackend"
+    #     set_cookie(response, "sessionid", uid)
+    #     set_cookie(response, "csrftoken", "RPlsDgOhRDyJDHrJvfodNKw7dFMT8Jd1JHiuBCRQLrgqH7Z5i1wR8lk0q50OSTi4")
+    #     hasher = hashlib.md5(str(user.id).encode())
+    #     request.session['_auth_user_hash'] = hasher.hexdigest()
+    #     request.session['_auth_user_id'] = user.id
+        request.session['_auth_user_backend'] = "django.contrib.auth.backends.ModelBackend"
     return render(request, 'category.html', {'category': category,
                                              "heading": "Categories",
                                              "title": "Categories",
