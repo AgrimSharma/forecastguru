@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^payu/', home, name='payu'),
     url(r'^payment/', payment, name='payment'),
     url(r'^payubiz-success/$', payu_success, name='payu_success'),
+    url(r'^session/', session, name='session'),
 
     url(r'^payubiz-failure/$', payu_failure, name='payu_failure'),
 

@@ -1286,6 +1286,9 @@ def facebook_category(request):
                                              "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
 
+def session(request):
+    return HttpResponse(json.dumps(request.session))
+
 
 def main_page(request):
     return render(request, 'main_page.html')
