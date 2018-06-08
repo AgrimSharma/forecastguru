@@ -149,7 +149,7 @@ header .goback.position-absolute a{font-size: 30px; line-height: 1}
 	height: 140px
 }
 .topspace2 {
-	height: 60px
+	height: 80px
 }
 @media (max-width: 480px) {
 header h1 {
@@ -159,7 +159,7 @@ header h1 {
 	height: 140px
 }
 .topspace2 {
-	height: 50px
+	height: 70px
 }
 }
 .has-search .form-control {
