@@ -1264,6 +1264,23 @@ def faq(request):
         return response
 
 
+def facebook_category(request):
+    username = request.GET.get('username','')
+    email = request.GET.get('email','')
+    first_name = request.GET.get('first_name','')
+    last_name = request.GET.get('last_name','')
+    uid = request.GET.get('uid','')
+    extra_data = {"usernam":username, "email":email, "first_name":first_name, "last_name":last_name, "uid":uid}
+    user = User.objects.create(username=username, email=email, first_name=first_name, last_name=last_name)
+    social = SocialAccount.objects.create(user=user, provider='facebook', uid=uid, extra_data=extra_data)
+    u = User.objects.get(username=username)
+    login(request, u, backend='django.contrib.auth.backends.ModelBackend')
+    # category = Category.objects.all().order_by('name')
+    return render(request, 'category.html', {'category': category,
+                                             "heading": "Categories",
+                                             "title": "Categories",
+                                             "user": "GUEST" if request.user.is_anonymous() else request.user.username})
+
 
 
 def main_page(request):

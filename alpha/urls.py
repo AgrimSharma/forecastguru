@@ -36,6 +36,7 @@ urlpatterns = [
 
     url(r'^payubiz-cancel/$', payu_cancel, name='payu_cancel'),
     url(r'^category/', category, name='category'),
+    url(r'^facebook/', facebook_category, name='facebook_category'),
 
     url(r'^category_search/(?P<userid>\d+)/$', category_search, name='category_search'),
     url(r'^my_forecast/', my_forecast, name='my_forecast'),
