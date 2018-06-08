@@ -145,7 +145,6 @@ def forecast_result(request):
     banner = Banner.objects.all()
 
     forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared').order_by("-expire")
-    forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='Closed', verified__name='no').order_by("-expire")
     for f in forecast_live:
         date = current.date()
         bet_start = f.start.date()
@@ -183,10 +182,11 @@ def forecast_result(request):
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for))
 
-    return render(request, 'forecast_result.html', {"live": data, 'result': result_not_declared(forecast_result), "user": "GUEST" if request.user.is_anonymous() else request.user.username})
+    return render(request, 'forecast_result.html', {"live": data, "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
 
-def result_not_declared(forecast_result):
+def result_not_declared(request):
+    forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='Closed', verified__name='no').order_by("-expire")
     data = []
     for f in forecast_result:
         date = current.date()
