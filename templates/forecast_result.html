@@ -53,6 +53,7 @@
     <div class="col-md-12">
       <div class="forcast_home">
         {% for f in live %}
+          {% if f.bet_for > 0 %}
         <div class="forcast_box">
           <div class="row align-items-center" >
             <div class="col-3 col-md-2 text-center">
@@ -122,6 +123,7 @@
             </div>
           </div>
         </div>
+          {% endif %}
         {% endfor %}
       </div>
     </div>
