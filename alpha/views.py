@@ -224,7 +224,7 @@ def result_not_declared(request):
                          participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for))
-    return data
+    return render(request, 'forecast_result_pending.html', {"result": data, "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
 
 def get_ratio(bet_for, bet_against, total, status):
