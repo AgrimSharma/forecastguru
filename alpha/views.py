@@ -1301,7 +1301,7 @@ def set_cookie(response, key, value, days_expire = 7):
 
 
 def session(request):
-    return HttpResponse(json.dumps(keys=request.session.keys(), values=request.session.values()))
+    return HttpResponse(json.dumps(dict(keys=request.session.keys(), values=request.session.values())))
 
 
 def main_page(request):
