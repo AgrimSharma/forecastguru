@@ -2,21 +2,27 @@
 {% load static %}
 
 {% block content %}
-<div class="topspace2"></div>
+<div class="topspace"></div>
 <!--<form action="{% url 'create_forecast' %}" method="post">-->
 
 
-<div class="sel-cate fixed_p_footer">
-  <div class="container">
-    <div class="row mb-3">
-      <div class="btn_box mb-3 w-100" >
+<div class="container fixed_p_footer">
+  <div class="row">
+
+      <div class="col-md-12">
+
+      <div class="forcast_home" style="text-align:center;">
+          <div><h4>To Create forecasts.</h4>
+              <h4>Please login</h4></div>
+        <div class="btn_box mb-3" >
                     <a href="https://www.forecast.guru/facebook/login/?process=login" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
                 </div>
-          </div>
+
 
     </div>
   </div>
-</div>
+  </div></div>
+
 
 <footer class="sticky-footer">
     <nav class="navbar">
@@ -36,9 +42,5 @@
   </footer>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/moment.min.js' %}"></script>
-<script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT}, 'google_translate_element');
-}
-</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 {% endblock %}
