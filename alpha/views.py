@@ -18,7 +18,7 @@ from . import config
 from django.template import RequestContext
 from allauth.socialaccount.models import SocialAccount, SocialToken
 import requests
-
+from django.conf import settings
 
 current = datetime.datetime.now()
 
@@ -1271,19 +1271,32 @@ def facebook_category(request):
     last_name = request.GET.get('last_name','')
     uid = request.GET.get('uid','')
     extra_data = {"usernam":username, "email":email, "first_name":first_name, "last_name":last_name, "uid":uid}
+    response = HttpResponse('test')
     try:
         user = User.objects.get(username=username, email=email, first_name=first_name, last_name=last_name)
+
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
     except Exception:
         user = User.objects.create(username=username, email=email, first_name=first_name, last_name=last_name)
         social = SocialAccount.objects.create(user=user, provider='facebook', uid=uid, extra_data=extra_data)
         u = User.objects.get(username=username)
+
         login(request, u, backend='django.contrib.auth.backends.ModelBackend')
     # category = Category.objects.all().order_by('name')
+    set_cookie(response, "sessionid", uid)
     return render(request, 'category.html', {'category': category,
                                              "heading": "Categories",
                                              "title": "Categories",
                                              "user": "GUEST" if request.user.is_anonymous() else request.user.username})
+
+
+def set_cookie(response, key, value, days_expire = 7):
+  if days_expire is None:
+    max_age = 365 * 24 * 60 * 60  #one year
+  else:
+    max_age = days_expire * 24 * 60 * 60
+  expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
+  response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
 
 
 def session(request):
