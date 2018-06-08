@@ -1287,7 +1287,7 @@ def facebook_category(request):
 
 
 def session(request):
-    return HttpResponse(json.dumps(request.session))
+    return HttpResponse(json.dumps(request.session.__dict__))
 
 
 def main_page(request):
