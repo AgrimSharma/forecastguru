@@ -140,7 +140,6 @@ def live_forecast(request):
     return render(request, 'live_forecast.html', {"live": data, "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
 
-
 def forecast_result(request):
     data = []
     banner = Banner.objects.all()
@@ -184,7 +183,7 @@ def forecast_result(request):
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for))
 
-    return render(request, 'forecast_result.html', {"live": data, 'banner': banner, "user": "GUEST" if request.user.is_anonymous() else request.user.username})
+    return render(request, 'forecast_result.html', {"live": data, 'result': result_not_declared(forecast_result), "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
 
 def result_not_declared(forecast_result):
