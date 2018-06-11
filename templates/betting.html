@@ -99,25 +99,25 @@
     <div class="clearfix"></div>
     <div class="row white_box mr-0 ml-0 mb-3">
       <div class="col-12">
-        <p class="m-0">Result</p>
+
       <!--</div>-->
       <!--<div class="col-6 text-right value-color">-->
           {% if forecast.status.name == 'In-Progress' %}
-            <p class="m-0"><strong>Awaited</strong> </p>
+            <p class="m-0">Result : <strong>Awaited</strong> </p>
           {% elif forecast.status.name == 'Closed' %}
-          <p class="m-0"><strong>Result not Declared</strong></p>
+          <p class="m-0">Result : <strong>Result not Declared</strong></p>
           {% else %}
-          <p class="m-0"><strong>Result Declared</strong></p>
+          <p class="m-0">Result : <strong>Result Declared</strong></p>
           {% endif %}
       <!--</div>-->
     </div>
     <div class="clearfix"></div>
     <div class="row white_box mr-0 ml-0 mb-3">
       <div class="col-12">
-        <p class="m-0">Result Source</p>
+        <p class="m-0">Result Source
       <!--</div>-->
       <!--<div class="col-6 text-right value-color">-->
-        <p class="m-0"><a href="#" class="color-darkblue"><strong>{{ forecast.sub_category.source }}<strong></a></p>
+        <strong>{{ forecast.sub_category.source }}<strong></p>
       </div>
     </div>
     <div class="clearfix"></div>
