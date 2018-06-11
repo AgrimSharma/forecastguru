@@ -17,10 +17,10 @@
 
                 <div style="display:flex;">
                 <input type="radio" id="contactChoice1" name="contact" value="email" style="margin-left:10px;">
-                   &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">Yes</label>
+                   &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">YES</label>
 
                 <input type="radio" id="contactChoice2" name="contact" value="phone" style="margin-left:10px;">
-                   &nbsp; <label for="contactChoice2" style="margin-bottom:5px;">No</label>
+                   &nbsp; <label for="contactChoice2" style="margin-bottom:5px;">NO</label>
                     </div>
           <br>
           <div id="point_div">
@@ -62,11 +62,11 @@
 
               <div class="row mb-2">
                   <div class="col-12">
-                      FG Status :
+                      Status :
                   <!--</div>-->
                   <!--<div class="col-7 text-right value-color">-->
                       <strong>{% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %}
-                          ({{percent}}% success rate. {{sums}} Forecasts)</strong>
+                          ({{forecast.won|title)</strong>
                   </div>
                 </div>
         </div>
@@ -93,37 +93,45 @@
                       {{against}}
                   </div>
                 </div>
+            <div class="row mb-2">
+                  <div class="col-6">
+                    Total FG points in play
+                  </div>
+                  <div class="col-6 text-right value-color">
+                      {{sums}}
+                  </div>
+                </div>
         </div>
 
       </div>
     <div class="clearfix"></div>
-    <div class="row white_box mr-0 ml-0 mb-3">
-      <div class="col-12">
+    <!--<div class="row white_box mr-0 ml-0 mb-3">-->
+      <!--<div class="col-12">-->
 
-      <!--</div>-->
-      <!--<div class="col-6 text-right value-color">-->
-          {% if forecast.status.name == 'In-Progress' %}
-            <p class="m-0">Result : <strong>Awaited</strong> </p>
-          {% elif forecast.status.name == 'Closed' %}
-          <p class="m-0">Result : <strong>Result not Declared</strong></p>
-          {% else %}
-          <p class="m-0">Result : <strong>Result Declared</strong></p>
-          {% endif %}
-    </div>
-  </div>
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;<div class="col-6 text-right value-color">&ndash;&gt;-->
+          <!--{% if forecast.status.name == 'In-Progress' %}-->
+            <!--<p class="m-0">Result : <strong>Awaited</strong> </p>-->
+          <!--{% elif forecast.status.name == 'Closed' %}-->
+          <!--<p class="m-0">Result : <strong>Result not Declared</strong></p>-->
+          <!--{% else %}-->
+          <!--<p class="m-0">Result : <strong>Result Declared</strong></p>-->
+          <!--{% endif %}-->
+    <!--</div>-->
+  <!--</div>-->
       <div class="clearfix"></div>
-    <div class="row white_box mr-0 ml-0 mb-3">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-8">
-            <p>Total FG wagered</p>
-          </div>
-          <div class="col-4 text-right value-color">
-            <p>{{sums}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!--<div class="row white_box mr-0 ml-0 mb-3">-->
+      <!--<div class="col-12">-->
+        <!--<div class="row">-->
+          <!--<div class="col-8">-->
+            <!--<p>Total FG points in play</p>-->
+          <!--</div>-->
+          <!--<div class="col-4 text-right value-color">-->
+            <!--<p>{{sums}}</p>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
 
 </div>
 <footer class="sticky-footer">
