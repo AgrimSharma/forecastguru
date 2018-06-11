@@ -380,7 +380,7 @@ def betting(request, userid):
         elif forecast.status.name == 'Closed':
             status = 'Currently Closed'
         else:
-            status = 'Waiting for Result'
+            status = 'Result Declared'
         try:
             success = SocialAccount.objects.get(user__username=request.user)
             success = success.successful_forecast
