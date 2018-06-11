@@ -52,19 +52,19 @@
 
         <div class="col-12">
             <div class="row mb-2">
-                <div class="col-5">
-                    Created By
+                <div class="col-12">
+                    Created By :- {{users}}
+
                 </div>
-                <div class="col-7 text-right value-color">
-                    {{users}}
-                </div>
+                <!--<div class="col-7 text-right value-color">-->
+                <!--</div>-->
               </div>
 
               <div class="row mb-2">
-                  <div class="col-5">
-                      FG Status
-                  </div>
-                  <div class="col-7 text-right value-color">
+                  <div class="col-12">
+                      FG Status :-
+                  <!--</div>-->
+                  <!--<div class="col-7 text-right value-color">-->
                       {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %}
                       ({{percent}}% success rate. {{sums}} Forecasts)
                   </div>
