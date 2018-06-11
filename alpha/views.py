@@ -387,8 +387,8 @@ def betting(request, userid):
             success = 0
         approved = "yes" if forecast.approved.name == 'yes' and forecast.status.name=='In-Progress' else 'no'
         return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
-                                                'bet_for': betting_for if betting_for else 0,
-                                                'against': betting_against if betting_against else 0,
+                                                'bet_for': betting_sum['bet_for'] if betting_sum['bet_for'] else 0,
+                                                'against': betting_sum['bet_against'] if betting_sum['bet_against'] else 0,
                                                 'total': total_wagered if total_wagered else 0,
                                                 "end_date": end_date, "end_time": end_time,
                                                 'status': status, "percent": percent,
