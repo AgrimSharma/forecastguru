@@ -46,7 +46,7 @@
     <div class="row mb-3">
       <div class="col-12">
         <select class="form-control" name="categories" id="categories">
-            <option value="">Select</option>
+            <option value="">Select a Category</option>
             {% for c in category %}
                     <option value="{{c.id}}">{{c.name}}</option>
                 {% endfor %}
@@ -59,6 +59,7 @@
     <div class="row mb-3">
       <div class="col-12">
         <select class="form-control" name="subcategories" id="subcategories" style="display:none;">
+            <option value="">Select a Sub Category</option>
 
         </select>
       </div>
@@ -67,7 +68,8 @@
       <div class="col-12">
             <div class="form-group" style="display:none;" id="srcs">
 
-                <label> Result verification source is </label><input class="col-12" type="text" id="source" readonly  style="border: none;border-color: transparent;"/>
+                <label> Result verification source is </label><p id="source"></p>
+                <!--<input class="col-12" type="text" id="source" readonly  style="border: none;border-color: transparent;"/>-->
 
             </div>
       </div>
