@@ -66,7 +66,7 @@
                   <!--</div>-->
                   <!--<div class="col-7 text-right value-color">-->
                       <strong>{% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %}
-                          ({{forecast.won|title}})</strong>
+                          {% if forecast.won %}({{forecast.won|title}}){% endif %}</strong>
                   </div>
                 </div>
         </div>
