@@ -97,7 +97,7 @@
       <div class="col-12">
         <div class="position-relative">
           <div class="form-group">
-                <label>End Time</label>
+                <label>End Date and Time</label>
                     <div class='input-group date' id='datetimepicker6'>
                         <input type='text' class="form-control" name="expire" id="expire" placeholder="Select end time"/>
                         <span class="input-group-addon">
@@ -197,7 +197,7 @@ $(".create").click(function(){
     var heading = $("#heading").val();
     var expire = $("#expire").val();
     var user = $("#user").val();
-    var test = $("#private").is(":checked");
+    //var test = $("#private").is(":checked");
 
     console.log(test);
     //var private = $('input[type="checkbox"]').prop("checked");
@@ -217,7 +217,7 @@ $(".create").click(function(){
     $.ajax({
         type: "POST",
         url: "{% url 'create_forecast' %}",
-        data: {'heading': heading, "category":category, 'sub_cat':sub_cat,"expire":expire,"user":user, "private":test},
+        data: {'heading': heading, "category":category, 'sub_cat':sub_cat,"expire":expire,"user":user, "private":private},
 
         success: function(resp){
             console.log(resp);
