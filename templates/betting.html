@@ -53,7 +53,7 @@
         <div class="col-12">
             <div class="row mb-2">
                 <div class="col-12">
-                    Created By :- {{users}}
+                    Created By : <strong>{{users}}</strong>
 
                 </div>
                 <!--<div class="col-7 text-right value-color">-->
@@ -62,11 +62,11 @@
 
               <div class="row mb-2">
                   <div class="col-12">
-                      FG Status :-
+                      FG Status :
                   <!--</div>-->
                   <!--<div class="col-7 text-right value-color">-->
-                      {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %}
-                      ({{percent}}% success rate. {{sums}} Forecasts)
+                      <strong>{% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %}
+                          ({{percent}}% success rate. {{sums}} Forecasts)</strong>
                   </div>
                 </div>
         </div>
@@ -98,26 +98,26 @@
       </div>
     <div class="clearfix"></div>
     <div class="row white_box mr-0 ml-0 mb-3">
-      <div class="col-6">
+      <div class="col-12">
         <p class="m-0">Result</p>
-      </div>
-      <div class="col-6 text-right value-color">
+      <!--</div>-->
+      <!--<div class="col-6 text-right value-color">-->
           {% if forecast.status.name == 'In-Progress' %}
-            <p class="m-0">Awaited</p>
+            <p class="m-0"><strong>Awaited</strong> </p>
           {% elif forecast.status.name == 'Closed' %}
-          <p class="m-0">Result not Declared</p>
+          <p class="m-0"><strong>Result not Declared</strong></p>
           {% else %}
-          <p class="m-0">Result Declared</p>
+          <p class="m-0"><strong>Result Declared</strong></p>
           {% endif %}
-      </div>
+      <!--</div>-->
     </div>
     <div class="clearfix"></div>
     <div class="row white_box mr-0 ml-0 mb-3">
-      <div class="col-6">
+      <div class="col-12">
         <p class="m-0">Result Source</p>
-      </div>
-      <div class="col-6 text-right value-color">
-        <p class="m-0"><a href="#" class="color-darkblue">{{ forecast.sub_category.source }}</a></p>
+      <!--</div>-->
+      <!--<div class="col-6 text-right value-color">-->
+        <p class="m-0"><a href="#" class="color-darkblue"><strong>{{ forecast.sub_category.source }}<strong></a></p>
       </div>
     </div>
     <div class="clearfix"></div>
