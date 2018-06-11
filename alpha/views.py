@@ -839,7 +839,7 @@ def search_result(request):
         query = request.POST.get('point', '')
         if query == "":
             return render(request, "search_data_nf.html", {"data": "No result found","heading": "Search Forecast",
-                               "title": "Search Forecast",})
+                               "title": "Search Forecast","user": "GUEST" if request.user.is_anonymous() else request.user.username})
         else:
             data = []
 
@@ -847,7 +847,7 @@ def search_result(request):
                 "-expire")
             if len(forecast_live) == 0:
                 return render(request, "search_data_nf.html", {"data": "No result found","heading": "Search Forecast",
-                               "title": "Search Forecast",})
+                               "title": "Search Forecast","user": "GUEST" if request.user.is_anonymous() else request.user.username})
             else:
                 for f in forecast_live:
                     date = current.date()
@@ -895,7 +895,7 @@ def search_result(request):
                                })
     else:
         return render(request, "search_data_nf.html", {"data": "No result found","heading": "Search Forecast",
-                                                  "title": "Search Forecast",})
+                                                  "title": "Search Forecast","user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
 
 @csrf_exempt
