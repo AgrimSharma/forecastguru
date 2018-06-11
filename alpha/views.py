@@ -375,11 +375,11 @@ def betting(request, userid):
             percent = 0
 
         if forecast.status.name == 'In-Progress':
-            status = 'Currently LIVE'
+            status = 'Currently Live'
         elif forecast.status.name == 'Closed':
-            status = 'Currently CLOSED'
+            status = 'Currently Closed'
         else:
-            status = 'Waiting'
+            status = 'Waiting for Result'
         try:
             success = SocialAccount.objects.get(user__username=request.user)
             success = success.successful_forecast
@@ -387,8 +387,8 @@ def betting(request, userid):
             success = 0
         approved = "yes" if forecast.approved.name == 'yes' and forecast.status.name=='In-Progress' else 'no'
         return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
-                                                'bet_for': betting_for if betting_for else 0,
-                                                'against': betting_against if betting_against else 0,
+                                                'bet_for': betting_sum['bet_for'] if betting_sum['bet_for'] else 0,
+                                                'against': betting_sum['bet_against'] if betting_sum['bet_against'] else 0,
                                                 'total': total_wagered if total_wagered else 0,
                                                 "end_date": end_date, "end_time": end_time,
                                                 'status': status, "percent": percent,
@@ -397,6 +397,7 @@ def betting(request, userid):
                                                 "sums": betting_against + betting_for,
                                                 "approved": approved,
                                                 "user_name": users,
+                                                "source": forecast.source.name,
                                                 "heading": "Forecast Details",
                                                 "title": "Forecast Details",
                                                 })
@@ -1300,20 +1301,20 @@ def facebook_category(request):
     #     hasher = hashlib.md5(str(user.id).encode())
     #     request.session['_auth_user_hash'] = hasher.hexdigest()
     #     request.session['_auth_user_id'] = user.id
-        request.session['_auth_user_backend'] = "django.contrib.auth.backends.ModelBackend"
+    #     request.session['_auth_user_backend'] = "django.contrib.auth.backends.ModelBackend"
     return render(request, 'category.html', {'category': category,
                                              "heading": "Categories",
                                              "title": "Categories",
                                              "user": "GUEST" if request.user.is_anonymous() else request.user.username})
 
 
-def set_cookie(response, key, value, days_expire = 7):
-  if days_expire is None:
-    max_age = 365 * 24 * 60 * 60  #one year
-  else:
-    max_age = days_expire * 24 * 60 * 60
-  expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
-  response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
+def set_cookie(response, key, value, days_expire=7):
+    if days_expire is None:
+        max_age = 365 * 24 * 60 * 60  #one year
+    else:
+        max_age = days_expire * 24 * 60 * 60
+    expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
+    response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
 
 
 def session(request):

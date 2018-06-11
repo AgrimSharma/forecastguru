@@ -43,8 +43,8 @@
 {% endif %}
 </div>
           <hr class="hr">
-            <p>Status :  {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %} </p>
-          <p>Closes <img src="{% static 'images/calender-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_date}}</span> <img src="{% static 'images/time-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_time}}</span> </p>
+            <!--<p>Status :  {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %} </p>-->
+          <p>Expires on  <img src="{% static 'images/calender-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_date}}</span> <img src="{% static 'images/time-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_time}}</span> </p>
       </div>
     </div>
 
@@ -105,8 +105,10 @@
       <div class="col-6 text-right value-color">
           {% if forecast.status.name == 'In-Progress' %}
             <p class="m-0">Awaited</p>
+          {% elif forecast.status.name == 'Closed' %}
+          <p class="m-0">Result not Declared</p>
           {% else %}
-          <p class="m-0">Declared</p>
+          <p class="m-0">Result Declared</p>
           {% endif %}
       </div>
     </div>
@@ -116,7 +118,7 @@
         <p class="m-0">Result Source</p>
       </div>
       <div class="col-6 text-right value-color">
-        <p class="m-0"><a href="#" class="color-darkblue">{{forecast.source.name}}</a></p>
+        <p class="m-0"><a href="#" class="color-darkblue">{{ source }}</a></p>
       </div>
     </div>
     <div class="clearfix"></div>
