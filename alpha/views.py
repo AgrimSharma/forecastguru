@@ -86,13 +86,13 @@ def create_forecast(request):
             category = Category.objects.all().order_by('name')
             return render(request, 'create_forecast.html', {'category': category,
                                                         "current": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
-                                                            "user": "GUEST" if request.user.is_anonymous() else request.user.username,
+                                                            "user": "Guest" if request.user.is_anonymous() else request.user.username,
                                                             "heading": "Create Forecast",
                                                             "title": "Create Forecast",
                                                             })
         except Exception:
             return render(request, 'create_forecast_nl.html', {"heading": "Create Forecast",
-                                                  "title": "Create Forecast","user": "GUEST" if request.user.is_anonymous() else request.user.username,})
+                                                  "title": "Create Forecast","user": "Guest" if request.user.is_anonymous() else request.user.username,})
 
 
 def closing_soon(request):
@@ -145,7 +145,7 @@ def live_forecast(request):
     return render(request, 'live_forecast.html', {"live": data,
                                                   "heading": "Forecasts",
                                                   "title": "Forecasts",
-                                                  "user": "GUEST" if request.user.is_anonymous() else request.user.username})
+                                                  "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 def forecast_result(request):
@@ -191,7 +191,7 @@ def forecast_result(request):
                          bet_for=bet_for))
 
     return render(request, 'forecast_result.html', {"live": data,
-                                                    "user": "GUEST" if request.user.is_anonymous() else request.user.username,
+                                                    "user": "Guest" if request.user.is_anonymous() else request.user.username,
                                                     "heading": "Results",
                                                     "title": "Forecast Result",
                                                     })
@@ -238,7 +238,7 @@ def result_not_declared(request):
                          bet_for=bet_for))
     return render(request, 'forecast_result_pending.html', {
         "result": data,
-        "user": "GUEST" if request.user.is_anonymous() else request.user.username,
+        "user": "Guest" if request.user.is_anonymous() else request.user.username,
         "heading": "Results",
         "title": "Forecast Result",
     })
@@ -749,7 +749,7 @@ def payment(request):
         account = SocialAccount.objects.get(user=request.user)
 
         return render(request, "payumoney.html", {"heading": "Payments",
-                                                  "title": "Payments","user": "GUEST" if request.user.is_anonymous() else request.user.username})
+                                                  "title": "Payments","user": "Guest" if request.user.is_anonymous() else request.user.username})
     except Exception:
         return render(request, "payumoney_nl.html", {"heading": "Payments",
                                                   "title": "Payments",})
@@ -784,7 +784,7 @@ def category(request):
     return render(request, 'category.html', {'category': category,
                                              "heading": "Categories",
                                              "title": "Categories",
-                                             "user": "GUEST" if request.user.is_anonymous() else request.user.username})
+                                             "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 def category_search(request, userid):
@@ -796,7 +796,7 @@ def category_search(request, userid):
                       "result": forecast_result_view(category),
                       "heading": category.name + " Category",
                       "title": category.name + " Category",
-                      "user": "GUEST" if request.user.is_anonymous() else request.user.username
+                      "user": "Guest" if request.user.is_anonymous() else request.user.username
                   })
 
 
@@ -807,7 +807,7 @@ def my_forecast(request):
         account = SocialAccount.objects.get(user=users)
     except Exception:
         return render(request, 'my_friend_nl.html', {"heading": "My Forecast",
-                                              "title": "My Forecast","user": "GUEST" if request.user.is_anonymous() else request.user.username})
+                                              "title": "My Forecast","user": "Guest" if request.user.is_anonymous() else request.user.username})
 
     forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',users=account, forecast__private__name='no').order_by("forecast__expire")
     forecast_result = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='Result Declared',users=account, forecast__private__name='no').order_by("forecast__expire")
@@ -820,7 +820,7 @@ def my_forecast(request):
                                               "forecast": live_forecast_data_bet(not_bet),
                                               "heading": "My Forecast",
                                               "title": "My Forecast",
-                                              "user": "GUEST" if request.user.is_anonymous() else request.user.username})
+                                              "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 def logout_view(request):
@@ -839,7 +839,7 @@ def search_result(request):
         query = request.POST.get('point', '')
         if query == "":
             return render(request, "search_data_nf.html", {"data": "No result found","heading": "Search Forecast",
-                               "title": "Search Forecast","user": "GUEST" if request.user.is_anonymous() else request.user.username})
+                               "title": "Search Forecast","user": "Guest" if request.user.is_anonymous() else request.user.username})
         else:
             data = []
 
@@ -847,7 +847,7 @@ def search_result(request):
                 "-expire")
             if len(forecast_live) == 0:
                 return render(request, "search_data_nf.html", {"data": "No result found","heading": "Search Forecast",
-                               "title": "Search Forecast","user": "GUEST" if request.user.is_anonymous() else request.user.username})
+                               "title": "Search Forecast","user": "Guest" if request.user.is_anonymous() else request.user.username})
             else:
                 for f in forecast_live:
                     date = current.date()
@@ -889,13 +889,13 @@ def search_result(request):
                                      bet_against=bet_against))
                 return render(request, 'search_data.html',
                               {"live": data,
-                               "user": "GUEST" if request.user.is_anonymous() else request.user.username,
+                               "user": "Guest" if request.user.is_anonymous() else request.user.username,
                                "heading": "Search Forecast",
                                "title": "Search Forecast",
                                })
     else:
         return render(request, "search_data_nf.html", {"data": "No result found","heading": "Search Forecast",
-                                                  "title": "Search Forecast","user": "GUEST" if request.user.is_anonymous() else request.user.username})
+                                                  "title": "Search Forecast","user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 @csrf_exempt
@@ -1115,7 +1115,7 @@ def my_forecast_private(request):
         users = User.objects.get(id=user)
         account = SocialAccount.objects.get(user=users)
     except Exception:
-        return render(request, 'my_friend_nl.html', {"user": "GUEST" if request.user.is_anonymous() else request.user.username})
+        return render(request, 'my_friend_nl.html', {"user": "Guest" if request.user.is_anonymous() else request.user.username})
 
     forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',
                                            users=account, forecast__private__name='yes').order_by(
@@ -1130,7 +1130,7 @@ def my_forecast_private(request):
                                               "result": forecast_result_data(forecast_result),
                                               "approval": forecast_approval,
                                               "forecast": live_forecast_data_bet(not_bet),
-                                              "user": "GUEST" if request.user.is_anonymous() else request.user.username,
+                                              "user": "Guest" if request.user.is_anonymous() else request.user.username,
                                                       "heading": "Forecast Private",
                                                       "title": "My Forecast",
                                                       })
@@ -1310,7 +1310,7 @@ def facebook_category(request):
     return render(request, 'category.html', {'category': category,
                                              "heading": "Categories",
                                              "title": "Categories",
-                                             "user": "GUEST" if request.user.is_anonymous() else request.user.username})
+                                             "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 def set_cookie(response, key, value, days_expire=7):
