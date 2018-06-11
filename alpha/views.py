@@ -1141,7 +1141,7 @@ def my_forecast_private(request):
 def get_sub_cat(request):
     if request.method == "POST":
         cat = Category.objects.get(id=int(request.POST.get('identifier', '')))
-        sub = SubCategory.objects.filter(category=cat).order_by('-name')
+        sub = SubCategory.objects.filter(category=cat).order_by('name')
         data = [dict(id=x.id, name=x.name) for x in sub]
         return HttpResponse(json.dumps(dict(data=data, source=sub[0].source)))
 
