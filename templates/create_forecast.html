@@ -110,8 +110,16 @@
       </div>
 <div class="row mb-2" style="padding-left:10px;">
       <div class="col-12">
-        <label>Make this forecast Private</label> &nbsp;<input type="checkbox" id="private"/>
-        <label>Make this forecast Public</label> &nbsp;<input type="checkbox" checked id="public"/>
+          <label>Make this forecast </label>
+           <div style="display:flex;">
+                <input type="radio" id="contactChoice1" name="contact" value="email" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">Private</label>
+
+                <input type="radio" id="contactChoice2" name="contact" value="phone" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice2" style="margin-bottom:5px;" >Public</label>
+                    </div>
+        <!--<label>Private</label> &nbsp;<input type="checkbox" id="private"/>-->
+        <!--<label>Public</label> &nbsp;<input type="checkbox" checked id="public"/>-->
       </div></div>
     <div class="row mb-2">
       <div class="col-12"> <input type="button" class="btn w-100 btn-orange text-uppercase create" value="Create Forecast"/> </div>
@@ -192,7 +200,9 @@ $(".create").click(function(){
     var test = $("#private").is(":checked");
 
     console.log(test);
-    var private = $('input[type="checkbox"]').prop("checked");
+    //var private = $('input[type="checkbox"]').prop("checked");
+    var private = $("input[name='contact']:checked").val();
+
     var value = "";
      if(expire == "" || heading == "" || category=="" || sub_cat == ""){
      alert('All fields are mandatory');

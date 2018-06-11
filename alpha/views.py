@@ -42,7 +42,7 @@ def create_forecast(request):
         approved = Approved.objects.get(id=2)
         verified = Verified.objects.get(id=2)
         private_name = request.POST.get("private", '')
-        if private_name == "true":
+        if private_name == "email":
             private = Private.objects.get(id=1)
         else:
             private = Private.objects.get(id=2)
