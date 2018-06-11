@@ -66,7 +66,7 @@
                   <!--</div>-->
                   <!--<div class="col-7 text-right value-color">-->
                       <strong>{% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %}
-                          {% if forecast.won == 'yes' %}<span class="result_yes">(YES)</span>{% elif forecast.won == 'no' %} <span class="result_no">(NO)</span>{% endif %}</strong>
+                          {% if forecast.won == 'yes' %}<span class="result_yes" style="color:green;">(YES)</span>{% elif forecast.won == 'no' %} <span class="result_no" style="color:red;">(NO)</span>{% endif %}</strong>
                   </div>
                 </div>
         </div>
