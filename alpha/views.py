@@ -370,7 +370,7 @@ def betting(request, userid):
         end_date = datetime.datetime.strftime(forecast.expire, '%b %d, %Y')
         end_time = datetime.datetime.strftime(forecast.expire, '%H:%M')
         try:
-            percent = (betting_for / (betting_for + betting_against)) * 100
+            percent = round((betting_for / (betting_for + betting_against)) * 100, 2)
         except Exception:
             percent = 0
 
