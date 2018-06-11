@@ -68,7 +68,7 @@
       <div class="col-12">
             <div class="form-group" style="display:none;" id="srcs">
 
-                <label> Result verification source is </label><input type="text" id="source" readonly  style="border: none;border-color: transparent;"/>
+                <label> Result verification source is </label><p class="source_text"></p>
 
             </div>
       </div>
@@ -116,7 +116,7 @@
     </div>
     <div class="row mb-2">
       <div class="col-12">
-        <div class="note">All forecasts are subject to Admin Approval</div>
+        <label>Note : </label><div class="note">All forecasts are subject to Admin Approval</div>
       </div>
     </div>
   </div>
@@ -172,7 +172,7 @@
                             }
 
 
-                            $("#source").text(data.source);
+                            $("#source_text").text(data.source);
 
                             $("#srcs").show();
                             $("#subcategories").show();
