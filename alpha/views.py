@@ -814,10 +814,7 @@ def my_forecast(request):
     forecast_approval = ForeCast.objects.filter(approved__name="no", user=account, private__name='no').order_by("expire")
     forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account, private__name='no').order_by("expire")
     not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
-    live_forecast_data = live_forecast_data(forecast_live)
-    forecast_result_data = forecast_result_data(forecast_result)
-    live_forecast_data_bet = live_forecast_data_bet(not_bet)
-    if len(live_forecast_data) ==0 and len(forecast_result_data) == 0 and len(live_forecast_data_bet) == 0 and len(forecast_approval) == 0:
+    if len(live_forecast_data(forecast_live)) ==0 and len(forecast_result_data(forecast_result)) == 0 and len(live_forecast_data_bet(not_bet)) == 0 and len(forecast_approval) == 0:
         return render(request, 'my_friend_no.html', {"heading": "My Forecast",
                                                   "title": "My Forecast",
                                                   "user": "Guest" if request.user.is_anonymous() else request.user.username})
