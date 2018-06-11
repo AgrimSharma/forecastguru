@@ -838,7 +838,7 @@ def search_result(request):
 
         query = request.POST.get('point', '')
         if query == "":
-            return render(request, "search_data.html", {"data": "No result found"})
+            return render(request, "search_data_nf.html", {"data": "No result found"})
         else:
             data = []
 
@@ -892,7 +892,7 @@ def search_result(request):
                                "title": "Search Forecast",
                                })
     else:
-        return render(request, "search_data.html", {"data": "No result found","heading": "Search Forecast",
+        return render(request, "search_data_nf.html", {"data": "No result found","heading": "Search Forecast",
                                                   "title": "Search Forecast",})
 
 

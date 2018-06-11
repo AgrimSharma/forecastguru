@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
@@ -21,11 +20,7 @@
       <div class="col-md-12">
 
       <div class="forcast_home">
-          {% if data == "No result found" %}
-            <div class="forcast_box">
-                <strong> No Search result found</strong>
-            </div>
-          {% else %}
+
    {% for f in live %}
 
         <div class="forcast_box">
@@ -92,7 +87,6 @@
           </div>
         </div>
                     {% endfor %}
-        {% endif %}
       </div>
 
     </div>
