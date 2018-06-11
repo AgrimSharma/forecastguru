@@ -199,10 +199,10 @@ $(".create").click(function(){
     var user = $("#user").val();
     //var test = $("#private").is(":checked");
 
-    console.log(test);
+    //console.log(test);
     //var private = $('input[type="checkbox"]').prop("checked");
     var private = $("input[name='contact']:checked").val();
-
+    alert(private);
     var value = "";
      if(expire == "" || heading == "" || category=="" || sub_cat == ""){
      alert('All fields are mandatory');
