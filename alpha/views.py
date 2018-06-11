@@ -92,7 +92,7 @@ def create_forecast(request):
                                                             })
         except Exception:
             return render(request, 'create_forecast_nl.html', {"heading": "Create Forecast",
-                                                  "title": "Create Forecast",})
+                                                  "title": "Create Forecast","user": "GUEST" if request.user.is_anonymous() else request.user.username,})
 
 
 def closing_soon(request):
