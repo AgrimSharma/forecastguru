@@ -367,8 +367,9 @@ def betting(request, userid):
             total_wagered = betting_sum['bet_for'] + betting_sum['bet_against']
         except Exception:
             total_wagered = 0
-        end_date = datetime.datetime.strftime(forecast.expire, '%b %d, %Y')
-        end_time = datetime.datetime.strftime(forecast.expire, '%H:%M')
+        expires = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+        end_date = datetime.datetime.strftime(expires, '%b %d, %Y')
+        end_time = datetime.datetime.strftime(expires, '%H:%M')
         try:
             percent = round((betting_for / (betting_for + betting_against)) * 100, 2)
         except Exception:
