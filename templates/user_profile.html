@@ -32,7 +32,7 @@
   <div class="container">
     <div class="account_header d-flex flex-column align-items-center justify-content-center">
       <figure class="account-pic">
-          <img src="{{ request.user.socialaccount_set.all.0.get_avatar_url}}" alt="" width="60px" height="90px">
+          <img src="https://graph.facebook.com/{{profile.uid}}/picture?type=large" alt="" width="60px" height="90px">
 
         <!--<img src="{% static 'images/logo-small-white.png' %}" alt=""> -->
       </figure>
