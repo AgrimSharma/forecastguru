@@ -838,14 +838,16 @@ def search_result(request):
 
         query = request.POST.get('point', '')
         if query == "":
-            return render(request, "search_data_nf.html", {"data": "No result found"})
+            return render(request, "search_data_nf.html", {"data": "No result found","heading": "Search Forecast",
+                               "title": "Search Forecast",})
         else:
             data = []
 
             forecast_live = ForeCast.objects.filter(heading__icontains=query, approved__name="yes", status__name='In-Progress').order_by(
                 "-expire")
             if len(forecast_live) == 0:
-                return render(request, "search_data.html", {"data": "No result found"})
+                return render(request, "search_data_nf.html", {"data": "No result found","heading": "Search Forecast",
+                               "title": "Search Forecast",})
             else:
                 for f in forecast_live:
                     date = current.date()
