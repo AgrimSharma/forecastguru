@@ -393,10 +393,10 @@ def betting(request, userid):
                                                 "end_date": end_date, "end_time": end_time,
                                                 'status': status, "percent": percent,
                                                 "success": success,
-                                                "user": forecast.user.user.username,
+                                                "users": forecast.user.user.username,
                                                 "sums": betting_sum['bet_for'] + betting_sum['bet_against'],
                                                 "approved": approved,
-                                                "user_name": users,
+                                                "user": users,
                                                 "heading": "Forecast Details",
                                                 "title": "Forecast Details",
                                                 })
