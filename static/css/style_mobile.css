@@ -142,7 +142,7 @@ header h1 {
 .goback.position-absolute a{font-size: 30px; line-height: 1}
 header .goback.position-absolute{top: -4px}
 header .goback.position-absolute a{font-size: 30px; line-height: 1}
-.header-right {right: 15px; top: 0; text-align: right; font-size: 11px; line-height: 1; text-transform: uppercase}
+.header-right {right: 15px; top: 0; text-align: right; font-size: 11px; line-height: 1; }
 .header-right span {font-size: 14px;}
 .header-right a{color: #fff}
 .topspace {
