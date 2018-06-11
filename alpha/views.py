@@ -794,8 +794,8 @@ def category_search(request, userid):
                   {
                       "live": forecast_live_view(category),
                       "result": forecast_result_view(category),
-                      "heading": "Categories",
-                      "title": "Categories",
+                      "heading": category.name + " Category",
+                      "title": category.name + " Category",
                       "user": "GUEST" if request.user.is_anonymous() else request.user.username
                   })
 
