@@ -1642,27 +1642,27 @@ def import_csv(request):
         # loop over the lines and save them in db. If error , store as string and then display
         for line in lines:
             fields = line.split(",")
-            try:
-                private = Private.objects.get(name__icontains=str(fields[6]))
-                status = Status.objects.get(name='In-Progress')
-                verified = Verified.objects.get(name__icontains=str(fields[7]))
-                category = Category.objects.get(name__icontains=str(fields[0]))
-                sub_category = SubCategory.objects.get(name__icontains=str(fields[1]))
-                user = User.objects.get(username=str(fields[3]))
-                social = SocialAccount.objects.get(user=user)
-                approved = Approved.objects.get(name=str(fields[5]))
-                expire = datetime.datetime.strptime(str(fields[4]), "%Y-%m-%d %H:%M:%S")
-                ForeCast.objects.get_or_create(category=category, sub_category=sub_category, user=social,
-                                        heading=fields[2], approved=approved, verified=verified,
-                                        private=private, expire=expire, created=datetime.datetime.now().date(),
-                                        status=status)
+            # try:
+            private = Private.objects.get(name__icontains=str(fields[6]))
+            status = Status.objects.get(name='In-Progress')
+            verified = Verified.objects.get(name__icontains=str(fields[7]))
+            category = Category.objects.get(name__icontains=str(fields[0]))
+            sub_category = SubCategory.objects.get(name__icontains=str(fields[1]))
+            user = User.objects.get(username=str(fields[3]))
+            social = SocialAccount.objects.get(user=user)
+            approved = Approved.objects.get(name=str(fields[5]))
+            expire = datetime.datetime.strptime(str(fields[4]), "%Y-%m-%d %H:%M:%S")
+            ForeCast.objects.get_or_create(category=category, sub_category=sub_category, user=social,
+                                    heading=fields[2], approved=approved, verified=verified,
+                                    private=private, expire=expire, created=datetime.datetime.now().date(),
+                                    status=status)
             # if form.is_valid():
             #     form.save()
             # else:
             #     logging.getLogger("error_logger").error(form.errors.as_json())
-            except Exception:
-                logging.getLogger("error_logger").error(repr(Exception))
-                pass
+            # except Exception:
+            #     logging.getLogger("error_logger").error(repr(Exception))
+            #     pass
 
         return HttpResponseRedirect("/import_csv/")
     else:
