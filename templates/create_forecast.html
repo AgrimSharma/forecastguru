@@ -98,7 +98,7 @@
       <div class="col-12">
         <div class="position-relative">
           <div class="form-group">
-                <label>End Date and Time</label>
+                <label>Closing Date and Time</label>
                     <div class='input-group date' id='datetimepicker6'>
                         <input type='text' class="form-control" name="expire" id="expire" placeholder="Select end date and time"/>
                         <span class="input-group-addon">
@@ -174,8 +174,11 @@
                     var data = JSON.parse(resp);
                     console.log(data);
                     var sub = data.data;
-
-                        console.log(sub);
+                    $('#subcategories').append($('<option>', {
+                                value: '',
+                                text : "Select a Sub Category"
+                            }));
+                            console.log(sub);
                         for(i=0; i < sub.length; i++){
                              var values = JSON.parse(JSON.stringify(sub[i]));
                             $('#subcategories').append($('<option>', {
