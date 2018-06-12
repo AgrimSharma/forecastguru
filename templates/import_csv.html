@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="topspace"></div>
+<div class="container topnavlinks">
+  <nav class="navbar">
+    <ul class="navbar-nav nav-fill w-100 text-center">
+       <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'forecast_result' %}">Declared</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link active" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'result_not_declared' %}">Not Declared</a> </li>
+      <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
+    </ul>
+  </nav>
+</div>
+<div class="container fixed_p_footer">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="forcast_home">
+        <div class="forcast_box">
+          <div class="row align-items-center" >
+            <div class="col-12 col-md-12 text-center">
+                <p>CSV should be in the format category, subcategory, heading, expire, approved, status, verified, private</p>
+                1
+
+            <form action="{% url 'import_csv' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name" class="col-md-3 col-sm-3 col-xs-12 control-label">File: </label>
+                <div class="col-md-8">
+                    <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-3" style="margin-bottom:10px;">
+                     <button class="btn btn-primary"> <span class="glyphicon glyphicon-upload" style="margin-right:5px;"></span>Upload </button>
+                </div>
+            </div>
+            </form>
+            </div>
+
+          </div>
+
+          </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png'%}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link active" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="js/jquery-slim.min.js"><\/script>')</script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+    $(function(){
+           $('#nav-icon1').click(function(){
+            $(this).toggleClass('open');
+        });
+
+    });
+
+$('#myInput').keypress(function (e) {
+  if (e.which == 13) {
+  var test = $("#myInput").val();
+
+  $.ajax({
+    type:"POST",
+    url: "{% url 'search_result' %}",
+    data: {'point': test},
+    success: function(resp){
+
+    }
+});
+    <!--$('form').submit();-->
+    <!--return false;-->
+  }
+});
+
+    </script>
+{% endblock %}

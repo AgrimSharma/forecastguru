@@ -54,6 +54,7 @@ urlpatterns = [
     url(r'^closed_status/', update_close_status, name="closed_status"),
     url(r'^terms/', terms, name="terms"),
     url(r'^faq/', faq, name="faq"),
+    url(r'^import_csv/', import_csv, name="import_csv"),
     url(r'^', main_page, name='main_page'),
 
 ]
