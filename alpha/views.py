@@ -193,7 +193,9 @@ def live_forecast(request):
                              total=total, start=start, total_user=betting_for + betting_against,
                              betting_for=betting_for, betting_against=betting_against, today=today,
                              participants=total_wagered, bet_for=bet_for,
-                             bet_against=bet_against,))
+                             bet_against=bet_against,
+                             bet_for_user=0,
+                             bet_against_user=0))
 
     return render(request, 'live_forecast.html', {"live": data,
                                                   "heading": "Forecasts",
