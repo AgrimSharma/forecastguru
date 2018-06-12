@@ -24,10 +24,10 @@
                 <strong> You have not participated or created forecast</strong>
             </div>
           <div class="row" style="display:flex;">
-            <div class="col-6 text-right pl-0">
+            <div class="col-6 text-center pl-0">
                 <a href="{% url 'create_forecast' %}" type="button" class="btn btn-orange">Create Forecast</a>
             </div>
-            <div class="col-6 text-right pl-0">
+            <div class="col-6 text-center pl-0">
                 <a href="{% url 'live_forecast' %}" type="button" class="btn btn-orange">Explore Forecast</a>
             </div>
 
@@ -48,7 +48,7 @@
           Categories</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
           Results</a> </li>
-          <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+          <li class="nav-item"> <a class="nav-link active" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
             My Forecasts</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
           My Account</a> </li>
