@@ -1625,7 +1625,6 @@ def session(request):
 @csrf_exempt
 def import_csv(request):
     if request.method == 'POST':
-        import pdb;pdb.set_trace()
         csv_file = request.FILES["csv_file"]
         if not csv_file.name.endswith('.csv'):
             messages.error(request, 'File is not CSV type')
