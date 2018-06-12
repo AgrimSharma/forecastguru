@@ -183,18 +183,18 @@ class InviteStatus(models.Model):
         return self.name
 
 
-class PrivateForecast(models.Model):
-    forecast = models.ForeignKey(to=ForeCast, on_delete=models.CASCADE)
-    to_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    status = models.ForeignKey(to=InviteStatus, on_delete=models.CASCADE)
-    from_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ['-name']
-        verbose_name_plural = 'Invite'
-
-    def __str__(self):
-        return "{} : {}: {} : {}".format(self.forecast, self.to_user, self.from_user, self.status)
-
-    def __unicode__(self):
-        return "{} : {}: {} : {}".format(self.forecast, self.to_user, self.from_user, self.status)
+# class PrivateForecast(models.Model):
+#     forecast = models.ForeignKey(to=ForeCast, on_delete=models.CASCADE)
+#     to_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+#     status = models.ForeignKey(to=InviteStatus, on_delete=models.CASCADE)
+#     from_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+#
+#     class Meta:
+#         ordering = ['-name']
+#         verbose_name_plural = 'Invite'
+#
+#     def __str__(self):
+#         return "{} : {}: {} : {}".format(self.forecast, self.to_user, self.from_user, self.status)
+#
+#     def __unicode__(self):
+#         return "{} : {}: {} : {}".format(self.forecast, self.to_user, self.from_user, self.status)
