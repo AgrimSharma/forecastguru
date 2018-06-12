@@ -61,7 +61,7 @@ ROOT_URLCONF = 'fblogin.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["/home/lawrato/forecastguru/templates"],
+        'DIRS': ["/home/agrim/authenticate/fblogin/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,7 +91,7 @@ DATABASES = {
     }
 }
 
-TIME_ZONE =  'Asia/Kolkata'
+TIME_ZONE = 'Asia/Kolkata'
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -130,7 +130,7 @@ STATIC_URL = '/static/'
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = [
-    "/home/lawrato/forecastguru/static"
+    "/home/agrim/authenticate/fblogin/static"
 ]
 
 AUTHENTICATION_BACKENDS = (
