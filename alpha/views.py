@@ -18,6 +18,7 @@ from . import config
 from django.template import RequestContext
 from allauth.socialaccount.models import SocialAccount, SocialToken
 import hashlib
+from django.contrib.admin.views.decorators import staff_member_required
 
 from django.conf import settings
 import logging
@@ -1622,6 +1623,7 @@ def session(request):
     return HttpResponse(json.dumps(dict(keys=request.session.keys(), values=request.session.values())))
 
 
+@staff_member_required
 @csrf_exempt
 def import_csv(request):
     if request.method == 'POST':
