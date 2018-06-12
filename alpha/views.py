@@ -555,6 +555,7 @@ def betting(request, userid):
                                                 "user": users,
                                                 "heading": "Forecast Details",
                                                 "title": "Forecast Details",
+                                                "source": forecast.sub_category.source.name
                                                 })
     except Exception:
         return render(request, 'betting.html', {'forecast': forecast, "user": request.user.username,
