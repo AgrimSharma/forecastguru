@@ -1669,7 +1669,6 @@ def import_csv(request):
         return render(request, 'import_csv.html', {"heading": "Bulk Upload Forecast",
                                              "title": "Bulk Upload Forecast",
                                              "user": "Guest" if request.user.is_anonymous() else request.user.username})
-)
 
 
 def main_page(request):
