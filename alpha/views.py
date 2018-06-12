@@ -1645,7 +1645,7 @@ def import_csv(request):
             # try:
             private = Private.objects.get(name__icontains=str(fields[6]))
             status = Status.objects.get(name='In-Progress')
-            verified = Verified.objects.get(name__icontains=str(fields[7]))
+            verified = Verified.objects.get(name='no')
             category = Category.objects.get(name__icontains=str(fields[0]))
             sub_category = SubCategory.objects.get(name__icontains=str(fields[1]))
             user = User.objects.get(username=str(fields[3]))
