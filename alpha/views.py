@@ -391,7 +391,7 @@ def result_not_declared(request):
                              participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
                              ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                              bet_for=bet_for, bet_for_user=0, bet_againet_user=0))
-    return render(request, 'forecast_result_pending.html', {
+    return render(request, 'forecast_result_pending_no.html', {
         "result": data,
         "user": "Guest" if request.user.is_anonymous() else request.user.username,
         "heading": "Results",

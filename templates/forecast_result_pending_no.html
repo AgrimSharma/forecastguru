@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="topspace"></div>
+<div class="container topnavlinks">
+  <nav class="navbar">
+    <ul class="navbar-nav nav-fill w-100 text-center">
+       <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'forecast_result' %}">Declared</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link active" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'result_not_declared' %}">Not Declared</a> </li>
+      <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
+    </ul>
+  </nav>
+</div>
+<div class="container fixed_p_footer">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="forcast_home">
+             {% for f in result %}
+        <div class="forcast_box">
+          <div class="row align-items-center" >
+            <div class="col-3 col-md-2 text-center">
+                <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="" >
+
+                  <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
+                </figure>
+            </div>
+            <div class="col-9 col-md-10">
+                <p class="title_desc"><a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;"> {{f.forecast.heading}}</a></p>
+            </div>
+          </div>
+             <div class="row" style="background: #f98b8b;padding-left: 40%;padding-top: 5px;height: 26px;/* text-align:  center; */">
+                 <p><b>Result Awaited</b></p>
+
+                  </div>
+            <hr>
+                <div class="row">
+                  <div class="col-6 pr-0">
+                    <div class="time textwithicon pl-0">
+
+
+                       <span>My Points in Play</span>
+
+                        </div>
+                  </div>
+
+                  <div class="col-3 text-right pl-0">
+                     Yes(0)
+                </div>
+                    <div class="col-3 text-right pl-0">
+                     No(0)
+                </div>
+              </div>
+
+          </div>
+
+        {% endfor %}
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png'%}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link active" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="js/jquery-slim.min.js"><\/script>')</script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+    $(function(){
+           $('#nav-icon1').click(function(){
+            $(this).toggleClass('open');
+        });
+
+    });
+
+$('#myInput').keypress(function (e) {
+  if (e.which == 13) {
+  var test = $("#myInput").val();
+
+  $.ajax({
+    type:"POST",
+    url: "{% url 'search_result' %}",
+    data: {'point': test},
+    success: function(resp){
+
+    }
+});
+    <!--$('form').submit();-->
+    <!--return false;-->
+  }
+});
+
+    </script>
+{% endblock %}
