@@ -25,7 +25,7 @@ SECRET_KEY = 'bnce$cl6%1)ork)k=)j7*h%vsrmx7lz4-#)0&et01#09+g#s^8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["103.91.90.249"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -61,7 +61,11 @@ ROOT_URLCONF = 'fblogin.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+<<<<<<< HEAD
         'DIRS': ["/home/agrim/authenticate/fblogin/templates"],
+=======
+        'DIRS': ["/home/sirez/forecastguru/templates"],
+>>>>>>> ce413463222d9d61045960fcab01f3ea1a583b30
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,7 +134,11 @@ STATIC_URL = '/static/'
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = [
+<<<<<<< HEAD
     "/home/agrim/authenticate/fblogin/static"
+=======
+    "/home/sirez/forecastguru/static"
+>>>>>>> ce413463222d9d61045960fcab01f3ea1a583b30
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -144,10 +152,10 @@ AUTHENTICATION_BACKENDS = (
 )
 SITE_ID = 1
 
-PAYMENT_MODE = "test"
-MERCHANT_KEY = "gtKFFx"
+#PAYMENT_MODE = "test"
+#MERCHANT_KEY = "gtKFFx"
 
-MERCHANT_SALT = "eCwWELxi"
+#MERCHANT_SALT = "eCwWELxi"
 
 
 SUCCESS_URL = "http://localhost:8000/payubiz-success/"
@@ -164,3 +172,30 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.SHA1PasswordHasher',
     'django.contrib.auth.hashers.CryptPasswordHasher',
 ]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# session expire at browser close
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# wsgi scheme
+os.environ['wsgi.url_scheme'] = 'https'
+
+MERCHANT_KEY = "r1dykxR5"
+
+MERCHANT_SALT = "B27ayY3tln"
+
+# And add the PAYU_MODE to 'TEST' for testing and 'LIVE' for production.
+#PAYU_MODE = "LIVE"
+PAYMENT_MODE = "production"
+SECURE_SSL_REDIRECT = True
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'agrim.sharma@sirez.com'
+EMAIL_HOST_PASSWORD = 'Chetu@123'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
