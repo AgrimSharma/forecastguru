@@ -1469,7 +1469,7 @@ def forecast_result_view(category, profile):
     return data
 
 
-def forecast_result_view_bt(category, profile):
+def forecast_result_view_bt(category):
     data = []
 
     forecast_live = ForeCast.objects.filter(approved__name="yes", category=category, status__name='Closed').order_by(
