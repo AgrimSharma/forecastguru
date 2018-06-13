@@ -68,7 +68,7 @@
       <div class="col-12">
             <div class="form-group" style="display:none;" id="srcs">
                 <div class="row" style="display:flex;">
-                    <div class="col-12">Result will be verified from <p class="source_text"></p></div>
+                    <div class="col-12" ><p class="source_text" style="color: black;padding-left: 10px;"></p></div>
 
 
             </div>
@@ -185,14 +185,31 @@
                             }
 
 
-                            $(".source_text").text(data.source);
+                            //$(".source_text").text(data.source);
 
-                            $("#srcs").show();
+                            //$("#srcs").show();
                             $("#subcategories").show();
                             }
                         });
 
                         });
+
+
+             $('#subcategories').on('change', function() {
+            var id = this.value;
+            $.ajax({
+                    type: "POST",
+                    url: "{% url 'get_sub_source' %}",
+                    data: {'identifier': id,},
+                    success: function(resp){
+                        $(".source_text").text("Result will be verified from " + resp);
+                            $("#srcs").show();
+                            }
+                        });
+
+                        });
+
+
 
 $(".create").click(function(){
     var category = $("#categories").val();

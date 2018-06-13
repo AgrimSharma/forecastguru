@@ -1336,6 +1336,12 @@ def get_sub_cat(request):
         return HttpResponse(json.dumps(dict(data=data, source=sub[0].source)))
 
 
+@csrf_exempt
+def get_sub_source(request):
+    if request.method == "POST":
+        cat = SubCategory.objects.get(id=int(request.POST.get('identifier', '')))
+        return HttpResponse(json.dumps(cat.source))
+
 def forecast_live_view(category, profile):
     data = []
     forecast_live = ForeCast.objects.filter(approved__name="yes", category=category,
