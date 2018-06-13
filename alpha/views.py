@@ -1342,10 +1342,11 @@ def get_sub_source(request):
         cat = SubCategory.objects.get(id=int(request.POST.get('identifier', '')))
         return HttpResponse(json.dumps(cat.source))
 
+
 def forecast_live_view(category, profile):
     data = []
     forecast_live = ForeCast.objects.filter(approved__name="yes", category=category,
-                                            status__name='In-Progress').order_by("-created")
+                                            status__name='In-Progress').order_by("expire")
 
     for f in forecast_live:
         date = current.date()
@@ -1396,7 +1397,7 @@ def forecast_live_view(category, profile):
 def forecast_live_view_bt(category):
     data = []
     forecast_live = ForeCast.objects.filter(approved__name="yes", category=category,
-                                            status__name='In-Progress').order_by("-created")
+                                            status__name='In-Progress').order_by("expire")
 
     for f in forecast_live:
         date = current.date()
@@ -1445,7 +1446,7 @@ def forecast_result_view(category, profile):
     data = []
 
     forecast_live = ForeCast.objects.filter(approved__name="yes", category=category, status__name='Closed').order_by(
-        "-created")
+        "expire")
     for f in forecast_live:
         forecast = f
         date = current.date()
@@ -1496,7 +1497,7 @@ def forecast_result_view_bt(category):
     data = []
 
     forecast_live = ForeCast.objects.filter(approved__name="yes", category=category, status__name='Closed').order_by(
-        "-created")
+        "expire")
     for f in forecast_live:
         forecast = f
         date = current.date()
