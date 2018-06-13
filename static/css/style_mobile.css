@@ -768,3 +768,25 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
 	.tutorial-container h2{font-size: 24px}
 	.tutorial-container p{font-size: 18px}
 }
+/* 12062018 */
+.faq_wrap {margin-top: 20px}
+.terms_wrap {margin-top: 20px; padding: 15px; background: #fff; border-radius: 6px}
+.terms_wrap h4{font-size: 16px; color: #403c55;font-weight: bold}
+.faq_wrap .accordion .card-header {position: relative;}
+.faq_wrap .accordion .card-header:after {
+    font-family: 'FontAwesome';
+    content: "\f0d8";
+	position: absolute; top: 11px; right: 15px
+
+}
+.faq_wrap .accordion .card-header.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\f0d7";
+}
+.faq_wrap .card-header {background: #fff; border: none; padding-right: 25px; cursor: pointer}
+.faq_wrap .card-title, .faq_wrap .card-body {color: #a7a7a7!important}
+.faq_wrap .card_box {margin-bottom: 7px}
+.faq_wrap .card{background: none; border: none}
+.faq_wrap .card-body{background: #fff; padding: 0 20px 15px}
+.faq_wrap .card-body table td, .faq_wrap .card-body table th{text-align: center; padding: 5px}
+.faq_wrap .card-header[aria-expanded="true"] .card-title{color: #403c55!important}
