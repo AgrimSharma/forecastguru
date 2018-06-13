@@ -153,8 +153,8 @@ def live_forecast(request):
                              betting_for=betting_for, betting_against=betting_against, today=today,
                              participants=total_wagered, bet_for=bet_for,
                              bet_against=bet_against,
-                             bet_for_user=bet_for_user if bet_for_user else None,
-                             bet_against_user=bet_against_user if bet_against_user else None))
+                             bet_for_user=bet_for_user if bet_for_user else 0,
+                             bet_against_user=bet_against_user if bet_against_user else 0))
     except Exception:
         forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress').order_by("expire")
         for f in forecast_live:
@@ -195,8 +195,8 @@ def live_forecast(request):
                              betting_for=betting_for, betting_against=betting_against, today=today,
                              participants=total_wagered, bet_for=bet_for,
                              bet_against=bet_against,
-                             bet_for_user=None,
-                             bet_against_user=None))
+                             bet_for_user=0,
+                             bet_against_user=0))
 
     return render(request, 'live_forecast.html', {"live": data,
                                                   "heading": "Forecasts",
