@@ -18,19 +18,18 @@
       <div class="col-md-12">
           <div class="forcast_home">
 
-               {% for f in live %}
+              {% for f in live %}
 
         <div class="forcast_box">
 
             <div class="row align-items-center" >
             <div class="col-3 col-md-2 text-center">
-                            <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="" >
+                            <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="">
 
-                  <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
                             </figure>
             </div>
             <div class="col-9 col-md-10">
-                <p class="title_desc"><a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;"> {{ f.forecast.heading }}</a></p>
+                <p class="title_desc"> <a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;">{{ f.forecast.heading }}</a></p>
             </div>
           </div>
           <div class="row">
@@ -77,9 +76,9 @@
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">PLAY </button>
                           </form>
                 </div>
+              </div>
                               {% if f.bet_against_user > 0 or f.bet_for_user > 0  %}
-
-                  <hr>
+                <hr>
                 <div class="row">
                   <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
@@ -103,6 +102,7 @@
 
       </div>
           {% endfor %}
+
 
           {% for f in result %}
         <div class="forcast_box">
