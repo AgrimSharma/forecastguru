@@ -490,22 +490,24 @@ def profile(request):
                                                  "point": point,
                                                  "created": fore,
                                                  "total":  profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point,
-                                                 "status": predict_status(profile),
+                                                 "status": predict_status(profile, suc_per),
                                                  "balance": profile.fg_points_total
                                                  })
 
 
-def predict_status(profile):
-    if 0 <= profile.forecast_participated < 25:
+def predict_status(profile, suc_per):
+    if profile.forecast_created == 0 and (0 < suc_per <= 50):
         status = "Beginner"
         return status
-    elif 25 <= profile.forecast_participated < 75:
-        status = "Intermediate"
+    elif profile.forecast_created == 10 and (50 < suc_per <= 70):
+        status = "Expert"
         return status
-    elif profile.forecast_participated > 75:
+    elif profile.forecast_created == 30 and (70 < suc_per < 90):
+        status = "Influencer"
+        return status
+    elif profile.forecast_created == 50 and suc_per >= 90:
         status = "Guru"
         return status
-
 
 def betting(request, userid):
     forecast = ForeCast.objects.get(id=userid)
