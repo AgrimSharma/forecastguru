@@ -496,7 +496,7 @@ def profile(request):
 
 
 def predict_status(profile, suc_per):
-    if 0 <= profile.forecast_created < 10 and (0 < suc_per <= 50):
+    if 0 <= profile.forecast_created < 10 and (0 <= suc_per < 50):
         status = "Beginner"
         return status
     elif 10 <= profile.forecast_created < 30 and (50 < suc_per <= 70):
