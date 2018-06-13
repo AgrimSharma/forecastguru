@@ -79,7 +79,7 @@
                           </form>
                 </div>
               </div>
-
+                              {% if f.bet_against_user and f.bet_for_user %}
                 <hr>
                 <div class="row">
                   <div class="col-6 pr-0">
@@ -97,7 +97,7 @@
                     <div class="col-3 text-right pl-0">
                      No({{f.bet_against_user}})
                 </div>
-              </div>
+              </div>{% endif %}
             </div>
           </div>
         </div>

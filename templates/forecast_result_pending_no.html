@@ -32,7 +32,7 @@
              <div class="row" style="background: #f98b8b;padding-left: 40%;padding-top: 5px;height: 26px;/* text-align:  center; */">
                  <p><b>Result Awaited</b></p>
 
-                  </div>
+                  </div>                  {% if f.bet_against_user and f.bet_for_user %}
             <hr>
                 <div class="row">
                   <div class="col-6 pr-0">
@@ -51,7 +51,7 @@
                      No(0)
                 </div>
               </div>
-
+{% endif %}
           </div>
 
         {% endfor %}
