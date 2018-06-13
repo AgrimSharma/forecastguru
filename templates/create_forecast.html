@@ -56,6 +56,7 @@
       <div class="container" style="display:none;">
        <input type="text" name="user" id="user" value="{{ user }}"/>
    </div>
+
     <div class="row mb-3">
       <div class="col-12">
         <select class="form-control" name="subcategories" id="subcategories" style="display:none;">
@@ -65,15 +66,11 @@
       </div>
     </div>
     <div class="row mb-3">
-      <div class="col-12">
+        <div class="col-12">
             <div class="form-group" style="display:none;" id="srcs">
-                <div class="row" style="display:flex;">
-                    <div class="col-12">Result will be verified from <p class="source_text"></p></div>
-
-
+                <div class="col-12" ><p class="source_text" style="color: black;padding-top: 15px;"></p></div>
             </div>
-      </div>
-    </div>
+        </div>
 
     </div>
       <div class="row mb-3">
@@ -98,9 +95,9 @@
       <div class="col-12">
         <div class="position-relative">
           <div class="form-group">
-                <label>Closing Date and Time</label>
+                <label>End Date and Time</label>
                     <div class='input-group date' id='datetimepicker6'>
-                        <input type='text' class="form-control" name="expire" id="expire" placeholder="Select Closing date and time"/>
+                        <input type='text' class="form-control" name="expire" id="expire" placeholder="Select end date and time"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -174,11 +171,8 @@
                     var data = JSON.parse(resp);
                     console.log(data);
                     var sub = data.data;
-                    $('#subcategories').append($('<option>', {
-                                value: '',
-                                text : "Select a Sub Category"
-                            }));
-                            console.log(sub);
+
+                        console.log(sub);
                         for(i=0; i < sub.length; i++){
                              var values = JSON.parse(JSON.stringify(sub[i]));
                             $('#subcategories').append($('<option>', {
@@ -188,14 +182,31 @@
                             }
 
 
-                            $(".source_text").text(data.source);
+                            //$(".source_text").text(data.source);
 
-                            $("#srcs").show();
+                            //$("#srcs").show();
                             $("#subcategories").show();
                             }
                         });
 
                         });
+
+
+             $('#subcategories').on('change', function() {
+            var id = this.value;
+            $.ajax({
+                    type: "POST",
+                    url: "{% url 'get_sub_source' %}",
+                    data: {'identifier': id,},
+                    success: function(resp){
+                        $(".source_text").text("Source : Result will be verified from " + resp);
+                            $("#srcs").show();
+                            }
+                        });
+
+                        });
+
+
 
 $(".create").click(function(){
     var category = $("#categories").val();

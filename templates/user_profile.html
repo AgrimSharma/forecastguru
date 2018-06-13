@@ -167,10 +167,15 @@
       <div class="total_balance text-right">
         <p>Balance : <span class="value-color font-weight-bold">{{balance}}</span></p>
       </div>
-      <div class="row mb-2 btn_wrap">
-        <div class="col-3"> <a href="{% url 'logout_user' %}" class="text-uppercase">Logout</a> </div>
+       <div class="row mb-2 btn_wrap">
+        <div class="col-6"> <a href="{% url 'privacy_policy' %}" class="text-uppercase">Privacy Policy</a> </div>
         <div class="col-6"> <a href="{% url 'terms' %}" class="text-uppercase">Terms and Privacy</a> </div>
-        <div class="col-3"> <a href="{% url 'faq' %}" class="text-uppercase">FAQ</a> </div>
+      </div>
+      <hr>
+      <div class="row mb-2 btn_wrap">
+        <div class="col-6"> <a href="{% url 'logout_user' %}" class="text-uppercase">Logout</a> </div>
+
+        <div class="col-6"> <a href="{% url 'faq' %}" class="text-uppercase">FAQ</a> </div>
       </div>
     </div>
   </div>

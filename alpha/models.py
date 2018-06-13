@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 import datetime
 from django.db import models
 from allauth.socialaccount.models import SocialAccount
+from django.contrib.auth.models import User
+
 
 
 class Approved(models.Model):
@@ -165,3 +167,34 @@ class Order(models.Model):
 
     def __unicode__(self):
         return "{} : {} : {}".format(self.user, self.amount, self.txnid)
+
+
+class InviteStatus(models.Model):
+    name = models.CharField(max_length=10)
+
+    class Meta:
+        ordering = ['-name']
+        verbose_name_plural = 'Invite Status'
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name
+
+
+# class PrivateForecast(models.Model):
+#     forecast = models.ForeignKey(to=ForeCast, on_delete=models.CASCADE)
+#     to_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+#     status = models.ForeignKey(to=InviteStatus, on_delete=models.CASCADE)
+#     from_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+#
+#     class Meta:
+#         ordering = ['-name']
+#         verbose_name_plural = 'Invite'
+#
+#     def __str__(self):
+#         return "{} : {}: {} : {}".format(self.forecast, self.to_user, self.from_user, self.status)
+#
+#     def __unicode__(self):
+#         return "{} : {}: {} : {}".format(self.forecast, self.to_user, self.from_user, self.status)

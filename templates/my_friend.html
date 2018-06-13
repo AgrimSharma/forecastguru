@@ -101,7 +101,7 @@
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.id}}" id="shipment_id{{f.id}}">PLAY </button>
                           </form>
                 </div>
-              </div>
+              </div>                  {% if f.bet_against_user and f.bet_for_user %}
                   <hr>
                 <div class="row">
                   <div class="col-6 pr-0">
@@ -120,7 +120,7 @@
                      No({{f.bet_against_user}})
                 </div>
               </div>
-            </div>
+            </div>{% endif %}
           </div>
         </div>
 
@@ -187,7 +187,7 @@
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">PLAY </button>
                           </form>
                 </div>
-              </div>
+              </div>                  {% if f.bet_against_user and f.bet_for_user %}
                   <hr>
                 <div class="row">
                   <div class="col-6 pr-0">
@@ -206,7 +206,7 @@
                      No({{f.bet_against_user}})
                 </div>
               </div>
-            </div>
+            </div>{% endif %}
           </div>
         </div>
 
@@ -266,6 +266,7 @@
                   </div>
 
                 </div>
+                                    {% if f.bet_against_user and f.bet_for_user %}
 <hr>
                 <div class="row">
                   <div class="col-6 pr-0">
@@ -284,7 +285,7 @@
                      No({{f.bet_against_user}})
                 </div>
               </div>
-              </div>
+              </div>{% endif %}
             </div>
           </div>
         </div>

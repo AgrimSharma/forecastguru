@@ -52,8 +52,11 @@ urlpatterns = [
     url(r'^success$', payment_success, name="payment_success"),
     url(r'^failure$', payment_failure, name="payment_failure"),
     url(r'^closed_status/', update_close_status, name="closed_status"),
-    url(r'^terms/', terms, name="terms"),
-    url(r'^faq/', faq, name="faq"),
+    url(r'^terms_and_conditions/', terms, name="terms"),
+    url(r'^faqs/', faq, name="faq"),
+    url(r'^get_sub_source/', get_sub_source, name='get_sub_source'),
+    url(r'^privacy_policy/', privacy, name="privacy_policy"),
+    url(r'^import_csv/', import_csv, name="import_csv"),
     url(r'^', main_page, name='main_page'),
 
 ]
