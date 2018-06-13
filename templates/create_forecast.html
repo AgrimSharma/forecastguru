@@ -95,14 +95,12 @@
       </div>
 <div class="row mb-2" style="padding-left:10px;">
       <div class="col-12">
-          <label>Make this forecast </label>
-           <div style="display:flex;">
-                <input type="radio" id="contactChoice1" name="contact" value="email" style="margin-left:10px;">
+          <label>Make this forecast </label><input type="radio" id="contactChoice1" name="contact" value="email" style="margin-left:10px;">
                    &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">Private</label>
 
                 <input type="radio" id="contactChoice2" checked name="contact" value="phone" style="margin-left:10px;">
                    &nbsp; <label for="contactChoice2" style="margin-bottom:5px;" >Public</label>
-                    </div>
+
         <!--<label>Private</label> &nbsp;<input type="checkbox" id="private"/>-->
         <!--<label>Public</label> &nbsp;<input type="checkbox" checked id="public"/>-->
       </div></div>
@@ -158,7 +156,10 @@
                     var data = JSON.parse(resp);
                     console.log(data);
                     var sub = data.data;
-
+                    $('#subcategories').append($('<option>', {
+                                value: "",
+                                text : "Select a Sub Category"
+                            }));
                         console.log(sub);
                         for(i=0; i < sub.length; i++){
                              var values = JSON.parse(JSON.stringify(sub[i]));
