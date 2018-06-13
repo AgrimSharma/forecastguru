@@ -153,8 +153,8 @@ def live_forecast(request):
                              betting_for=betting_for, betting_against=betting_against, today=today,
                              participants=total_wagered, bet_for=bet_for,
                              bet_against=bet_against,
-                             bet_for_user=bet_for_user if bet_for_user else None,
-                             bet_against_user=bet_against_user if bet_against_user else None))
+                             bet_for_user=bet_for_user if bet_for_user else 0,
+                             bet_against_user=bet_against_user if bet_against_user else 0))
     except Exception:
         forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress').order_by("expire")
         for f in forecast_live:
@@ -195,8 +195,8 @@ def live_forecast(request):
                              betting_for=betting_for, betting_against=betting_against, today=today,
                              participants=total_wagered, bet_for=bet_for,
                              bet_against=bet_against,
-                             bet_for_user=None,
-                             bet_against_user=None))
+                             bet_for_user=0,
+                             bet_against_user=0))
 
     return render(request, 'live_forecast.html', {"live": data,
                                                   "heading": "Forecasts",
@@ -251,8 +251,8 @@ def forecast_result(request):
                              participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
                              ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                              bet_for=bet_for,
-                             bet_for_user=bet_for_user if bet_for_user else None,
-                             bet_against_user=bet_against_user if bet_against_user else None,
+                             bet_for_user=bet_for_user if bet_for_user else 0,
+                             bet_against_user=bet_against_user if bet_against_user else 0,
                              ))
     except Exception:
         forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared').order_by(
@@ -294,8 +294,8 @@ def forecast_result(request):
                              participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
                              ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                              bet_for=bet_for,
-                             bet_for_user=None,
-                             bet_against_user=None
+                             bet_for_user=0,
+                             bet_against_user=0
                              ))
 
     return render(request, 'forecast_result.html', {"live": data,
@@ -352,8 +352,8 @@ def result_not_declared(request):
                              betting_for=betting_for, betting_against=betting_against, today=today,
                              participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
                              ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
-                             bet_for=bet_for, bet_against_user=bet_against_user if bet_against_user else None,
-                             bet_for_user=bet_for_user if bet_for_user else None))
+                             bet_for=bet_for, bet_against_user=bet_against_user if bet_against_user else 0,
+                             bet_for_user=bet_for_user if bet_for_user else 0))
     except Exception:
         for f in forecast_result:
             date = current.date()
@@ -391,7 +391,7 @@ def result_not_declared(request):
                              betting_for=betting_for, betting_against=betting_against, today=today,
                              participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
                              ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
-                             bet_for=bet_for, bet_for_user=None, bet_againet_user=None))
+                             bet_for=bet_for, bet_for_user=0, bet_againet_user=0))
     return render(request, 'forecast_result_pending_no.html', {
         "result": data,
         "user": "Guest" if request.user.is_anonymous() else request.user.username,
@@ -507,6 +507,9 @@ def predict_status(profile, suc_per):
         return status
     elif profile.forecast_created >= 50 and suc_per >= 90:
         status = "Guru"
+        return status
+    else:
+        status = "Beginner"
         return status
 
 def betting(request, userid):
@@ -954,8 +957,8 @@ def category_search(request, userid):
                       {
                           "live": forecast_live_view(category, profile),
                           "result": forecast_result_view(category, profile),
-                          "heading": category.name + " Category",
-                          "title": category.name + " Category",
+                          "heading": category.name,
+                          "title": category.name,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
 
@@ -1197,8 +1200,8 @@ def live_forecast_data_bet(forecast_live, account):
                          betting_for=betting_for, betting_against=betting_against, today=today,
                          participants=total_wagered, bet_for=bet_for,
                          bet_against=bet_against,
-                         bet_against_user=bet_against_user if bet_against_user else None,
-                         bet_for_user=bet_for_user if bet_for_user else None
+                         bet_against_user=bet_against_user if bet_against_user else 0,
+                         bet_for_user=bet_for_user if bet_for_user else 0
                          ))
     return data
 
@@ -1244,8 +1247,8 @@ def live_forecast_data(forecast_live, account):
                          betting_for=betting_for, betting_against=betting_against, today=today,
                          participants=total_wagered, bet_for=bet_for,
                          bet_against=bet_against,
-                         bet_against_user=bet_against_user if bet_against_user else None,
-                         bet_for_user=bet_for_user if bet_for_user else None,
+                         bet_against_user=bet_against_user if bet_against_user else 0,
+                         bet_for_user=bet_for_user if bet_for_user else 0,
                          ))
     return data
 
@@ -1292,8 +1295,8 @@ def forecast_result_data(forecast_live, account):
                          participants=total_wagered, won="Yes" if forecast.won == 'yes' else 'No',  # waggered=waggered,
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for,
-                         bet_for_user=bet_for_user if bet_for_user else None,
-                         bet_against_user=bet_against_user if bet_against_user else None
+                         bet_for_user=bet_for_user if bet_for_user else 0,
+                         bet_against_user=bet_against_user if bet_against_user else 0
                          ))
 
     return data
@@ -1305,7 +1308,11 @@ def my_forecast_private(request):
         users = User.objects.get(id=user)
         account = SocialAccount.objects.get(user=users)
     except Exception:
-        return render(request, 'my_friend_nl.html', {"user": "Guest" if request.user.is_anonymous() else request.user.username})
+        return render(request, 'my_friend_nl.html', {
+            "user": "Guest" if request.user.is_anonymous() else request.user.username,
+            "heading": "Forecast Private",
+            "title": "My Forecast",
+        })
 
     forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',
                                            users=account, forecast__private__name='yes').order_by(
@@ -1316,14 +1323,19 @@ def my_forecast_private(request):
     forecast_approval = ForeCast.objects.filter(approved__name="no", user=account,private__name='yes').order_by("-expire")
     forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account,private__name='yes').order_by("-expire")
     not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
-    return render(request, 'my_friend_private.html', {"live": live_forecast_data(forecast_live, account),
-                                              "result": forecast_result_data(forecast_result, account),
-                                              "approval": forecast_approval,
-                                              "forecast": live_forecast_data_bet(not_bet, account),
-                                              "user": "Guest" if request.user.is_anonymous() else request.user.username,
-                                                      "heading": "Forecast Private",
-                                                      "title": "My Forecast",
-                                                      })
+    if forecast_live.count() == 0 and forecast_result.count() == 0 and forecast_approval.count() == 0 and forecast_no_bet.count() == 0:
+        return render(request, 'my_friend_no_priv.html', {"heading": "My Forecast",
+                                                     "title": "My Forecast",
+                                                     "user": "Guest" if request.user.is_anonymous() else request.user.username})
+    else:
+        return render(request, 'my_friend_private.html', {"live": live_forecast_data(forecast_live, account),
+                                                  "result": forecast_result_data(forecast_result, account),
+                                                  "approval": forecast_approval,
+                                                  "forecast": live_forecast_data_bet(not_bet, account),
+                                                  "user": "Guest" if request.user.is_anonymous() else request.user.username,
+                                                          "heading": "Forecast Private",
+                                                          "title": "My Forecast",
+                                                          })
 
 
 
@@ -1388,8 +1400,8 @@ def forecast_live_view(category, profile):
                          betting_for=betting_for, betting_against=betting_against, today=today,
                          participants=total_wagered, bet_for=bet_for,
                          bet_against=bet_against,
-                         bet_against_user=bet_against_user if bet_against_user else None,
-                         bet_for_user=bet_for_user if bet_for_user else None,
+                         bet_against_user=bet_against_user if bet_against_user else 0,
+                         bet_for_user=bet_for_user if bet_for_user else 0,
                          ))
     return data
 
@@ -1436,8 +1448,8 @@ def forecast_live_view_bt(category):
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
                          participants=total_wagered, bet_for=bet_for,
-                         bet_against=bet_against,bet_against_user=None,
-                         bet_for_user=None,
+                         bet_against=bet_against,bet_against_user=0,
+                         bet_for_user=0,
                          ))
     return data
 
@@ -1486,8 +1498,8 @@ def forecast_result_view(category, profile):
                          participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',  # waggered=waggered,
                          ratio=get_ratio(bet_for, bet_against, total, status),
                          bet_against=bet_against, bet_for=bet_for,
-                         bet_against_user=bet_against_user if bet_against_user else None,
-                         bet_for_user=bet_for_user if bet_for_user else None
+                         bet_against_user=bet_against_user if bet_against_user else 0,
+                         bet_for_user=bet_for_user if bet_for_user else 0
                          ))
         print(data)
     return data
@@ -1535,8 +1547,8 @@ def forecast_result_view_bt(category):
                          participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',  # waggered=waggered,
                          ratio=get_ratio(bet_for, bet_against, total, status),
                          bet_against=bet_against, bet_for=bet_for,
-                         bet_against_user=None,
-                         bet_for_user=None
+                         bet_against_user=0,
+                         bet_for_user=0
                          ))
         print(data)
     return data
@@ -1564,11 +1576,15 @@ def update_close_status(request):
 
 
 def privacy(request):
-    return render(request, 'privacy_policy.html')
+    return render(request, 'privacy_policy.html',{"heading": "Bulk Upload Forecast",
+                                             "title": "Bulk Upload Forecast",
+                                             "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 def terms(request):
-    return render(request, 'terms.html')
+    return render(request, 'terms.html',{"heading": "Bulk Upload Forecast",
+                                             "title": "Bulk Upload Forecast",
+                                             "user": "Guest" if request.user.is_anonymous() else request.user.username})
     # with open('/home/lawrato/forecastguru/static/docs/terms.pdf', 'r') as pdf:
     #     response = HttpResponse(pdf.read(), content_type='application/pdf')
     #     response['Content-Disposition'] = 'inline;filename=some_file.pdf'
@@ -1576,7 +1592,9 @@ def terms(request):
 
 
 def faq(request):
-    return render(request,'faq.html')
+    return render(request,'faq.html',{"heading": "Bulk Upload Forecast",
+                                             "title": "Bulk Upload Forecast",
+                                             "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
     # with open('/home/lawrato/forecastguru/static/docs/FAQ.pdf', 'r') as pdf:
     #     response = HttpResponse(pdf.read(), content_type='application/pdf')
