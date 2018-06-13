@@ -1672,7 +1672,16 @@ def import_csv(request):
                                            heading=fields[2], approved=approved, verified=verified,
                                            private=private, expire=expire, created=datetime.datetime.now().date(),
                                            status=status)
-
+            f = ForeCast.objects.get(category=category, sub_category=sub_category,
+                                     user=user, heading=fields[2],
+                                     )
+            f.user.forecast_created += 1
+            f.user.save()
+            f.save()
+            yes = randrange(1000, 9000, 1000)
+            no = randrange(1000, 9000, 1000)
+            admin = SocialAccount.objects.get(user__username="admin")
+            Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
         return HttpResponseRedirect("/import_csv/")
     else:
         return render(request, 'import_csv.html', {"heading": "Bulk Upload Forecast",
