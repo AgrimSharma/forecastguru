@@ -56,7 +56,6 @@
       <div class="container" style="display:none;">
        <input type="text" name="user" id="user" value="{{ user }}"/>
    </div>
-
     <div class="row mb-3">
       <div class="col-12">
         <select class="form-control" name="subcategories" id="subcategories" style="display:none;">
@@ -66,11 +65,15 @@
       </div>
     </div>
     <div class="row mb-3">
-        <div class="col-12">
+      <div class="col-12">
             <div class="form-group" style="display:none;" id="srcs">
-                <div class="col-12" ><p class="source_text" style="color: black;padding-top: 15px;"></p></div>
+                <div class="row" style="display:flex;">
+                    <div class="col-12" ><p class="source_text" style="color: black;padding-left: 10px;"></p></div>
+
+
             </div>
-        </div>
+      </div>
+    </div>
 
     </div>
       <div class="row mb-3">
@@ -78,32 +81,16 @@
         <textarea class="form-control" rows="4" cols="50" name="heading" id="heading" placeholder="Enter Heading (min 10 and max. length 100 characters)" style="width:100%"></textarea>
       </div>
     </div>
-      <div style="display:flex;">
-      <!--<div class="col-6">-->
-        <!--<div class="position-relative">-->
-          <!--<div class="form-group">-->
-                <!--<label>End Date</label>-->
-                    <!--<div class='input-group date' id='datetimepicker7'>-->
-                        <!--<input type='text' class="form-control" name="start" id="start" placeholder="Select start time"/>-->
-                        <!--<span class="input-group-addon">-->
-                            <!--<span class="glyphicon glyphicon-calendar"></span>-->
-                        <!--</span>-->
-                    <!--</div>-->
-            <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
+      <div class="row mb-3">
+
       <div class="col-12">
-        <div class="position-relative">
-          <div class="form-group">
-                <label>End Date and Time</label>
                     <div class='input-group date' id='datetimepicker6'>
                         <input type='text' class="form-control" name="expire" id="expire" placeholder="Select end date and time"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
-            </div>
-      </div>
+
     </div>
       </div>
 <div class="row mb-2" style="padding-left:10px;">
@@ -113,7 +100,7 @@
                 <input type="radio" id="contactChoice1" name="contact" value="email" style="margin-left:10px;">
                    &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">Private</label>
 
-                <input type="radio" id="contactChoice2" name="contact" value="phone" style="margin-left:10px;">
+                <input type="radio" id="contactChoice2" checked name="contact" value="phone" style="margin-left:10px;">
                    &nbsp; <label for="contactChoice2" style="margin-bottom:5px;" >Public</label>
                     </div>
         <!--<label>Private</label> &nbsp;<input type="checkbox" id="private"/>-->
@@ -199,7 +186,7 @@
                     url: "{% url 'get_sub_source' %}",
                     data: {'identifier': id,},
                     success: function(resp){
-                        $(".source_text").text("Source : Result will be verified from " + resp);
+                        $(".source_text").text("Result will be verified from " + resp);
                             $("#srcs").show();
                             }
                         });
@@ -214,51 +201,64 @@ $(".create").click(function(){
     var heading = $("#heading").val();
     var expire = $("#expire").val();
     var user = $("#user").val();
-    //var test = $("#private").is(":checked");
-
-    //console.log(test);
-    //var private = $('input[type="checkbox"]').prop("checked");
     var private = $("input[name='contact']:checked").val();
-    var value = "";
-     if(expire == "" || heading == "" || category=="" || sub_cat == ""){
-     alert('All fields are mandatory');
-     }
-    if(heading.length < 10){
-     alert('Minimum Heading should be greater than 10');
-     }
-     else if(heading.length > 100){
-     alert('Minimum Heading should be less than 100');
-    }
-
-    $.ajax({
-        type: "POST",
-        url: "{% url 'create_forecast' %}",
-        data: {'heading': heading, "category":category, 'sub_cat':sub_cat,"expire":expire,"user":user, "private":private},
-
-        success: function(resp){
-            console.log(resp);
-            var data = JSON.parse(resp);
-
-            if(data.message=="Forecast Created"){
-                 alert(data.message);
-                 window.location.href = "{% url 'my_forecast' %}";
-               }
-
-            else if(data.message == "Please Login"){
-                 alert(data.message);
-                 window.location.href = "{% url 'blank_page' %}";
-            }
-            else if(data.message == "end"){
-                 alert("End Time should be greater than Current Time");
-            }
+    var tnc = $("input[type='checkbox']").val();
+    var isChecked = $('#contactChoice1').prop('checked');
+    var isChecked1 = $('#contactChoice2').prop('checked');
+    //alert(private.length);
+    if ($('#tnc ').is(":checked"))
+        {
+            var value = "";
+            if(expire == "" || heading == "" || category=="" || sub_cat == ""  ){
+                alert('All fields are mandatory');
+                }
             else{
-                alert(data.message);
-            }
-           }
+                if(heading.length > 10 && heading.length < 100 ){
+                    //if(private.length <= 6){
+                        $.ajax({
+                        type: "POST",
+                        url: "{% url 'create_forecast' %}",
+                        data: {'heading': heading, "category":category, 'sub_cat':sub_cat,"expire":expire,"user":user, "private":private},
 
-    });
+                        success: function(resp){
+                            console.log(resp);
+                            var data = JSON.parse(resp);
 
-    });
+                            if(data.message=="Forecast Created"){
+                                 alert(data.message);
+                                 window.location.href = "{% url 'my_forecast' %}";
+                               }
+
+                            else if(data.message == "Please Login"){
+                                 alert(data.message);
+                                 window.location.href = "{% url 'blank_page' %}";
+                            }
+                            else if(data.message == "end"){
+                                 alert("End Time should be greater than Current Time");
+                            }
+                            else{
+                                alert(data.message);
+                            }
+                           }
+
+                    });
+                    }
+                    //}  else{alert('Please select Forecast Type');
+                    //}
+                    }
+                    }
+
+                 else if(heading.length > 100){
+                    alert('Maximum Heading should be less than 100');
+                    }
+                else if(heading.length < 10){
+                    alert('Minimum Heading should be greater than 10');
+                    }
+
+                else{
+                    alert("Please check Terms and Condition")
+                }
+                });
 
 
 
