@@ -1306,7 +1306,7 @@ def my_forecast_private(request):
         account = SocialAccount.objects.get(user=users)
     except Exception:
         return render(request, 'my_friend_nl.html', {
-            "user": "Guest" if request.user.is_anonymous() else request.user.username
+            "user": "Guest" if request.user.is_anonymous() else request.user.username,
             "heading": "Forecast Private",
             "title": "My Forecast",
         })
