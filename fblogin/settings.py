@@ -61,11 +61,7 @@ ROOT_URLCONF = 'fblogin.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-<<<<<<< HEAD
-        'DIRS': ["/home/agrim/authenticate/fblogin/templates"],
-=======
         'DIRS': ["/home/sirez/forecastguru/templates"],
->>>>>>> ce413463222d9d61045960fcab01f3ea1a583b30
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -134,11 +130,7 @@ STATIC_URL = '/static/'
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = [
-<<<<<<< HEAD
-    "/home/agrim/authenticate/fblogin/static"
-=======
     "/home/sirez/forecastguru/static"
->>>>>>> ce413463222d9d61045960fcab01f3ea1a583b30
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -161,7 +153,7 @@ SITE_ID = 1
 SUCCESS_URL = "http://localhost:8000/payubiz-success/"
 FAILURE_URL = "http://localhost:8000/payubiz-failure/"
 CANCEL_URL = "http://localhost:8000/payubiz-cancel/"
-LOGIN_REDIRECT_URL = '/live_forecast/'
+LOGIN_REDIRECT_URL = '/category/'
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.MD5PasswordHasher',
