@@ -251,8 +251,8 @@ def forecast_result(request):
                              participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
                              ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                              bet_for=bet_for,
-                             bet_for_user=bet_for_user if bet_for_user else None,
-                             bet_against_user=bet_against_user if bet_against_user else None,
+                             bet_for_user=bet_for_user if bet_for_user else 0,
+                             bet_against_user=bet_against_user if bet_against_user else 0,
                              ))
     except Exception:
         forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared').order_by(
@@ -294,8 +294,8 @@ def forecast_result(request):
                              participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
                              ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                              bet_for=bet_for,
-                             bet_for_user=None,
-                             bet_against_user=None
+                             bet_for_user=0,
+                             bet_against_user=0
                              ))
 
     return render(request, 'forecast_result.html', {"live": data,
@@ -352,8 +352,8 @@ def result_not_declared(request):
                              betting_for=betting_for, betting_against=betting_against, today=today,
                              participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
                              ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
-                             bet_for=bet_for, bet_against_user=bet_against_user if bet_against_user else None,
-                             bet_for_user=bet_for_user if bet_for_user else None))
+                             bet_for=bet_for, bet_against_user=bet_against_user if bet_against_user else 0,
+                             bet_for_user=bet_for_user if bet_for_user else 0))
     except Exception:
         for f in forecast_result:
             date = current.date()
@@ -391,7 +391,7 @@ def result_not_declared(request):
                              betting_for=betting_for, betting_against=betting_against, today=today,
                              participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
                              ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
-                             bet_for=bet_for, bet_for_user=None, bet_againet_user=None))
+                             bet_for=bet_for, bet_for_user=0, bet_againet_user=0))
     return render(request, 'forecast_result_pending_no.html', {
         "result": data,
         "user": "Guest" if request.user.is_anonymous() else request.user.username,
@@ -1197,8 +1197,8 @@ def live_forecast_data_bet(forecast_live, account):
                          betting_for=betting_for, betting_against=betting_against, today=today,
                          participants=total_wagered, bet_for=bet_for,
                          bet_against=bet_against,
-                         bet_against_user=bet_against_user if bet_against_user else None,
-                         bet_for_user=bet_for_user if bet_for_user else None
+                         bet_against_user=bet_against_user if bet_against_user else 0,
+                         bet_for_user=bet_for_user if bet_for_user else 0
                          ))
     return data
 
@@ -1244,8 +1244,8 @@ def live_forecast_data(forecast_live, account):
                          betting_for=betting_for, betting_against=betting_against, today=today,
                          participants=total_wagered, bet_for=bet_for,
                          bet_against=bet_against,
-                         bet_against_user=bet_against_user if bet_against_user else None,
-                         bet_for_user=bet_for_user if bet_for_user else None,
+                         bet_against_user=bet_against_user if bet_against_user else 0,
+                         bet_for_user=bet_for_user if bet_for_user else 0,
                          ))
     return data
 
@@ -1292,8 +1292,8 @@ def forecast_result_data(forecast_live, account):
                          participants=total_wagered, won="Yes" if forecast.won == 'yes' else 'No',  # waggered=waggered,
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for,
-                         bet_for_user=bet_for_user if bet_for_user else None,
-                         bet_against_user=bet_against_user if bet_against_user else None
+                         bet_for_user=bet_for_user if bet_for_user else 0,
+                         bet_against_user=bet_against_user if bet_against_user else 0
                          ))
 
     return data
@@ -1388,8 +1388,8 @@ def forecast_live_view(category, profile):
                          betting_for=betting_for, betting_against=betting_against, today=today,
                          participants=total_wagered, bet_for=bet_for,
                          bet_against=bet_against,
-                         bet_against_user=bet_against_user if bet_against_user else None,
-                         bet_for_user=bet_for_user if bet_for_user else None,
+                         bet_against_user=bet_against_user if bet_against_user else 0,
+                         bet_for_user=bet_for_user if bet_for_user else 0,
                          ))
     return data
 
@@ -1436,8 +1436,8 @@ def forecast_live_view_bt(category):
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
                          participants=total_wagered, bet_for=bet_for,
-                         bet_against=bet_against,bet_against_user=None,
-                         bet_for_user=None,
+                         bet_against=bet_against,bet_against_user=0,
+                         bet_for_user=0,
                          ))
     return data
 
@@ -1486,8 +1486,8 @@ def forecast_result_view(category, profile):
                          participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',  # waggered=waggered,
                          ratio=get_ratio(bet_for, bet_against, total, status),
                          bet_against=bet_against, bet_for=bet_for,
-                         bet_against_user=bet_against_user if bet_against_user else None,
-                         bet_for_user=bet_for_user if bet_for_user else None
+                         bet_against_user=bet_against_user if bet_against_user else 0,
+                         bet_for_user=bet_for_user if bet_for_user else 0
                          ))
         print(data)
     return data
@@ -1535,8 +1535,8 @@ def forecast_result_view_bt(category):
                          participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',  # waggered=waggered,
                          ratio=get_ratio(bet_for, bet_against, total, status),
                          bet_against=bet_against, bet_for=bet_for,
-                         bet_against_user=None,
-                         bet_for_user=None
+                         bet_against_user=0,
+                         bet_for_user=0
                          ))
         print(data)
     return data
