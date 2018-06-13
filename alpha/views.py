@@ -1554,18 +1554,25 @@ def update_close_status(request):
     return HttpResponse("updated")
 
 
+def privacy(request):
+    return render(request, 'privacy_policy.html')
+
+
 def terms(request):
-    with open('/home/lawrato/forecastguru/static/docs/terms.pdf', 'r') as pdf:
-        response = HttpResponse(pdf.read(), content_type='application/pdf')
-        response['Content-Disposition'] = 'inline;filename=some_file.pdf'
-        return response
+    return render(request, 'terms.html')
+    # with open('/home/lawrato/forecastguru/static/docs/terms.pdf', 'r') as pdf:
+    #     response = HttpResponse(pdf.read(), content_type='application/pdf')
+    #     response['Content-Disposition'] = 'inline;filename=some_file.pdf'
+    #     return response
 
 
 def faq(request):
-    with open('/home/lawrato/forecastguru/static/docs/FAQ.pdf', 'r') as pdf:
-        response = HttpResponse(pdf.read(), content_type='application/pdf')
-        response['Content-Disposition'] = 'inline;filename=some_file.pdf'
-        return response
+    return render(request,'faq.html')
+
+    # with open('/home/lawrato/forecastguru/static/docs/FAQ.pdf', 'r') as pdf:
+    #     response = HttpResponse(pdf.read(), content_type='application/pdf')
+    #     response['Content-Disposition'] = 'inline;filename=some_file.pdf'
+    #     return response
 
 
 def facebook_category(request):
@@ -1653,16 +1660,9 @@ def import_csv(request):
             approved = Approved.objects.get(name=str(fields[5]))
             expire = datetime.datetime.strptime(str(fields[4]), "%Y-%m-%d %H:%M:%S")
             ForeCast.objects.get_or_create(category=category, sub_category=sub_category, user=social,
-                                    heading=fields[2], approved=approved, verified=verified,
-                                    private=private, expire=expire, created=datetime.datetime.now().date(),
-                                    status=status)
-            # if form.is_valid():
-            #     form.save()
-            # else:
-            #     logging.getLogger("error_logger").error(form.errors.as_json())
-            # except Exception:
-            #     logging.getLogger("error_logger").error(repr(Exception))
-            #     pass
+                                           heading=fields[2], approved=approved, verified=verified,
+                                           private=private, expire=expire, created=datetime.datetime.now().date(),
+                                           status=status)
 
         return HttpResponseRedirect("/import_csv/")
     else:
