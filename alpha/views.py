@@ -1564,11 +1564,15 @@ def update_close_status(request):
 
 
 def privacy(request):
-    return render(request, 'privacy_policy.html')
+    return render(request, 'privacy_policy.html',{"heading": "Bulk Upload Forecast",
+                                             "title": "Bulk Upload Forecast",
+                                             "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 def terms(request):
-    return render(request, 'terms.html')
+    return render(request, 'terms.html',{"heading": "Bulk Upload Forecast",
+                                             "title": "Bulk Upload Forecast",
+                                             "user": "Guest" if request.user.is_anonymous() else request.user.username})
     # with open('/home/lawrato/forecastguru/static/docs/terms.pdf', 'r') as pdf:
     #     response = HttpResponse(pdf.read(), content_type='application/pdf')
     #     response['Content-Disposition'] = 'inline;filename=some_file.pdf'
@@ -1576,7 +1580,9 @@ def terms(request):
 
 
 def faq(request):
-    return render(request,'faq.html')
+    return render(request,'faq.html',{"heading": "Bulk Upload Forecast",
+                                             "title": "Bulk Upload Forecast",
+                                             "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
     # with open('/home/lawrato/forecastguru/static/docs/FAQ.pdf', 'r') as pdf:
     #     response = HttpResponse(pdf.read(), content_type='application/pdf')
