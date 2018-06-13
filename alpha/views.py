@@ -508,6 +508,9 @@ def predict_status(profile, suc_per):
     elif profile.forecast_created >= 50 and suc_per >= 90:
         status = "Guru"
         return status
+    else:
+        status = "Beginner"
+        return status
 
 def betting(request, userid):
     forecast = ForeCast.objects.get(id=userid)
