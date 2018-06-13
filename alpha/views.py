@@ -1305,7 +1305,11 @@ def my_forecast_private(request):
         users = User.objects.get(id=user)
         account = SocialAccount.objects.get(user=users)
     except Exception:
-        return render(request, 'my_friend_nl.html', {"user": "Guest" if request.user.is_anonymous() else request.user.username})
+        return render(request, 'my_friend_nl.html', {
+            "user": "Guest" if request.user.is_anonymous() else request.user.username
+            "heading": "Forecast Private",
+            "title": "My Forecast",
+        })
 
     forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',
                                            users=account, forecast__private__name='yes').order_by(
@@ -1316,14 +1320,19 @@ def my_forecast_private(request):
     forecast_approval = ForeCast.objects.filter(approved__name="no", user=account,private__name='yes').order_by("-expire")
     forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account,private__name='yes').order_by("-expire")
     not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
-    return render(request, 'my_friend_private.html', {"live": live_forecast_data(forecast_live, account),
-                                              "result": forecast_result_data(forecast_result, account),
-                                              "approval": forecast_approval,
-                                              "forecast": live_forecast_data_bet(not_bet, account),
-                                              "user": "Guest" if request.user.is_anonymous() else request.user.username,
-                                                      "heading": "Forecast Private",
-                                                      "title": "My Forecast",
-                                                      })
+    if forecast_live.count() == 0 and forecast_result.count() == 0 and forecast_approval.count() == 0 and forecast_no_bet.count() == 0:
+        return render(request, 'my_friend_no_priv.html', {"heading": "My Forecast",
+                                                     "title": "My Forecast",
+                                                     "user": "Guest" if request.user.is_anonymous() else request.user.username})
+    else:
+        return render(request, 'my_friend_private.html', {"live": live_forecast_data(forecast_live, account),
+                                                  "result": forecast_result_data(forecast_result, account),
+                                                  "approval": forecast_approval,
+                                                  "forecast": live_forecast_data_bet(not_bet, account),
+                                                  "user": "Guest" if request.user.is_anonymous() else request.user.username,
+                                                          "heading": "Forecast Private",
+                                                          "title": "My Forecast",
+                                                          })
 
 
 
