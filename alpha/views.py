@@ -18,7 +18,6 @@ from . import config
 from django.template import RequestContext
 from allauth.socialaccount.models import SocialAccount, SocialToken
 import hashlib
-from .forms import ForecastUpload
 from django.conf import settings
 
 current = datetime.datetime.now()
