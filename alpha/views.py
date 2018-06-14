@@ -1818,7 +1818,7 @@ def terms(request):
 
 
 def faq(request):
-    return render(request,'fa1.html')
+    return render(request,'faq.html')
 
     # with open('/home/lawrato/forecastguru/static/docs/FAQ.pdf', 'r') as pdf:
     #     response = HttpResponse(pdf.read(), content_type='application/pdf')
