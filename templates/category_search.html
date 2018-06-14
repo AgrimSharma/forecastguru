@@ -18,7 +18,7 @@
                     </div>
                     {% for s in sub %}
                     <div class="item">
-                      <a href="{% url 'sub_category_data' s.id %}"><img src="{{s.image}}" alt="">
+                      <a href="{% url 'sub_category_data' s.id %}" class="active"><img src="{{s.image}}" alt="">
                         <figcaption>{{s.name}}</figcaption>
                       </a>
                     </div>
