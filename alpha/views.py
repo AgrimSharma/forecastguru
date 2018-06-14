@@ -1934,6 +1934,7 @@ def import_csv(request):
         return render(request, 'import_csv.html')
 
 
+@csrf_exempt
 def user_device(request):
     if request.method == "POST":
         username = request.POST.get('username', "")
