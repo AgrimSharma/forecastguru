@@ -1041,7 +1041,6 @@ def my_forecast(request):
 
 
 def logout_view(request):
-    request.session = {}
     logout(request)
 
     return HttpResponseRedirect("/home/")
