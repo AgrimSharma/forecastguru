@@ -193,7 +193,7 @@ class UserDevice(models.Model):
         verbose_name_plural = 'User Device'
 
     def __str__(self):
-        return self.user + ' ' + self.device_id
+        return "{} : {}".format(self.user, self.device_id)
 
     def __unicode__(self):
-        return self.user + ' ' + self.device_id
+        return "{} : {}".format(self.user, self.device_id)
