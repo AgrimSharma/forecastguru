@@ -96,7 +96,7 @@ def create_forecast(request):
 
 def closing_soon(request):
     forecast = ForeCast.objects.filter(start__lte=current, approved__name="yes", status__name='Closing Soon').order_by(
-        "-created")
+        "expire")
     return render(request, 'closing_soon.html', {"forecast": forecast})
 
 
@@ -1395,7 +1395,7 @@ def get_sub_source(request):
 def forecast_live_view(category, profile):
     data = []
     forecast_live = ForeCast.objects.filter(approved__name="yes", category=category,
-                                            status__name='In-Progress').order_by("-created")
+                                            status__name='In-Progress').order_by("expire")
 
     for f in forecast_live:
         date = current.date()
@@ -1446,7 +1446,7 @@ def forecast_live_view(category, profile):
 def forecast_live_view_sub(category, profile):
     data = []
     forecast_live = ForeCast.objects.filter(approved__name="yes", sub_category=category,
-                                            status__name='In-Progress').order_by("-created")
+                                            status__name='In-Progress').order_by("expire")
 
     for f in forecast_live:
         date = current.date()
@@ -1497,7 +1497,7 @@ def forecast_live_view_sub(category, profile):
 def forecast_live_view_bt(category_id):
     data = []
     forecast_live = ForeCast.objects.filter(approved__name="yes", category=category_id,
-                                            status__name='In-Progress').order_by("-created")
+                                            status__name='In-Progress').order_by("expire")
 
     for f in forecast_live:
         date = current.date()
@@ -1545,7 +1545,7 @@ def forecast_live_view_bt(category_id):
 def forecast_live_view_bt_sub(category_id):
     data = []
     forecast_live = ForeCast.objects.filter(approved__name="yes", sub_category=category_id,
-                                            status__name='In-Progress').order_by("-created")
+                                            status__name='In-Progress').order_by("expire")
 
     for f in forecast_live:
         date = current.date()
@@ -1594,7 +1594,7 @@ def forecast_result_view(category, profile):
     data = []
 
     forecast_live = ForeCast.objects.filter(approved__name="yes", category=category, status__name='Closed').order_by(
-        "-created")
+        "expire")
     for f in forecast_live:
         forecast = f
         date = current.date()
@@ -1645,7 +1645,7 @@ def forecast_result_view_sub(category, profile):
     data = []
 
     forecast_live = ForeCast.objects.filter(approved__name="yes", sub=category, status__name='Closed').order_by(
-        "-created")
+        "expire")
     for f in forecast_live:
         forecast = f
         date = current.date()
@@ -1696,7 +1696,7 @@ def forecast_result_view_bt(category_id):
     data = []
 
     forecast_live = ForeCast.objects.filter(approved__name="yes", category=category_id, status__name='Closed').order_by(
-        "-created")
+        "expire")
     for f in forecast_live:
         forecast = f
         date = current.date()
@@ -1745,7 +1745,7 @@ def forecast_result_view_bt_sub(category_id):
     data = []
 
     forecast_live = ForeCast.objects.filter(approved__name="yes", sub_category=category_id, status__name='Closed').order_by(
-        "-created")
+        "expire")
     for f in forecast_live:
         forecast = f
         date = current.date()
