@@ -790,3 +790,37 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
 .faq_wrap .card-body{background: #fff; padding: 0 20px 15px}
 .faq_wrap .card-body table td, .faq_wrap .card-body table th{text-align: center; padding: 5px}
 .faq_wrap .card-header[aria-expanded="true"] .card-title{color: #403c55!important}
+.tab-slider-container {background: #fff}
+.tab-slider-container .tab-slider .item {text-align: center}
+.tab-slider-container .tab-slider .item img{max-height: 40px; display: inline-block}
+.tab-slider-container .tab-slider .item a{display: block; padding: 3px 6px; background: #fff; color: #000; }
+.tab-slider-container .tab-slider .item figcaption {font-size: 12px}
+.a2a_svg {width: 24px!important; height: 24px!important}
+.a2a_default_style {line-height: 1!important}
+.a2a_default_style a {float: none!important; display: inline-block}
+.hangingbtns {position: fixed; bottom: 80px; background:#f2f3f8; width: 100%; z-index: 100; padding: 7px 15px;}
+.btn-primary{border-color: #f01516}
+.btm_margin_ifbtn {padding-bottom: 140px; padding-top: 0px}
+.sortbywrap {margin-top: 40px}
+.allbtn {padding: 3px 6px; display: inline-block; color: #000; border: solid 1px #666; border-radius: 4px; line-height: 24px}
+.allbtn:focus, .allbtn.active {color: #403c55; font-weight: bold}
+
+.dropdown.sortyby .btn { background: none; color: #fff}
+.dropdown.sortyby .dropdown-toggle::after{display: none}
+.tab-slider-container .slick-prev:before, .tab-slider-container .slick-next:before {color: #000}
+.tab-slider-container .slick-prev {left: -15px; z-index: 1}
+.tab-slider-container .slick-next{right: -15px; z-index: 1}
+.tab-slider-container .slick-next:before {content: "\f105"; font-family: 'FontAwesome'; font-size: 28px}
+.tab-slider-container .slick-prev:before {content: "\f104"; font-family: 'FontAwesome'; font-size: 28px}
+.tab-slider-container .slick-prev, .tab-slider-container .slick-next {top: 44%;}
+
+.forcast_box {position: relative}
+.sharethis_icon {position: absolute; right: 10px; top: 0px; font-size: 18px}
+.sharethis_icon a{color: #000}
+
+@media (max-width: 767px){
+	.tab-slider-container {top: 99px}
+	.hangingbtns {bottom: 48px}
+	.hangingbtns .btn {font-size: 13px}
+	.btm_margin_ifbtn {padding-bottom: 100px}
+}
