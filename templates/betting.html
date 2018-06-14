@@ -7,15 +7,15 @@
 <title>{% block title%} {{title}} {% endblock title %}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="HandheldFriendly" content="true" />
-    <meta property=”og:url” content="{{request.url}}" />
+    <meta property="og:url" content="https://forecast.sirez.com{{request.path}}" />
 
-<meta property=”og:type” content="{{forecast.heading}}" />
+<meta property="og:type" content="{{forecast.heading}}" />
 
-<meta property=”og:title” content="{{forecast.heading}}" />
+<meta property="og:title" content="{{forecast.heading}}" />
 
-<meta property=”og:description” content="I have created this forecast on forecast.guru kindly join me.." />
+<meta property="og:description" content="I have created this forecast on forecast.guru kindly join me.." />
 
-<meta property=”og:image” content="{{forecast.sub_category.image}}" />
+<meta property="og:image" content="{{forecast.sub_category.image}}" />
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
