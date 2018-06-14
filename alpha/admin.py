@@ -24,8 +24,8 @@ class PrivateAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
-# class UserDeviceAdmin(admin.ModelAdmin):
-#     list_display = ['user', "device_id"]
+class UserDeviceAdmin(admin.ModelAdmin):
+    list_display = ['user', "device_id"]
 
 
 class SubCategoryAdmin(admin.ModelAdmin):
