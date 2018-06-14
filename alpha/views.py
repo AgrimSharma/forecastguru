@@ -1946,11 +1946,13 @@ def user_device(request):
             tokens = UserDevice.objects.get(user=social, device_id=device_id)
             tokens.device_token = device_token
             tokens.save()
+            return HttpResponse(json.dumps(dict(message='Saved', status=200)))
         except Exception:
             user = User.objects.get(username=username)
             social = SocialAccount.objects.get(user=user)
             UserDevice.objects.create(user=social, device_id=device_id, device_token=device_token)
-        return HttpResponse(json.dumps(dict(message='Saved', status=200)))
+            return HttpResponse(json.dumps(dict(message='Saved', status=200)))
+        return HttpResponse(json.dumps(dict(message='Saved', status=400)))
 
 
 def main_page(request):
