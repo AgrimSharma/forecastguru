@@ -189,7 +189,7 @@ class UserDevice(models.Model):
     device_token = models.CharField(max_length=10000)
 
     class Meta:
-        ordering = ['-name']
+        ordering = ['device_id']
         verbose_name_plural = 'User Device'
 
     def __str__(self):
