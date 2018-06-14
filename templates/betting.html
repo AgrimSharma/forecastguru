@@ -8,6 +8,7 @@
     <div class="row">
       <div class="col-12">
         <h2>{{forecast.heading}}</h2>
+          <div class="button share-button facebook-share-button"></div>
  {% if approved == 'yes' %}
 
           <hr>
@@ -39,8 +40,8 @@
 
              </div>
 
-{% endif %}
-</div>
+        {% endif %}
+        </div>
           <hr class="hr">
             <!--<p>Status :  {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %} </p>-->
           <p style="padding-left:20px;">Closing date and time  <img src="{% static 'images/calender-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_date}}</span> <img src="{% static 'images/time-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_time}}</span> </p>
@@ -121,37 +122,8 @@
         </div>
 
       </div>
-      <div class="clearfix"></div>
-    <!--<div class="row white_box mr-0 ml-0 mb-3">-->
-      <!--<div class="col-12">-->
 
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash;<div class="col-6 text-right value-color">&ndash;&gt;-->
-          <!--{% if forecast.status.name == 'In-Progress' %}-->
-            <!--<p class="m-0">Result : <strong>Awaited</strong> </p>-->
-          <!--{% elif forecast.status.name == 'Closed' %}-->
-          <!--<p class="m-0">Result : <strong>Result not Declared</strong></p>-->
-          <!--{% else %}-->
-          <!--<p class="m-0">Result : <strong>Result Declared</strong></p>-->
-          <!--{% endif %}-->
-    <!--</div>-->
-  <!--</div>-->
-      <div class="clearfix"></div>
-    <!--<div class="row white_box mr-0 ml-0 mb-3">-->
-      <!--<div class="col-12">-->
-        <!--<div class="row">-->
-          <!--<div class="col-8">-->
-            <!--<p>Total FG points in play</p>-->
-          <!--</div>-->
-          <!--<div class="col-4 text-right value-color">-->
-            <!--<p>{{sums}}</p>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-
-</div>
-
+</div></div>
 <footer class="sticky-footer">
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
@@ -235,7 +207,7 @@ function googleTranslateElementInit() {
   new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT}, 'google_translate_element');
 }
 </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<script src="//platform-api.sharethis.com/js/sharethis.js#property=5b221f8c43580f00113f4333&product=sticky-share-buttons"></script>
-    {% endblock %}
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5b221f8c43580f00113f4333&product=custom-share-buttons"></script>
+{% endblock %}
 
 
