@@ -934,7 +934,7 @@ def payu_cancel(request):
 
 
 def category(request):
-    category = Category.objects.all()
+    category = Category.objects.all().order_by('name')
     print(category.count())
     data = []
     for c in category:
@@ -1041,7 +1041,6 @@ def my_forecast(request):
 
 
 def logout_view(request):
-    request.session = {}
     logout(request)
 
     return HttpResponseRedirect("/home/")
