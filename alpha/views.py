@@ -1934,12 +1934,14 @@ def import_csv(request):
         return render(request, 'import_csv.html')
 
 
-@csrf_exempt
-def user_device(request):
-    if request.method == "POST":
-        username = request.POST.get('username', "")
-        device_id = request.POST.get('device_id', "")
-        device_token = request.POST.get('device_token', "")
+
+def device_data_android(request):
+    if request.method == "GET":
+        username = request.GET.get('username', "")
+        device_id = request.GET.get('device_id', "")
+        device_token = request.GET.get('device_token', "")
+        if username =='' or device_token == '' or device_id == '':
+            return HttpResponse(json.dumps(dict(message='Not Save', status=400)))
         try:
             user = User.objects.get(username=username)
             social = SocialAccount.objects.get(user=user)
@@ -1952,7 +1954,6 @@ def user_device(request):
             social = SocialAccount.objects.get(user=user)
             UserDevice.objects.create(user=social, device_id=device_id, device_token=device_token)
             return HttpResponse(json.dumps(dict(message='Saved', status=200)))
-        return HttpResponse(json.dumps(dict(message='Saved', status=400)))
 
 
 def main_page(request):
