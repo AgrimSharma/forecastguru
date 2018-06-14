@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'^payubiz-cancel/$', payu_cancel, name='payu_cancel'),
     url(r'^category/', category, name='category'),
     url(r'^facebook/', facebook_category, name='facebook_category'),
-
+    url(r'^sub_category_data/(?P<userid>\d+)/$', sub_category_data, name='sub_category_data'),
     url(r'^category_search/(?P<userid>\d+)/$', category_search, name='category_search'),
     url(r'^my_forecast/', my_forecast, name='my_forecast'),
     url(r'^private/', my_forecast_private, name='private'),

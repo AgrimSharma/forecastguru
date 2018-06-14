@@ -12,14 +12,14 @@
 
               <div class="tab-slider">
                   <div class="item">
-                      <a href="#"><img src="{% static 'subcat/all.png' %}" alt="">
+                      <a href="#"><img src="images/subcaticons/all.png" alt="">
                         <figcaption>All</figcaption>
                       </a>
                     </div>
-                    {% for s in sub %}
+                    {% s for sub %}
                     <div class="item">
-                      <a href="{% url 'sub_category_data' s.id %}"><img src="{{s.image}}" alt="">
-                        <figcaption>{{s.name}}</figcaption>
+                      <a href="#"><img src="images/subcaticons/all.png" alt="">
+                        <figcaption>All</figcaption>
                       </a>
                     </div>
                     {% endfor %}
@@ -36,22 +36,7 @@
 
         </div>
     </div>
-<div class="hangingbtns">
 
-      <div class="container">
-
-
-      <div class="row">
-        <div class="col-6 text-center">
-          <a href="{% url 'create_forecast' %}" class="btn btn-primary">Create Forecast</a>
-        </div>
-        <div class="col-6 text-center">
-            <a href="{% url 'payment' %}" class="btn btn-primary">Buy FG Points</a>
-          </div>
-      </div>
-</div>
-
-    </div>
 <div class="container fixed_p_footer">
   <div class="row">
       <div class="col-md-12">
@@ -263,52 +248,80 @@
 
     <!--<script src="{% static 'js/jquery-slim.min.js' %}"></script>-->
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
- <script src="{% static 'js/jquery-slim.min.js' %}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-        <script src="{% static 'slick/slick.min.js' %}"></script>
-        <script>
-        $(function(){
+<!--<script>-->
+    <!--$(function(){-->
+           <!--$('#nav-icon1').click(function(){-->
+            <!--$(this).toggleClass('open');-->
+        <!--});-->
 
-            $('.tab-slider').slick({
-                dots: false,
-                arrows: true,
-                slidesToShow: 6,
-                autoplay:false,
+        <!--$("input[name$='yesno']").click(function() {-->
 
-                responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 6,
-        slidesToScroll: 6,
-      }
-    },
-    {
-      breakpoint: 600,
-      settings: {
-        slidesToShow: 4,
-        slidesToScroll: 4
-      }
-    },
-    {
-      breakpoint: 480,
-      settings: {
-        slidesToShow: 3,
-        slidesToScroll: 3
-      }
-    }
-    // You can unslick at a given breakpoint now by adding:
-    // settings: "unslick"
-    // instead of a settings object
-  ]
+            <!--var yesnoval = $(this).val();-->
+            <!--//alert(yesnoval);-->
+            <!--$("div.show_onyes").slideUp();-->
+            <!--$("#"+yesnoval).slideDown();-->
+        <!--});-->
+    <!--});-->
 
+  <!--$(document).ready(function() {-->
+    <!--$('.btn-number').click(function(e) {-->
+  <!--e.preventDefault();-->
 
-            });
+  <!--fieldName = $(this).attr('data-field');-->
+  <!--type = $(this).attr('data-type');-->
+  <!--var input = $("input[name='" + fieldName + "']");-->
+  <!--var currentVal = parseInt(input.val());-->
+  <!--if (!isNaN(currentVal)) {-->
+    <!--if (type == 'minus') {-->
 
-    })
+      <!--if (currentVal > input.attr('min')) {-->
+        <!--input.val(currentVal - 1000).change();-->
+      <!--}-->
+      <!--if (parseInt(input.val()) == input.attr('min')) {-->
+        <!--$(this).attr('disabled', true);-->
+      <!--}-->
 
+    <!--} else if (type == 'plus') {-->
 
-    </script>
+      <!--if (currentVal < input.attr('max')) {-->
+        <!--input.val(currentVal + 1000).change();-->
+      <!--}-->
+      <!--if (parseInt(input.val()) == input.attr('max')) {-->
+        <!--$(this).attr('disabled', true);-->
+      <!--}-->
+
+    <!--}-->
+  <!--} else {-->
+    <!--input.val(0);-->
+  <!--}-->
+<!--});-->
+<!--$('.input-number').focusin(function() {-->
+  <!--$(this).data('oldValue', $(this).val());-->
+<!--});-->
+<!--$('.input-number').change(function() {-->
+
+  <!--minValue = parseInt($(this).attr('min'));-->
+  <!--maxValue = parseInt($(this).attr('max'));-->
+  <!--valueCurrent = parseInt($(this).val());-->
+
+  <!--name = $(this).attr('name');-->
+  <!--if (valueCurrent >= minValue) {-->
+    <!--$(".btn-number[data-type='minus'][data-field='" + name + "']").removeAttr('disabled')-->
+  <!--} else {-->
+    <!--alert('Sorry, the minimum value was reached');-->
+    <!--$(this).val($(this).data('oldValue'));-->
+  <!--}-->
+  <!--if (valueCurrent <= maxValue) {-->
+    <!--$(".btn-number[data-type='plus'][data-field='" + name + "']").removeAttr('disabled')-->
+  <!--} else {-->
+    <!--alert('Sorry, the maximum value was reached');-->
+    <!--$(this).val($(this).data('oldValue'));-->
+  <!--}-->
+
+<!--});-->
+		<!--});-->
+
+    <!--</script>-->
 <script>
 $('#myInput').keypress(function (e) {
   if (e.which == 13) {
