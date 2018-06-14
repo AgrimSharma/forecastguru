@@ -52,8 +52,8 @@ class BettingAdmin(admin.ModelAdmin):
     list_display = ['forecast', 'users', 'bet_for', 'bet_against']
     change_form_template = 'change_list.html'
     search_fields = ['users', 'forecast']
-    list_filter = ("users",)
-    ordering = ('forecast__expire',)
+    # list_filter = ("forecast",)
+    ordering = ('-forecast__expire',)
 
 
 class BannerAdmin(admin.ModelAdmin):
