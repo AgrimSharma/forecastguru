@@ -1950,6 +1950,8 @@ def user_device(request):
             user = User.objects.get(username=username)
             social = SocialAccount.objects.get(user=user)
             UserDevice.objects.create(user=social, device_id=device_id, device_token=device_token)
+        return HttpResponse(json.dumps(dict(message='Saved', status=200)))
+
 
 def main_page(request):
     return render(request, 'main_page.html')
