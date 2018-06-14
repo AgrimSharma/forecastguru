@@ -950,7 +950,7 @@ def category(request):
 
 def category_search(request, userid):
     category_id = Category.objects.get(id=userid)
-    sub = SubCategory.objects.filter(category=category_id)
+    sub = SubCategory.objects.filter(category=category_id).order_by('name')
     try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
