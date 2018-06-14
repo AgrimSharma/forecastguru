@@ -1933,22 +1933,22 @@ def import_csv(request):
     else:
         return render(request, 'import_csv.html')
 
-
-def user_device(request):
-    if request.method == "POST":
-        username = request.POST.get('username', "")
-        device_id = request.POST.get('device_id', "")
-        device_token = request.POST.get('device_token', "")
-        try:
-            user = User.objects.get(username=username)
-            social = SocialAccount.objects.get(user=user)
-            tokens = UserDevice.objects.get(user=social, device_id=device_id)
-            tokens.device_token = device_token
-            tokens.save()
-        except Exception:
-            user = User.objects.get(username=username)
-            social = SocialAccount.objects.get(user=user)
-            UserDevice.objects.create(user=social, device_id=device_id, device_token=device_token)
+#
+# def user_device(request):
+#     if request.method == "POST":
+#         username = request.POST.get('username', "")
+#         device_id = request.POST.get('device_id', "")
+#         device_token = request.POST.get('device_token', "")
+#         try:
+#             user = User.objects.get(username=username)
+#             social = SocialAccount.objects.get(user=user)
+#             tokens = UserDevice.objects.get(user=social, device_id=device_id)
+#             tokens.device_token = device_token
+#             tokens.save()
+#         except Exception:
+#             user = User.objects.get(username=username)
+#             social = SocialAccount.objects.get(user=user)
+#             UserDevice.objects.create(user=social, device_id=device_id, device_token=device_token)
 
 def main_page(request):
     return render(request, 'main_page.html')
