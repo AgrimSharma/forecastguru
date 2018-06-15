@@ -37,9 +37,9 @@ class VerifiedAdmin(admin.ModelAdmin):
 
 
 class ForeCastAdmin(admin.ModelAdmin):
-    # pass
+    date_hierarchy = 'expire'
     list_display = ['heading', 'category', 'sub_category', 'user', 'expire', 'status']
-    search_fields = ['category', 'sub_category', 'user', 'heading']
+    search_fields = ['heading']
     list_filter = ("approved", "verified", 'status', 'category', 'private')
     ordering = ('-expire',)
 
@@ -49,11 +49,23 @@ class StatusAdmin(admin.ModelAdmin):
 
 
 class BettingAdmin(admin.ModelAdmin):
-    list_display = ['forecast', 'users', 'bet_for', 'bet_against']
+    list_display = ['get_forecast', "get_forecast_category", "get_forecast_sub_category", 'users', 'bet_for', 'bet_against']
     change_form_template = 'change_list.html'
-    search_fields = ['users', 'forecast']
-    # list_filter = ("forecast",)
+    date_hierarchy = 'forecast__expire'
+    search_fields = ['forecast__heading']
+    list_filter = ("forecast__category", )
     ordering = ('forecast__expire',)
+
+    def get_forecast(self, obj):
+        return obj.forecast.heading
+
+    def get_forecast_category(self, obj):
+        return obj.forecast.category
+
+    def get_forecast_sub_category(self, obj):
+        return obj.forecast.sub_category
+
+
 
 
 class BannerAdmin(admin.ModelAdmin):
