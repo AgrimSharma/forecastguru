@@ -266,8 +266,8 @@
  <script src="{% static 'js/jquery-slim.min.js' %}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
         <script src="{% static 'slick/slick.min.js' %}"></script>
-        <script>
-        $(function(){
+<script>
+       $(function(){
 
             $('.tab-slider').slick({
                 dots: false,
@@ -308,8 +308,6 @@
     })
 
 
-    </script>
-<script>
 $('#myInput').keypress(function (e) {
   if (e.which == 13) {
   var test = $("#myInput").val();
@@ -341,7 +339,6 @@ $.ajax({
     }
 });
 });
-
 </script>
 
 {% endblock %}
