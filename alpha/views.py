@@ -38,13 +38,15 @@ def create_forecast(request):
         expire = request.POST.get('expire', '')
         cat = Category.objects.get(id=category)
         sub_cat = SubCategory.objects.get(id=sub_category)
-        approved = Approved.objects.get(id=2)
+
         verified = Verified.objects.get(id=2)
         private_name = request.POST.get("private", '')
         if private_name == "email":
             private = Private.objects.get(id=1)
+            approved = Approved.objects.get(id=1)
         else:
             private = Private.objects.get(id=2)
+            approved = Approved.objects.get(id=2)
         expires = datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M")
 
         if expires < current:
@@ -1396,11 +1398,12 @@ def forecast_live_view(category, profile):
         bet_start = forecast.expire.date()
 
         if date == bet_start:
-            start = forecast.expire
-            start = start.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire
+            start = f.expire
+
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -1498,11 +1501,13 @@ def forecast_live_view_bt(category_id):
         bet_start = forecast.expire.date()
 
         if date == bet_start:
-            start = forecast.expire
-            start = start.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            print(start)
+            start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire
+            start = f.expire
+
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -1593,11 +1598,14 @@ def forecast_result_view(category, profile):
         date = current.date()
         bet_start = forecast.start.date()
         if date == bet_start:
-            start = forecast.start.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            print(start)
+            start = start.time()
             today = 'yes'
         else:
-            start = forecast.start
-            today = 'no'
+            start = f.expire
+
+            today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
 
@@ -1695,11 +1703,14 @@ def forecast_result_view_bt(category_id):
         date = current.date()
         bet_start = forecast.start.date()
         if date == bet_start:
-            start = forecast.start.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            print(start)
+            start = start.time()
             today = 'yes'
         else:
-            start = forecast.start
-            today = 'no'
+            start = f.expire
+
+            today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
 
