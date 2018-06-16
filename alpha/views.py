@@ -403,7 +403,7 @@ def get_ratio(bet_for, bet_against, total, status):
     if bet_against == 0 and bet_for == 0:
         ratio = "NA"
     elif bet_for == bet_against:
-        ratio = 1
+        ratio = 2
     elif status == 'yes':
         try:
             if bet_against > 0:
