@@ -53,14 +53,8 @@
                         <div class="progress-bar" role="progressbar" style="width:100%;background:blue" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     {% endif %}
                 </div>
-                <div class="row mt-2">
-                  <div class="col-6"> <span class="vote_yes text-uppercase">Yes ({{f.bet_for}})</span> </div>
-
-                  <div class="col-6 text-right"> <span class="vote_no text-uppercase">No ({{f.bet_against}})</span> </div>
-                </div>
-                <hr class="mt-2 mb-2">
                 <div class="row">
-                  <div class="col-6 pr-0">
+                  <div class="col-4 pr-0">
                     <div class="time textwithicon pl-0">
                       <label><i class="fa fa-clock-o"></i> Expires on</label><br>
                         {% if f.today == "yes" %}
@@ -70,8 +64,7 @@
                         {% endif %}
                         </div>
                   </div>
-
-                  <div class="col-4  text-right pl-0" >
+                    <div class="col-4  text-right pl-0" >
                       <form method="post">{% csrf_token %}
                     <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
 
@@ -81,7 +74,9 @@
                     <div class="col-4 text-right pl-0">
                                     <div class="addthis_inline_share_toolbox_a0ek"></div>
               </div>
-              </div>
+
+
+                </div>
                               {% if f.bet_against_user > 0 or f.bet_for_user > 0  %}
                 <hr>
                 <div class="row">
