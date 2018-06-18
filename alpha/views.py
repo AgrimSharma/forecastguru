@@ -1008,7 +1008,7 @@ def sub_category_data(request, userid):
                       "live": forecast_live_view_bt_sub(subcategory),
                       "result": forecast_result_view_bt_sub(subcategory),
                       "heading": subcategory.name,"sub": sub,
-                      "title": subcategory.name,category_id": category.id,
+                      "title": subcategory.name,"category_id": category.id,
                       "user": "Guest" if request.user.is_anonymous() else request.user.username
                   })
 
