@@ -1953,7 +1953,8 @@ def import_csv(request):
 
         return HttpResponse(json.dumps(dict(message="File Uploaded Successful")))
     else:
-        return render(request, 'import_csv.html')
+        return render(request, 'import_csv.html',{"heading": "Import CSV",
+                                             "title": "Import CSV",})
 
 
 def main_page(request):
