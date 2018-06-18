@@ -39,14 +39,14 @@
         <div class="row">
 
          <div class="btn_box mb-3 w-100" >
-                    <a href="https://www.forecast.guru/facebook/login/?process=login" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+                    <a href="https://forecast.sirez.com/facebook/login/?process=login" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
                 </div>
           </div>
-       <div class="row">
-        <div class="col-4"> <a href="{% url 'privacy_policy' %}" class="text-uppercase">Privacy Policy</a> </div>
+       <div class="row mb-2 btn_wrap">
+        <div class="col-4 text-left"> <a href="{% url 'privacy_policy' %}" class="text-uppercase">Privacy</a> </div>
+        <div class="col-4 text-center"> <a href="{% url 'terms' %}" class="text-uppercase">Terms</a> </div>
+         <div class="col-4 text-right"> <a href="{% url 'faq' %}" class="">FAQs</a> </div>
 
-        <div class="col-5"> <a href="{% url 'terms' %}" class="text-uppercase" style="text-align:center;">Terms and Privacy</a> </div>
-        <div class="col-3"> <a href="{% url 'faq' %}" class="text-uppercase" style="text-align:center;">FAQ</a> </div>
       </div>
         </div>
       </div>
