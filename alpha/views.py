@@ -975,7 +975,7 @@ def category_search(request, userid):
                       "live": forecast_live_view_bt(category_id),
                       "result": forecast_result_view_bt(category_id),
                       "heading": category_id.name,"sub": sub,
-                      "title": category_id.name,
+                      "title": category_id.name,'category_id': category_id.id,
                       "user": "Guest" if request.user.is_anonymous() else request.user.username
                   })
 
