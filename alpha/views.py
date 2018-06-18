@@ -1918,7 +1918,7 @@ def import_csv(request):
             except Exception:
                 return HttpResponse("Error - In Status field")
             try:
-                verified = Verified.objects.get(name__icontains=str(fields[7]))
+                verified = Verified.objects.get(name='no')
             except Exception:
                 return HttpResponse("Error - In Verified field")
             try:
