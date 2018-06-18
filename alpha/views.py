@@ -1907,7 +1907,7 @@ def import_csv(request):
 
         lines = file_data.split("\n")
         # loop over the lines and save them in db. If error , store as string and then display
-        for i in range(len(lines)):
+        for i in range(len(lines)-1):
             fields = lines[i].split(",")
             try:
                 private = Private.objects.get(name='no')
