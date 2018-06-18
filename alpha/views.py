@@ -1910,7 +1910,7 @@ def import_csv(request):
         for line in lines:
             fields = line.split(",")
             try:
-                private = Private.objects.get(name__icontains=str(fields[6]))
+                private = Private.objects.get(name='no')
             except Exception:
                 return HttpResponse("Error - In Private field")
             try:
