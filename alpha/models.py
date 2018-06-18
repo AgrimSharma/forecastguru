@@ -171,18 +171,18 @@ class Order(models.Model):
         return "{} : {} : {}".format(self.user, self.amount, self.txnid)
 
 
-class InviteStatus(models.Model):
-    name = models.CharField(max_length=10)
-
-    class Meta:
-        ordering = ['-name']
-        verbose_name_plural = 'Invite Status'
-
-    def __str__(self):
-        return self.name
-
-    def __unicode__(self):
-        return self.name
+# class InviteStatus(models.Model):
+#     name = models.CharField(max_length=10)
+#
+#     class Meta:
+#         ordering = ['-name']
+#         verbose_name_plural = 'Invite Status'
+#
+#     def __str__(self):
+#         return self.name
+#
+#     def __unicode__(self):
+#         return self.name
 
 
 class UserDevice(models.Model):
