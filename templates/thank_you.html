@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="topspace"></div>
+
+<div class="container fixed_p_footer">
+  <div class="row">
+
+      <div class="col-md-12 text-center" style="padding-top: 20px;">
+          <p style="font-size: 18px;"> Thank You for registration with us</p>
+          <p style="font-size: 18px;"> Please wait or press <a href="{% url 'category' %}">here</a> </p>
+      </div>
+  </div>
+    <div class="row">
+
+      <div class="col-md-12">
+
+            <div class="col-12 text-center pl-0">
+                <a href="{% url 'live_forecast' %}" type="button" class="btn btn-orange">Explore Forecasts</a>
+            </div>
+    </div>
+  </div>
+</div>
+<footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<script>
+window.setTimeout(function(){
+
+        // Move to a new location or you can do something else
+        window.location.href = "{% url 'category' %}";
+
+    }, 2000);
+
+</script>
+{% endblock %}

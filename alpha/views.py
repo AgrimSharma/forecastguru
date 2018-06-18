@@ -1993,5 +1993,16 @@ def device_data_android(request):
             return HttpResponse(json.dumps(dict(message='Saved', status=200)))
 
 
+def thank_you(request):
+    return render(request, "thank_you.html", {"heading": "Registration Complete",
+                                             "title": "Registration Complete",})
+
+
 def main_page(request):
-    return render(request, 'main_page.html')
+    user = request.user
+    try:
+        users = User.objects.get(username=user.username)
+        account = SocialAccount.objects.get(user=users)
+        return HttpResponseRedirect("/category/")
+    except Exception:
+        return render(request, 'main_page.html')
