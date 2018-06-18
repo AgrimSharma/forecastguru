@@ -1971,5 +1971,26 @@ def import_csv(request):
                                              "title": "Import CSV",})
 
 
+def device_data_android(request):
+    if request.method == "GET":
+        username = request.GET.get('username', "")
+        device_id = request.GET.get('device_id', "")
+        device_token = request.GET.get('device_token', "")
+        if username =='' or device_token == '' or device_id == '':
+            return HttpResponse(json.dumps(dict(message='Not Save', status=400)))
+        try:
+            user = User.objects.get(username=username)
+            social = SocialAccount.objects.get(user=user)
+            tokens = UserDevice.objects.get(user=social, device_id=device_id)
+            tokens.device_token = device_token
+            tokens.save()
+            return HttpResponse(json.dumps(dict(message='Saved', status=200)))
+        except Exception:
+            user = User.objects.get(username=username)
+            social = SocialAccount.objects.get(user=user)
+            UserDevice.objects.create(user=social, device_id=device_id, device_token=device_token)
+            return HttpResponse(json.dumps(dict(message='Saved', status=200)))
+
+
 def main_page(request):
     return render(request, 'main_page.html')
