@@ -31,8 +31,11 @@
                             </figure>
             </div>
             <div class="col-9 col-md-10">
-                <p class="title_desc"> <a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;">{{ f.forecast.heading }}</a></p>
+                <p class="title_desc"> <a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;">{{ f.forecast.heading }}</a>
+                <div class="addthis_inline_share_toolbox_a0ek"></div>
+                </p>
             </div>
+
           </div>
           <div class="row">
             <div class="col-12">
@@ -151,6 +154,11 @@
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 <script>
+    $(function(){
+        $(".st-label").hide();
+    })
+</script>
+<script>
 $('#myInput').keypress(function (e) {
   if (e.which == 13) {
   var test = $("#myInput").val();
@@ -184,4 +192,5 @@ $.ajax({
 });
 
 </script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5b20f3c3978f517f"></script>
 {% endblock %}
