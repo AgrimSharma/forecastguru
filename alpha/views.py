@@ -983,7 +983,7 @@ def category_search(request, userid):
 def sub_category_data(request, userid):
     subcategory = SubCategory.objects.get(id=userid)
     sub = SubCategory.objects.filter(category=subcategory.category).order_by('name')
-    category = Category.objects.get(id=subcategory.category)
+    category = Category.objects.get(id=subcategory.category.id)
     try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
