@@ -1911,27 +1911,47 @@ def import_csv(request):
             fields = line.split(",")
             try:
                 private = Private.objects.get(name__icontains=str(fields[6]))
+            except Exception:
+                return HttpResponse("In Private field")
+            try:
                 status = Status.objects.get(name='In-Progress')
+            except Exception:
+                return HttpResponse("In Status field")
+            try:
                 verified = Verified.objects.get(name__icontains=str(fields[7]))
+            except Exception:
+                return HttpResponse("In Verified field")
+            try:
                 category = Category.objects.get(name__icontains=str(fields[0]))
+            except Exception:
+                return HttpResponse("In Category field")
+            try:
                 sub_category = SubCategory.objects.get(name__icontains=str(fields[1]))
+            except Exception:
+                return HttpResponse("In Sub Category field")
+            try:
                 user = User.objects.get(username=str(fields[3]))
                 social = SocialAccount.objects.get(user=user)
+            except Exception:
+                return HttpResponse("In User Name field")
+            try:
                 approved = Approved.objects.get(name=str(fields[5]))
+            except Exception:
+                return HttpResponse("In Approved field")
+            try:
                 expire = datetime.datetime.strptime(str(fields[4]), "%Y-%m-%d %H:%M:%S")
+            except Exception:
+                return HttpResponse("In Expire field")
+            try:
                 ForeCast.objects.get_or_create(category=category, sub_category=sub_category, user=social,
                                         heading=fields[2], approved=approved, verified=verified,
                                         private=private, expire=expire, created=datetime.datetime.now().date(),
                                         status=status)
-            # if form.is_valid():
-            #     form.save()
-            # else:
-            #     logging.getLogger("error_logger").error(form.errors.as_json())
-            except Exception:
-                logging.getLogger("error_logger").error(repr(Exception))
-                pass
 
-        return HttpResponseRedirect("/import_csv/")
+            except Exception:
+                return HttpResponse("Forecast : {} not created".format(fields[2]))
+
+        return HttpResponse(json.dumps(dict(message="File Uploaded Successful")))
     else:
         return render(request, 'import_csv.html')
 
