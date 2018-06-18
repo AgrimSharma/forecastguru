@@ -983,12 +983,13 @@ def category_search(request, userid):
 def sub_category_data(request, userid):
     subcategory = SubCategory.objects.get(id=userid)
     sub = SubCategory.objects.filter(category=subcategory.category).order_by('name')
+    category = Category.objects.get(id=subcategory.category)
     try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         if len(forecast_live_view_sub(subcategory, profile)) == 0 and len(forecast_result_view_sub(subcategory, profile))== 0:
             return render(request, "trending.html",{"heading": subcategory.name,"sub": sub,
-                          "title": subcategory.name,"category_id": subcategory.category.id,
+                          "title": subcategory.name,"category_id": category.id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username})
         else:
             return render(request, 'category_search.html',
@@ -996,7 +997,7 @@ def sub_category_data(request, userid):
                           "live": forecast_live_view_sub(subcategory, profile),
                           "result": forecast_result_view_sub(subcategory, profile),
                           "heading": subcategory.name,"sub": sub,
-                          "title": subcategory.name,"category_id": subcategory.category.id,
+                          "title": subcategory.name,"category_id": category.id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
 
