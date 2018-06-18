@@ -7,82 +7,21 @@
 <div class="container fixed_p_footer">
   <div class="row">
     <div class="col-md-12">
-
+    {% c in category %}
       <div class="category_wrap">
-        <a href=" {% url 'category_search' 1 %}">
+        <a href=" {% url 'category_search' c.id %}">
         <div class="cat_box">
           <div class="row align-items-center">
             <div class="col-3 text-center">
-                <img src="{% static 'images/category_1.jpg' %}" alt="">
+                <img src="{{c.image}}" alt="">
             </div>
             <div class="col-9">
-              <p>Sports</p>
+              <p>{{c.name}}</p>
             </div>
           </div>
         </div>
         </a>
-          <a href=" {% url 'category_search' 4 %}">
-        <div class="cat_box">
-          <div class="row align-items-center">
-            <div class="col-3 text-center">
-                <img src="{% static 'images/category_2.jpg' %}" alt="">
-            </div>
-            <div class="col-9">
-              <p>Weather</p>
-            </div>
-          </div>
-        </div></a>
-          <a href=" {% url 'category_search' 2 %}">
 
-        <div class="cat_box">
-          <div class="row align-items-center">
-            <div class="col-3 text-center">
-                <img src="{% static 'images/category_3.jpg' %}" alt="">
-            </div>
-            <div class="col-9">
-              <p>Stock Market</p>
-            </div>
-          </div>
-        </div></a>
-          <a href=" {% url 'category_search' 3 %}">
-
-        <div class="cat_box">
-          <div class="row align-items-center">
-            <div class="col-3 text-center">
-                <img src="{% static 'images/category_4.jpg' %}" alt="">
-            </div>
-            <div class="col-9">
-              <p>Crypto Currencies</p>
-            </div>
-          </div>
-        </div></a>
-          <a href=" {% url 'category_search' 5 %}">
-
-        <div class="cat_box">
-          <div class="row align-items-center">
-            <div class="col-3 text-center">
-                <img src="{% static 'images/category_5.jpg' %}" alt="">
-            </div>
-            <div class="col-9">
-              <p>Politics</p>
-            </div>
-          </div>
-        </div>
-          </a>
-
-         <a href=" {% url 'category_search' 6 %}">
-
-        <div class="cat_box">
-          <div class="row align-items-center">
-            <div class="col-3 text-center">
-                <img src="{% static 'subcat/entertainment2.png' %}" alt="" height="75px" width="75px">
-            </div>
-            <div class="col-9">
-              <p>Entertainment</p>
-            </div>
-          </div>
-        </div>
-          </a>
       </div>
 
 
