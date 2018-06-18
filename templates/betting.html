@@ -109,11 +109,8 @@
 
         <div class="col-12">
             <div class="row mb-2">
-                <div class="col-6">
-                    Source
-                </div>
-                <div class="col-6 text-right value-color">
-                    <a href="{{forecast.sub_category.source}}">{{forecast.sub_category.source}}</a>
+                <div class="col-12">
+                    Source : <b><a href="{{forecast.sub_category.source}}">{{forecast.sub_category.source}}</a></b>
                 </div>
               </div>
 
@@ -122,35 +119,19 @@
 
       </div>
       <div class="clearfix"></div>
-    <!--<div class="row white_box mr-0 ml-0 mb-3">-->
-      <!--<div class="col-12">-->
+      <div class="row white_box mr-0 ml-0 mb-3">
 
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash;<div class="col-6 text-right value-color">&ndash;&gt;-->
-          <!--{% if forecast.status.name == 'In-Progress' %}-->
-            <!--<p class="m-0">Result : <strong>Awaited</strong> </p>-->
-          <!--{% elif forecast.status.name == 'Closed' %}-->
-          <!--<p class="m-0">Result : <strong>Result not Declared</strong></p>-->
-          <!--{% else %}-->
-          <!--<p class="m-0">Result : <strong>Result Declared</strong></p>-->
-          <!--{% endif %}-->
-    <!--</div>-->
-  <!--</div>-->
+        <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-12">
+                    <b>Share Forecast</b></div>
+                <div class="col-12">
+                <div class="sharethis-inline-share-buttons"></div></div></div>
       <div class="clearfix"></div>
-    <!--<div class="row white_box mr-0 ml-0 mb-3">-->
-      <!--<div class="col-12">-->
-        <!--<div class="row">-->
-          <!--<div class="col-8">-->
-            <!--<p>Total FG points in play</p>-->
-          <!--</div>-->
-          <!--<div class="col-4 text-right value-color">-->
-            <!--<p>{{sums}}</p>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
+      <div class="clearfix"></div>
 
-</div>
+
+  </div></div>
 <footer class="sticky-footer">
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
@@ -234,6 +215,8 @@ function googleTranslateElementInit() {
   new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT}, 'google_translate_element');
 }
 </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5b221f8c43580f00113f4333&product=custom-share-buttons"></script>
+
 {% endblock %}
 
 
