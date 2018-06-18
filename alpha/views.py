@@ -1943,13 +1943,27 @@ def import_csv(request):
             except Exception:
                 return HttpResponse("Error - In Expire field")
             try:
-                ForeCast.objects.get_or_create(category=category, sub_category=sub_category, user=social,
+                heading = fields[2]
+            except Exception:
+                return HttpResponse("Error - In Heading field")
+            try:
+                f = ForeCast.objects.get(category=category, sub_category=sub_category, user=social,
                                         heading=fields[2], approved=approved, verified=verified,
                                         private=private, expire=expire, created=datetime.datetime.now().date(),
                                         status=status)
 
             except Exception:
-                return HttpResponse("Forecast : {} not created".format(fields[2]))
+                f = ForeCast.objects.create(category=category, sub_category=sub_category, user=social,
+                                         heading=heading, approved=approved, verified=verified,
+                                         private=private, expire=expire, created=datetime.datetime.now().date(),
+                                         status=status)
+                f.user.forecast_created += 1
+                f.user.save()
+                f.save()
+                yes = randrange(1000, 9000, 1000)
+                no = randrange(1000, 9000, 1000)
+                admin = SocialAccount.objects.get(user__username="admin")
+                Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
 
         return HttpResponse(json.dumps(dict(message="File Uploaded Successful")))
     else:
