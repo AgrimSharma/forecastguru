@@ -940,7 +940,7 @@ def category(request):
     for c in category:
         image = c.subcategory_set.get(name='Others').image
 
-        data.append(dict(name=c.name,id=c.id, image=image))
+        data.append(dict(name=c.name, id=c.id, image=image))
         print(data)
     return render(request, 'category.html', {'category': data,
                                              "heading": "Categories",
@@ -956,7 +956,7 @@ def category_search(request, userid):
         profile = SocialAccount.objects.get(user=user)
         if len(forecast_live_view(category_id, profile)) == 0 and len(forecast_result_view(category_id, profile))== 0:
             return render(request, "trending.html",{"heading": category_id.name,"sub": sub,
-                          "title": category_id.name,
+                          "title": category_id.name,'category': category_id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username})
         else:
             return render(request, 'category_search.html',
@@ -964,7 +964,7 @@ def category_search(request, userid):
                           "live": forecast_live_view(category_id, profile),
                           "result": forecast_result_view(category_id, profile),
                           "heading": category_id.name,"sub": sub,
-                          "title": category_id.name,
+                          "title": category_id.name,'category': category_id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
 
