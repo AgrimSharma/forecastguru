@@ -37,6 +37,7 @@
         <!--<img src="{% static 'images/logo-small-white.png' %}" alt=""> -->
       </figure>
       <h2 class="title">{{profile.user}}</h2>
+       <h2 ><a href="{% url 'logout_user' %}" class="text-uppercase">Logout</a></h2>
     </div>
     <div class="account_desc">
       <div class="white_box mb-3">
@@ -168,15 +169,12 @@
         <p>Balance : <span class="value-color font-weight-bold">{{balance}}</span></p>
       </div>
        <div class="row mb-2 btn_wrap">
-        <div class="col-6"> <a href="{% url 'privacy_policy' %}" class="text-uppercase">Privacy Policy</a> </div>
-        <div class="col-6"> <a href="{% url 'terms' %}" class="text-uppercase">Terms and Privacy</a> </div>
-      </div>
-      <hr>
-      <div class="row mb-2 btn_wrap">
-        <div class="col-6"> <a href="{% url 'logout_user' %}" class="text-uppercase">Logout</a> </div>
+        <div class="col-4"> <a href="{% url 'privacy_policy' %}" class="text-uppercase">Privacy</a> </div>
+        <div class="col-4"> <a href="{% url 'terms' %}" class="text-uppercase">Termsy</a> </div>
+         <div class="col-4"> <a href="{% url 'faq' %}" class="text-uppercase">FAQs</a> </div>
 
-        <div class="col-6"> <a href="{% url 'faq' %}" class="text-uppercase">FAQ</a> </div>
       </div>
+
     </div>
   </div>
 </div>
