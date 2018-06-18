@@ -1971,5 +1971,9 @@ def import_csv(request):
                                              "title": "Import CSV",})
 
 
+def redirect_url(request, url):
+    return HttpResponseRedirect(url)
+
+
 def main_page(request):
     return render(request, 'main_page.html')
