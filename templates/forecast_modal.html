@@ -64,6 +64,7 @@ $(".submit_forecast").click(function(){
                     if(data.message=="success"){
                     console.log(data.message);
                         alert("Forecast Placed");
+                        onClick="ga('send', 'event', { eventCategory: 'play', eventAction: 'click', eventLabel: 'participate'});"
                         location.reload();
                         }
                     else if(data.message=="balance"){
