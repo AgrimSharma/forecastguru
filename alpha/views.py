@@ -1912,36 +1912,36 @@ def import_csv(request):
             try:
                 private = Private.objects.get(name__icontains=str(fields[6]))
             except Exception:
-                return HttpResponse("In Private field")
+                return HttpResponse("Error - In Private field")
             try:
                 status = Status.objects.get(name='In-Progress')
             except Exception:
-                return HttpResponse("In Status field")
+                return HttpResponse("Error - In Status field")
             try:
                 verified = Verified.objects.get(name__icontains=str(fields[7]))
             except Exception:
-                return HttpResponse("In Verified field")
+                return HttpResponse("Error - In Verified field")
             try:
                 category = Category.objects.get(name__icontains=str(fields[0]))
             except Exception:
-                return HttpResponse("In Category field")
+                return HttpResponse("Error - In Category field")
             try:
                 sub_category = SubCategory.objects.get(name__icontains=str(fields[1]))
             except Exception:
-                return HttpResponse("In Sub Category field")
+                return HttpResponse("Error - In Sub Category field")
             try:
                 user = User.objects.get(username=str(fields[3]))
                 social = SocialAccount.objects.get(user=user)
             except Exception:
-                return HttpResponse("In User Name field")
+                return HttpResponse("Error - In User Name field")
             try:
                 approved = Approved.objects.get(name=str(fields[5]))
             except Exception:
-                return HttpResponse("In Approved field")
+                return HttpResponse("Error - In Approved field")
             try:
                 expire = datetime.datetime.strptime(str(fields[4]), "%Y-%m-%d %H:%M:%S")
             except Exception:
-                return HttpResponse("In Expire field")
+                return HttpResponse("Error - In Expire field")
             try:
                 ForeCast.objects.get_or_create(category=category, sub_category=sub_category, user=social,
                                         heading=fields[2], approved=approved, verified=verified,
