@@ -70,15 +70,16 @@
                       <form method="post">{% csrf_token %}
                     <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
 
-                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}" style="width: 60px;height: 42px;">PLAY </button>
+                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}" >PLAY </button>
                           </form>
                 </div>
                     <div class="col-4 text-right pl-0">
-                                    <div class="addthis_inline_share_toolbox_a0ek"></div>
-              </div>
+                        <div class="sharethis-inline-share-buttons"></div>
+                    </div>
 
 
                 </div>
+
                               {% if f.bet_against_user > 0 or f.bet_for_user > 0  %}
                 <hr>
                 <div class="row">
