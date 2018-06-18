@@ -61,9 +61,10 @@
 
                   <div class="col-6 text-right"> <span class="vote_no text-uppercase">No ({{f.bet_against}})</span> </div>
                 </div>
-                <hr class="mt-2 mb-2">
+                                                  <hr class="mt-2 mb-2">
+
                 <div class="row">
-                  <div class="col-6 pr-0">
+                  <div class="col-4 pr-0">
                     <div class="time textwithicon pl-0">
                       <label><i class="fa fa-clock-o"></i> Expires on</label><br>
                         {% if f.today == "yes" %}
@@ -73,15 +74,20 @@
                         {% endif %}
                         </div>
                   </div>
-
-                  <div class="col-6 text-right pl-0">
+                    <div class="col-4  text-right pl-0" >
                       <form method="post">{% csrf_token %}
                     <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
 
-                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}">PLAY </button>
+                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}" style="width: 60px;height: 42px;">PLAY </button>
                           </form>
                 </div>
-              </div>
+                    <div class="col-4 text-right pl-0">
+                        <div class="sharethis-inline-share-buttons"></div>
+                    </div>
+
+
+                </div>
+
                               {% if f.bet_against_user > 0 or f.bet_for_user > 0  %}
                 <hr>
                 <div class="row">
@@ -192,5 +198,3 @@ $.ajax({
 });
 
 </script>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5b20f3c3978f517f"></script>
-{% endblock %}
