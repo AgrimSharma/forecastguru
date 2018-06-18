@@ -17,7 +17,7 @@ class SubCatInline(admin.TabularInline):
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', "identifier"]
-    ordering = ('identifier')
+    ordering = ('identifier',)
     inlines = (SubCatInline,)
 
 
