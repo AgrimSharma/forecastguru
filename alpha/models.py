@@ -65,6 +65,7 @@ class Status(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    identifier = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-name']
@@ -82,6 +83,7 @@ class SubCategory(models.Model):
     source = models.CharField(max_length=100)
     image = models.URLField(null=True, blank=True)
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE)
+    identifier = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-name']

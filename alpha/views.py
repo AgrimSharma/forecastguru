@@ -38,13 +38,15 @@ def create_forecast(request):
         expire = request.POST.get('expire', '')
         cat = Category.objects.get(id=category)
         sub_cat = SubCategory.objects.get(id=sub_category)
-        approved = Approved.objects.get(id=2)
+
         verified = Verified.objects.get(id=2)
         private_name = request.POST.get("private", '')
         if private_name == "email":
             private = Private.objects.get(id=1)
+            approved = Approved.objects.get(id=1)
         else:
             private = Private.objects.get(id=2)
+            approved = Approved.objects.get(id=2)
         expires = datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M")
 
         if expires < current:
@@ -109,8 +111,7 @@ def live_forecast(request):
         for f in forecast_live:
             date = current.date()
 
-            bet_start = f.expire.date()
-
+            bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 print(start)
@@ -158,8 +159,7 @@ def live_forecast(request):
         for f in forecast_live:
             date = current.date()
 
-            bet_start = f.expire.date()
-
+            bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 print(start)
@@ -211,7 +211,7 @@ def forecast_result(request):
         forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared').order_by("-expire")
         for f in forecast_live:
             date = current.date()
-            bet_start = f.start.date()
+            bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 start = start.time()
@@ -257,7 +257,7 @@ def forecast_result(request):
             "-expire")
         for f in forecast_live:
             date = current.date()
-            bet_start = f.start.date()
+            bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 start = start.time()
@@ -313,7 +313,7 @@ def result_not_declared(request):
 
         for f in forecast_result:
             date = current.date()
-            bet_start = f.start.date()
+            bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 start = start.time()
@@ -355,7 +355,7 @@ def result_not_declared(request):
     except Exception:
         for f in forecast_result:
             date = current.date()
-            bet_start = f.start.date()
+            bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 start = start.time()
@@ -403,7 +403,7 @@ def get_ratio(bet_for, bet_against, total, status):
     if bet_against == 0 and bet_for == 0:
         ratio = "NA"
     elif bet_for == bet_against:
-        ratio = 1
+        ratio = 2
     elif status == 'yes':
         try:
             if bet_against > 0:
@@ -934,7 +934,7 @@ def payu_cancel(request):
 
 
 def category(request):
-    category = Category.objects.all().order_by('name')
+    category = Category.objects.all().order_by('identifier')
     print(category.count())
     data = []
     for c in category:
@@ -950,7 +950,7 @@ def category(request):
 
 def category_search(request, userid):
     category_id = Category.objects.get(id=userid)
-    sub = SubCategory.objects.filter(category=category_id).order_by('name')
+    sub = SubCategory.objects.filter(category=category_id).order_by('identifier')
     try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
@@ -1070,7 +1070,7 @@ def search_result(request):
                 for f in forecast_live:
                     date = current.date()
 
-                    bet_start = f.expire.date()
+                    bet_start = (f.expire + datetime.timedelta(hours=5, minutes=30)).date()
 
                     if date == bet_start:
                         start = f.expire + datetime.timedelta(hours=5, minutes=30)
@@ -1178,10 +1178,10 @@ def not_approved(forecast):
     for f in forecast:
         date = current.date()
         forecast = f.forecast
-        bet_start = forecast.expire.date()
+        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
 
         if date == bet_start:
-            start = forecast.expire
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
@@ -1202,7 +1202,7 @@ def live_forecast_data_bet(forecast_live, account):
     for f in forecast_live:
         date = current.date()
         forecast = f
-        bet_start = forecast.expire.date()
+        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
 
         if date == bet_start:
             start = f.expire + datetime.timedelta(hours=5, minutes=30)
@@ -1251,7 +1251,7 @@ def live_forecast_data(forecast_live, account):
     for f in forecast_live:
         date = current.date()
         forecast = f.forecast
-        bet_start = forecast.expire.date()
+        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
 
         if date == bet_start:
             start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
@@ -1297,7 +1297,7 @@ def forecast_result_data(forecast_live, account):
     for f in forecast_live:
         forecast = f.forecast
         date = current.date()
-        bet_start = forecast.start.date()
+        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
         if date == bet_start:
             start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
@@ -1355,17 +1355,10 @@ def my_forecast_private(request):
 
     forecast_result = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='Result Declared',
                                              users=account,forecast__private__name='yes').order_by("forecast__expire")
-    forecast_approval = ForeCast.objects.filter(approved__name="no", user=account,private__name='yes').order_by("expire")
-    forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account,private__name='yes').order_by("expire")
+    forecast_approval = ForeCast.objects.filter(approved__name="no", user=account,private__name='yes').order_by("-expire")
+    forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account,private__name='yes').order_by("-expire")
     not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
-    if forecast_result.count ==0 and forecast_live.count() ==0 and forecast_approval.count() == 0 and forecast_no_bet.count() == 0:
-        return render(request, 'my_friend_no_private.html', {
-                                                          "user": "Guest" if request.user.is_anonymous() else request.user.username,
-                                                          "heading": "Forecast Private",
-                                                          "title": "My Forecast",
-                                                          })
-    else:
-        return render(request, 'my_friend_private.html', {"live": live_forecast_data(forecast_live, account),
+    return render(request, 'my_friend_private.html', {"live": live_forecast_data(forecast_live, account),
                                               "result": forecast_result_data(forecast_result, account),
                                               "approval": forecast_approval,
                                               "forecast": live_forecast_data_bet(not_bet, account),
@@ -1400,14 +1393,15 @@ def forecast_live_view(category, profile):
     for f in forecast_live:
         date = current.date()
         forecast = f
-        bet_start = forecast.expire.date()
+        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
 
         if date == bet_start:
-            start = forecast.expire
-            start = start.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire
+            start = f.expire
+
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -1451,10 +1445,10 @@ def forecast_live_view_sub(category, profile):
     for f in forecast_live:
         date = current.date()
         forecast = f
-        bet_start = forecast.expire.date()
+        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
 
         if date == bet_start:
-            start = forecast.expire
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
@@ -1502,14 +1496,16 @@ def forecast_live_view_bt(category_id):
     for f in forecast_live:
         date = current.date()
         forecast = f
-        bet_start = forecast.expire.date()
+        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
 
         if date == bet_start:
-            start = forecast.expire
-            start = start.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            print(start)
+            start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire
+            start = f.expire
+
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -1550,10 +1546,10 @@ def forecast_live_view_bt_sub(category_id):
     for f in forecast_live:
         date = current.date()
         forecast = f
-        bet_start = forecast.expire.date()
+        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
 
         if date == bet_start:
-            start = forecast.expire
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
@@ -1598,13 +1594,16 @@ def forecast_result_view(category, profile):
     for f in forecast_live:
         forecast = f
         date = current.date()
-        bet_start = forecast.start.date()
+        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
         if date == bet_start:
-            start = forecast.start.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            print(start)
+            start = start.time()
             today = 'yes'
         else:
-            start = forecast.start
-            today = 'no'
+            start = f.expire
+
+            today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
 
@@ -1649,12 +1648,13 @@ def forecast_result_view_sub(category, profile):
     for f in forecast_live:
         forecast = f
         date = current.date()
-        bet_start = forecast.start.date()
+        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
         if date == bet_start:
-            start = forecast.start.time().strftime("%I:%M:%S")
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = forecast.start
+            start = forecast.expire
             today = 'no'
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -1700,13 +1700,15 @@ def forecast_result_view_bt(category_id):
     for f in forecast_live:
         forecast = f
         date = current.date()
-        bet_start = forecast.start.date()
+        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
         if date == bet_start:
-            start = forecast.start.time().strftime("%I:%M:%S")
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time()
             today = 'yes'
         else:
-            start = forecast.start
-            today = 'no'
+            start = f.expire
+
+            today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
 
@@ -1749,9 +1751,10 @@ def forecast_result_view_bt_sub(category_id):
     for f in forecast_live:
         forecast = f
         date = current.date()
-        bet_start = forecast.start.date()
+        bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
         if date == bet_start:
-            start = forecast.start.time().strftime("%I:%M:%S")
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
             start = forecast.start
@@ -1891,7 +1894,6 @@ def session(request):
 @csrf_exempt
 def import_csv(request):
     if request.method == 'POST':
-        import pdb;pdb.set_trace()
         csv_file = request.FILES["csv_file"]
         if not csv_file.name.endswith('.csv'):
             messages.error(request, 'File is not CSV type')
@@ -1905,55 +1907,68 @@ def import_csv(request):
 
         lines = file_data.split("\n")
         # loop over the lines and save them in db. If error , store as string and then display
-        for line in lines:
-            fields = line.split(",")
+        for i in range(len(lines)-1):
+            fields = lines[i].split(",")
             try:
-                private = Private.objects.get(name__icontains=str(fields[6]))
+                private = Private.objects.get(name='no')
+            except Exception:
+                return HttpResponse("Error - In Private field")
+            try:
                 status = Status.objects.get(name='In-Progress')
-                verified = Verified.objects.get(name__icontains=str(fields[7]))
+            except Exception:
+                return HttpResponse("Error - In Status field")
+            try:
+                verified = Verified.objects.get(name='no')
+            except Exception:
+                return HttpResponse("Error - In Verified field")
+            try:
                 category = Category.objects.get(name__icontains=str(fields[0]))
+            except Exception:
+                return HttpResponse("Error - In Category field")
+            try:
                 sub_category = SubCategory.objects.get(name__icontains=str(fields[1]))
+            except Exception:
+                return HttpResponse("Error - In Sub Category field")
+            try:
                 user = User.objects.get(username=str(fields[3]))
                 social = SocialAccount.objects.get(user=user)
+            except Exception:
+                return HttpResponse("Error - In User Name field")
+            try:
                 approved = Approved.objects.get(name=str(fields[5]))
+            except Exception:
+                return HttpResponse("Error - In Approved field")
+            try:
                 expire = datetime.datetime.strptime(str(fields[4]), "%Y-%m-%d %H:%M:%S")
-                ForeCast.objects.get_or_create(category=category, sub_category=sub_category, user=social,
+            except Exception:
+                return HttpResponse("Error - In Expire field")
+            try:
+                heading = fields[2]
+            except Exception:
+                return HttpResponse("Error - In Heading field")
+            try:
+                f = ForeCast.objects.get(category=category, sub_category=sub_category, user=social,
                                         heading=fields[2], approved=approved, verified=verified,
                                         private=private, expire=expire, created=datetime.datetime.now().date(),
                                         status=status)
-            # if form.is_valid():
-            #     form.save()
-            # else:
-            #     logging.getLogger("error_logger").error(form.errors.as_json())
+
             except Exception:
-                logging.getLogger("error_logger").error(repr(Exception))
-                pass
+                f = ForeCast.objects.create(category=category, sub_category=sub_category, user=social,
+                                         heading=heading, approved=approved, verified=verified,
+                                         private=private, expire=expire, created=datetime.datetime.now().date(),
+                                         status=status)
+                f.user.forecast_created += 1
+                f.user.save()
+                f.save()
+                yes = randrange(1000, 9000, 1000)
+                no = randrange(1000, 9000, 1000)
+                admin = SocialAccount.objects.get(user__username="admin")
+                Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
 
-        return HttpResponseRedirect("/import_csv/")
+        return HttpResponse(json.dumps(dict(message="File Uploaded Successful")))
     else:
-        return render(request, 'import_csv.html')
-
-
-
-def device_data_android(request):
-    if request.method == "GET":
-        username = request.GET.get('username', "")
-        device_id = request.GET.get('device_id', "")
-        device_token = request.GET.get('device_token', "")
-        if username =='' or device_token == '' or device_id == '':
-            return HttpResponse(json.dumps(dict(message='Not Save', status=400)))
-        try:
-            user = User.objects.get(username=username)
-            social = SocialAccount.objects.get(user=user)
-            tokens = UserDevice.objects.get(user=social, device_id=device_id)
-            tokens.device_token = device_token
-            tokens.save()
-            return HttpResponse(json.dumps(dict(message='Saved', status=200)))
-        except Exception:
-            user = User.objects.get(username=username)
-            social = SocialAccount.objects.get(user=user)
-            UserDevice.objects.create(user=social, device_id=device_id, device_token=device_token)
-            return HttpResponse(json.dumps(dict(message='Saved', status=200)))
+        return render(request, 'import_csv.html',{"heading": "Import CSV",
+                                             "title": "Import CSV",})
 
 
 def main_page(request):
