@@ -4,9 +4,10 @@
 <head>
 <meta property="og:url" content="{% url 'betting' forecast.id %}" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="Check out this forecast on {{user|title}}: {{ forecast.heading }}"/>
-<meta property="og:description" content="Join {{user|title}} to forecast this and more! See how accurate you are at predicting the future!" />
-<meta property="og:image" content="{{forecast.sub_category.image}}" />
+<meta property="og:title" content="Check out this forecast on "/>
+<meta property="og:description" content="Join Agrim to forecast this and more! See how accurate you are at predicting the future!" />
+<meta property="og:image" content="https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg" />
+<meta property="fb:app_id" content="186107225561354" />
     <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>{% block title%} {{title}} {% endblock title %}</title>
@@ -264,10 +265,10 @@ function googleTranslateElementInit() {
     function fbshare(){
         FB.ui({
           method: 'share',
-          href: 'https://forecast.sirez.com',
+          href: '{% url 'betting' forecast.id %}',
           picture: '{{forecast.sub_category.image}}',
           caption: 'Forecast the Future with {{user|title}}',
-          description: 'Forecast future events- earn points for correct predictions!'
+          description: 'Forecast future events and earn points for correct predictions!'
         }, function(response){});
     }
     window.fbAsyncInit = function () {
