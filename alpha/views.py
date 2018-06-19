@@ -493,15 +493,21 @@ def profile(request):
                                                  })
 
 
-def predict_status(profile):
-    if 0 <= profile.forecast_participated < 25:
+def predict_status(profile, suc_per):
+    if 0 <= profile.forecast_created < 10 and 0 <= suc_per < 50:
         status = "Beginner"
         return status
-    elif 25 <= profile.forecast_participated < 75:
-        status = "Intermediate"
+    elif 10 <= profile.forecast_created < 30 and 50 <= suc_per < 70:
+        status = "Expert"
         return status
-    elif profile.forecast_participated > 75:
+    elif 30 <= profile.forecast_created < 50 and 70 <= suc_per < 90:
+        status = "INFLUENCER"
+        return status
+    elif profile.forecast_created >= 50 and suc_per >= 90:
         status = "Guru"
+        return status
+    else:
+        status = "Beginner"
         return status
 
 
@@ -700,7 +706,9 @@ def allocate_points(request):
 def forecast_data(forecast, ratio, total, status, total_bets):
     betting = Betting.objects.filter(forecast=forecast)
     ratio += 1
+    import pdb;pdb.set_trace()
     for b in betting:
+        print(b.users.username)
         bet_for = b.bet_for
         bet_against = b.bet_against
         if bet_for == 0 and bet_against == 0:
@@ -1170,6 +1178,7 @@ def get_forecast(request):
         return render_to_response('forecast_modal.html',
                                   {'forecast': forecast}, )
     else:
+
         return HttpResponse(json.dumps(dict(error="Try again later")))
 
 
