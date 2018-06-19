@@ -177,7 +177,7 @@
       </div>
       {% autoescape on %}
 
-{% with "http://carlosvin.alwaysdate.net" as host %}
+{% with "https://forecast.sirez.com" as host %}
 {% with "Share in" as share_txt %}
 
 {% with "twitter" as service %}
@@ -187,8 +187,8 @@
 {% endwith%}
 
 {% with "facebook" as service %}
-<a href="http://www.facebook.com/share.php?u={{ host }}{{ page_url }}&amp;t={{ title }}" target="_blank" title="{{ share_txt }} {{ service }}">
-    <img src="http://carlosvin.alwaysdate.net/templates/img/fb.png" alt="{{ share_txt }} {{ service }}"/>
+<a href="http://www.facebook.com/share.php?u={{ host }}{{ page_url }}&amp;t=Check out this forecast on {{user|title}}: {{ forecast.heading }}" target="_blank" title="{{ forecast.heading }} {{ service }}">
+    <img src="{{forecast.sub_category.image}}" alt="{{ share_txt }} {{ service }}"/>
 </a>
 {% endwith %}
 
