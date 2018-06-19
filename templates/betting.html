@@ -187,7 +187,7 @@
 {% endwith%}
 
 {% with "facebook" as service %}
-<a href="http://www.facebook.com/share.php?u=https://forecast.sirez.com/forecast/{{forecast.id}}&amp;t=Check out this forecast on {{user|title}}: {{ forecast.heading }}" target="_blank" title="Check out this forecast on {{user|title}}: {{ forecast.heading }}">
+<a href="http://www.facebook.com/share.php?u=https://forecast.sirez.com/forecast/{{forecast.id}}/&amp;t=Check out this forecast on {{user|title}}: {{ forecast.heading }}" target="_blank" title="Check out this forecast on {{user|title}}: {{ forecast.heading }}">
     <img src="" alt="{{ share_txt }} {{ service }}"/>
 </a>
 {% endwith %}
