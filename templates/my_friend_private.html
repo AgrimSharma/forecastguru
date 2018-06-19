@@ -98,11 +98,6 @@
                       <form method="post">{% csrf_token %}
                     <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
 
-                        <button type="button" class="btn btn-orange private" shipment="{{f.id}}" id="shipment{{f.id}}">Invite</button>
-                          </form>
-                      <form method="post">{% csrf_token %}
-                    <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
-
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.id}}" id="shipment_id{{f.id}}">PLAY </button>
                           </form>
                 </div>
