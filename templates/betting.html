@@ -1,6 +1,4 @@
 {% load static %}
-{% load social_share %}
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -170,55 +168,10 @@
 
         </div>
         <div class="addthis_inline_share_toolbox_a0ek"></div>
-          <div class="text-center" id="fb-root">
-  <button class="btn btn-primary" onclick="fbshare()">FaceBook</button>
-</div>
-
-      </div>
-      {% autoescape on %}
-
-{% with "https://forecast.sirez.com" as host %}
-{% with "Share in" as share_txt %}
-
-{% with "twitter" as service %}
-<a href="http://twitter.com/share?url={{ host }}{{ page_url }}&amp;text={{ title }}" target="_blank" title="{{ share_txt }} {{ service }}">
-    <img src="http://carlosvin.alwaysdate.net/templates/img/tw.png" alt="{{ share_txt }} {{ service }}"/>
-</a>
-{% endwith%}
-
-{% with "facebook" as service %}
-<a href="http://www.facebook.com/share.php?u={{ host }}{{ page_url }}&amp;t=Check out this forecast on {{user|title}}: {{ forecast.heading }}" target="_blank" title="{{ forecast.heading }} {{ service }}">
-    <img src="http://carlosvin.alwaysdate.net/templates/img/fb.png" alt="{{ share_txt }} {{ service }}"/>
-</a>
-{% endwith %}
-
-{% with "linkedin" as service %}
-<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ host }}{{ page_url }}&amp;title={{ title }}&amp;ro=false&amp;summary=&amp;source=" target="_blank" title="{{ share_txt }} {{ service }}">
-    <img src="http://carlosvin.alwaysdate.net/templates/img/ln.png" alt="{{ share_txt }} {{ service }}"/>
-</a>
-{% endwith %}
-
-{% with "reader" as service %}
-<a href="http://www.google.com/reader/link?title={{ title }}&amp;url={{ host }}{{ page_url }}" target="_blank" title="{{ share_txt }} {{ service }}">
-    <img src="http://carlosvin.alwaysdate.net/templates/img/rd.png" alt="{{ share_txt }} {{ service }}"/>
-</a>
-{% endwith %}
-
-{% with "buzz" as service %}
-<a href="http://www.google.com/buzz/post?message={{ title }}&amp;url={{ host }}{{ page_url }}" target="_blank" title="{{ share_txt }} {{ service }}">
-    <img src="http://carlosvin.alwaysdate.net/templates/img/bz.png" alt="{{ share_txt }} {{ service }}"/>
-</a>
-{% endwith %}
-
-{% endwith %}
-{% endwith %}
-
-{% endautoescape %}
-        {% post_to_facebook object_or_url "Post to Facebook!" %}
 
           <div class="clearfix"></div>
       <div class="clearfix"></div>
-</div></div>
+      </div></div></div>
 <footer class="sticky-footer">
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
