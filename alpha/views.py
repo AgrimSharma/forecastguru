@@ -84,7 +84,7 @@ def create_forecast(request):
         try:
             user = request.user
             profile = SocialAccount.objects.get(user=user)
-            category = Category.objects.all().order_by('name')
+            category = Category.objects.all().order_by('identifier')
             return render(request, 'create_forecast.html', {'category': category,
                                                         "current": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
                                                             "user": "Guest" if request.user.is_anonymous() else request.user.username,
@@ -634,12 +634,12 @@ def bet_post(request):
 
 def allocate_points(request):
     forecast = ForeCast.objects.filter(status__name='Closed', verified__name="yes")
-    status = Status.objects.get(name='Result Declared')
+    # status = Status.objects.get(name='Result Declared')
     for f in forecast:
-        f.status = status
-
-        f.status.save()
-        f.save()
+        # f.status = status
+        #
+        # f.status.save()
+        # f.save()
         try:
             betting_sum = Betting.objects.filter(forecast=f).aggregate(
                 bet_for=Sum('bet_for'), bet_against=Sum('bet_against'))
@@ -699,7 +699,7 @@ def allocate_points(request):
 
 def forecast_data(forecast, ratio, total, status, total_bets):
     betting = Betting.objects.filter(forecast=forecast)
-
+    ratio += 1
     for b in betting:
         bet_for = b.bet_for
         bet_against = b.bet_against
@@ -982,7 +982,7 @@ def category_search(request, userid):
 
 def sub_category_data(request, userid):
     subcategory = SubCategory.objects.get(id=userid)
-    sub = SubCategory.objects.filter(category=subcategory.category).order_by('name')
+    sub = SubCategory.objects.filter(category=subcategory.category).order_by('identifier')
     category = Category.objects.get(id=subcategory.category.id)
     try:
         user = request.user
@@ -1374,7 +1374,7 @@ def my_forecast_private(request):
 def get_sub_cat(request):
     if request.method == "POST":
         cat = Category.objects.get(id=int(request.POST.get('identifier', '')))
-        sub = SubCategory.objects.filter(category=cat).order_by('name')
+        sub = SubCategory.objects.filter(category=cat).order_by('identifier')
         data = [dict(id=x.id, name=x.name) for x in sub]
         return HttpResponse(json.dumps(dict(data=data, source=sub[0].source)))
 
