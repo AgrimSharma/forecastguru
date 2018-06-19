@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^result_declared/', forecast_result, name='forecast_result'),
     url(r'^result_not_declared/', result_not_declared, name='result_not_declared'),
     url(r'^closing_soon/', closing_soon, name='closing_soon'),
+    url(r'^device_data_android/', device_data_android, name='device_data_android'),
     url(r'^live_forecast/', live_forecast, name='live_forecast'),
     url(r'^user_profile/', profile, name='user_profile'),
     url(r'^forecast/(?P<userid>\d+)/$', betting, name='betting'),
@@ -38,7 +39,8 @@ urlpatterns = [
     url(r'^payubiz-cancel/$', payu_cancel, name='payu_cancel'),
     url(r'^category/', category, name='category'),
     url(r'^facebook/', facebook_category, name='facebook_category'),
-    url(r'^redirect_url/(?P<url>\w+)/$', redirect_url, name='redirect_url'),
+    url(r'^thank_you/', thank_you, name='thank_you'),
+
     url(r'^category_search/(?P<userid>\d+)/$', category_search, name='category_search'),
     url(r'^sub_category_data/(?P<userid>\d+)/$', sub_category_data, name='sub_category_data'),
     url(r'^my_forecast/', my_forecast, name='my_forecast'),

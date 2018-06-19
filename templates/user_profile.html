@@ -37,6 +37,8 @@
         <!--<img src="{% static 'images/logo-small-white.png' %}" alt=""> -->
       </figure>
       <h2 class="title">{{profile.user}}</h2>
+      <br>
+       <a href="{% url 'logout_user' %}" style="color:white;font-size:16px;">Logout</a>
     </div>
     <div class="account_desc">
       <div class="white_box mb-3">
@@ -62,7 +64,7 @@
             <p class="m-0">Forecasts Created</p>
           </div>
           <div class="col-3 text-right value-color">
-            <p class="m-0">{{profile.forecast_created}}</p>
+            <p class="m-0">{{created}}</p>
           </div>
         </div>
         <div class="clearfix"></div>
@@ -168,15 +170,12 @@
         <p>Balance : <span class="value-color font-weight-bold">{{balance}}</span></p>
       </div>
        <div class="row mb-2 btn_wrap">
-        <div class="col-6"> <a href="{% url 'privacy_policy' %}" class="text-uppercase">Privacy Policy</a> </div>
-        <div class="col-6"> <a href="{% url 'terms' %}" class="text-uppercase">Terms and Privacy</a> </div>
-      </div>
-      <hr>
-      <div class="row mb-2 btn_wrap">
-        <div class="col-6"> <a href="{% url 'logout_user' %}" class="text-uppercase">Logout</a> </div>
+        <div class="col-4 text-left"> <a href="{% url 'privacy_policy' %}" class="text-uppercase">Privacy</a> </div>
+        <div class="col-4 text-center"> <a href="{% url 'terms' %}" class="text-uppercase">Terms</a> </div>
+         <div class="col-4 text-right"> <a href="{% url 'faq' %}" class="">FAQs</a> </div>
 
-        <div class="col-6"> <a href="{% url 'faq' %}" class="text-uppercase">FAQ</a> </div>
       </div>
+
     </div>
   </div>
 </div>

@@ -16,12 +16,17 @@ class SubCatInline(admin.TabularInline):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = ['name', "identifier"]
+    ordering = ('identifier',)
     inlines = (SubCatInline,)
 
 
 class PrivateAdmin(admin.ModelAdmin):
     list_display = ['name']
+
+
+class UserDeviceAdmin(admin.ModelAdmin):
+    list_display = ['user', "device_id"]
 
 
 class SubCategoryAdmin(admin.ModelAdmin):
@@ -66,8 +71,6 @@ class BettingAdmin(admin.ModelAdmin):
         return obj.forecast.sub_category
 
 
-
-
 class BannerAdmin(admin.ModelAdmin):
     list_display = ['name', 'image']
 
@@ -89,6 +92,7 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(Approved, ApprovedAdmin)
 admin.site.register(Private, PrivateAdmin)
 admin.site.register(Verified, VerifiedAdmin)
+admin.site.register(UserDevice, UserDeviceAdmin)
 admin.site.site_title = 'ForeCast Guru'
 admin.site.site_header = 'ForeCast Guru'
 admin.site.index_title= 'Dashboard'

@@ -84,7 +84,7 @@ def create_forecast(request):
         try:
             user = request.user
             profile = SocialAccount.objects.get(user=user)
-            category = Category.objects.all().order_by('name')
+            category = Category.objects.all().order_by('identifier')
             return render(request, 'create_forecast.html', {'category': category,
                                                         "current": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
                                                             "user": "Guest" if request.user.is_anonymous() else request.user.username,
@@ -934,13 +934,13 @@ def payu_cancel(request):
 
 
 def category(request):
-    category = Category.objects.all().order_by('name')
+    category = Category.objects.all().order_by('identifier')
     print(category.count())
     data = []
     for c in category:
         image = c.subcategory_set.get(name='Others').image
 
-        data.append(dict(name=c.name,id=c.id, image=image))
+        data.append(dict(name=c.name, id=c.id, image=image))
         print(data)
     return render(request, 'category.html', {'category': data,
                                              "heading": "Categories",
@@ -950,13 +950,13 @@ def category(request):
 
 def category_search(request, userid):
     category_id = Category.objects.get(id=userid)
-    sub = SubCategory.objects.filter(category=category_id).order_by('name')
+    sub = SubCategory.objects.filter(category=category_id).order_by('identifier')
     try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         if len(forecast_live_view(category_id, profile)) == 0 and len(forecast_result_view(category_id, profile))== 0:
             return render(request, "trending.html",{"heading": category_id.name,"sub": sub,
-                          "title": category_id.name,
+                          "title": category_id.name,'category_id': category_id.id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username})
         else:
             return render(request, 'category_search.html',
@@ -964,7 +964,7 @@ def category_search(request, userid):
                           "live": forecast_live_view(category_id, profile),
                           "result": forecast_result_view(category_id, profile),
                           "heading": category_id.name,"sub": sub,
-                          "title": category_id.name,
+                          "title": category_id.name,'category_id': category_id.id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
 
@@ -975,20 +975,21 @@ def category_search(request, userid):
                       "live": forecast_live_view_bt(category_id),
                       "result": forecast_result_view_bt(category_id),
                       "heading": category_id.name,"sub": sub,
-                      "title": category_id.name,
+                      "title": category_id.name,'category_id': category_id.id,
                       "user": "Guest" if request.user.is_anonymous() else request.user.username
                   })
 
 
 def sub_category_data(request, userid):
     subcategory = SubCategory.objects.get(id=userid)
-    sub = SubCategory.objects.filter(category=subcategory.category).order_by('name')
+    sub = SubCategory.objects.filter(category=subcategory.category).order_by('identifier')
+    category = Category.objects.get(id=subcategory.category.id)
     try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         if len(forecast_live_view_sub(subcategory, profile)) == 0 and len(forecast_result_view_sub(subcategory, profile))== 0:
             return render(request, "trending.html",{"heading": subcategory.name,"sub": sub,
-                          "title": subcategory.name,
+                          "title": subcategory.name,"category_id": category.id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username})
         else:
             return render(request, 'category_search.html',
@@ -996,7 +997,7 @@ def sub_category_data(request, userid):
                           "live": forecast_live_view_sub(subcategory, profile),
                           "result": forecast_result_view_sub(subcategory, profile),
                           "heading": subcategory.name,"sub": sub,
-                          "title": subcategory.name,
+                          "title": subcategory.name,"category_id": category.id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
 
@@ -1007,7 +1008,7 @@ def sub_category_data(request, userid):
                       "live": forecast_live_view_bt_sub(subcategory),
                       "result": forecast_result_view_bt_sub(subcategory),
                       "heading": subcategory.name,"sub": sub,
-                      "title": subcategory.name,
+                      "title": subcategory.name,"category_id": category.id,
                       "user": "Guest" if request.user.is_anonymous() else request.user.username
                   })
 
@@ -1373,7 +1374,7 @@ def my_forecast_private(request):
 def get_sub_cat(request):
     if request.method == "POST":
         cat = Category.objects.get(id=int(request.POST.get('identifier', '')))
-        sub = SubCategory.objects.filter(category=cat).order_by('name')
+        sub = SubCategory.objects.filter(category=cat).order_by('identifier')
         data = [dict(id=x.id, name=x.name) for x in sub]
         return HttpResponse(json.dumps(dict(data=data, source=sub[0].source)))
 
@@ -1865,7 +1866,7 @@ def facebook_category(request):
         request.session['_auth_user_id'] = user.id
         request.session['_auth_user_backend'] = "django.contrib.auth.backends.ModelBackend"
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-    # category = Category.objects.all().order_by('name')
+    # category = Category.objects.all().order_by('identifier')
     #     set_cookie(response, "sessionid", uid)
     #     set_cookie(response, "csrftoken", "RPlsDgOhRDyJDHrJvfodNKw7dFMT8Jd1JHiuBCRQLrgqH7Z5i1wR8lk0q50OSTi4")
     #     hasher = hashlib.md5(str(user.id).encode())
@@ -1970,10 +1971,37 @@ def import_csv(request):
         return render(request, 'import_csv.html',{"heading": "Import CSV",
                                              "title": "Import CSV",})
 
+def device_data_android(request):
+    if request.method == "GET":
+        username = request.GET.get('username', "")
+        device_id = request.GET.get('device_id', "")
+        device_token = request.GET.get('device_token', "")
+        if username =='' or device_token == '' or device_id == '':
+            return HttpResponse(json.dumps(dict(message='Not Save', status=400)))
+        try:
+            user = User.objects.get(username=username)
+            social = SocialAccount.objects.get(user=user)
+            tokens = UserDevice.objects.get(user=social, device_id=device_id)
+            tokens.device_token = device_token
+            tokens.save()
+            return HttpResponse(json.dumps(dict(message='Saved', status=200)))
+        except Exception:
+            user = User.objects.get(username=username)
+            social = SocialAccount.objects.get(user=user)
+            UserDevice.objects.create(user=social, device_id=device_id, device_token=device_token)
+            return HttpResponse(json.dumps(dict(message='Saved', status=200)))
 
-def redirect_url(request, url):
-    return HttpResponseRedirect(url)
+
+def thank_you(request):
+    return render(request, "thank_you.html", {"heading": "Registration Complete",
+                                             "title": "Registration Complete",})
 
 
 def main_page(request):
-    return render(request, 'main_page.html')
+    user = request.user
+    try:
+        users = User.objects.get(username=user.username)
+        account = SocialAccount.objects.get(user=users)
+        return HttpResponseRedirect("/category/")
+    except Exception:
+        return render(request, 'main_page.html')

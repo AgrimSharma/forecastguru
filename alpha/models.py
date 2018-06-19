@@ -6,7 +6,6 @@ from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth.models import User
 
 
-
 class Approved(models.Model):
     name = models.CharField(max_length=10)
 
@@ -65,6 +64,7 @@ class Status(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    identifier = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-name']
@@ -82,6 +82,7 @@ class SubCategory(models.Model):
     source = models.CharField(max_length=100)
     image = models.URLField(null=True, blank=True)
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE)
+    identifier = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-name']
@@ -169,32 +170,31 @@ class Order(models.Model):
         return "{} : {} : {}".format(self.user, self.amount, self.txnid)
 
 
-class InviteStatus(models.Model):
-    name = models.CharField(max_length=10)
-
-    class Meta:
-        ordering = ['-name']
-        verbose_name_plural = 'Invite Status'
-
-    def __str__(self):
-        return self.name
-
-    def __unicode__(self):
-        return self.name
-
-
-# class PrivateForecast(models.Model):
-#     forecast = models.ForeignKey(to=ForeCast, on_delete=models.CASCADE)
-#     to_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-#     status = models.ForeignKey(to=InviteStatus, on_delete=models.CASCADE)
-#     from_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+# class InviteStatus(models.Model):
+#     name = models.CharField(max_length=10)
 #
 #     class Meta:
 #         ordering = ['-name']
-#         verbose_name_plural = 'Invite'
+#         verbose_name_plural = 'Invite Status'
 #
 #     def __str__(self):
-#         return "{} : {}: {} : {}".format(self.forecast, self.to_user, self.from_user, self.status)
+#         return self.name
 #
 #     def __unicode__(self):
-#         return "{} : {}: {} : {}".format(self.forecast, self.to_user, self.from_user, self.status)
+#         return self.name
+
+
+class UserDevice(models.Model):
+    user = models.ForeignKey(to=SocialAccount, on_delete=models.CASCADE)
+    device_id = models.CharField(max_length=10000)
+    device_token = models.CharField(max_length=10000)
+
+    class Meta:
+        ordering = ['device_id']
+        verbose_name_plural = 'User Device'
+
+    def __str__(self):
+        return "{} : {}".format(self.user, self.device_id)
+
+    def __unicode__(self):
+        return "{} : {}".format(self.user, self.device_id)

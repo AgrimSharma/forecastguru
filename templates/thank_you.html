@@ -6,35 +6,20 @@
 
 <div class="container fixed_p_footer">
   <div class="row">
-    <div class="col-md-12">
-    {% for c in category %}
-      <div class="category_wrap">
-        <a href=" {% url 'category_search' c.id %}">
-        <div class="cat_box">
-          <div class="row align-items-center">
-            <div class="col-3 text-center">
-                <img src="{{c.image}}" alt="">
-            </div>
-            <div class="col-9">
-              <p>{{c.name}}</p>
-            </div>
-          </div>
-        </div>
-        </a>
 
+      <div class="col-md-12 text-center" style="padding-top: 20px;">
+          <p style="font-size: 18px;"> Thank You for registration with us</p>
+          <p style="font-size: 18px;"> Please wait or press <a href="{% url 'category' %}">here</a> </p>
       </div>
-    {% endfor %}
-
-
-    </div>
   </div>
-</div>
+
+  </div>
 <footer class="sticky-footer">
     <nav class="navbar">
       <ul class="navbar-nav nav-fill w-100 text-center">
         <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
           Forecasts</a> </li>
-        <li class="nav-item"> <a class="nav-link active" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
           Categories</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
           Results</a> </li>
@@ -45,23 +30,15 @@
       </ul>
     </nav>
   </footer>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
 <script>
-$('#myInput').keypress(function (e) {
-  if (e.which == 13) {
-  var test = $("#myInput").val();
+window.setTimeout(function(){
 
-  $.ajax({
-    type:"POST",
-    url: "{% url 'search_result' %}",
-    data: {'point': test},
-    success: function(resp){
+        // Move to a new location or you can do something else
+        window.location.href = "{% url 'category' %}";
 
-    }
-});
-    <!--$('form').submit();-->
-    <!--return false;-->
-  }
-});
+    }, 2000);
+
 </script>
-
 {% endblock %}
