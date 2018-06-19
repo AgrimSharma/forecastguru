@@ -265,8 +265,8 @@ function googleTranslateElementInit() {
     function fbshare(){
         FB.ui({
           method: 'share',
-          href: '{% url 'betting' forecast.id %}',
-          picture: '{{forecast.sub_category.image}}',
+          href: 'https://forecast.sirez.com/forecast/{{forecast.id}}/',
+          picture: 'https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg',
           caption: 'Forecast the Future with {{user|title}}',
           description: 'Forecast future events and earn points for correct predictions!'
         }, function(response){});
