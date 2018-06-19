@@ -493,17 +493,22 @@ def profile(request):
                                                  })
 
 
-def predict_status(profile):
-    if 0 <= profile.forecast_participated < 25:
+def predict_status(profile, suc_per):
+    if 0 <= profile.forecast_created < 10 and 0 <= suc_per < 50:
         status = "Beginner"
         return status
-    elif 25 <= profile.forecast_participated < 75:
-        status = "Intermediate"
+    elif 10 <= profile.forecast_created < 30 and 50 <= suc_per < 70:
+        status = "Expert"
         return status
-    elif profile.forecast_participated > 75:
+    elif 30 <= profile.forecast_created < 50 and 70 <= suc_per < 90:
+        status = "INFLUENCER"
+        return status
+    elif profile.forecast_created >= 50 and suc_per >= 90:
         status = "Guru"
         return status
-
+    else:
+        status = "Beginner"
+        return status
 
 def betting(request, userid):
     forecast = ForeCast.objects.get(id=userid)
@@ -699,8 +704,9 @@ def allocate_points(request):
 
 def forecast_data(forecast, ratio, total, status, total_bets):
     betting = Betting.objects.filter(forecast=forecast)
-
+    ratio += 1
     for b in betting:
+        print(b.users.user.username)
         bet_for = b.bet_for
         bet_against = b.bet_against
         if bet_for == 0 and bet_against == 0:
@@ -772,34 +778,6 @@ def forecast_data(forecast, ratio, total, status, total_bets):
                 b.save()
 
 
-
-        # if bet_for > 0 and bet_against == 0:
-        #     if status == "yes":
-        #         b.users.successful_forecast += 1
-        #         b.users.fg_points_won += b.bet_for * ratio
-        #         b.users.market_fee_paid += bet_for * 0.10
-        #         b.users.save()
-        #         b.save()
-        #     else:
-        #         b.users.unsuccessful_forecast += 1
-        #         b.users.fg_points_lost += b.bet_for * ratio
-        #         b.users.market_fee_paid += bet_for * 0.10
-        #         b.users.save()
-        #         b.save()
-        # elif bet_against > 0 and bet_for == 0:
-        #     if status == "no":
-        #         b.users.successful_forecast += 1
-        #         b.users.fg_points_won += b.bet_against * ratio
-        #         b.users.successful_forecast += 1
-        #         b.users.market_fee_paid += bet_for * 0.10
-        #         b.users.save()
-        #         b.save()
-        #     else:
-        #         b.users.unsuccessful_forecast += 1
-        #         b.users.fg_points_lost += b.bet_against * ratio
-        #         b.users.market_fee_paid += bet_for * 0.10
-        #         b.users.save()
-        #         b.save()
 
 @csrf_exempt
 def payments(request):
