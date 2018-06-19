@@ -9,7 +9,7 @@
 
       <div class="col-md-12 text-center" style="padding-top: 20px;">
           <p style="font-size: 18px;"> Thank You for registration with us</p>
-          <p style="font-size: 18px;"> Please wait or press <a href="{% url 'category' %}">here</a> </p>
+          <p style="font-size: 18px;"> Please wait while we are redirecting or press <a href="{% url 'category' %}">here</a> </p>
       </div>
   </div>
 
@@ -38,7 +38,7 @@ window.setTimeout(function(){
         // Move to a new location or you can do something else
         window.location.href = "{% url 'category' %}";
 
-    }, 2000);
+    }, 5000);
 
 </script>
 <script>
