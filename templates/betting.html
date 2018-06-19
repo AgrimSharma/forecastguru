@@ -6,7 +6,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Check out this forecast on {{user|title}}: {{ forecast.heading }}"/>
 <meta property="og:description" content="Join {{user|title}} to forecast this and more! See how accurate you are at predicting the future!" />
-<meta property="og:image" content="{{forecast.sub_category.image}}" />
+<meta property="og:image" content="{% static 'image/menu-icon-forecast.png %}" />
 <meta property="fb:app_id" content="186107225561354" />
     <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -167,7 +167,17 @@
 
 
         </div>
-        <div class="addthis_inline_share_toolbox_a0ek"></div>
+          <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-6">
+                    {% if forecast.private.name == 'no' %} Share with {% else %} Invite Friends {% else %}
+                </div>
+                                <div class="col-6 text-right value-color">
+
+                                    <div class="addthis_inline_share_toolbox_a0ek"></div></div>
+                 </div>
+              </div>
+
 
           <div class="clearfix"></div>
       <div class="clearfix"></div>
