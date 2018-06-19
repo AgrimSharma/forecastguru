@@ -779,6 +779,7 @@ def forecast_data(forecast, ratio, total, status, total_bets):
 
 
 
+
 @csrf_exempt
 def payments(request):
     if request.method == "POST":
