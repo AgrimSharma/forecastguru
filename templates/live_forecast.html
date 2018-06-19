@@ -30,7 +30,7 @@
 
                             </figure>
             </div>
-            <div class="col-9 col-md-10">
+            <div class="col-9 col-md-10" style="display:none;">
                 <p class="title_desc"> <a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;">{{ f.forecast.heading }}</a>
                 <div class="addthis_inline_share_toolbox_a0ek"></div>
                 </p>
@@ -64,7 +64,7 @@
                                                   <hr class="mt-2 mb-2">
 
                 <div class="row">
-                  <div class="col-4 pr-0">
+                  <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
                       <label><i class="fa fa-clock-o"></i> Expires on</label><br>
                         {% if f.today == "yes" %}
@@ -74,14 +74,14 @@
                         {% endif %}
                         </div>
                   </div>
-                    <div class="col-4  text-right pl-0" >
+                    <div class="col-6  text-right pl-0" >
                       <form method="post">{% csrf_token %}
                     <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
 
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}" >PLAY </button>
                           </form>
                 </div>
-                    <div class="col-4 text-right pl-0">
+                    <div class="col-4 text-right pl-0" style="display:none;">
                         <div class="sharethis-inline-share-buttons"></div>
                     </div>
 
