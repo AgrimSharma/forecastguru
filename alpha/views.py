@@ -707,7 +707,7 @@ def forecast_data(forecast, ratio, total, status, total_bets):
     betting = Betting.objects.filter(forecast=forecast)
     ratio += 1
     for b in betting:
-        print(b.users.username)
+        print(b.users.user.username)
         bet_for = b.bet_for
         bet_against = b.bet_against
         if bet_for == 0 and bet_against == 0:
