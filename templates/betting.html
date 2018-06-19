@@ -7,12 +7,11 @@
 <title>{% block title%} {{title}} {% endblock title %}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="HandheldFriendly" content="true" />
-<meta property="og:url"                content="{% url 'betting' forecast.id %}" />
-<meta property="og:type"               content="article" />
-<meta property="og:title"              content="Check out this forecast on {{user|title}}: {{ forecast.heading }}"/>
-<meta property="og:description"        content="Join Cassie to forecast this and more! See how accurate you are at \
-                                                predicting the future!" />
-<meta property="og:image"              content="{{forecast.sub_category.image}}" />
+<meta property="og:url" content="{% url 'betting' forecast.id %}" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Check out this forecast on {{user|title}}: {{ forecast.heading }}"/>
+<meta property="og:description" content="Join {{user|title}} to forecast this and more! See how accurate you are at predicting the future!" />
+<meta property="og:image" content="{{forecast.sub_category.image}}" />
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
@@ -170,7 +169,6 @@
   <button class="btn btn-primary" onclick="fbshare()">FaceBook</button>
 </div>
 
-    <div class="sharethis-inline-share-buttons" data-url="https://forecast.sirez.com/forecast/{{forecast.id}}/" data-title="{{forecast.heading}}" data-image="{{forecast.sub_category.image}}"></div>
 
       </div>
       <div class="clearfix"></div>
