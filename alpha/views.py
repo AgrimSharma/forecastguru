@@ -488,7 +488,7 @@ def profile(request):
                                                  "point": point,
                                                  "created": fore,
                                                  "total":  profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point,
-                                                 "status": predict_status(profile),
+                                                 "status": predict_status(profile, suc_per),
                                                  "balance": profile.fg_points_total
                                                  })
 
