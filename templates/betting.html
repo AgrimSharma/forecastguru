@@ -7,11 +7,12 @@
 <title>{% block title%} {{title}} {% endblock title %}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="HandheldFriendly" content="true" />
-    <meta property="og:image" content="{{forecast.sub_category.image}}"/>
-<meta property="og:title" content="{{forecast.heading}}"/>
-<meta property="og:url" content="{% url 'betting' forecast.id %}"/>
-<meta property="og:type" content="ForecastGuru"/>
-
+<meta property="og:url"                content="{% url 'betting' forecast.id %}" />
+<meta property="og:type"               content="article" />
+<meta property="og:title"              content="Check out this forecast on {{user|title}}: {{ forecast.heading }}"/>
+<meta property="og:description"        content="Join Cassie to forecast this and more! See how accurate you are at \
+                                                predicting the future!" />
+<meta property="og:image"              content="{{forecast.sub_category.image}}" />
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
@@ -164,6 +165,11 @@
 
 
         </div>
+
+          <div class="text-center" id="fb-root">
+  <div class="btn btn-primary" onclick="fbshare()"></div>
+</div>
+
     <div class="sharethis-inline-share-buttons" data-url="https://forecast.sirez.com/forecast/{{forecast.id}}/" data-title="{{forecast.heading}}" data-image="{{forecast.sub_category.image}}"></div>
 
       </div>
@@ -254,5 +260,17 @@ function googleTranslateElementInit() {
 }
 </script>
 <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5b221f8c43580f00113f4333&product=custom-share-buttons"></script>
+<script>
+    function fbshare(){
+        FB.ui({
+          method: 'share',
+          href: 'https://forecast.sirez.com',
+          picture: '{{forecast.sub_category.image}}',
+          caption: 'Forecast the Future with {{user|title}}',
+          description: 'Forecast future events- earn points for correct predictions!'
+        }, function(response){});
+    }
+</script>
+
 </body></html>
 
