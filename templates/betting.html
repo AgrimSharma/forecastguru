@@ -1,4 +1,6 @@
 {% load static %}
+{% load social_share %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -172,8 +174,9 @@
   <button class="btn btn-primary" onclick="fbshare()">FaceBook</button>
 </div>
 
-
       </div>
+      {% post_to_facebook <object_or_url> <link_text> %}
+
       <div class="clearfix"></div>
       <div class="clearfix"></div>
 </div></div>
