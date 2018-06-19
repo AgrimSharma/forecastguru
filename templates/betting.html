@@ -266,7 +266,7 @@ function googleTranslateElementInit() {
         FB.ui({
           method: 'share',
           href: 'https://forecast.sirez.com/forecast/{{forecast.id}}/',
-          picture: 'https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg',
+          picture: '{{forecast.sub_category.image}}',
           caption: 'Forecast the Future with {{user|title}}',
           description: 'Forecast future events and earn points for correct predictions!'
         }, function(response){});
