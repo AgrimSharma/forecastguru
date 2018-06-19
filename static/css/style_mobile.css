@@ -824,3 +824,16 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
 	.hangingbtns .btn {font-size: 13px}
 	.btm_margin_ifbtn {padding-bottom: 100px}
 }
+
+.st-custom-button[data-network] {
+   background-color: #0adeff;
+   display: inline-block;
+   padding: 5px 10px;
+   cursor: pointer;
+   font-weight: bold;
+   color: #fff;
+
+   &:hover, &:focus {
+      text-decoration: underline;
+      background-color: #00c7ff;
+   }
