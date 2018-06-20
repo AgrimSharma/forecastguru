@@ -2014,7 +2014,12 @@ def thank_you(request):
             return render(request, "thank_you.html", {"heading": "Registration Complete",
                                                  "title": "Registration Complete",})
     except Exception:
-        return HttpResponseRedirect("/category/")
+        user = request.user
+        profile = SocialAccount.objects.get(user=user)
+        InviteFriends.objects.create(user=profile, status=1)
+        
+        return render(request, "thank_you.html", {"heading": "Registration Complete",
+                                                  "title": "Registration Complete", })
 
 @csrf_exempt
 def invite_friends(request):
