@@ -10,9 +10,13 @@ from django.utils.translation import ugettext_lazy
 # class SourceInline(admin.TabularInline):
 #     model = Source
 class InviteFriendAdmin(admin.ModelAdmin):
-    list_display = ['forecast', "user", 'status']
+    list_display = ['forecast', "user"]
     # pass
 
+
+class LoginStatusAdmin(admin.ModelAdmin):
+    list_display = ['user', "status"]
+    # pass
 
 class SubCatInline(admin.TabularInline):
     model = SubCategory
@@ -97,6 +101,7 @@ admin.site.register(Private, PrivateAdmin)
 admin.site.register(Verified, VerifiedAdmin)
 admin.site.register(UserDevice, UserDeviceAdmin)
 admin.site.register(InviteFriends, InviteFriendAdmin)
+admin.site.register(LoginStatus, LoginStatusAdmin)
 admin.site.site_title = 'ForeCast Guru'
 admin.site.site_header = 'ForeCast Guru'
 admin.site.index_title= 'Dashboard'

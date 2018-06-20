@@ -2005,7 +2005,7 @@ def thank_you(request):
     try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
-        status = InviteFriends.objects.get(user=profile)
+        status = LoginStatus.objects.get(user=profile)
         if status.status == 1:
             return HttpResponseRedirect("/category/")
         else:
@@ -2016,7 +2016,7 @@ def thank_you(request):
     except Exception:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
-        InviteFriends.objects.create(user=profile, status=1)
+        LoginStatus.objects.create(user=profile, status=1)
         
         return render(request, "thank_you.html", {"heading": "Registration Complete",
                                                   "title": "Registration Complete", })
