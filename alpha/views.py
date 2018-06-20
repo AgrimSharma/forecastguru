@@ -1358,12 +1358,11 @@ def my_forecast_private(request):
     except Exception:
         return render(request, 'my_friend_nl.html', {"user": "Guest" if request.user.is_anonymous() else request.user.username})
 
-    forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',
-                                           users=account, forecast__private__name='yes').order_by(
-        "forecast__expire")
+    forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress',
+                                             users=account,private__name='yes').order_by("expire")
 
-    forecast_result = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='Result Declared',
-                                             users=account,forecast__private__name='yes').order_by("forecast__expire")
+    forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress',
+                                             users=account,private__name='yes').order_by("expire")
     forecast_approval = InviteFriends.objects.filter(user=account).order_by("-forecast__expire")
 
     return render(request, 'my_friend_private.html', {"live": live_forecast_data(forecast_live, account),
