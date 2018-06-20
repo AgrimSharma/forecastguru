@@ -640,12 +640,12 @@ def bet_post(request):
 
 def allocate_points(request):
     forecast = ForeCast.objects.filter(status__name='Closed', verified__name="yes")
-    # status = Status.objects.get(name='Result Declared')
+    status = Status.objects.get(name='Result Declared')
     for f in forecast:
-        # f.status = status
-        #
-        # f.status.save()
-        # f.save()
+        f.status = status
+
+        f.status.save()
+        f.save()
         try:
             betting_sum = Betting.objects.filter(forecast=f).aggregate(
                 bet_for=Sum('bet_for'), bet_against=Sum('bet_against'))
@@ -700,7 +700,7 @@ def allocate_points(request):
             f.user.save()
             f.save()
             total -= total * 0.10
-    return render(request, "sucess.html")
+    return HttpResponse("success")
 
 
 def forecast_data(forecast, ratio, total, status, total_bets):
