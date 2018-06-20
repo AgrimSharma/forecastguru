@@ -1259,7 +1259,7 @@ def live_forecast_data(forecast_live, account):
 
     for f in forecast_live:
         date = current.date()
-        forecast = f.forecast
+        forecast = f
         bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
 
         if date == bet_start:
