@@ -203,7 +203,7 @@ class UserDevice(models.Model):
         return "{} : {}".format(self.user, self.device_id)
 
 
-class UserLoginStatus(models.Model):
+class InviteFreinds(models.Model):
     user = models.ForeignKey(to=SocialAccount, on_delete=models.CASCADE)
     status = models.IntegerField(default=0)
 
