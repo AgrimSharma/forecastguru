@@ -174,16 +174,17 @@ class Order(models.Model):
 class InviteFriends(models.Model):
     user = models.ForeignKey(to=SocialAccount, on_delete=models.CASCADE)
     forecast = models.ForeignKey(to=ForeCast, on_delete=models.CASCADE)
+    status = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-user']
         verbose_name_plural = 'Invite Friends'
 
     def __str__(self):
-        return "{} : {}" .format(self.user.username, self.forecast)
+        return "{} : {} : {}" .format(self.user.username, self.forecast, self.status)
 
     def __unicode__(self):
-        return "{} : {}".format(self.user.username, self.forecast)
+        return "{} : {} : {}".format(self.user.username, self.forecast, self.status)
 
 
 class UserDevice(models.Model):
