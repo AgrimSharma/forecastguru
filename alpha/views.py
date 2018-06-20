@@ -1403,23 +1403,24 @@ def my_forecast_private(request):
         user = request.user.id
         users = User.objects.get(id=user)
         account = SocialAccount.objects.get(user=users)
+        forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress',
+                                                user=account, private__name='yes').order_by("expire")
+
+        forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared',
+                                                  user=account, private__name='yes').order_by("expire")
+        forecast_approval = InviteFriends.objects.filter(user=account).order_by("-forecast__expire")
+
+        return render(request, 'my_friend_private.html', {"live": live_forecast_data(forecast_live, account),
+                                                          "result": forecast_result_data(forecast_result, account),
+                                                          "approval": forecast_invite_data(forecast_approval, account),
+                                                          "user": "Guest" if request.user.is_anonymous() else request.user.username,
+                                                          "heading": "Forecast Private",
+                                                          "title": "My Forecast",
+                                                          })
     except Exception:
         return render(request, 'my_friend_nl.html', {"user": "Guest" if request.user.is_anonymous() else request.user.username})
 
-    forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress',
-                                             user=account,private__name='yes').order_by("expire")
 
-    forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared',
-                                             user=account,private__name='yes').order_by("expire")
-    forecast_approval = InviteFriends.objects.filter(user=account).order_by("-forecast__expire")
-
-    return render(request, 'my_friend_private.html', {"live": live_forecast_data(forecast_live, account),
-                                              "result": forecast_result_data(forecast_result, account),
-                                              "approval": forecast_invite_data(forecast_approval, account),
-                                              "user": "Guest" if request.user.is_anonymous() else request.user.username,
-                                                      "heading": "Forecast Private",
-                                                      "title": "My Forecast",
-                                                      })
 
 
 
