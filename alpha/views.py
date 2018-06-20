@@ -1304,7 +1304,7 @@ def live_forecast_data(forecast_live, account):
 def forecast_result_data(forecast_live, account):
     data = []
     for f in forecast_live:
-        forecast = f.forecast
+        forecast = f
         date = current.date()
         bet_start = (forecast.expire + datetime.timedelta(hours=5, minutes=30)).date()
         if date == bet_start:
