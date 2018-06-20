@@ -366,7 +366,7 @@ $(".submit_forecast").click(function(){
                     var data = JSON.parse(resp);
 
                     if(data.message == 'success'){
-                        alert('Subscribed');
+                        console.log('Subscribed');
                     }else{
                         console.log('Not Subscribed');
                         }
