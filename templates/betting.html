@@ -173,13 +173,14 @@
           </div>
 
       <div class="clearfix"></div>
+      {% if forecast.private.name == 'no' %}
+
       <div class="row white_box mr-0 ml-0 mb-3">
 
           <div class="col-12">
             <div class="row mb-2">
                 <div class="col-12">
 
-                     {% if forecast.private.name == 'no' %}
                             Share
 
                                 <div class="col-12 text-right value-color">
@@ -188,8 +189,19 @@
 
                                     </div>
                                 </div>
-                    {% else %}
-                         {% if request.user.username == users %}
+                 </div>
+              </div>
+
+      </div>
+      </div>
+      {% else %}
+        {% if request.user.username == users %}
+      <div class="row white_box mr-0 ml-0 mb-3">
+
+          <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-12">
+
                             Invite Friends
 
                                     <div class="col-12 text-right value-color">
@@ -198,13 +210,13 @@
 
                                         </div>
                                     </div>
-                    
-                        {% endif %}
-                    {% endif %}
+
                  </div>
               </div>
 
-      </div></div>
+      </div>
+      </div>{% endif %}{% endif %}
+
   </div>
 <footer class="sticky-footer">
   <nav class="navbar">
