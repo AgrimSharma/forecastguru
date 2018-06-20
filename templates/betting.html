@@ -324,8 +324,6 @@ $(".submit_forecast").click(function(){
         var forecast_id = $("#forecast_id").val();
         var user = $("#user").val();
         if(private == 'yes'){
-                    alert("Private");
-
             $.ajax({
                 type: "POST",
                 url: "{% url 'invite_friends' %}",
@@ -335,9 +333,9 @@ $(".submit_forecast").click(function(){
                     var data = JSON.parse(resp);
 
                     if(data.message == 'success'){
-                        alert('Done');
+                        alert('Subscribed');
                     }else{
-                        alert('False');
+                        alert('Not Subscribed');
                         }
                     }
                 });
