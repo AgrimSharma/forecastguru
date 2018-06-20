@@ -31,9 +31,14 @@
       <div class="col-12 text-center position-relative">
         <div class="header-logo position-absolute"><img src="{% static 'images/logo-small-white.png' %}" alt=""></div>
         <h1>{{heading}}</h1>
-        <div class="header-right with-btn position-absolute">
+        <div class="header-right text-center with-btn position-absolute">
             <!--<a href="{% url 'create_forecast' %}" class="btn btn-orange btn-sm"> Create New</a>-->
-            <div style="padding-top:16px;">Hi {{user|title}}!!</div>
+          {% if user == 'Guest' %}
+          <div style="padding-top:16px;">Hi {{user|title}}!!</div>
+          {% else %}
+          <div style="padding-top:16px;">Hi {{user|title}}!!</div>
+            <div style="padding-top:5px;">FG Balance {{request.user.socialaccount_set.all.0.fg_points_total}}</div>
+          {% endif %}
         </div>
           </div>
       </div>
