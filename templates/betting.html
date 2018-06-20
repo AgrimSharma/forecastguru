@@ -54,7 +54,7 @@
 <input type="text" value="{{forecast.id}}" name="forecast_id" id="forecast_id" style="display:none">
 <input type="text" value="{{request.user}}" name="user" id="user" style="display:none">
 <div class="topspace"></div>
-<div class="forcast_detail fixed_p_footer">
+    <div class="forcast_detail fixed_p_footer">
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -335,13 +335,13 @@ $(".submit_forecast").click(function(){
                     if(data.message == 'success'){
                         alert('Subscribed');
                     }else{
-                        alert('Not Subscribed');
+                        console.log('Not Subscribed');
                         }
                     }
                 });
             }
         else{
-            alert("Public");
+            console.log("Public");
         }
 
     });
