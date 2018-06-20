@@ -2002,8 +2002,33 @@ def device_data_android(request):
 
 
 def thank_you(request):
-    return render(request, "thank_you.html", {"heading": "Registration Complete",
+    try:
+        user = request.user
+        profile = SocialAccount.objects.get(user=user)
+        status = InviteFriends.objects.get(user=profile)
+        return HttpResponseRedirect("/category/")
+    except Exception:
+        return render(request, "thank_you.html", {"heading": "Registration Complete",
                                              "title": "Registration Complete",})
+
+
+@csrf_exempt
+def invite_friends(request):
+    if request.method == 'POST':
+        try:
+            user = request.user
+            profile = SocialAccount.objects.get(user=user)
+
+            forecast_id = request.POST.get('forecast_id')
+            forecast = ForeCast.objects.get(id=forecast_id)
+            try:
+                InviteFriends.objects.get(forecast=forecast, user=profile)
+                return HttpResponse(json.dumps(dict(message="success")))
+            except Exception:
+                InviteFriends.objects.create(forecast=forecast, user=profile)
+                return HttpResponse(json.dumps(dict(message="success")))
+        except Exception:
+            return HttpResponse(json.dumps(dict(message="false")))
 
 
 def main_page(request):

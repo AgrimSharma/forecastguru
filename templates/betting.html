@@ -50,7 +50,9 @@
       </div>
     </div>
 </header>
-
+<input type="text" value="{{forecast.private.name}}" name="private" id="private" style="display:none">
+<input type="text" value="{{forecast.id}}" name="forecast_id" id="forecast_id" style="display:none">
+<input type="text" value="{{request.user}}" name="user" id="user" style="display:none">
 <div class="topspace"></div>
 <div class="forcast_detail fixed_p_footer">
   <div class="container">
@@ -315,6 +317,37 @@ $(".submit_forecast").click(function(){
         js.src = "//connect.facebook.net/en_US/all.js";
         d.getElementsByTagName('head')[0].appendChild(js);
     }(document));
+</script>
+<script>
+    $( document ).ready(function() {
+        var private = $("#private").val();
+        var forecast_id = $("#forecast_id").val();
+        var user = $("#user").val();
+        if(private == 'yes'){
+                    alert("Private");
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'invite_friends' %}",
+                data: {'forecast_id': forecast_id,},
+
+                success: function(resp){
+                    var data = JSON.parse(resp);
+
+                    if(data.message == 'success'){
+                        alert('Done');
+                    }else{
+                        alert('False');
+                        }
+                    }
+                });
+            }
+        else{
+            alert("Public");
+        }
+
+    });
+
 </script>
 
 </body></html>
