@@ -87,7 +87,7 @@ def create_forecast(request):
             category = Category.objects.all().order_by('identifier')
             return render(request, 'create_forecast.html', {'category': category,
                                                         "current": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
-                                                            "user": "Guest" if request.user.is_anonymous() else request.user,
+                                                            "user": "Guest" if request.user.is_anonymous() else request.user.username,
                                                             "heading": "Create Forecast",
                                                             "title": "Create Forecast",
                                                             })
