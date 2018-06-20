@@ -198,3 +198,18 @@ class UserDevice(models.Model):
 
     def __unicode__(self):
         return "{} : {}".format(self.user, self.device_id)
+
+
+class LoginStatus(models.Model):
+    user = models.ForeignKey(to=SocialAccount, on_delete=models.CASCADE)
+    status = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['-user']
+        verbose_name_plural = 'Login Status'
+
+    def __str__(self):
+        return "{} : {}" .format(self.user.username, self.status)
+
+    def __unicode__(self):
+        return "{} : {}".format(self.user.username, self.status)

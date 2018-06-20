@@ -10,6 +10,10 @@ from django.utils.translation import ugettext_lazy
 # class SourceInline(admin.TabularInline):
 #     model = Source
 
+class LoginStatusAdmin(admin.ModelAdmin):
+    list_display = ['user', "status"]
+    # pass
+
 
 class SubCatInline(admin.TabularInline):
     model = SubCategory
@@ -92,6 +96,7 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(Approved, ApprovedAdmin)
 admin.site.register(Private, PrivateAdmin)
 admin.site.register(Verified, VerifiedAdmin)
+admin.site.register(LoginStatus, LoginStatusAdmin)
 admin.site.register(UserDevice, UserDeviceAdmin)
 admin.site.site_title = 'ForeCast Guru'
 admin.site.site_header = 'ForeCast Guru'

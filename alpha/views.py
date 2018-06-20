@@ -1971,8 +1971,24 @@ def device_data_android(request):
 
 
 def thank_you(request):
-    return render(request, "thank_you.html", {"heading": "Registration Complete",
-                                             "title": "Registration Complete",})
+    try:
+        user = request.user
+        profile = SocialAccount.objects.get(user=user)
+        status = LoginStatus.objects.get(user=profile)
+        if status.status == 1:
+            return HttpResponseRedirect("/category/")
+        else:
+            status.status = 1
+            status.save()
+            return render(request, "thank_you.html", {"heading": "Registration Complete",
+                                                      "title": "Registration Complete", })
+    except Exception:
+        user = request.user
+        profile = SocialAccount.objects.get(user=user)
+        LoginStatus.objects.create(user=profile, status=1)
+
+        return render(request, "thank_you.html", {"heading": "Registration Complete",
+                                                  "title": "Registration Complete", })
 
 
 def main_page(request):
