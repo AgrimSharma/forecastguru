@@ -1409,7 +1409,7 @@ def my_forecast_private(request):
     forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress',
                                              user=account,private__name='yes').order_by("expire")
 
-    forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress',
+    forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared',
                                              user=account,private__name='yes').order_by("expire")
     forecast_approval = InviteFriends.objects.filter(user=account).order_by("-forecast__expire")
 
