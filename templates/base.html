@@ -27,6 +27,7 @@
         <div class="header-right with-btn position-absolute">
             <!--<a href="{% url 'create_forecast' %}" class="btn btn-orange btn-sm"> Create New</a>-->
             <div style="padding-top:16px;">Hi {{user|title}}!!</div>
+            <div style="padding-top:16px;">{{request.user..socialaccount_set.all.0.fg_points_total}}</div>
         </div>
           </div>
       </div>
