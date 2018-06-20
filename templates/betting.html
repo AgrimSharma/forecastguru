@@ -197,6 +197,34 @@
             My Account</a> </li></ul>
   </nav>
 </footer>
+<div id="not_login_modal" class="modal modal-center fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="heading"></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title text-left heading"></h4>
+            <div class="clearfix"></div>
+
+          </div>
+          <div class="modal-body">
+            <div id="shipment_sold_preview">
+                <div row>
+                    <div class="col-12">
+                        <h2> Please login to play in a forecast</h2>
+                    </div>
+                <div class="btn_box mb-3" >
+                    <a href="https://forecast.sirez.com/facebook/login/?process=login&next={{request.path}}" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+                </div>
+                    </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
 <script>
     $("#add").click(function(){
         var awb = $("#points").val();
@@ -238,8 +266,7 @@ $(".submit_forecast").click(function(){
                             window.location.href = "{% url 'payment' %}";
                     }
                     else if(data.message=="login"){
-                            alert("Please login!!");
-                            window.location.href = "{% url 'blank_page' %}";
+                            $("#not_login_modal").modal('show');
                     }
                     else{
                         alert(data.message);
@@ -260,38 +287,7 @@ $(".submit_forecast").click(function(){
 
     });
 </script>
-<script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT}, 'google_translate_element');
-}
-</script>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5b20f3c3978f517f"></script><script>
-    function fbshare(){
-        FB.ui({
-          method: 'share',
-          href: 'https://forecast.sirez.com/forecast/{{forecast.id}}/',
-          picture: '{{forecast.sub_category.image}}',
-          caption: 'Forecast the Future with {{user|title}}',
-          description: 'Forecast future events and earn points for correct predictions!'
-        }, function(response){});
-    }
-    window.fbAsyncInit = function () {
-        FB.init({
-            appId: '186107225561354', // App ID
-            status: true, // check login status
-            cookie: true, // enable cookies to allow the server to access the session
-            xfbml: true  // parse XFBML
-        });
-    };
-
-    // Load the SDK Asynchronously
-    (function (d) {
-        var js, id = 'facebook-jssdk'; if (d.getElementById(id)) { return; }
-        js = d.createElement('script'); js.id = id; js.async = true;
-        js.src = "//connect.facebook.net/en_US/all.js";
-        d.getElementsByTagName('head')[0].appendChild(js);
-    }(document));
-</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5b20f3c3978f517f"></script>
 
 </body></html>
 

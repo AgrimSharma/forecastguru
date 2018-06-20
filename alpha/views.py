@@ -4,7 +4,7 @@ import json
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
-from django.db.models import Sum
+    from django.db.models import Sum
 import datetime
 from payu_biz.views import make_transaction
 from uuid import uuid4
@@ -699,8 +699,7 @@ def allocate_points(request):
             f.user.save()
             f.save()
             total -= total * 0.10
-    return render(request, "sucess.html")
-
+    return HttpResponse("success")
 
 def forecast_data(forecast, ratio, total, status, total_bets):
     betting = Betting.objects.filter(forecast=forecast)
