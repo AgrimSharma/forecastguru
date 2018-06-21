@@ -86,7 +86,6 @@
             <div class="col-3 col-md-2 text-center">
                             <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="" >
 
-                  <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
                             </figure>
             </div>
             <div class="col-9 col-md-10">
@@ -120,7 +119,7 @@
                                  <hr class="mt-2 mb-2">
 
                 <div class="row">
-                  <div class="col-4 pr-0">
+                  <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
                       <label><i class="fa fa-clock-o"></i> Expires on</label><br>
                         {% if f.today == "yes" %}
@@ -130,16 +129,13 @@
                         {% endif %}
                         </div>
                   </div>
-                    <div class="col-4  text-right pl-0" >
+                    <div class="col-6  text-right pl-0" >
                       <form method="post">{% csrf_token %}
                     <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
 
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}" >PLAY </button>
                           </form>
                 </div>
-                    <div class="col-4 text-right pl-0">
-                        <div class="sharethis-inline-share-buttons"></div>
-                    </div>
 
 
                 </div>
@@ -178,8 +174,6 @@
             <div class="row align-items-center" >
             <div class="col-3 col-md-2 text-center">
                             <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="" >
-
-                  <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
                             </figure>
             </div>
             <div class="col-9 col-md-10">
@@ -230,9 +224,6 @@
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}" >PLAY </button>
                           </form>
                 </div>
-                    <div class="col-4 text-right pl-0">
-                        <div class="sharethis-inline-share-buttons"></div>
-                    </div>
 
 
                 </div>
@@ -414,7 +405,7 @@ $.ajax({
 });
 
 </script>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5b27599bd4efc40011702ef7&product=inline-share-buttons' async='async'></script>
+
 </body>
 </html>
 
