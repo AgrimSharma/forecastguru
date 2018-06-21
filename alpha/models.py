@@ -4,7 +4,7 @@ import datetime
 from django.db import models
 from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth.models import User
-
+from django.utils.timezone import now
 
 class Approved(models.Model):
     name = models.CharField(max_length=10)
@@ -100,12 +100,12 @@ class ForeCast(models.Model):
     sub_category = models.ForeignKey(to=SubCategory, on_delete=models.CASCADE)
     user = models.ForeignKey(to=SocialAccount, on_delete=models.CASCADE)
     heading = models.CharField(max_length=1000)
-    start = models.DateTimeField(default=datetime.datetime.now())
+    start = models.DateTimeField(default=now())
     expire = models.DateTimeField()
-    status = models.ForeignKey(to=Status, on_delete=models.CASCADE)
+    status = models.ForeignKey(to=Status, on_delete=models.CASCADE, default=1)
     market_fee = models.IntegerField(default=0)
     won = models.CharField(max_length=100, null=True, blank=True)
-    created = models.DateField()
+    created = models.DateField(default=now())
     approved = models.ForeignKey(to=Approved, on_delete=models.CASCADE, default=2)
     verified = models.ForeignKey(to=Verified, on_delete=models.CASCADE, default=2)
     private = models.ForeignKey(to=Private, on_delete=models.CASCADE, default=2)
