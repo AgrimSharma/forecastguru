@@ -75,8 +75,10 @@ def create_forecast(request):
         no = randrange(1000, 9000, 1000)
         admin = SocialAccount.objects.get(user__username="admin")
         Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
-        return HttpResponse(json.dumps(dict(status=200, message='Forecast Created')))
-        # except Exception:
+        if private.name == 'no':
+            return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
+        else:
+            return HttpResponse(json.dumps(dict(status=200, message='Thank You for creating a private forecast', id=f.id)))        # except Exception:
         #
         #     return HttpResponse(json.dumps(dict(status=400, message='Try again later')))
 
@@ -1504,7 +1506,6 @@ def my_forecast_private(request):
         user = request.user.id
         users = User.objects.get(id=user)
         account = SocialAccount.objects.get(user=users)
-        forecast = ForeCast.objects.filter(private__name='yes')
         forecast_approval = InviteFriends.objects.filter(user=account).order_by("-forecast__expire").exclude(forecast=forecast)
 
         return render(request, 'my_friend_private.html', {"approval": forecast_invite_data(forecast_approval, account),

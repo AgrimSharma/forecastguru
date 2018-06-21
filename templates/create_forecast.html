@@ -234,6 +234,9 @@ $(".create").click(function(){
                                  alert(data.message);
                                  window.location.href = "{% url 'my_forecast' %}";
                                }
+                            else if(data.message=="Thank You for creating a private forecast"){
+                                alert(data.message);
+                                 window.location.href = "https:/forecast.sirez.com/forecast/" + data.id + "/" ;
 
                             else if(data.message == "Please Login"){
                                  alert(data.message);
