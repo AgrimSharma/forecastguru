@@ -6,9 +6,13 @@ from .models import *
 from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy
 
+def approve(modeladmin, request, queryset):
+    approved = Approved.objects.get(id=1)
+    for obj in queryset:
+        obj.approved = approved
+        obj.save()
 
-# class SourceInline(admin.TabularInline):
-#     model = Source
+
 class InviteFriendAdmin(admin.ModelAdmin):
     list_display = ['forecast', "user"]
     # pass
@@ -55,6 +59,7 @@ class ForeCastAdmin(admin.ModelAdmin):
     search_fields = ['heading']
     list_filter = ("approved", "verified", 'status', 'category', 'private')
     ordering = ('-expire',)
+    actions = [approve]
 
 
 class StatusAdmin(admin.ModelAdmin):
