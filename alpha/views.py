@@ -1977,23 +1977,24 @@ def invite_friends(request):
 
 def trending_forecast(request):
     current = datetime.datetime.now().date().strftime("%Y-%m-%d")
-    forecast = ForeCast.objects.filter(expire__gte=current+" 00:00:00")
+    forecast = ForeCast.objects.filter(expire__gte=current+" 00:00:00", status__name='In-Progress')
     objects = []
     data = []
     for f in forecast:
         bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
         bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
             'bet_against']
-        if bet_for + bet_against > 4000:
-            objects.append(f)
+        if bet_for + bet_against > 5000:
+            data.append(f)
 
-    if len(objects) == 0:
+    if len(data) == 0:
         return render(request, "no_trending.html",{"heading": "Trending Forecast","title": "Trending Forecast",})
     else:
-        objects = objects[:10]
-        for f in data:
-            date = current.date()
 
+        objects = data[:10]
+        print(objects)
+        for f in objects:
+            date = datetime.datetime.now().date()
             bet_start = f.expire.date()
             if date == bet_start:
                 start = f.expire
@@ -2029,7 +2030,6 @@ def trending_forecast(request):
                              bet_against=bet_against,
                              bet_for_user=0,
                              bet_against_user=0))
-
         return render(request, 'trending.html', {"live":data,"heading": "Trending Forecast","title": "Trending Forecast", })
 
 
