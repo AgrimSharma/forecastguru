@@ -1981,8 +1981,10 @@ def trending_forecast(request):
     objects = []
     data = []
     for f in forecast:
-        b = Betting.objects.filter(f)
-        if b.bet_for  > 10:
+        bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+        bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
+            'bet_against']
+        if bet_for + bet_against > 4000:
             objects.append(f)
 
     if len(objects) == 0:
