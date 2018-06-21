@@ -6,7 +6,6 @@ from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth.models import User
 
 
-
 class Approved(models.Model):
     name = models.CharField(max_length=10)
 
@@ -107,9 +106,9 @@ class ForeCast(models.Model):
     market_fee = models.IntegerField(default=0)
     won = models.CharField(max_length=100, null=True, blank=True)
     created = models.DateField()
-    approved = models.ForeignKey(to=Approved, on_delete=models.CASCADE)
-    verified = models.ForeignKey(to=Verified, on_delete=models.CASCADE)
-    private = models.ForeignKey(to=Private, on_delete=models.CASCADE)
+    approved = models.ForeignKey(to=Approved, on_delete=models.CASCADE, default=2)
+    verified = models.ForeignKey(to=Verified, on_delete=models.CASCADE, default=2)
+    private = models.ForeignKey(to=Private, on_delete=models.CASCADE, default=2)
 
     class Meta:
         ordering = ['-category']
