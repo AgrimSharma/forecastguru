@@ -209,7 +209,7 @@ class LoginStatus(models.Model):
         verbose_name_plural = 'Login Status'
 
     def __str__(self):
-        return "{} : {}" .format(self.user.username, self.status)
+        return "{} : {}" .format(self.user.user.username, self.status)
 
     def __unicode__(self):
-        return "{} : {}".format(self.user.username, self.status)
+        return "{} : {}".format(self.user.user.username, self.status)
