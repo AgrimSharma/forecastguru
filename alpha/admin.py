@@ -6,9 +6,11 @@ from .models import *
 from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy
 
-
-# class SourceInline(admin.TabularInline):
-#     model = Source
+def approve(modeladmin, request, queryset):
+    approved = Approved.objects.get(id=1)
+    for obj in queryset:
+        obj.approved = approved
+        obj.save()
 
 class LoginStatusAdmin(admin.ModelAdmin):
     list_display = ['user', "status"]
@@ -51,6 +53,7 @@ class ForeCastAdmin(admin.ModelAdmin):
     search_fields = ['heading']
     list_filter = ("approved", "verified", 'status', 'category', 'private')
     ordering = ('-expire',)
+    actions = [approve]
 
 
 class StatusAdmin(admin.ModelAdmin):
