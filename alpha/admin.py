@@ -49,7 +49,7 @@ class VerifiedAdmin(admin.ModelAdmin):
 
 
 class ForeCastAdmin(admin.ModelAdmin):
-    # date_hierarchy = 'expire'
+    date_hierarchy = '-expire'
     list_display = ['heading', 'category', 'sub_category', 'user', 'expire', 'status']
     search_fields = ['heading']
     list_filter = ("approved", "verified", 'status', 'category', 'private')
