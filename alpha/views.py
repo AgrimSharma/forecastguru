@@ -1017,27 +1017,33 @@ def my_forecast(request):
         user = request.user.id
         users = User.objects.get(id=user)
         account = SocialAccount.objects.get(user=users)
+        forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',
+                                               users=account, forecast__private__name='no').order_by("forecast__expire")
+        forecast_result = Betting.objects.filter(forecast__approved__name="yes",
+                                                 forecast__status__name='Result Declared', users=account,
+                                                 forecast__private__name='no').order_by("forecast__expire")
+        forecast_approval = ForeCast.objects.filter(approved__name="no", user=account, private__name='no').order_by(
+            "expire")
+        forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account, private__name='no').order_by(
+            "expire")
+        not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
+        if forecast_live.count() == 0 and forecast_result.count() == 0 and forecast_approval.count() == 0 and forecast_no_bet.count() == 0:
+            return render(request, 'my_friend_no.html', {"heading": "My Forecast",
+                                                         "title": "My Forecast",
+                                                         "user": "Guest" if request.user.is_anonymous() else request.user.username})
+        else:
+            return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live, account),
+                                                      "result": forecast_result_data(forecast_result, account),
+                                                      "approval": forecast_approval,
+                                                      "forecast": live_forecast_data_bet(not_bet, account),
+                                                      "heading": "My Forecast",
+                                                      "title": "My Forecast",
+                                                      "user": "Guest" if request.user.is_anonymous() else request.user.username})
+
     except Exception:
         return render(request, 'my_friend_nl.html', {"heading": "My Forecast",
                                               "title": "My Forecast","user": "Guest" if request.user.is_anonymous() else request.user.username})
 
-    forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',users=account, forecast__private__name='no').order_by("forecast__expire")
-    forecast_result = Betting.objects.filter(forecast__approved__name="yes",  forecast__status__name='Result Declared',users=account, forecast__private__name='no').order_by("forecast__expire")
-    forecast_approval = ForeCast.objects.filter(approved__name="no", user=account, private__name='no').order_by("expire")
-    forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account, private__name='no').order_by("expire")
-    not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
-    if forecast_live.count() == 0 and forecast_result.count() == 0 and forecast_approval.count() == 0 and forecast_no_bet.count() == 0:
-        return render(request, 'my_friend_no.html', {"heading": "My Forecast",
-                                                     "title": "My Forecast",
-                                                     "user": "Guest" if request.user.is_anonymous() else request.user.username})
-    else:
-        return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live,account),
-                                                  "result": forecast_result_data(forecast_result,account),
-                                                  "approval": forecast_approval,
-                                                  "forecast": live_forecast_data_bet(not_bet,account),
-                                                  "heading": "My Forecast",
-                                                  "title": "My Forecast",
-                                                  "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 def logout_view(request):
@@ -1245,6 +1251,7 @@ def live_forecast_data_bet(forecast_live, account):
                          ))
     return data
 
+
 def live_forecast_data_private(forecast_live, account):
     data = []
 
@@ -1396,6 +1403,55 @@ def forecast_invite_data(forecast_live, account):
 def forecast_result_data(forecast_live, account):
     data = []
     for f in forecast_live:
+        forecast = f.forecast
+        date = current.date()
+        bet_start = forecast.expire.date()
+        if date == bet_start:
+            start = forecast.expire
+            start = start.time()
+            today = 'yes'
+        else:
+            start = forecast.start
+            today = 'no'
+        betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
+        betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
+
+        try:
+            bet_for = Betting.objects.filter(forecast=forecast).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_for_user = Betting.objects.filter(forecast=forecast, users=account).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=forecast).aggregate(bet_against=Sum('bet_against'))['bet_against']
+            bet_against_user = Betting.objects.filter(forecast=forecast, users=account).aggregate(bet_against=Sum('bet_against'))['bet_against']
+            total_wagered = betting_against + betting_for
+            totl = bet_against + bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
+            total = bet_for + bet_against
+        except Exception:
+            total_wagered = 0
+            percent_for = 0
+            percent_against = 0
+            bet_for = 0
+            bet_for_user = 0
+            bet_against = 0
+            bet_against_user = 0
+            total = 0
+        status = 'yes' if forecast.won == "yes" else 'no'
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
+                         total=total, start=start, total_user=betting_for + betting_against,
+                         betting_for=betting_for, betting_against=betting_against, today=today,
+                         participants=total_wagered, won="Yes" if forecast.won == 'yes' else 'No',  # waggered=waggered,
+                         ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
+                         bet_for=bet_for,
+                         bet_for_user=bet_for_user if bet_for_user else 0,
+                         bet_against_user=bet_against_user if bet_against_user else  0
+                         ))
+
+    return data
+
+
+def forecast_result_data_private(forecast_live, account):
+    data = []
+    for f in forecast_live:
         forecast = f
         date = current.date()
         bet_start = (forecast.expire).date()
@@ -1455,7 +1511,7 @@ def my_forecast_private(request):
         forecast_approval = InviteFriends.objects.filter(user=account).order_by("-forecast__expire")
 
         return render(request, 'my_friend_private.html', {"live": live_forecast_data_private(forecast_live, account),
-                                                          "result": forecast_result_data(forecast_result, account),
+                                                          "result": forecast_result_data_private(forecast_result, account),
                                                           "approval": forecast_invite_data(forecast_approval, account),
                                                           "user": "Guest" if request.user.is_anonymous() else request.user.username,
                                                           "heading": "Forecast Private",
