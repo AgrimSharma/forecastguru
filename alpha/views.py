@@ -1403,6 +1403,7 @@ def forecast_invite_data(forecast_live, account):
 def forecast_result_data(forecast_live, account):
     data = []
     for f in forecast_live:
+        print(f)
         forecast = f.forecast
         date = current.date()
         bet_start = forecast.expire.date()
@@ -1454,7 +1455,7 @@ def forecast_result_data_private(forecast_live, account):
     for f in forecast_live:
         forecast = f
         date = current.date()
-        bet_start = (forecast.expire).date()
+        bet_start = forecast.expire.date()
         if date == bet_start:
             start = forecast.expire
             start = start.time()
