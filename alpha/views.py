@@ -1504,9 +1504,8 @@ def my_forecast_private(request):
         user = request.user.id
         users = User.objects.get(id=user)
         account = SocialAccount.objects.get(user=users)
-        # forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared',
-        #                                           user=account, private__name='yes').order_by("expire")
-        forecast_approval = InviteFriends.objects.filter(user=account).order_by("-forecast__expire")
+        forecast = ForeCast.objects.filter(private__name='yes')
+        forecast_approval = InviteFriends.objects.filter(user=account).order_by("-forecast__expire").exclude(forecast=forecast)
 
         return render(request, 'my_friend_private.html', {"approval": forecast_invite_data(forecast_approval, account),
                                                           "user": "Guest" if request.user.is_anonymous() else request.user.username,
