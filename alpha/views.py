@@ -1444,7 +1444,6 @@ def forecast_result_data(forecast_live, account):
 
 def my_forecast_private(request):
     try:
-        import pdb;pdb.set_trace()
         user = request.user.id
         users = User.objects.get(id=user)
         account = SocialAccount.objects.get(user=users)
@@ -1463,7 +1462,8 @@ def my_forecast_private(request):
                                                           "title": "My Forecast",
                                                           })
     except Exception:
-        return render(request, 'my_friend_nl.html', {"user": "Guest" if request.user.is_anonymous() else request.user.username})
+        return render(request, 'my_friend_nl.html', {"heading": "Forecast Private",
+                                                          "title": "My Forecast","user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 
