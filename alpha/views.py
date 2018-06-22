@@ -2024,7 +2024,7 @@ def invite_friends(request):
 
 def trending_forecast(request):
     current = datetime.datetime.now().date().strftime("%Y-%m-%d")
-    forecast = ForeCast.objects.filter(expire__gte=current + " 00:00:00", status__name='In-Progress')
+    forecast = ForeCast.objects.filter(expire__gte=current + " 00:00:00", status__name='In-Progress',private__name='no',)
     objects = []
     data = []
     for f in forecast:
@@ -2041,14 +2041,16 @@ def trending_forecast(request):
         objects = data[:10]
         print(objects)
         for f in objects:
-            date = datetime.datetime.now().date()
-            bet_start = f.expire.date()
+            date = current.date()
+
+            bet_start = (f.expire).date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
+                print(start)
                 start = start.time()
                 today = 'yes'
             else:
-                start = f.expire + datetime.timedelta(hours=5, minutes=30)
+                start = f.expire
 
                 today = "no"
             betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
@@ -2070,16 +2072,18 @@ def trending_forecast(request):
                 bet_for = 0
                 bet_against = 0
                 total = Betting.objects.filter(forecast=f).count()
-            data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f.heading,
+            data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
                              total=total, start=start, total_user=betting_for + betting_against,
                              betting_for=betting_for, betting_against=betting_against, today=today,
                              participants=total_wagered, bet_for=bet_for,
                              bet_against=bet_against,
                              bet_for_user=0,
                              bet_against_user=0))
+
         # return render(request, 'trending.html',
         #               {"live": data, "heading": "Trending Forecast", "title": "Trending Forecast", })
         return HttpResponse(json.dumps(dict(data=data)))
+
 
 def main_page(request):
     user = request.user

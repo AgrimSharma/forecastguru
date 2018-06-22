@@ -78,5 +78,18 @@
 <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=406710686464682&ev=PageView&noscript=1"
 /></noscript>
+<script>
+  window.addEventListener('load', function() {
+    jQuery('body').on('click', '#shipment_sold_preview .btn-orange.text-uppercase.submit_forecast', function() {
+      console.log(jQuery(this).parents('#shipment_sold_preview').find('h4').text());
+      gtag('event',
+        'click', {
+          'event_category': 'submit',
+          'event_label': jQuery(this).parents('#shipment_sold_preview').find('h4').text()
+        })
+    });
+  });
+
+</script>
 <!-- End Facebook Pixel Code -->
 </body></html>
