@@ -600,8 +600,10 @@ def betting(request, userid):
 
         friends = InviteFriends.objects.filter(forecast=forecast)
         for f in friends:
-            bet = Betting.objects.get(forecast=forecast, users=f.user)
-            points.append(dict(user=f.user, bet_for=bet.bet_for, bet_against=bet.bet_against))
+            bet = Betting.objects.filter(forecast=forecast, users=f.user)
+            if len(bet) == 1:
+                bet = bet[0]
+                points.append(dict(user=f.user, bet_for=bet.bet_for, bet_against=bet.bet_against))
         return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
                                                 "approved": approved,
                                                 "user": users,'status': status,
