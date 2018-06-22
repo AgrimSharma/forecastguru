@@ -1205,18 +1205,18 @@ def login_page(request):
 @csrf_exempt
 def get_forecast(request):
     if request.method == "POST":
-        try:
+
             user = request.user
             profile = SocialAccount.objects.get(user=user)
             forecast = ForeCast.objects.get(id=request.POST.get('id', ''))
             return render_to_response('forecast_modal.html',
                                       {'forecast': forecast}, )
-        except Exception:
-            return render_to_response('forecast_modal_nl.html',{"url": request.POST.get("url","")},
-                                       )
-    else:
-
-        return HttpResponse(json.dumps(dict(error="Try again later")))
+    #     except Exception:
+    #         return render_to_response('forecast_modal_nl.html',{"url": request.POST.get("url","")},
+    #                                    )
+    # else:
+    #
+    #     return HttpResponse(json.dumps(dict(error="Try again later")))
 
 
 def not_approved(forecast):
