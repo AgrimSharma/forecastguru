@@ -115,9 +115,7 @@
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}" >PLAY </button>
                           </form>
                 </div>
-                    <div class="col-4 text-right pl-0" style="display:none;">
-                        <div class="sharethis-inline-share-buttons"></div>
-                    </div>
+
 
 
                 </div>
@@ -265,7 +263,7 @@
 
       </div>
     </div>
-<input type="text" value="{{request.path" style="display:none" id="path" name="path">
+<input type="text" value="{{request.path}}" style="display:none" id="path" name="path">
 
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
  <!--<script src="{% static 'js/jquery-slim.min.js' %}"></script>-->
@@ -349,5 +347,4 @@ $.ajax({
 });
 
 </script>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5b27599bd4efc40011702ef7&product=inline-share-buttons' async='async'></script>
 {% endblock %}

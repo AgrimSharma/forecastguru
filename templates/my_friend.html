@@ -142,9 +142,7 @@
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}" >PLAY </button>
                           </form>
                 </div>
-                    <div class="col-4 text-right pl-0" style="display:none;">
-                        <div class="sharethis-inline-share-buttons"></div>
-                    </div>
+
 
 
                 </div>
@@ -175,6 +173,7 @@
       </div>
           {% endfor %}
 
+<input type="text" value="{{request.path}}" style="display:none" id="path" name="path">
 
    {% for f in live %}
 
@@ -405,10 +404,12 @@ $('#myInput').keypress(function (e) {
 
 $(".shipment_sold").click(function(){
 var shipment_id=$(this).attr("shipment_id");
+var path=$("#path").val();
+
 $.ajax({
     type:"POST",
     url: "{% url 'get_forecast' %}",
-    data: {'id': shipment_id},
+    data: {'id': shipment_id, "url":path},
     success: function(resp){
         $("#id_shipment_sold").modal('show');
 
@@ -419,7 +420,6 @@ $.ajax({
 });
 
 </script>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5b27599bd4efc40011702ef7&product=inline-share-buttons' async='async'></script>
 </body>
 </html>
 
