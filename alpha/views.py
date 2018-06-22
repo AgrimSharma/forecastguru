@@ -2089,6 +2089,8 @@ def trending_data(objects):
                  bet_for_user=0,
                  bet_against_user=0))
     return data_all
+
+
 def main_page(request):
     user = request.user
     try:
