@@ -2025,7 +2025,6 @@ def invite_friends(request):
 def trending_forecast(request):
     current = datetime.datetime.now().date().strftime("%Y-%m-%d")
     forecast = ForeCast.objects.filter(expire__gte=current + " 00:00:00", status__name='In-Progress',private__name='no',)
-    objects = []
     data = []
     for f in forecast:
         bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
@@ -2039,7 +2038,7 @@ def trending_forecast(request):
     else:
 
         objects = data[:10]
-        print(objects)
+
         for f in objects:
             date = current.date()
 
