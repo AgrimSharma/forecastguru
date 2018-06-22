@@ -265,6 +265,7 @@
 
       </div>
     </div>
+<input type="text" value="{{request.path" style="display:none" id="path" name="path">
 
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
  <!--<script src="{% static 'js/jquery-slim.min.js' %}"></script>-->
@@ -333,10 +334,11 @@ $('#myInput').keypress(function (e) {
 
 $(".shipment_sold").click(function(){
 var shipment_id=$(this).attr("shipment_id");
+var path=$("#path").val();
 $.ajax({
     type:"POST",
     url: "{% url 'get_forecast' %}",
-    data: {'id': shipment_id},
+    data: {'id': shipment_id, "url":path},
     success: function(resp){
         $("#id_shipment_sold").modal('show');
 
