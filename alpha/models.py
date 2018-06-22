@@ -179,10 +179,10 @@ class InviteFriends(models.Model):
         verbose_name_plural = 'Invite Friends'
 
     def __str__(self):
-        return "{} : {}" .format(self.user.username, self.forecast)
+        return "{} : {}" .format(self.user, self.forecast)
 
     def __unicode__(self):
-        return "{} : {}".format(self.user.username, self.forecast)
+        return "{} : {}".format(self.user, self.forecast)
 
 
 class UserDevice(models.Model):
