@@ -2118,10 +2118,10 @@ def trending_data(objects):
                  bet_against_user=0))
     return data_all
 
+
 @csrf_exempt
 def result_save(request):
     if request.method == "POST":
-        import pdb;pdb.set_trace()
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         vote = request.POST.get("vote","")
