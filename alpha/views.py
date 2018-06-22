@@ -2070,7 +2070,7 @@ def trending_forecast(request):
                 bet_for = 0
                 bet_against = 0
                 total = Betting.objects.filter(forecast=f).count()
-            data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
+            data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f.heading,
                              total=total, start=start, total_user=betting_for + betting_against,
                              betting_for=betting_for, betting_against=betting_against, today=today,
                              participants=total_wagered, bet_for=bet_for,
