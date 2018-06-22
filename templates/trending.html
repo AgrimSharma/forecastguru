@@ -43,8 +43,8 @@
                 <div class="progress">
 
                     {% if f.percent_for > 0 and f.percent_against > 0%}
-                        <div class="progress-bar" role="progressbar" style="width: {{ f.percent_for }}%" aria-valuenow="{{ f.percent_for }}" aria-valuemin="0" aria-valuemax="100"></div>
-                        <div class="progress-bar" role="progressbar" style="width: {{ f.percent_against }}%;;background:red" aria-valuenow="{{ f.percent_against }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar" role="progressbar" style="width: {{ f.percent_for }}%" aria-valuenow="{{ percent_for }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar" role="progressbar" style="width: {{ f.percent_against }}%;;background:red" aria-valuenow="{{ percent_against }}" aria-valuemin="0" aria-valuemax="100"></div>
                     {% elif f.percent_for > 0 and f.percent_against == 0%}
                         <div class="progress-bar" role="progressbar" style="width: {{ f.percent_for }}%" aria-valuenow="{{ f.percent_for }}" aria-valuemin="0" aria-valuemax="100"></div>
                         <div class="progress-bar" role="progressbar" style="width: {{ f.percent_against }}%;;background:red" aria-valuenow="{{ f.percent_against }}" aria-valuemin="0" aria-valuemax="100"></div>
