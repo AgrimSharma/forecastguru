@@ -1047,7 +1047,7 @@ def my_forecast(request):
                                                       "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
     except Exception:
-        return render(request, 'my_friend_nl.html', {"heading": "My Forecast",
+        return render(request, 'my_friend.html', {"heading": "My Forecast",
                                                      "title": "My Forecast",
                                                      "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
