@@ -356,7 +356,6 @@ $(".submit_forecast").click(function(){
     $(".submit_result").click(function(){
     var radioValue = $("input[name='contact1']:checked").val();
     var forecast = $("#awbs").val();
-    alert(forecast);
     if(radioValue === "email" || radioValue == "phone"){
             $.ajax({
                 type: "POST",
