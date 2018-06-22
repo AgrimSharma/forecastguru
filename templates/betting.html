@@ -375,6 +375,36 @@ $(".submit_forecast").click(function(){
             }
     });
 </script>
+<script>
+    $( document ).ready(function() {
+        var private = $("#private").val();
+        var forecast_id = $("#forecast_id").val();
+        var user = $("#user").val();
+        if(private == 'yes'){
+            $.ajax({
+                type: "POST",
+                url: "{% url 'invite_friends' %}",
+                data: {'forecast_id': forecast_id,},
+
+                success: function(resp){
+                    var data = JSON.parse(resp);
+
+                    if(data.message == 'success'){
+                        console.log('Subscribed');
+                    }else{
+                        console.log('Not Subscribed');
+                        }
+                    }
+                });
+            }
+        else{
+            console.log("Public");
+        }
+
+    });
+
+</script>
+
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5b20f3c3978f517f"></script>
 
 </body></html>
