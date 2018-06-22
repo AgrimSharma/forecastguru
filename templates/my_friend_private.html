@@ -78,7 +78,7 @@
                       <form method="post">{% csrf_token %}
                     <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
 
-                        <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.id}}" id="shipment_id{{f.id}}">PLAY </button>
+                        <button type="button" class="btn btn-orange shipment_solds" shipment_id="{{f.id}}" id="shipment_id{{f.id}}">PLAY </button>
                           </form>
                 </div>
               </div>
@@ -330,6 +330,21 @@ $('#myInput').keypress(function (e) {
 });
 
 $(".shipment_sold").click(function(){
+var shipment_id=$(this).attr("shipment_id");
+$.ajax({
+    type:"POST",
+    url: "{% url 'get_forecast' %}",
+    data: {'id': shipment_id},
+    success: function(resp){
+        $("#id_shipment_sold").modal('show');
+
+        $("#shipment_sold_preview").html(resp);
+
+    }
+});
+});
+
+$(".shipment_solds").click(function(){
 var shipment_id=$(this).attr("shipment_id");
 $.ajax({
     type:"POST",
