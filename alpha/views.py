@@ -80,6 +80,7 @@ def create_forecast(request):
         if private.name == 'no':
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
         else:
+            InviteFriends.objects.create(user=admin, forecast=f)
             return HttpResponse(json.dumps(
                 dict(status=200, message='Thank You for creating a private forecast', id=f.id)))  # except Exception:
         #
