@@ -2077,9 +2077,9 @@ def trending_forecast(request):
                              bet_against=bet_against,
                              bet_for_user=0,
                              bet_against_user=0))
-        return render(request, 'trending.html',
-                      {"live": data, "heading": "Trending Forecast", "title": "Trending Forecast", })
-
+        # return render(request, 'trending.html',
+        #               {"live": data, "heading": "Trending Forecast", "title": "Trending Forecast", })
+        return HttpResponse(json.dumps(dict(data=data)))
 
 def main_page(request):
     user = request.user
