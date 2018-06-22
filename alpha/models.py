@@ -100,12 +100,12 @@ class ForeCast(models.Model):
     sub_category = models.ForeignKey(to=SubCategory, on_delete=models.CASCADE)
     user = models.ForeignKey(to=SocialAccount, on_delete=models.CASCADE)
     heading = models.CharField(max_length=1000)
-    start = models.DateTimeField(default=datetime.datetime.now())
+    start = models.DateTimeField(auto_now=True)
     expire = models.DateTimeField()
     status = models.ForeignKey(to=Status, on_delete=models.CASCADE)
     market_fee = models.IntegerField(default=0)
     won = models.CharField(max_length=100, null=True, blank=True)
-    created = models.DateField()
+    created = models.DateField(auto_now=True)
     approved = models.ForeignKey(to=Approved, on_delete=models.CASCADE)
     verified = models.ForeignKey(to=Verified, on_delete=models.CASCADE)
     private = models.ForeignKey(to=Private, on_delete=models.CASCADE)
@@ -170,7 +170,6 @@ class Order(models.Model):
         return "{} : {} : {}".format(self.user, self.amount, self.txnid)
 
 
-
 class InviteFriends(models.Model):
     user = models.ForeignKey(to=SocialAccount, on_delete=models.CASCADE)
     forecast = models.ForeignKey(to=ForeCast, on_delete=models.CASCADE)
@@ -184,7 +183,6 @@ class InviteFriends(models.Model):
 
     def __unicode__(self):
         return "{} : {}".format(self.user.username, self.forecast)
-
 
 
 class UserDevice(models.Model):
