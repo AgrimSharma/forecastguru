@@ -2033,7 +2033,7 @@ def trending_forecast(request):
         bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
         bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
             'bet_against']
-        if bet_for + bet_against > 5000:
+        if bet_for + bet_against > 15000:
             data.append(f)
 
     if len(data) == 0:
