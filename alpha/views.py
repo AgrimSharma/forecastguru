@@ -537,55 +537,80 @@ def predict_status(profile, suc_per):
 
 def betting(request, userid):
     forecast = ForeCast.objects.get(id=userid)
+    approved = "yes" if forecast.approved.name == 'yes' and forecast.status.name == 'In-Progress' else 'no'
+    if forecast.status.name == 'In-Progress':
+        status = 'Currently Live'
+    elif forecast.status.name == 'Closed':
+        status = 'Currently Closed'
+    else:
+        status = 'Result Declared'
+    if forecast.won == 'yes':
+        won = 'yes'
+    elif forecast.won == 'no':
+        won = 'no'
+    else:
+        won = ""
+    expires = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+    end_date = datetime.datetime.strftime(expires, '%b %d, %Y')
+    end_time = datetime.datetime.strftime(expires, '%H:%M')
     try:
         if request.user.is_anonymous():
             users = "Guest"
         else:
             users = request.user.username
-        betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
-        betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
+        if forecast.private.name == 'no':
+            betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
+            betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
 
-        betting_sum = Betting.objects.filter(forecast=forecast).aggregate(
-            bet_for=Sum('bet_for'), bet_against=Sum('bet_against'))
-        try:
-            total_wagered = betting_sum['bet_for'] + betting_sum['bet_against']
-        except Exception:
-            total_wagered = 0
-        expires = forecast.expire + datetime.timedelta(hours=5, minutes=30)
-        end_date = datetime.datetime.strftime(expires, '%b %d, %Y')
-        end_time = datetime.datetime.strftime(expires, '%H:%M')
-        try:
-            percent = round((betting_for / (betting_for + betting_against)) * 100, 2)
-        except Exception:
-            percent = 0
+            betting_sum = Betting.objects.filter(forecast=forecast).aggregate(
+                bet_for=Sum('bet_for'), bet_against=Sum('bet_against'))
+            try:
+                total_wagered = betting_sum['bet_for'] + betting_sum['bet_against']
+            except Exception:
+                total_wagered = 0
 
-        if forecast.status.name == 'In-Progress':
-            status = 'Currently Live'
-        elif forecast.status.name == 'Closed':
-            status = 'Currently Closed'
-        else:
-            status = 'Result Declared'
-        try:
-            success = SocialAccount.objects.get(user__username=request.user)
-            success = success.successful_forecast
-        except Exception:
-            success = 0
-        approved = "yes" if forecast.approved.name == 'yes' and forecast.status.name == 'In-Progress' else 'no'
-        return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
-                                                'bet_for': betting_sum['bet_for'] if betting_sum['bet_for'] else 0,
-                                                'against': betting_sum['bet_against'] if betting_sum[
-                                                    'bet_against'] else 0,
-                                                'total': total_wagered if total_wagered else 0,
-                                                "end_date": end_date, "end_time": end_time,
-                                                'status': status, "percent": percent,
-                                                "success": success,
-                                                "users": forecast.user.user.username,
-                                                "sums": betting_sum['bet_for'] + betting_sum['bet_against'],
-                                                "approved": approved,
-                                                "user": users,
-                                                "heading": "Forecast Details",
-                                                "title": "Forecast Details",
-                                                })
+            try:
+                percent = round((betting_for / (betting_for + betting_against)) * 100, 2)
+            except Exception:
+                percent = 0
+
+
+            try:
+                success = SocialAccount.objects.get(user__username=request.user)
+                success = success.successful_forecast
+            except Exception:
+                success = 0
+            return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
+                                                    'bet_for': betting_sum['bet_for'] if betting_sum['bet_for'] else 0,
+                                                    'against': betting_sum['bet_against'] if betting_sum[
+                                                        'bet_against'] else 0,
+                                                    'total': total_wagered if total_wagered else 0,
+                                                    "end_date": end_date, "end_time": end_time,
+                                                    'status': status, "percent": percent,
+                                                    "success": success,
+                                                    "users": forecast.user.user.username,
+                                                    "sums": betting_sum['bet_for'] + betting_sum['bet_against'],
+                                                    "approved": approved,
+                                                    "user": users,"won": won,
+                                                    "heading": "Forecast Details",
+                                                    "title": "Forecast Details","private": "no"
+                                                    })
+        elif forecast.private.name == 'yes':
+            points = []
+
+            friends = InviteFriends.objects.filter(forecast=forecast)
+            for f in friends:
+                bet = Betting.objects.get(forecast=forecast, users=f.user)
+                points.append(dict(user=f.user, bet_for=bet.bet_for, bet_against=bet.bet_against))
+            return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
+                                                    "approved": approved,
+                                                    "user": users,'status': status,
+                                                    "users": forecast.user.user.username,
+                                                    "end_date": end_date, "end_time": end_time,
+                                                    "won": won,
+                                                    "heading": "Forecast Details",
+                                                    "title": "Forecast Details", "private": "yes",
+                                                    "forecast": forecast, "points": points})
     except Exception:
         return render(request, 'betting.html', {'forecast': forecast, "user": request.user.username,
                                                 "heading": "Forecast Details",
@@ -2092,6 +2117,24 @@ def trending_data(objects):
                  bet_for_user=0,
                  bet_against_user=0))
     return data_all
+
+@csrf_exempt
+def result_save(request):
+    if request.method == "POST":
+        import pdb;pdb.set_trace()
+        user = request.user
+        profile = SocialAccount.objects.get(user=user)
+        vote = request.POST.get("vote","")
+        id = request.POST.get('forecast', '')
+        if vote == 'email':
+            vote = 'yes'
+        else:
+            vote = 'no'
+        forecast = ForeCast.objects.get(id=int(id))
+        ForeCast.objects.filter(id=id).update(won=vote)
+        return HttpResponse(request.path)
+    else:
+        return HttpResponse(json.dumps(dict(error="Try again later")))
 
 
 def main_page(request):
