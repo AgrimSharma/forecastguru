@@ -1021,9 +1021,8 @@ def sub_category_data(request, userid):
 
 def my_forecast(request):
     try:
-        user = request.user.id
-        users = User.objects.get(id=user)
-        account = SocialAccount.objects.get(user=users)
+        user = request.user
+        account = SocialAccount.objects.get(user=user)
         forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',
                                                users=account, forecast__private__name='no').order_by("forecast__expire")
         forecast_result = Betting.objects.filter(forecast__approved__name="yes",
@@ -1537,9 +1536,8 @@ def forecast_result_data_private(forecast_live, account):
 
 def my_forecast_private(request):
     try:
-        user = request.user.id
-        users = User.objects.get(id=user)
-        account = SocialAccount.objects.get(user=users)
+        user = request.user
+        account = SocialAccount.objects.get(user=user)
         forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress',
                                                 user=account, private__name='yes').order_by("expire")
 
