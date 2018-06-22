@@ -1562,11 +1562,9 @@ def my_forecast_private(request):
     # try:
         user = request.user
         account = SocialAccount.objects.get(user=user)
-        forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress',
-                                                user=account, private__name='yes').order_by("expire")
+        forecast_live = ForeCast.objects.filter(approved__name="yes", status__name='In-Progress',user=account, private__name='yes').order_by("expire")
 
-        forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared',
-                                                  user=account, private__name='yes').order_by("expire")
+        forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared',user=account, private__name='yes').order_by("expire")
         forecast_approval = InviteFriends.objects.filter(user=account).order_by("-forecast__expire")
 
         return render(request, 'my_friend_private.html', {"live": live_forecast_data_private(forecast_live, account),
@@ -2130,8 +2128,9 @@ def result_save(request):
             vote = 'yes'
         else:
             vote = 'no'
+        status = Status.objects.get(name='Result Declared')
         forecast = ForeCast.objects.get(id=int(id))
-        ForeCast.objects.filter(id=id).update(won=vote)
+        ForeCast.objects.filter(id=id).update(won=vote, status=status)
         return HttpResponse(request.path)
     else:
         return HttpResponse(json.dumps(dict(error="Try again later")))
