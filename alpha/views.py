@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, division
 import json
+
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
@@ -1881,6 +1883,7 @@ def session(request):
     return HttpResponse(json.dumps(dict(keys=request.session.keys(), values=request.session.values())))
 
 
+@staff_member_required
 @csrf_exempt
 def import_csv(request):
     if request.method == 'POST':
@@ -2040,9 +2043,9 @@ def trending_forecast(request):
         objects = data[:10]
 
         for f in objects:
-            date = current.date()
+            date = datetime.datetime.now().date()
 
-            bet_start = (f.expire).date()
+            bet_start = f.expire.date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 print(start)
