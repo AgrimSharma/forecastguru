@@ -170,18 +170,21 @@ class Order(models.Model):
         return "{} : {} : {}".format(self.user, self.amount, self.txnid)
 
 
-# class InviteStatus(models.Model):
-#     name = models.CharField(max_length=10)
-#
-#     class Meta:
-#         ordering = ['-name']
-#         verbose_name_plural = 'Invite Status'
-#
-#     def __str__(self):
-#         return self.name
-#
-#     def __unicode__(self):
-#         return self.name
+
+class InviteFriends(models.Model):
+    user = models.ForeignKey(to=SocialAccount, on_delete=models.CASCADE)
+    forecast = models.ForeignKey(to=ForeCast, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['-user']
+        verbose_name_plural = 'Invite Friends'
+
+    def __str__(self):
+        return "{} : {}" .format(self.user.username, self.forecast)
+
+    def __unicode__(self):
+        return "{} : {}".format(self.user.username, self.forecast)
+
 
 
 class UserDevice(models.Model):

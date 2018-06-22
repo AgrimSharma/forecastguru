@@ -12,7 +12,7 @@
 
               <div class="tab-slider">
                   <div class="item">
-                      <a href="{% url 'category_search' category_id %}"><img src="{% static 'subcat/all.png' %}" alt="">
+                      <a href="/category_search/{{category_id}}/"><img src="{% static 'subcat/all.png' %}" alt="">
                         <figcaption>All</figcaption>
                       </a>
                     </div>
@@ -43,10 +43,10 @@
 
       <div class="row">
         <div class="col-6 text-center">
-          <a href="{% url 'create_forecast' %}" class="btn btn-orange">Create Forecast</a>
+          <a href="{% url 'create_forecast' %}" class="btn btn-primary">Create Forecast</a>
         </div>
         <div class="col-6 text-center">
-            <a href="{% url 'payment' %}" class="btn btn-orange">Buy FG Points</a>
+            <a href="{% url 'payment' %}" class="btn btn-primary">Buy FG Points</a>
           </div>
       </div>
 </div>

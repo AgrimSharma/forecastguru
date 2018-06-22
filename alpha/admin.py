@@ -6,12 +6,16 @@ from .models import *
 from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy
 
-
 def approve(modeladmin, request, queryset):
     approved = Approved.objects.get(id=1)
     for obj in queryset:
         obj.approved = approved
         obj.save()
+
+
+class InviteFriendAdmin(admin.ModelAdmin):
+    list_display = ['forecast', "user"]
+    # pass
 
 
 class LoginStatusAdmin(admin.ModelAdmin):
@@ -63,6 +67,7 @@ class StatusAdmin(admin.ModelAdmin):
 
 
 class BettingAdmin(admin.ModelAdmin):
+
     list_display = ['get_forecast', "get_forecast_category", "get_forecast_sub_category", 'users', 'bet_for', 'bet_against']
     change_form_template = 'change_list.html'
     date_hierarchy = 'forecast__expire'
@@ -85,6 +90,7 @@ class BannerAdmin(admin.ModelAdmin):
 
 
 class OrderAdmin(admin.ModelAdmin):
+    date_hierarchy = 'order_date'
     list_display = ['user', 'amount', 'txnid', 'order_date']
     search_fields = ['user']
     list_filter = ('user', 'amount', 'order_date')
@@ -101,8 +107,9 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(Approved, ApprovedAdmin)
 admin.site.register(Private, PrivateAdmin)
 admin.site.register(Verified, VerifiedAdmin)
-admin.site.register(LoginStatus, LoginStatusAdmin)
 admin.site.register(UserDevice, UserDeviceAdmin)
+admin.site.register(InviteFriends, InviteFriendAdmin)
+admin.site.register(LoginStatus, LoginStatusAdmin)
 admin.site.site_title = 'ForeCast Guru'
 admin.site.site_header = 'ForeCast Guru'
 admin.site.index_title= 'Dashboard'
