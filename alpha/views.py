@@ -958,7 +958,11 @@ def category_search(request, userid):
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         if len(forecast_live_view(category_id, profile)) == 0:
-            return HttpResponseRedirect("/trending/")
+            return render(request, 'my_friend_no.html',{
+                              "heading": category_id.name, 
+                              "title": category_id.name,
+                              "user": "Guest" if request.user.is_anonymous() else request.user.username
+                          })
 
         else:
             return render(request, 'category_search.html',
@@ -988,7 +992,11 @@ def sub_category_data(request, userid):
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         if len(forecast_live_view_sub(subcategory, profile)) == 0:
-            return HttpResponseRedirect("/trending/")
+            return render(request, "my_friend_no.html",{
+                              "heading": subcategory.name,
+                              "title": subcategory.name,
+                              "user": "Guest" if request.user.is_anonymous() else request.user.username
+                          })
         else:
             return render(request, 'category_search.html',
                           {
