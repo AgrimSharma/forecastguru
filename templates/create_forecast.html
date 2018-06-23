@@ -236,7 +236,7 @@ $(".create").click(function(){
                                }
                             else if(data.message=="Thank You for creating a private forecast"){
                                 alert(data.message);
-                                 window.location.href = "https://forecast.sirez.com/forecast/" + data.id + "/" ;
+                                 window.location.href = "{% url 'private' %}";
                         }
                             else if(data.message == "Please Login"){
                                  alert(data.message);
@@ -257,7 +257,7 @@ $(".create").click(function(){
                     }
                     }
 
-                 else if(heading.length > 100){
+                 else if(heading.length > 1000){
                     alert('Maximum Heading should be less than 100');
                     }
                 else if(heading.length < 10){

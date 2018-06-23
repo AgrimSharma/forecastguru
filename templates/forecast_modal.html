@@ -72,7 +72,7 @@ $(".submit_forecast").click(function(){
                     }
                     else if(data.message=="login"){
                             alert("Please login!!");
-                            window.location.href = "{% url 'blank_page' %}";
+                            $("#not_login_modal").modal('show');
                     }
                     else{
                         alert(data.message);

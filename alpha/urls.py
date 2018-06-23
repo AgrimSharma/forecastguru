@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^invite_friends/', invite_friends, name='invite_friends'),
     url(r'^device_data_android/', device_data_android, name='device_data_android'),
     url(r'^live_forecast/', live_forecast, name='live_forecast'),
+    url(r'^result_save/', result_save, name='result_save'),
     url(r'^user_profile/', profile, name='user_profile'),
     url(r'^forecast/(?P<userid>\d+)/$', betting, name='betting'),
     url(r'^bet_save/', bet_post, name='bet_save'),
