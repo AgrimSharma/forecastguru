@@ -33,8 +33,12 @@
         <h1>{{heading}}</h1>
         <div class="header-right text-center with-btn position-absolute">
             <!--<a href="{% url 'create_forecast' %}" class="btn btn-orange btn-sm"> Create New</a>-->
-            <div style="padding-top:7px;">Hi {{user|title}}!!</div>
+          {% if user == 'Guest' %}
+          <div style="padding-top:16px;">Hi {{user|title}}!!</div>
+          {% else %}
+          <div style="padding-top:16px;">Hi {{user|title}}!!</div>
             <div style="padding-top:5px;">FG Balance {{request.user.socialaccount_set.all.0.fg_points_total}}</div>
+          {% endif %}
         </div>
           </div>
       </div>
@@ -54,11 +58,29 @@
 <input type="text" value="{{forecast.id}}" name="forecast_id" id="forecast_id" style="display:none">
 <input type="text" value="{{request.user}}" name="user" id="user" style="display:none">
 <div class="topspace"></div>
-    <div class="forcast_detail fixed_p_footer">
+<div class="forcast_detail fixed_p_footer">
   <div class="container">
     <div class="row">
       <div class="col-12">
         <h2>{{forecast.heading}}</h2>
+          {% if forecast.status.name == 'Closed' and private == 'yes' and request.user.username == users and won == "" %}
+                  <hr>
+          <h3> Please select a Result</h3>
+           <div class="form-group form-inline">
+        <input type="text" class="form-control" id="awbs" value="{{forecast.id}}" style="display:none;" ><br>
+        <div class="predictwrap">
+
+                <div style="display:flex;">
+                <input type="radio" id="contactChoice3" name="contact1" value="email" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">YES</label>
+
+                <input type="radio" id="contactChoice4" name="contact1" value="phone" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice2" style="margin-bottom:5px;">NO</label>
+                    </div>
+          <br></div>
+        </div>
+             <button class="btn btn-sm btn-orange text-uppercase submit_result"> Declare Result</button>
+      {% endif %}
  {% if approved == 'yes' %}
 
           <hr>
@@ -90,8 +112,9 @@
 
              </div>
 
-{% endif %}
 </div>
+          {% endif %}
+
           <hr class="hr">
             <!--<p>Status :  {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %} </p>-->
           <p style="padding-left:20px;">Closing date and time  <img src="{% static 'images/calender-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_date}}</span> <img src="{% static 'images/time-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_time}}</span> </p>
@@ -123,6 +146,7 @@
         </div>
 
       </div>
+      {% if private == 'no' %}
       <div class="clearfix"></div>
       <div class="row white_box mr-0 ml-0 mb-3">
 
@@ -169,54 +193,71 @@
 
 
         </div>
-          </div>
-
+      </div>
       <div class="clearfix"></div>
-      {% if forecast.private.name == 'no' %}
-
       <div class="row white_box mr-0 ml-0 mb-3">
 
           <div class="col-12">
             <div class="row mb-2">
                 <div class="col-12">
-
-                            Share
-
-                                <div class="col-12 text-left value-color">
-
-                                    <div class="addthis_inline_share_toolbox_a0ek">
-
-                                    </div>
-                                </div>
+                     Share<div class="addthis_inline_share_toolbox_a0ek"></div></div>
                  </div>
               </div>
+      </div>
 
-      </div>
-      </div>
       {% else %}
-        {% if request.user.username == users %}
+
+        <div class="col-12 user_data_table">
+          <div class="row headrow mb-2 text-center">
+              <div class="col-3">
+                <label>User image</label>
+              </div>
+              <div class="col-3">
+                <label>User Name</label>
+              </div>
+              <div class="col-3">
+                  <label>Yes</label>
+              </div>
+
+              <div class="col-3">
+                  <label>No</label>
+              </div>
+
+            </div>
+            {% for p in points %}
+            <div class="row mb-2 text-center align-items-center">
+              <div class="col-3">
+                  <label class="lbl_value"> <img src="https://graph.facebook.com/{{p.user.uid}}/picture?type=large" alt="" width="50px" height="50px" style="border-radius:50%;"></label>
+              </div>
+                <div class="col-3">
+                  <label class="lbl_value"> {{p.user.user.username}}</label>
+              </div>
+              <div class="col-3">
+                <label class="lbl_value">{{p.bet_for}}</label>
+              </div>
+
+              <div class="col-3">
+                  <label class="lbl_value"> {{p.bet_against}}</label>
+              </div>
+
+            </div>{% endfor %}
+            {% if request.user.username == users %}
+            <div class="clearfix"></div>
       <div class="row white_box mr-0 ml-0 mb-3">
 
           <div class="col-12">
             <div class="row mb-2">
                 <div class="col-12">
-
-                            Invite Friends
-
-                                    <div class="col-12 text-left value-color">
-
-                                        <div class="addthis_inline_share_toolbox_a0ek">
-
-                                        </div>
-                                    </div>
-
+                     Invite Friends<div class="addthis_inline_share_toolbox_a0ek"></div></div>
                  </div>
               </div>
+      </div>{% endif %}
+      {% endif %}
+        </div>
 
-      </div>
-      </div>{% endif %}{% endif %}
 
   </div>
+</div>
 <footer class="sticky-footer">
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
@@ -244,12 +285,12 @@
           </div>
           <div class="modal-body">
             <div id="shipment_sold_preview">
-                <div row>
-                    <div class="col-12">
+                <div class="row">
+                    <div class="col-12 text-center">
                         <h2> Please login to play in a forecast</h2>
                     </div>
-                <div class="btn_box mb-3" >
-                    <a href="https://forecast.sirez.com/facebook/login/?process=login&next={{request.path}}" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+                <div class="btn_box col-12 text-center" >
+                    <a href="https://forecast.guru/facebook/login/?process=login&next={{request.path}}" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
                 </div>
                     </div>
             </div>
@@ -293,6 +334,7 @@ $(".submit_forecast").click(function(){
                     var data = JSON.parse(resp);
                     if(data.message=="success"){
                     console.log(data.message);
+                                        onClick="ga('send', 'event', { eventCategory: 'play', eventAction: 'click', eventLabel: 'participate'});"
                         alert("Forecast Placed");
                         location.reload();
                         }
@@ -321,34 +363,29 @@ $(".submit_forecast").click(function(){
             }
 
     });
-</script>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5b20f3c3978f517f"></script>
-<script>
-    function fbshare(){
-        FB.ui({
-          method: 'share',
-          href: 'https://forecast.sirez.com/forecast/{{forecast.id}}/',
-          picture: '{{forecast.sub_category.image}}',
-          caption: 'Forecast the Future with {{user|title}}',
-          description: 'Forecast future events and earn points for correct predictions!'
-        }, function(response){});
-    }
-    window.fbAsyncInit = function () {
-        FB.init({
-            appId: '186107225561354', // App ID
-            status: true, // check login status
-            cookie: true, // enable cookies to allow the server to access the session
-            xfbml: true  // parse XFBML
-        });
-    };
 
-    // Load the SDK Asynchronously
-    (function (d) {
-        var js, id = 'facebook-jssdk'; if (d.getElementById(id)) { return; }
-        js = d.createElement('script'); js.id = id; js.async = true;
-        js.src = "//connect.facebook.net/en_US/all.js";
-        d.getElementsByTagName('head')[0].appendChild(js);
-    }(document));
+    $(".submit_result").click(function(){
+    var radioValue = $("input[name='contact1']:checked").val();
+    var forecast = $("#awbs").val();
+    if(radioValue === "email" || radioValue == "phone"){
+            $.ajax({
+                type: "POST",
+                url: "{% url 'result_save' %}",
+                data: {'vote': radioValue, 'forecast':forecast},
+
+                success: function(resp){
+                        alert("Result Saved");
+                        location.reload();
+
+                    }
+
+                });
+
+            }
+        else{
+            alert("Points should be multiple of 1000");
+            }
+    });
 </script>
 <script>
     $( document ).ready(function() {
@@ -379,6 +416,8 @@ $(".submit_forecast").click(function(){
     });
 
 </script>
+
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5b20f3c3978f517f"></script>
 
 </body></html>
 

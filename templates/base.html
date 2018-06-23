@@ -15,6 +15,8 @@
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
   <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick.css' %}" />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick-theme.css' %}" />
+<script charset="UTF-8" src="//cdn.sendpulse.com/9dae6d62c816560a842268bde2cd317d/js/push/7d6a2c61b2460f21cfe5fc25a0dad6ac_1.js" async></script>
+
 </head>
 <body class="gray-bg">
 <header class="position-fixed w-100">
@@ -23,9 +25,14 @@
       <div class="col-12 text-center position-relative">
         <div class="header-logo position-absolute"><img src="{% static 'images/logo-small-white.png' %}" alt=""></div>
         <h1>{{heading}}</h1>
-        <div class="header-right with-btn position-absolute">
+       <div class="header-right text-center with-btn position-absolute">
             <!--<a href="{% url 'create_forecast' %}" class="btn btn-orange btn-sm"> Create New</a>-->
-            <div style="padding-top:16px;">Hi {{user|title}}!!</div>
+          {% if user == 'Guest' %}
+          <div style="padding-top:7px;">Hi {{user|title}}!!</div>
+          {% else %}
+          <div style="padding-top:7px;">Hi {{user|title}}!!</div>
+            <div style="padding-top:5px;">FG Balance {{request.user.socialaccount_set.all.0.fg_points_total}}</div>
+          {% endif %}
         </div>
           </div>
       </div>
@@ -35,26 +42,14 @@
 
 
         <div class="row mt-2">
-          <div class="col-10">
+          <div class="col-12">
             <div class="form-group has-search m-0"> <span class="fa fa-search form-control-feedback"></span>
               <form method="post" action="/search_result/">
                   <input type="text" class="form-control" placeholder="Search Forecast" name="point" id="myInput">
               </form>
             </div>
           </div>
-          <div class="col-2 pl-0 text-right">
-              <div class="dropdown sortyby">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fa fa-sort-amount-desc"></i>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="{% url 'trending' %}">Popular</a>
-                    <a class="dropdown-item" href="#">Closing time Desc</a>
-                    <a class="dropdown-item" href="#">Closing time Asc</a>
 
-                  </div>
-                </div>
-          </div>
         </div>
       </div>
 </header>
@@ -90,5 +85,18 @@
 <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=406710686464682&ev=PageView&noscript=1"
 /></noscript>
+<script>
+  window.addEventListener('load', function() {
+    jQuery('body').on('click', '#shipment_sold_preview .btn-orange.text-uppercase.submit_forecast', function() {
+      console.log(jQuery(this).parents('#shipment_sold_preview').find('h4').text());
+      gtag('event',
+        'click', {
+          'event_category': 'submit',
+          'event_label': jQuery(this).parents('#shipment_sold_preview').find('h4').text()
+        })
+    });
+  });
+
+</script>
 <!-- End Facebook Pixel Code -->
 </body></html>
