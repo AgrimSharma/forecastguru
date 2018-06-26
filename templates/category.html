@@ -5,7 +5,11 @@
 <div class="topspace"></div>
 <p> Hello World! </p>
   # For django templating engine
-  {% webpush_button %}
+
+  <button id="webpush-subscribe-button" {% if group %}data-group="{{ group }}"{% endif %} data-url="{{ webpush_save_url }}">
+    Subscribe to Push Messaging
+  </button>
+  <div id="webpush-message" hidden></div>
 <div class="container fixed_p_footer">
   <div class="row">
     <div class="col-md-12">
