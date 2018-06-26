@@ -1607,6 +1607,7 @@ def forecast_live_view(category, profile):
     forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no', category=category,
                                             status__name='In-Progress').order_by("expire")
 
+
     for f in forecast_live:
         date = current.date()
         forecast = f
