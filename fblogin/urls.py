@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'^', include('allauth.urls')),
     url(r'^', include('alpha.urls')),
     url(r'^', include('payu_biz.urls')),
+    url(r'^webpush/', include('webpush.urls'))
+
     # url(r'^account/', include('django.contrib.auth.urls')),
 
 
