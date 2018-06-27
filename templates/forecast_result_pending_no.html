@@ -6,58 +6,29 @@
 <div class="container topnavlinks">
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
-       <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'forecast_result' %}">Declared</a> </li>
-      <li class="nav-item text-uppercase"> <a class="nav-link active" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'result_not_declared' %}">Not Declared</a> </li>
+       <li class="nav-item text-uppercase"> <a class="nav-link active" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'my_forecast' %}">Public</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'private' %}" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;">Private</a> </li>
       <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
     </ul>
   </nav>
 </div>
+
+<input type="text" value="{{request.path}}" style="display:none" id="path" name="path">
+
 <div class="container fixed_p_footer">
   <div class="row">
-    <div class="col-md-12">
-      <div class="forcast_home">
-             {% for f in result %}
-        <div class="forcast_box">
-          <div class="row align-items-center" >
-            <div class="col-3 col-md-2 text-center">
-                <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="" >
 
-                  <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
-                </figure>
-            </div>
-            <div class="col-9 col-md-10">
-                <p class="title_desc"><a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;"> {{f.forecast.heading}}</a></p>
-            </div>
-          </div>
-             <div class="row" style="background: #f98b8b;padding-left: 40%;padding-top: 5px;height: 26px;/* text-align:  center; */">
-                 <p><b>Result Awaited</b></p>
-
-                              {% if f.bet_against_user > 0 or f.bet_for_user > 0  %}
-            <hr>
-                <div class="row">
-                  <div class="col-6 pr-0">
-                    <div class="time textwithicon pl-0">
-
-
-                       <span>My Points in Play</span>
-
-                        </div>
-                  </div>
-
-                  <div class="col-3 text-right pl-0">
-                     Yes(0)
-                </div>
-                    <div class="col-3 text-right pl-0">
-                     No(0)
-                </div>
-              </div>
-{% endif %}
-          </div>
-        </div>
-        {% endfor %}
-
-
+      <div class="col-md-12 text-center" style="padding-top: 20px;">
+          <p style="font-size: 18px;"> You have not participated in forecasts</p>
       </div>
+  </div>
+    <div class="row">
+
+      <div class="col-md-12">
+
+            <div class="col-12 text-center pl-0">
+                <a href="{% url 'live_forecast' %}" type="button" class="btn btn-orange">Explore Forecasts</a>
+            </div>
     </div>
   </div>
 </div>
@@ -66,7 +37,7 @@
       <ul class="navbar-nav nav-fill w-100 text-center">
         <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
           Forecasts</a> </li>
-        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png'%}" alt=""><br>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
           Categories</a> </li>
         <li class="nav-item"> <a class="nav-link active" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
           Results</a> </li>
@@ -77,17 +48,9 @@
       </ul>
     </nav>
   </footer>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="js/jquery-slim.min.js"><\/script>')</script>
-<script src="js/bootstrap.min.js"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
 <script>
-    $(function(){
-           $('#nav-icon1').click(function(){
-            $(this).toggleClass('open');
-        });
-
-    });
-
 $('#myInput').keypress(function (e) {
   if (e.which == 13) {
   var test = $("#myInput").val();
@@ -105,5 +68,22 @@ $('#myInput').keypress(function (e) {
   }
 });
 
-    </script>
+$(".shipment_sold").click(function(){
+var shipment_id=$(this).attr("shipment_id");
+var path=$("#path").val();
+
+$.ajax({
+    type:"POST",
+    url: "{% url 'get_forecast' %}",
+    data: {'id': shipment_id, "url":path},
+    success: function(resp){
+        $("#id_shipment_sold").modal('show');
+
+        $("#shipment_sold_preview").html(resp);
+
+    }
+});
+});
+
+</script>
 {% endblock %}
