@@ -832,12 +832,11 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
    cursor: pointer;
    font-weight: bold;
    color: #fff;
-
-   &:hover, &:focus {
+}
+ .st-custom-button[data-network]:hover, .st-custom-button[data-network]:focus {
       text-decoration: underline;
       background-color: #00c7ff;
-   }
-
+ }
  .user_data_table label {font-weight: normal}
  .user_data_table img {max-width: 100%; width: 50px; height: 50px; border-radius: 50%}
 .user_data_table .headrow label {font-weight: bold}
@@ -846,3 +845,4 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
 	transform: rotate(90deg);
 
 }
+
