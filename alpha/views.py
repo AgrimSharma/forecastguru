@@ -272,7 +272,7 @@ def result_not_declared(request):
     try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
-        forecast_result = Betting.objects.filter(users=profile, forecast__status__name='Result Declared',).order_by("-forecast__expire")
+        forecast_result = Betting.objects.filter(forecast__private__name='no', users=profile, forecast__status__name='Result Declared',).order_by("-forecast__expire")
         return render(request, 'forecast_result_pending.html', {
             "live": forecast_result_page_my(forecast_result),
             "user": "Guest" if request.user.is_anonymous() else request.user.username,
