@@ -269,7 +269,7 @@ def forecast_result(request):
 
 
 def result_not_declared(request):
-    try:
+    # try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         forecast_result = Betting.objects.filter(users=profile, forecast__status__name='Result Declared',).order_by("-forecast__expire")
@@ -279,13 +279,13 @@ def result_not_declared(request):
             "heading": "My Results",
             "title": "My Results",
         })
-    except Exception:
-
-        return render(request, 'forecast_result_pending_no.html', {
-            "user": "Guest" if request.user.is_anonymous() else request.user.username,
-            "heading": "My Results",
-            "title": "My Results",
-        })
+    # except Exception:
+    #
+    #     return render(request, 'forecast_result_pending_no.html', {
+    #         "user": "Guest" if request.user.is_anonymous() else request.user.username,
+    #         "heading": "My Results",
+    #         "title": "My Results",
+    #     })
 
 
 def forecast_result_page_my(forecast):
