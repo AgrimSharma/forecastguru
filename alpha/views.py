@@ -269,7 +269,7 @@ def forecast_result(request):
 
 
 def result_not_declared(request):
-    # try:
+    try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         forecast_result = Betting.objects.filter(users=profile, forecast__status__name='Result Declared',).order_by("-forecast__expire")
@@ -279,13 +279,13 @@ def result_not_declared(request):
             "heading": "My Results",
             "title": "My Results",
         })
-    # except Exception:
-    #
-    #     return render(request, 'forecast_result_pending_no.html', {
-    #         "user": "Guest" if request.user.is_anonymous() else request.user.username,
-    #         "heading": "My Results",
-    #         "title": "My Results",
-    #     })
+    except Exception:
+
+        return render(request, 'forecast_result_pending_no.html', {
+            "user": "Guest" if request.user.is_anonymous() else request.user.username,
+            "heading": "My Results",
+            "title": "My Results",
+        })
 
 
 def forecast_result_page_my(forecast):
@@ -320,7 +320,7 @@ def forecast_result_page_my(forecast):
             bet_for = 0
             bet_against = 0
             total = 0
-        status = "yes" if f.won == "yes" else "no"
+        status = "yes" if forecast.won == "yes" else "no"
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
                          forecast=forecast, total=total, start=start,
                          total_user=betting_for + betting_against,
