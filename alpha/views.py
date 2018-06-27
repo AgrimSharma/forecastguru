@@ -210,6 +210,7 @@ def live_forecast(request):
                                                   "title": "Forecasts",
                                                   "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
+
 def forecast_result_page(forecast):
     data = []
     for f in forecast:
@@ -267,14 +268,12 @@ def forecast_result(request):
                                                     })
 
 
-
-
 def result_not_declared(request):
     try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         forecast_result = Betting.objects.filter(forecast__approved__name="yes", users=profile, forecast__status__name='Result Declare',
-                                                 forecast__verified__name='no').order_by("-expire")
+                                                 forecast__verified__name='no').order_by("-forecast__expire")
         return render(request, 'forecast_result.html', {
             "live": forecast_result_page_my(forecast_result),
             "user": "Guest" if request.user.is_anonymous() else request.user.username,
