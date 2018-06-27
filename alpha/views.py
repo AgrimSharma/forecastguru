@@ -2058,7 +2058,7 @@ def result_save(request):
 
 
 def quiz(request):
-    return render(request, "quiz.html")
+    return render(request, "quiz.html",{"heading": "Trivia Quiz", "title": "ForecastGuru", })
 
 
 def main_page(request):
