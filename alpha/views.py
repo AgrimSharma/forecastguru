@@ -272,7 +272,7 @@ def result_not_declared(request):
     try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
-        forecast_result = Betting.objects.filter(forecast__approved__name="yes", users=profile, forecast__status__name='Result Declare',
+        forecast_result = Betting.objects.filter(forecast__approved__name="yes", users=profile, forecast__status__name='Result Declared',
                                                  forecast__verified__name='no').order_by("-forecast__expire")
         return render(request, 'forecast_result_pending.html', {
             "live": forecast_result_page_my(forecast_result),
