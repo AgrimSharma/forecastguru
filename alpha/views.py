@@ -274,7 +274,7 @@ def result_not_declared(request):
         profile = SocialAccount.objects.get(user=user)
         forecast_result = Betting.objects.filter(forecast__approved__name="yes", users=profile, forecast__status__name='Result Declare',
                                                  forecast__verified__name='no').order_by("-forecast__expire")
-        return render(request, 'forecast_result.html', {
+        return render(request, 'forecast_result_pending.html', {
             "live": forecast_result_page_my(forecast_result),
             "user": "Guest" if request.user.is_anonymous() else request.user.username,
             "heading": "My Results",
@@ -333,6 +333,7 @@ def forecast_result_page_my(forecast):
                          bet_against_user=0
                          ))
     return data
+
 
 def get_ratio(bet_for, bet_against, total, status):
     ratio = 0
