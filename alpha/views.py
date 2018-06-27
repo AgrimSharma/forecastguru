@@ -210,19 +210,6 @@ def live_forecast(request):
                                                   "title": "Forecasts",
                                                   "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
-
-def forecast_result(request):
-
-    forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
-                                            status__name='Result Declared').order_by("-expire")
-
-    return render(request, 'forecast_result.html', {"live": forecast_result_page(forecast_live),
-                                                    "user": "Guest" if request.user.is_anonymous() else request.user.username,
-                                                    "heading": "Results",
-                                                    "title": "Forecast Result",
-                                                    })
-
-
 def forecast_result_page(forecast):
     data = []
     for f in forecast:
@@ -266,6 +253,20 @@ def forecast_result_page(forecast):
                          bet_against_user=0
                          ))
     return data
+
+
+def forecast_result(request):
+
+    forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
+                                            status__name='Result Declared').order_by("-expire")
+
+    return render(request, 'forecast_result.html', {"live": forecast_result_page(forecast_live),
+                                                    "user": "Guest" if request.user.is_anonymous() else request.user.username,
+                                                    "heading": "Results",
+                                                    "title": "Forecast Result",
+                                                    })
+
+
 
 
 def result_not_declared(request):
