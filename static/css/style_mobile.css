@@ -837,3 +837,12 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
       text-decoration: underline;
       background-color: #00c7ff;
    }
+
+ .user_data_table label {font-weight: normal}
+ .user_data_table img {max-width: 100%; width: 50px; height: 50px; border-radius: 50%}
+.user_data_table .headrow label {font-weight: bold}
+.right_fixed_btn {position: fixed; top: 30%; right: 0; margin-top: -50px;}
+.vertical-text {
+	transform: rotate(90deg);
+
+}

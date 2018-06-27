@@ -114,7 +114,14 @@
       </ul>
     </nav>
   </footer>
+
+<div class="right_fixed_btn">
+  <a href="{% url 'quiz' %}" class="vertical-text">
+    <img src="{% static 'images/play-quiz.png' %}" alt="">
+  </a>
+</div>
 <script>
+
 $('#myInput').keypress(function (e) {
   if (e.which == 13) {
   var test = $("#myInput").val();
