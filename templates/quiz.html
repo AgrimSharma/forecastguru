@@ -8,7 +8,7 @@
     <meta property="og:url" content="https://forecast.guru" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="ForecastGuru"/>
-<meta property="og:description" content="Choose from the most popular categories or suggest to add more info@forecast.guru" />
+<meta property="og:description" content="Win amazing prizes when you participate in the Forecast Guru quizzes online!" />
 <meta property="og:image" content="https://forecast.guru/static/images/TutorialScreen-icon1.jpg" />
 <meta property="fb:app_id" content="186107225561354" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -55,82 +55,70 @@
       </div>
     </div>
 
-    <div class="container">
-
-
-        <div class="row mt-2">
-          <div class="col-12">
-            <div class="form-group has-search m-0"> <span class="fa fa-search form-control-feedback"></span>
-              <form method="post" action="/search_result/">
-                  <input type="text" class="form-control" placeholder="Search Forecast" name="point" id="myInput">
-              </form>
-            </div>
-          </div>
-
-        </div>
-      </div>
 </header>
 
 <div class="topspace"></div>
 
 <div class="container fixed_p_footer">
   <div class="row">
-    <div class="col-md-12">
-    {% for c in category %}
-      <div class="category_wrap">
-        <a href=" {% url 'category_search' c.id %}">
-        <div class="cat_box">
-          <div class="row align-items-center">
-            <div class="col-3 text-center">
-                <img src="{{c.image}}" alt="">
-            </div>
-            <div class="col-9">
-              <p>{{c.name}}</p>
-            </div>
-          </div>
-        </div>
-        </a>
+
+      <div class="col-md-12 text-center" style="padding-top: 20px;">
+<div id="embed-quiz-382452">Loading <a href="https://www.onlinequizcreator.com/fifa-world-cup-trivia/quiz-382452">FIFA World Cup Trivia</a></div>
+      <div id="embed-quiz-382454">Loading <a href="https://www.onlinequizcreator.com/fifa-history-trivia/quiz-382454">FIFA History Trivia</a></div>
+<div id="embed-quiz-382453">Loading <a href="https://www.onlinequizcreator.com/world-cup-soccer-trivia/quiz-382453">World Cup Soccer Trivia</a></div>
 
       </div>
-    {% endfor %}
-
-
-    </div>
-  </div>
-</div>
+  </div></div>
 <footer class="sticky-footer">
     <nav class="navbar">
       <ul class="navbar-nav nav-fill w-100 text-center">
         <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
           Forecasts</a> </li>
-        <li class="nav-item"> <a class="nav-link active" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
           Categories</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
           Results</a> </li>
-          <li class="nav-item"> <a class="nav-link" href="{% url 'private' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+          <li class="nav-item"> <a class="nav-link active" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
             My Forecasts</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
           My Account</a> </li>
       </ul>
     </nav>
   </footer>
-<script>
-$('#myInput').keypress(function (e) {
-  if (e.which == 13) {
-  var test = $("#myInput").val();
-
-  $.ajax({
-    type:"POST",
-    url: "{% url 'search_result' %}",
-    data: {'point': test},
-    success: function(resp){
-
-    }
-});
-    <!--$('form').submit();-->
-    <!--return false;-->
-  }
-});
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript">
+	var QuizWorks = window.QuizWorks || [];
+	QuizWorks.push(
+		[document.getElementById("embed-quiz-382452"), "quiz", "382452", {
+			autostart: false,
+			width: "100%",
+			height: "640px"
+		}]
+	);
 </script>
+<script type="text/javascript" async defer src="https://d134jvmqfdbkyi.cloudfront.net/script/embed.min.js"></script>
+
+<script type="text/javascript">
+	var QuizWorks = window.QuizWorks || [];
+	QuizWorks.push(
+		[document.getElementById("embed-quiz-382454"), "quiz", "382454", {
+			autostart: false,
+			width: "100%",
+			height: "320px"
+		}]
+	);
+</script>
+<script type="text/javascript" async defer src="https://d134jvmqfdbkyi.cloudfront.net/script/embed.min.js"></script>
+<script type="text/javascript">
+	var QuizWorks = window.QuizWorks || [];
+	QuizWorks.push(
+		[document.getElementById("embed-quiz-382453"), "quiz", "382453", {
+			autostart: false,
+			width: "100%",
+			height: "320px"
+		}]
+	);
+</script>
+<script type="text/javascript" async defer src="https://d134jvmqfdbkyi.cloudfront.net/script/embed.min.js"></script>
 
 </body></html>
