@@ -126,7 +126,7 @@ def live_forecast(request):
                 start = start.time()
                 today = 'yes'
             else:
-                start = f.expire  + datetime.timedelta(hours=5, minutes=30)
+                start = f.expire + datetime.timedelta(hours=5, minutes=30)
 
                 today = "no"
             betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
@@ -219,107 +219,65 @@ def forecast_result(request):
 
         forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
                                                 status__name='Result Declared').order_by("-expire")
-        for f in forecast_live:
-            date = current.date()
-            bet_start = f.expire.date()
-            if date == bet_start:
-                start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                start = start.time()
-                today = 'yes'
-            else:
-                start = f.expire  + datetime.timedelta(hours=5, minutes=30)
-                today = 'no'
-            betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
-            betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
-
-            try:
-                bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
-                bet_for_user = Betting.objects.filter(forecast=f, users=profile).aggregate(bet_for=Sum('bet_for'))[
-                    'bet_for']
-                bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
-                    'bet_against']
-                bet_against_user = \
-                Betting.objects.filter(forecast=f, users=profile).aggregate(bet_against=Sum('bet_against'))[
-                    'bet_against']
-                total_wagered = betting_against + betting_for
-                totl = bet_against + bet_for
-                percent_for = (bet_for / totl) * 100
-                percent_against = (100 - percent_for)
-                total = bet_against + bet_for
-            except Exception:
-                total_wagered = 0
-                bet_against_user = 0
-                bet_for_user = 0
-                percent_for = 0
-                percent_against = 0
-                bet_for = 0
-                bet_against = 0
-                total = 0
-            status = "yes" if f.won == "yes" else "no"
-            data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
-                             forecast=f, total=total, start=start,
-                             total_user=betting_for + betting_against,
-                             betting_for=betting_for, betting_against=betting_against, today=today,
-                             participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
-                             ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
-                             bet_for=bet_for,
-                             bet_for_user=bet_for_user if bet_for_user else 0,
-                             bet_against_user=bet_against_user if bet_against_user else 0,
-                             ))
     except Exception:
         forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
                                                 status__name='Result Declared').order_by(
             "-expire")
-        for f in forecast_live:
-            date = current.date()
-            bet_start = (f.expire).date()
-            if date == bet_start:
-                start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                start = start.time()
-                today = 'yes'
-            else:
-                start = f.expire  + datetime.timedelta(hours=5, minutes=30)
-                today = 'no'
-            betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
-            betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
 
-            try:
-                bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
-                bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
-                    'bet_against']
-                total_wagered = betting_against + betting_for
-                totl = bet_against + bet_for
-                percent_for = (bet_for / totl) * 100
-                percent_against = (100 - percent_for)
-                total = bet_against + bet_for
-            except Exception:
-                total_wagered = 0
-                percent_for = 0
-                percent_against = 0
-                bet_for = 0
-                bet_against = 0
-                total = 0
-            status = "yes" if f.won == "yes" else "no"
-            data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
-                             forecast=f, total=total, start=start,
-                             total_user=betting_for + betting_against,
-                             betting_for=betting_for, betting_against=betting_against, today=today,
-                             participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
-                             ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
-                             bet_for=bet_for,
-                             bet_for_user=0,
-                             bet_against_user=0
-                             ))
-
-    return render(request, 'forecast_result.html', {"live": data,
+    return render(request, 'forecast_result.html', {"live": forecast_result_page(forecast_live),
                                                     "user": "Guest" if request.user.is_anonymous() else request.user.username,
                                                     "heading": "Results",
                                                     "title": "Forecast Result",
                                                     })
 
 
+def forecast_result_page(forecast):
+    data = []
+    for f in forecast:
+        date = current.date()
+        bet_start = (f.expire).date()
+        if date == bet_start:
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time()
+            today = 'yes'
+        else:
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            today = 'no'
+        betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
+        betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
+
+        try:
+            bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
+                'bet_against']
+            total_wagered = betting_against + betting_for
+            totl = bet_against + bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
+            total = bet_against + bet_for
+        except Exception:
+            total_wagered = 0
+            percent_for = 0
+            percent_against = 0
+            bet_for = 0
+            bet_against = 0
+            total = 0
+        status = "yes" if f.won == "yes" else "no"
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
+                         forecast=f, total=total, start=start,
+                         total_user=betting_for + betting_against,
+                         betting_for=betting_for, betting_against=betting_against, today=today,
+                         participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
+                         ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
+                         bet_for=bet_for,
+                         bet_for_user=0,
+                         bet_against_user=0
+                         ))
+    return data
+
+
 def result_not_declared(request):
-    forecast_result = ForeCast.objects.filter(approved__name="yes", private__name='no', status__name='Closed',
+    forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='Result Declare',
                                               verified__name='no').order_by("-expire")
     data = []
     try:
@@ -328,13 +286,13 @@ def result_not_declared(request):
 
         for f in forecast_result:
             date = current.date()
-            bet_start = (f.expire).date()
+            bet_start = f.expire.date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 start = start.time()
                 today = 'yes'
             else:
-                start = f.expire  + datetime.timedelta(hours=5, minutes=30)
+                start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 today = 'no'
             betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
             betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
@@ -1252,7 +1210,7 @@ def live_forecast_data_bet(forecast_live, account):
     for f in forecast_live:
         date = current.date()
         forecast = f
-        bet_start = (forecast.expire).date()
+        bet_start = forecast.expire.date()
 
         if date == bet_start:
             start = f.expire + datetime.timedelta(hours=5, minutes=30)
@@ -1614,11 +1572,11 @@ def forecast_live_view(category, profile):
         bet_start = (forecast.expire).date()
 
         if date == bet_start:
-            start = f.expire
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
-            start = f.expire
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
 
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
@@ -2088,7 +2046,7 @@ def trending_data(objects):
             start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
 
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
