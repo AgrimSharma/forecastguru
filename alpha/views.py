@@ -38,7 +38,7 @@ def send_notification(text, message, url, subscriber_id, user):
     data = [
         ('title', text),
         ('message', message),
-        ('url', url),
+        ('url', "https://forecast.sirez.com" + url),
         ('subscriber_id', str(subscriber_id)),
 
     ]
