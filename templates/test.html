@@ -44,9 +44,9 @@
   <div class="btn_box mb-3">
 <a href="https://forecast.sirez.com/facebook/login/?process=login" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
                 </div>
-                <!--<div class="btn_box">-->
-                    <!--<a href="{% url 'signup_page' %}" class="btn btn-ghost w-100 text-uppercase">Register</a>-->
-                <!--</div>-->
+                <div class="btn_box">
+                    <a href="{% url 'quiz' %}" class="btn btn-ghost w-100 text-uppercase">Play Quiz</a>
+                </div>
                 <!--<div class="position-relative ordiv">-->
                     <!--<span class="leftline"></span>-->
                     <!--<span>OR</span>-->
@@ -57,7 +57,17 @@
                     <a href="{% url 'category' %}" class="btn btn-ghost w-100 text-uppercase">Continue as Guest</a>
                 </div>
 
-
+                <div class="btn_wrap mt-4">
+                        <div class="btn_box mb-3">
+                            <a href="{% static 'images/quiz.jpeg' %}" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+                </div>
+                <div class="btn_box">
+                    <a href="{% url 'quiz' %}" class="btn btn-ghost w-100 text-uppercase">Play Quiz</a>
+                </div>
+                <div>
+                    <a href="{% url 'quiz' %}"><img src="{static 'images/quiz.jpeg' %}" alt=""/></a>
+                </div>
+                </div>
 
 
             </div>
