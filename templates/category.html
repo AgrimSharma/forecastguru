@@ -185,7 +185,7 @@ _pcq.push(['APIReady', callbackFunction]);
 function callbackFunction() {
 
     var user = $("#user").val();
-    alert(user);
+    alert(user + " " + pushcrew.subscriberId);
     if(parseInt(user) > 0){
     var sub_id = pushcrew.subscriberId;
         $.ajax({
