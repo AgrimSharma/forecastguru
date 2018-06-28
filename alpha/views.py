@@ -2160,6 +2160,7 @@ def result_save(request):
     else:
         return HttpResponse(json.dumps(dict(error="Try again later")))
 
+
 @csrf_exempt
 def save_user_id(request):
     if request.method == "POST":
