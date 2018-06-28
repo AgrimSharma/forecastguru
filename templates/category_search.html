@@ -363,4 +363,19 @@ $.ajax({
 });
 
 </script>
+<script>
+        $(function(){
+
+            $('.banner_slider').slick({
+                dots: true,
+                arrows: false,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 1,
+                autoplay:true,
+                autoplaySpeed:10000,
+            });
+
+    })
+    </script>
 {% endblock %}
