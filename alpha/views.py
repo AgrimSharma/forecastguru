@@ -1991,7 +1991,9 @@ def import_csv(request):
         return HttpResponse(json.dumps(dict(message="File Uploaded Successful")))
     else:
         return render(request, 'import_csv.html', {"heading": "Import CSV",
-                                                   "title": "Import CSV", })
+                                                   "title": "Import CSV",
+                                                   "user": "Guest" if request.user.is_anonymous() else request.user.username
+                                                   })
 
 
 def device_data_android(request):
@@ -2026,14 +2028,14 @@ def thank_you(request):
             status.status = 1
             status.save()
             return render(request, "thank_you.html", {"heading": "Registration Complete",
-                                                      "title": "Registration Complete", })
+                                                      "title": "Registration Complete", "user": "Guest" if request.user.is_anonymous() else request.user.username})
     except Exception:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         LoginStatus.objects.create(user=profile, status=1)
 
         return render(request, "thank_you.html", {"heading": "Registration Complete",
-                                                  "title": "Registration Complete", })
+                                                  "title": "Registration Complete", "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 @csrf_exempt
@@ -2067,13 +2069,13 @@ def trending_forecast(request):
             data.append(f)
 
     if len(data) == 0:
-        return render(request, "no_trending.html", {"heading": "Trending Forecast", "title": "Trending Forecast", })
+        return render(request, "no_trending.html", {"heading": "Trending Forecast", "title": "Trending Forecast", "user": "Guest" if request.user.is_anonymous() else request.user.username})
     else:
 
         objects = data[:10]
 
         return render(request, 'trending.html',
-                      {"live": trending_data(objects), "heading": "Trending Forecast", "title": "Trending Forecast", })
+                      {"live": trending_data(objects), "heading": "Trending Forecast", "title": "Trending Forecast", "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 def trending_data(objects):
@@ -2138,6 +2140,10 @@ def result_save(request):
         return HttpResponse(request.path)
     else:
         return HttpResponse(json.dumps(dict(error="Try again later")))
+
+
+def quiz(request):
+    return render(request, "quiz.html",{"heading": "Trivia Quiz", "title": "ForecastGuru", "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 @csrf_exempt
