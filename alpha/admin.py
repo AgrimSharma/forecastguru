@@ -97,11 +97,13 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class NotificationUserAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['user', 'subscriber_id']
+    search_fields = ['user']
 
 
 class NotificationAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['user', 'title', "message", "url", "status"]
+    list_filter = ('status',)
 
 
 admin.site.register(Category, CategoryAdmin)
