@@ -184,17 +184,17 @@ _pcq.push(['APIReady', callbackFunction]);
 
 function callbackFunction() {
 
-    var user = $("#user").val();
     alert(user + " " + pushcrew.subscriberId);
     if(parseInt(user) > 0){
     var sub_id = pushcrew.subscriberId;
         $.ajax({
                 type: "POST",
                 url: "{% url 'notification_user' %}",
-                data: {'user': user,'sub_id':sub_id},
+                data: {'sub_id':sub_id},
 
                 success: function(resp){
-                    console.log(sub_id);
+
+                    console.log(sub_id + " " + resp);
                     }
                 });
       }

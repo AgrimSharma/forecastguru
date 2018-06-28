@@ -2163,17 +2163,17 @@ def result_save(request):
 @csrf_exempt
 def save_user_id(request):
     if request.method == "POST":
-        user = request.POST.get('user', '')
         sub_id = request.POST.get('sub_id', '')
         try:
-            user = User.objects.get(id=int(user))
+            user = request.user
             profile = SocialAccount.objects.get(user=user)
-            NotificationUser.objects.get(user=profile)
+            try:
+                NotificationUser.objects.get(user=profile)
+            except Exception:
+                NotificationUser.objects.create(user=profile, subscriber_id=sub_id)
+            return HttpResponse('success')
         except Exception:
-            user = User.objects.get(id=int(user))
-            profile = SocialAccount.objects.get(user=user)
-            NotificationUser.objects.create(user=profile, subscriber_id=sub_id)
-        return HttpResponse('success')
+            return HttpResponse('Fail')
 
 
 def quiz(request):
