@@ -1625,7 +1625,6 @@ def forecast_live_view(category, profile):
     forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no', category=category,
                                             status__name='In-Progress').order_by("expire")
 
-
     for f in forecast_live:
         date = current.date()
         forecast = f
@@ -1688,11 +1687,11 @@ def forecast_live_view_sub(category, profile):
         bet_start = (forecast.expire).date()
 
         if date == bet_start:
-            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+            start = forecast.expire
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+            start = forecast.expire
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -1794,11 +1793,11 @@ def forecast_live_view_bt_sub(category_id):
         bet_start = (forecast.expire).date()
 
         if date == bet_start:
-            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+            start = forecast.expire
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+            start = forecast.expire
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -2153,7 +2152,7 @@ def result_save(request):
             vote = 'yes'
         else:
             vote = 'no'
-        status = Status.objects.get(name='Result Declared')
+        status = Status.objects.get(name='Closed')
         forecast = ForeCast.objects.get(id=int(id))
         ForeCast.objects.filter(id=id).update(won=vote, status=status)
         return HttpResponse(request.path)
