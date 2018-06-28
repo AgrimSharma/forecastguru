@@ -110,13 +110,10 @@ def create_forecast(request):
         else:
 
             InviteFriends.objects.create(user=admin, forecast=f)
-            try:
-                sub_id = NotificationUser.obects.get(user=users)
-                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
-                                  "/forecast/{}/".format(fid), sub_id.subscriber_id, users)
-            except Exception:
-                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
-                                  "/forecast/{}/".format(fid), "76ad5c6a96f1ced5d63f4c1c39eec5bf", users)
+
+            sub_id = users.notificationuser_set.latest('id').subsciber_id
+            send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
+                              "/forecast/{}/".format(fid), sub_id, users)
             return HttpResponse(json.dumps(
                 dict(status=200, message='Thank You for creating a private forecast', id=f.id)))  # except Exception:
         #
