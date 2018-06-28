@@ -69,7 +69,6 @@ class StatusAdmin(admin.ModelAdmin):
 class BettingAdmin(admin.ModelAdmin):
 
     list_display = ['get_forecast', "get_forecast_category", "get_forecast_sub_category", 'users', 'bet_for', 'bet_against']
-    change_form_template = 'change_list.html'
     date_hierarchy = 'forecast__expire'
     search_fields = ['forecast__heading']
     list_filter = ("forecast__category", )
