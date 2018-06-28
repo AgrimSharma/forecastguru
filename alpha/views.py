@@ -806,6 +806,9 @@ def allocate_points(request):
             f.user.save()
             f.save()
             total -= total * 0.10
+        sub_id = NotificationUser.objects.get(user=f.user)
+        send_notification("ForecastGuru", "You have collected {market} market fee for the forecast {fore}".format(market=(bet_against + bet_for) * 0.05, fore=f.heading),
+                          "https://forecast.sirez.com/forecast/{}".format(f.id), sub_id.subscriber_id, f.user)
     return HttpResponse("success")
 
 
