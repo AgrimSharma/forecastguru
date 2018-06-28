@@ -2212,7 +2212,9 @@ def save_user_id(request):
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         try:
-            NotificationUser.objects.get(user=profile)
+            n = NotificationUser.objects.get(user=profile)
+            n.subscriber_id=sub_id
+            n.save()
         except Exception:
             NotificationUser.objects.create(user=profile, subscriber_id=sub_id)
         return HttpResponse(json.dumps(dict(message='success')))
