@@ -2160,6 +2160,21 @@ def result_save(request):
     else:
         return HttpResponse(json.dumps(dict(error="Try again later")))
 
+@csrf_exempt
+def save_user_id(request):
+    if request.method == "POST":
+        user = request.POST.get('user', '')
+        sub_id = request.POST.get('sub_id', '')
+        try:
+            user = User.objects.get(id=int(user))
+            profile = SocialAccount.objects.get(user=user)
+            NotificationUser.objects.get(user=profile)
+        except Exception:
+            user = User.objects.get(id=int(user))
+            profile = SocialAccount.objects.get(user=user)
+            NotificationUser.objects.create(user=profile, subscriber_id=sub_id)
+        return HttpResponse('success')
+
 
 def quiz(request):
     return render(request, "quiz.html",{"heading": "Trivia Quiz", "title": "ForecastGuru", })

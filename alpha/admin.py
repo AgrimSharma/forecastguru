@@ -96,10 +96,19 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ('user', 'amount', 'order_date')
 
 
-# admin.site.register(Source, SourceAdmin)
+class NotificationUserAdmin(admin.ModelAdmin):
+    pass
+
+
+class NotificationAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(ForeCast, ForeCastAdmin)
+admin.site.register(NotificationUser, NotificationUserAdmin)
+admin.site.register(NotificationPanel, NotificationAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(Betting, BettingAdmin)
 admin.site.register(Banner, BannerAdmin)
