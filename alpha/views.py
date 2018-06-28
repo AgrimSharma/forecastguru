@@ -82,8 +82,9 @@ def create_forecast(request):
         if private.name == 'no':
             try:
                 sub_id = NotificationUser.obects.get(user=users)
+
                 send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
-                                  "/forecast/{}/".format(fid), sub_id)
+                                  "/forecast/{}/".format(fid), sub_id.subscriber_id, users)
             except Exception:
                 pass
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
@@ -93,7 +94,7 @@ def create_forecast(request):
             try:
                 sub_id = NotificationUser.obects.get(user=users)
                 send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
-                                  "/forecast/{}/".format(fid), sub_id)
+                                  "/forecast/{}/".format(fid), sub_id.subscriber_id, users)
             except Exception:
                 pass
             return HttpResponse(json.dumps(
@@ -2176,7 +2177,7 @@ def result_save(request):
         return HttpResponse(json.dumps(dict(error="Try again later")))
 
 
-def send_notification(text, message, url, subscriber_id):
+def send_notification(text, message, url, subscriber_id, user):
     headers = {
         'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
     }
@@ -2190,6 +2191,7 @@ def send_notification(text, message, url, subscriber_id):
     ]
 
     response = requests.post('https://pushcrew.com/api/v1/send/individual', headers=headers, data=data)
+    NotificationPanel.objects.create(title=text, message=message, url=url, status=1, user=user)
     return response.status_code
 
 @csrf_exempt
