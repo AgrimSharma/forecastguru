@@ -2076,7 +2076,7 @@ def thank_you(request):
         profile = SocialAccount.objects.get(user=user)
         status = LoginStatus.objects.get(user=profile)
         if status.status == 1:
-            return HttpResponseRedirect("/category/")
+            return HttpResponseRedirect("/extra/")
         else:
             status.status = 1
             status.save()
@@ -2216,6 +2216,11 @@ def save_user_id(request):
 
 def quiz(request):
     return render(request, "quiz.html",{"heading": "Trivia Quiz", "title": "ForecastGuru", "user": "Guest" if request.user.is_anonymous() else request.user.username})
+
+
+def extra_page(request):
+    return render(request, "extra.html", {"heading": "Home", "title": "ForecastGuru",
+                                         "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 def main_page(request):

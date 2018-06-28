@@ -19,6 +19,7 @@ from .views import *
 urlpatterns = [
     url(r'^accounts/profile/', test, name='home_page'),
     url(r'^create_forecast/', create_forecast, name='create_forecast'),
+    url(r'^extra/', extra_page, name='extra'),
     url(r'^notif_user/', save_user_id, name='notification_user'),
     url(r'^quiz/', quiz, name='quiz'),
     url(r'^trending/', trending_forecast, name='trending'),

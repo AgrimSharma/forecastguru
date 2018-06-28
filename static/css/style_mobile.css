@@ -845,4 +845,4 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
 	transform: rotate(90deg);
 
 }
-
+.banner_slider img {display: inline-block; max-width: 100%}
