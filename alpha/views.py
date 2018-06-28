@@ -30,6 +30,24 @@ def test(request):
     return render(request, 'main.html')
 
 
+def send_notification(text, message, url, subscriber_id, user):
+    headers = {
+        'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
+    }
+
+    data = [
+        ('title', text),
+        ('message', message),
+        ('url', url),
+        ('subscriber_id', str(subscriber_id)),
+
+    ]
+
+    response = requests.post('https://pushcrew.com/api/v1/send/individual', headers=headers, data=data)
+    NotificationPanel.objects.create(title=text, message=message, url=url, status=1, user=user)
+    return response.status_code
+
+
 @csrf_exempt
 def create_forecast(request):
     if request.method == 'POST':
@@ -86,7 +104,8 @@ def create_forecast(request):
                 send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
                                   "/forecast/{}/".format(fid), sub_id.subscriber_id, users)
             except Exception:
-                pass
+                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
+                                  "/forecast/{}/".format(fid), "76ad5c6a96f1ced5d63f4c1c39eec5bf", users)
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
         else:
 
@@ -96,7 +115,8 @@ def create_forecast(request):
                 send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
                                   "/forecast/{}/".format(fid), sub_id.subscriber_id, users)
             except Exception:
-                pass
+                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
+                                  "/forecast/{}/".format(fid), "76ad5c6a96f1ced5d63f4c1c39eec5bf", users)
             return HttpResponse(json.dumps(
                 dict(status=200, message='Thank You for creating a private forecast', id=f.id)))  # except Exception:
         #
@@ -2177,22 +2197,7 @@ def result_save(request):
         return HttpResponse(json.dumps(dict(error="Try again later")))
 
 
-def send_notification(text, message, url, subscriber_id, user):
-    headers = {
-        'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
-    }
 
-    data = [
-        ('title', text),
-        ('message', message),
-        ('url', url),
-        ('subscriber_id', subscriber_id),
-
-    ]
-
-    response = requests.post('https://pushcrew.com/api/v1/send/individual', headers=headers, data=data)
-    NotificationPanel.objects.create(title=text, message=message, url=url, status=1, user=user)
-    return response.status_code
 
 @csrf_exempt
 def save_user_id(request):
