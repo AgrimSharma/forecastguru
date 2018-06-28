@@ -2171,9 +2171,9 @@ def save_user_id(request):
                 NotificationUser.objects.get(user=profile)
             except Exception:
                 NotificationUser.objects.create(user=profile, subscriber_id=sub_id)
-            return HttpResponse('success')
+            return HttpResponse(json.dumps(dict(message='success')))
         except Exception:
-            return HttpResponse('Fail')
+            return HttpResponse(json.dumps(dict(message='fail')))
 
 
 def quiz(request):

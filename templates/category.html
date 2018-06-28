@@ -196,6 +196,9 @@ function callbackFunction() {
 
                     console.log(sub_id + " " + resp);
                     }
+                error: function(error){
+                    console.log(sub_id + " " + error);
+                }
                 });
       }
 }
