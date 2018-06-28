@@ -111,7 +111,7 @@ def create_forecast(request):
 
             InviteFriends.objects.create(user=admin, forecast=f)
 
-            sub_id = users.notificationuser_set.latest('id').subsciber_id
+            sub_id = users.notificationuser_set.latest('id').subscriber_id
             send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
                               "/forecast/{}/".format(fid), sub_id, users)
             return HttpResponse(json.dumps(
