@@ -2164,16 +2164,16 @@ def result_save(request):
 def save_user_id(request):
     if request.method == "POST":
         sub_id = request.POST.get('sub_id', '')
+        # try:
+        user = request.user
+        profile = SocialAccount.objects.get(user=user)
         try:
-            user = request.user
-            profile = SocialAccount.objects.get(user=user)
-            try:
-                NotificationUser.objects.get(user=profile)
-            except Exception:
-                NotificationUser.objects.create(user=profile, subscriber_id=sub_id)
-            return HttpResponse(json.dumps(dict(message='success')))
+            NotificationUser.objects.get(user=profile)
         except Exception:
-            return HttpResponse(json.dumps(dict(message='fail')))
+            NotificationUser.objects.create(user=profile, subscriber_id=sub_id)
+        return HttpResponse(json.dumps(dict(message='success')))
+        # except Exception:
+        #     return HttpResponse(json.dumps(dict(message='fail')))
 
 
 def quiz(request):
