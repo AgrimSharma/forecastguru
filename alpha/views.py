@@ -42,8 +42,9 @@ def send_notification(text, message, url, subscriber_id, user):
         ('subscriber_id', str(subscriber_id)),
 
     ]
-
+    print(data)
     response = requests.post('https://pushcrew.com/api/v1/send/individual', headers=headers, data=data)
+    print(response.status_code)
     NotificationPanel.objects.create(title=text, message=message, url=url, status=1, user=user)
     return response.status_code
 
@@ -207,7 +208,6 @@ def live_forecast_desc(request):
             bet_start = (f.expire).date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                print(start)
                 start = start.time()
                 today = 'yes'
             else:
@@ -308,7 +308,6 @@ def live_forecast(request):
             bet_start = (f.expire).date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                print(start)
                 start = start.time()
                 today = 'yes'
             else:
@@ -814,7 +813,6 @@ def forecast_data(forecast, ratio, total, status, total_bets):
     betting = Betting.objects.filter(forecast=forecast)
     ratio += 1
     for b in betting:
-        print(b.users.user.username)
         bet_for = b.bet_for
         bet_against = b.bet_against
         if bet_for == 0 and bet_against == 0:
@@ -938,7 +936,6 @@ def get_hash_string(request, txnid, amount):
     email = so.user.email
     hash_string = config.KEY + "|" + txnid + "|" + str(float(constants.PAID_FEE_AMOUNT[amount])) + "|" + \
                   constants.PAID_FEE_PRODUCT_INFO[amount] + "|" + name + "|" + email + "|||||||||||" + config.SALT
-    print(hash_string)
     return hash_string
 
 
@@ -1022,13 +1019,11 @@ def payu_cancel(request):
 
 def category(request):
     category = Category.objects.all().order_by('identifier')
-    print(category.count())
     data = []
     for c in category:
         image = c.subcategory_set.get(name='Others').image
 
         data.append(dict(name=c.name, id=c.id, image=image))
-        print(data)
     return render(request, 'category.html', {'category': data,
                                              "heading": "Categories",
                                              "title": "ForecastGuru",
@@ -1170,7 +1165,6 @@ def search_result(request):
 
                     if date == bet_start:
                         start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                        print(start)
                         start = start.time()
                         today = 'yes'
                     else:
@@ -1296,7 +1290,6 @@ def not_approved(forecast):
                          betting_for=0, betting_against=0, today=today,
                          participants=0, bet_for=0,
                          bet_against=0))
-        print(data)
     return data
 
 
@@ -1310,7 +1303,6 @@ def live_forecast_data_bet(forecast_live, account):
 
         if date == bet_start:
             start = f.expire + datetime.timedelta(hours=5, minutes=30)
-            print(start)
             start = start.time()
             today = 'yes'
         else:
@@ -1511,7 +1503,6 @@ def forecast_invite_data(forecast_live, account):
 def forecast_result_data(forecast_live, account):
     data = []
     for f in forecast_live:
-        print(f)
         forecast = f.forecast
         date = current.date()
         bet_start = forecast.expire.date()
@@ -1690,8 +1681,6 @@ def forecast_live_view(category, profile):
             totl = bet_against + bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            print(percent_for, percent_against)
-
             total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
             total_wagered = 0
@@ -1745,8 +1734,6 @@ def forecast_live_view_sub(category, profile):
             totl = bet_against + bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            print(percent_for, percent_against)
-
             total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
             total_wagered = 0
@@ -1780,7 +1767,6 @@ def forecast_live_view_bt(category_id):
 
         if date == bet_start:
             start = f.expire + datetime.timedelta(hours=5, minutes=30)
-            print(start)
             start = start.time()
             today = 'yes'
         else:
@@ -1797,8 +1783,6 @@ def forecast_live_view_bt(category_id):
             totl = bet_against + bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            print(percent_for, percent_against)
-
             total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
             total_wagered = 0
@@ -1846,8 +1830,6 @@ def forecast_live_view_bt_sub(category_id):
             totl = bet_against + bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            print(percent_for, percent_against)
-
             total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
             total_wagered = 0
@@ -2141,7 +2123,6 @@ def trending_data(objects):
         bet_start = forecast.expire.date()
         if date == bet_start:
             start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
-            print(start)
             start = start.time()
             today = 'yes'
         else:
