@@ -98,14 +98,11 @@ def create_forecast(request):
         admin = SocialAccount.objects.get(user__username="admin")
         Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
         if private.name == 'no':
-            try:
-                sub_id = NotificationUser.obects.get(user=users)
 
-                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
-                                  "/forecast/{}/".format(fid), sub_id.subscriber_id, users)
-            except Exception:
-                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
-                                  "/forecast/{}/".format(fid), "76ad5c6a96f1ced5d63f4c1c39eec5bf", users)
+            sub_id = users.notificationuser_set.latest('id').subscriber_id
+
+            send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
+                              "/forecast/{}/?&utm_source&utm_medium&utm_campaign".format(fid), sub_id, users)
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
         else:
 
@@ -113,7 +110,7 @@ def create_forecast(request):
 
             sub_id = users.notificationuser_set.latest('id').subscriber_id
             send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
-                              "/forecast/{}/".format(fid), sub_id, users)
+                              "/forecast/{}/?&utm_source&utm_medium&utm_campaign".format(fid), sub_id, users)
             return HttpResponse(json.dumps(
                 dict(status=200, message='Thank You for creating a private forecast', id=f.id)))  # except Exception:
         #
