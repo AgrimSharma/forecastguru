@@ -89,6 +89,7 @@ def create_forecast(request):
         f = ForeCast.objects.get(category=cat, sub_category=sub_cat,
                                  user=users, heading=heading,
                                  )
+        fid = f.id
         f.user.forecast_created += 1
         f.user.save()
         f.save()
