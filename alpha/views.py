@@ -2222,7 +2222,6 @@ def save_user_id(request):
         #     return HttpResponse(json.dumps(dict(message='fail')))
 
 
-
 def quiz(request):
     return render(request, "quiz.html",{"heading": "Trivia Quiz", "title": "ForecastGuru", "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
