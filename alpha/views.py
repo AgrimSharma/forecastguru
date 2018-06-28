@@ -164,7 +164,7 @@ def live_forecast_desc(request):
                              bet_against_user=bet_against_user if bet_against_user else 0))
     except Exception:
         forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
-                                                status__name='In-Progress').order_by("expire")
+                                                status__name='In-Progress').order_by("-expire")
         for f in forecast_live:
             date = current.date()
 
@@ -209,7 +209,6 @@ def live_forecast_desc(request):
                                                   "heading": "Forecasts",
                                                   "title": "ForecastGuru",
                                                   "user": "Guest" if request.user.is_anonymous() else request.user.username})
-
 
 
 def live_forecast(request):
