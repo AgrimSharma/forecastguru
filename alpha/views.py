@@ -96,11 +96,11 @@ def create_forecast(request):
                                                                 "%Y-%m-%d %H:%M"),
                                                             "user": "Guest" if request.user.is_anonymous() else request.user.username,
                                                             "heading": "Create Forecast",
-                                                            "title": "Create Forecast",
+                                                            "title": "ForecastGuru",
                                                             })
         except Exception:
             return render(request, 'create_forecast_nl.html', {"heading": "Create Forecast",
-                                                               "title": "Create Forecast",
+                                                               "title": "ForecastGuru",
                                                                "user": "Guest" if request.user.is_anonymous() else request.user.username, })
 
 
@@ -108,6 +108,107 @@ def closing_soon(request):
     forecast = ForeCast.objects.filter(start__lte=current, approved__name="yes", status__name='Closing Soon').order_by(
         "expire")
     return render(request, 'closing_soon.html', {"forecast": forecast})
+
+
+def live_forecast_desc(request):
+    data = []
+    try:
+        user = request.user
+        profile = SocialAccount.objects.get(user=user)
+        forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
+                                                status__name='In-Progress').order_by("-expire")
+        for f in forecast_live:
+            date = current.date()
+
+            bet_start = f.expire.date()
+            if date == bet_start:
+                start = f.expire + datetime.timedelta(hours=5, minutes=30)
+                start = start.time()
+                today = 'yes'
+            else:
+                start = f.expire + datetime.timedelta(hours=5, minutes=30)
+
+                today = "no"
+            betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
+            betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
+            try:
+                total_wagered = betting_against + betting_for
+                bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+                bet_for_user = Betting.objects.filter(forecast=f, users=profile).aggregate(bet_for=Sum('bet_for'))[
+                    'bet_for']
+                bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
+                    'bet_against']
+                bet_against_user = \
+                    Betting.objects.filter(forecast=f, users=profile).aggregate(bet_against=Sum('bet_against'))[
+                        'bet_against']
+                totl = bet_against + bet_for
+                percent_for = (bet_for / totl) * 100
+                percent_against = (100 - percent_for)
+
+                total = Betting.objects.filter(forecast=f).count()
+            except Exception:
+                total_wagered = 0
+                bet_against_user = 0
+                bet_for_user = 0
+                percent_for = 0
+                percent_against = 0
+                bet_for = 0
+                bet_against = 0
+                total = Betting.objects.filter(forecast=f).count()
+            data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
+                             total=total, start=start, total_user=betting_for + betting_against,
+                             betting_for=betting_for, betting_against=betting_against, today=today,
+                             participants=total_wagered, bet_for=bet_for,
+                             bet_against=bet_against,
+                             bet_for_user=bet_for_user if bet_for_user else 0,
+                             bet_against_user=bet_against_user if bet_against_user else 0))
+    except Exception:
+        forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
+                                                status__name='In-Progress').order_by("-expire")
+        for f in forecast_live:
+            date = current.date()
+
+            bet_start = (f.expire).date()
+            if date == bet_start:
+                start = f.expire + datetime.timedelta(hours=5, minutes=30)
+                print(start)
+                start = start.time()
+                today = 'yes'
+            else:
+                start = f.expire + datetime.timedelta(hours=5, minutes=30)
+
+                today = "no"
+            betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
+            betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
+            try:
+                total_wagered = betting_against + betting_for
+                bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+                bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
+                    'bet_against']
+                totl = bet_against + bet_for
+                percent_for = (bet_for / totl) * 100
+                percent_against = (100 - percent_for)
+
+                total = Betting.objects.filter(forecast=f).count()
+            except Exception:
+                total_wagered = 0
+                percent_for = 0
+                percent_against = 0
+                bet_for = 0
+                bet_against = 0
+                total = Betting.objects.filter(forecast=f).count()
+            data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
+                             total=total, start=start, total_user=betting_for + betting_against,
+                             betting_for=betting_for, betting_against=betting_against, today=today,
+                             participants=total_wagered, bet_for=bet_for,
+                             bet_against=bet_against,
+                             bet_for_user=0,
+                             bet_against_user=0))
+
+    return render(request, 'live_forecast.html', {"live": data,
+                                                  "heading": "Forecasts",
+                                                  "title": "ForecastGuru",
+                                                  "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 def live_forecast(request):
@@ -126,7 +227,7 @@ def live_forecast(request):
                 start = start.time()
                 today = 'yes'
             else:
-                start = f.expire  + datetime.timedelta(hours=5, minutes=30)
+                start = f.expire + datetime.timedelta(hours=5, minutes=30)
 
                 today = "no"
             betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
@@ -207,214 +308,131 @@ def live_forecast(request):
 
     return render(request, 'live_forecast.html', {"live": data,
                                                   "heading": "Forecasts",
-                                                  "title": "Forecasts",
+                                                  "title": "ForecastGuru",
                                                   "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
-def forecast_result(request):
+def forecast_result_page(forecast):
     data = []
-    try:
-        user = request.user
-        profile = SocialAccount.objects.get(user=user)
+    for f in forecast:
+        date = current.date()
+        bet_start = (f.expire).date()
+        if date == bet_start:
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time()
+            today = 'yes'
+        else:
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            today = 'no'
+        betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
+        betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
 
-        forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
-                                                status__name='Result Declared').order_by("-expire")
-        for f in forecast_live:
-            date = current.date()
-            bet_start = f.expire.date()
-            if date == bet_start:
-                start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                start = start.time()
-                today = 'yes'
-            else:
-                start = f.expire  + datetime.timedelta(hours=5, minutes=30)
-                today = 'no'
-            betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
-            betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
+        try:
+            bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
+                'bet_against']
+            total_wagered = betting_against + betting_for
+            totl = bet_against + bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
+            total = bet_against + bet_for
+        except Exception:
+            total_wagered = 0
+            percent_for = 0
+            percent_against = 0
+            bet_for = 0
+            bet_against = 0
+            total = 0
+        status = "yes" if f.won == "yes" else "no"
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
+                         forecast=f, total=total, start=start,
+                         total_user=betting_for + betting_against,
+                         betting_for=betting_for, betting_against=betting_against, today=today,
+                         participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
+                         ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
+                         bet_for=bet_for,
+                         bet_for_user=0,
+                         bet_against_user=0
+                         ))
+    return data
 
-            try:
-                bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
-                bet_for_user = Betting.objects.filter(forecast=f, users=profile).aggregate(bet_for=Sum('bet_for'))[
-                    'bet_for']
-                bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
-                    'bet_against']
-                bet_against_user = \
-                Betting.objects.filter(forecast=f, users=profile).aggregate(bet_against=Sum('bet_against'))[
-                    'bet_against']
-                total_wagered = betting_against + betting_for
-                totl = bet_against + bet_for
-                percent_for = (bet_for / totl) * 100
-                percent_against = (100 - percent_for)
-                total = bet_against + bet_for
-            except Exception:
-                total_wagered = 0
-                bet_against_user = 0
-                bet_for_user = 0
-                percent_for = 0
-                percent_against = 0
-                bet_for = 0
-                bet_against = 0
-                total = 0
-            status = "yes" if f.won == "yes" else "no"
-            data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
-                             forecast=f, total=total, start=start,
-                             total_user=betting_for + betting_against,
-                             betting_for=betting_for, betting_against=betting_against, today=today,
-                             participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
-                             ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
-                             bet_for=bet_for,
-                             bet_for_user=bet_for_user if bet_for_user else 0,
-                             bet_against_user=bet_against_user if bet_against_user else 0,
-                             ))
-    except Exception:
-        forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
-                                                status__name='Result Declared').order_by(
-            "-expire")
-        for f in forecast_live:
-            date = current.date()
-            bet_start = (f.expire).date()
-            if date == bet_start:
-                start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                start = start.time()
-                today = 'yes'
-            else:
-                start = f.expire  + datetime.timedelta(hours=5, minutes=30)
-                today = 'no'
-            betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
-            betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
 
-            try:
-                bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
-                bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
-                    'bet_against']
-                total_wagered = betting_against + betting_for
-                totl = bet_against + bet_for
-                percent_for = (bet_for / totl) * 100
-                percent_against = (100 - percent_for)
-                total = bet_against + bet_for
-            except Exception:
-                total_wagered = 0
-                percent_for = 0
-                percent_against = 0
-                bet_for = 0
-                bet_against = 0
-                total = 0
-            status = "yes" if f.won == "yes" else "no"
-            data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
-                             forecast=f, total=total, start=start,
-                             total_user=betting_for + betting_against,
-                             betting_for=betting_for, betting_against=betting_against, today=today,
-                             participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
-                             ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
-                             bet_for=bet_for,
-                             bet_for_user=0,
-                             bet_against_user=0
-                             ))
+def forecast_result(request):
 
-    return render(request, 'forecast_result.html', {"live": data,
+    forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
+                                            status__name='Result Declared').order_by("-expire")
+
+    return render(request, 'forecast_result.html', {"live": forecast_result_page(forecast_live),
                                                     "user": "Guest" if request.user.is_anonymous() else request.user.username,
                                                     "heading": "Results",
-                                                    "title": "Forecast Result",
+                                                    "title": "ForecastGuru",
                                                     })
 
 
 def result_not_declared(request):
-    forecast_result = ForeCast.objects.filter(approved__name="yes", private__name='no', status__name='Closed',
-                                              verified__name='no').order_by("-expire")
-    data = []
     try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
-
-        for f in forecast_result:
-            date = current.date()
-            bet_start = (f.expire).date()
-            if date == bet_start:
-                start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                start = start.time()
-                today = 'yes'
-            else:
-                start = f.expire  + datetime.timedelta(hours=5, minutes=30)
-                today = 'no'
-            betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
-            betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
-
-            try:
-                bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
-                bet_for_user = Betting.objects.filter(forecast=f, users=profile).aggregate(bet_for=Sum('bet_for'))[
-                    'bet_for']
-                bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
-                    'bet_against']
-                bet_against_user = \
-                Betting.objects.filter(forecast=f, users=profile).aggregate(bet_against=Sum('bet_against'))[
-                    'bet_against']
-                total_wagered = betting_against + betting_for
-                totl = bet_against + bet_for
-                percent_for = (bet_for / totl) * 100
-                percent_against = (100 - percent_for)
-                total = bet_against + bet_for
-            except Exception:
-                total_wagered = 0
-                bet_against_user = 0
-                bet_for_user = 0
-                percent_for = 0
-                percent_against = 0
-                bet_for = 0
-                bet_against = 0
-                total = 0
-            status = "yes" if f.won == "yes" else "no"
-            data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
-                             forecast=f, total=total, start=start,
-                             total_user=betting_for + betting_against,
-                             betting_for=betting_for, betting_against=betting_against, today=today,
-                             participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
-                             ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
-                             bet_for=bet_for, bet_against_user=bet_against_user if bet_against_user else 0,
-                             bet_for_user=bet_for_user if bet_for_user else 0))
+        forecast_result = Betting.objects.filter(forecast__private__name='no', users=profile, forecast__status__name='Result Declared',).order_by("-forecast__expire")
+        return render(request, 'forecast_result_pending.html', {
+            "live": forecast_result_page_my(forecast_result),
+            "user": "Guest" if request.user.is_anonymous() else request.user.username,
+            "heading": "My Results",
+            "title": "ForecastGuru",
+        })
     except Exception:
-        for f in forecast_result:
-            date = current.date()
-            bet_start = (f.expire).date()
-            if date == bet_start:
-                start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                start = start.time()
-                today = 'yes'
-            else:
-                start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                today = 'no'
-            betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
-            betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
 
-            try:
-                bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
-                bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
-                    'bet_against']
-                total_wagered = betting_against + betting_for
-                totl = bet_against + bet_for
-                percent_for = (bet_for / totl) * 100
-                percent_against = (100 - percent_for)
-                total = bet_against + bet_for
-            except Exception:
-                total_wagered = 0
-                percent_for = 0
-                percent_against = 0
-                bet_for = 0
-                bet_against = 0
-                total = 0
-            status = "yes" if f.won == "yes" else "no"
-            data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
-                             forecast=f, total=total, start=start,
-                             total_user=betting_for + betting_against,
-                             betting_for=betting_for, betting_against=betting_against, today=today,
-                             participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
-                             ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
-                             bet_for=bet_for, bet_for_user=0, bet_againet_user=0))
-    return render(request, 'forecast_result_pending_no.html', {
-        "result": data,
-        "user": "Guest" if request.user.is_anonymous() else request.user.username,
-        "heading": "Results",
-        "title": "Forecast Result",
-    })
+        return render(request, 'forecast_result_pending_no.html', {
+            "user": "Guest" if request.user.is_anonymous() else request.user.username,
+            "heading": "My Results",
+            "title": "ForecastGuru",
+        })
+
+
+def forecast_result_page_my(forecast):
+    data = []
+    for f in forecast:
+        forecast = f.forecast
+        date = current.date()
+        bet_start = forecast.expire.date()
+        if date == bet_start:
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time()
+            today = 'yes'
+        else:
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
+            today = 'no'
+        betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
+        betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
+
+        try:
+            bet_for = Betting.objects.filter(forecast=forecast).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=forecast).aggregate(bet_against=Sum('bet_against'))[
+                'bet_against']
+            total_wagered = betting_against + betting_for
+            totl = bet_against + bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
+            total = bet_against + bet_for
+        except Exception:
+            total_wagered = 0
+            percent_for = 0
+            percent_against = 0
+            bet_for = 0
+            bet_against = 0
+            total = 0
+        status = "yes" if forecast.won == "yes" else "no"
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
+                         forecast=forecast, total=total, start=start,
+                         total_user=betting_for + betting_against,
+                         betting_for=betting_for, betting_against=betting_against, today=today,
+                         participants=total_wagered, won="Yes" if forecast.won == 'yes' else 'No',
+                         ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
+                         bet_for=bet_for,
+                         bet_for_user=0,
+                         bet_against_user=0
+                         ))
+    return data
 
 
 def get_ratio(bet_for, bet_against, total, status):
@@ -594,7 +612,7 @@ def betting(request, userid):
                                                 "approved": approved,
                                                 "user": users,"won": won,
                                                 "heading": "Forecast Details",
-                                                "title": "Forecast Details","private": "no"
+                                                "title": "ForecastGuru","private": "no"
                                                 })
     elif forecast.private.name == 'yes':
         points = []
@@ -612,7 +630,7 @@ def betting(request, userid):
                                                 "end_date": end_date, "end_time": end_time,
                                                 "won": won,
                                                 "heading": "Forecast Details",
-                                                "title": "Forecast Details", "private": "yes",
+                                                "title": "ForecastGuru", "private": "yes",
                                                 "points": points})
     # except Exception:
     #     return render(request, 'betting.html', {'forecast': forecast, "user": request.user.username,
@@ -934,11 +952,11 @@ def payment(request):
         account = SocialAccount.objects.get(user=request.user)
 
         return render(request, "payumoney.html", {"heading": "Payments",
-                                                  "title": "Payments",
+                                                  "title": "ForecastGuru",
                                                   "user": "Guest" if request.user.is_anonymous() else request.user.username})
     except Exception:
         return render(request, "payumoney_nl.html", {"heading": "Payments",
-                                                     "title": "Payments", })
+                                                     "title": "ForecastGuru", })
 
 
 @csrf_exempt
@@ -977,7 +995,7 @@ def category(request):
         print(data)
     return render(request, 'category.html', {'category': data,
                                              "heading": "Categories",
-                                             "title": "Categories",
+                                             "title": "ForecastGuru",
                                              "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
@@ -990,7 +1008,7 @@ def category_search(request, userid):
         if len(forecast_live_view(category_id, profile)) == 0:
             return render(request, 'my_friend_no.html',{
                               "heading": category_id.name,
-                              "title": category_id.name,
+                              "title": "ForecastGuru",
                               "user": "Guest" if request.user.is_anonymous() else request.user.username
                           })
 
@@ -999,7 +1017,7 @@ def category_search(request, userid):
                           {
                               "live": forecast_live_view(category_id, profile),
                               "heading": category_id.name, "sub": sub,
-                              "title": category_id.name, 'category_id': category_id.id,
+                              "title": "ForecastGuru", 'category_id': category_id.id,
                               "user": "Guest" if request.user.is_anonymous() else request.user.username
                           })
 
@@ -1009,7 +1027,7 @@ def category_search(request, userid):
                       {
                           "live": forecast_live_view_bt(category_id),
                           "heading": category_id.name, "sub": sub,
-                          "title": category_id.name, 'category_id': category_id.id,
+                          "title": "ForecastGuru", 'category_id': category_id.id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
 
@@ -1024,7 +1042,7 @@ def sub_category_data(request, userid):
         if len(forecast_live_view_sub(subcategory, profile)) == 0:
             return render(request, "my_friend_no.html",{
                               "heading": subcategory.name,
-                              "title": subcategory.name,
+                              "title": "ForecastGuru",
                               "user": "Guest" if request.user.is_anonymous() else request.user.username
                           })
         else:
@@ -1032,7 +1050,7 @@ def sub_category_data(request, userid):
                           {
                               "live": forecast_live_view_sub(subcategory, profile),
                               "heading": subcategory.name, "sub": sub,
-                              "title": subcategory.name, "category_id": category.id,
+                              "title": "ForecastGuru", "category_id": category.id,
                               "user": "Guest" if request.user.is_anonymous() else request.user.username
                           })
 
@@ -1042,7 +1060,7 @@ def sub_category_data(request, userid):
                       {
                           "live": forecast_live_view_bt_sub(subcategory),
                           "heading": subcategory.name, "sub": sub,
-                          "title": subcategory.name, "category_id": category.id,
+                          "title": "ForecastGuru", "category_id": category.id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
 
@@ -1063,7 +1081,7 @@ def my_forecast(request):
         not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
         if forecast_live.count() == 0 and forecast_result.count() == 0 and forecast_approval.count() == 0 and forecast_no_bet.count() == 0:
             return render(request, 'my_friend_no.html', {"heading": "My Forecast",
-                                                         "title": "My Forecast",
+                                                         "title": "ForecastGuru",
                                                          "user": "Guest" if request.user.is_anonymous() else request.user.username})
         else:
             return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live, account),
@@ -1071,11 +1089,11 @@ def my_forecast(request):
                                                   "approval": forecast_approval,
                                                   "forecast": live_forecast_data_bet(not_bet, account),
                                                   "heading": "My Forecast",
-                                                  "title": "My Forecast",
+                                                  "title": "ForecastGuru",
                                                   "user": "Guest" if request.user.is_anonymous() else request.user.username})
     except Exception:
         return render(request, 'my_friend.html', {"heading": "My Forecast",
-                                                     "title": "My Forecast",
+                                                     "title": "ForecastGuru",
                                                      "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
@@ -1096,7 +1114,7 @@ def search_result(request):
         query = request.POST.get('point', '')
         if query == "":
             return render(request, "search_data_nf.html", {"data": "No result found", "heading": "Search Forecast",
-                                                           "title": "Search Forecast",
+                                                           "title": "ForecastGuru",
                                                            "user": "Guest" if request.user.is_anonymous() else request.user.username})
         else:
             data = []
@@ -1106,7 +1124,7 @@ def search_result(request):
                 "-expire")
             if len(forecast_live) == 0:
                 return render(request, "search_data_nf.html", {"data": "No result found", "heading": "Search Forecast",
-                                                               "title": "Search Forecast",
+                                                               "title": "ForecastGuru",
                                                                "user": "Guest" if request.user.is_anonymous() else request.user.username})
             else:
                 for f in forecast_live:
@@ -1151,11 +1169,11 @@ def search_result(request):
                               {"live": data,
                                "user": "Guest" if request.user.is_anonymous() else request.user.username,
                                "heading": "Search Forecast",
-                               "title": "Search Forecast",
+                               "title": "ForecastGuru",
                                })
     else:
         return render(request, "search_data_nf.html", {"data": "No result found", "heading": "Search Forecast",
-                                                       "title": "Search Forecast",
+                                                       "title": "ForecastGuru",
                                                        "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
@@ -1252,7 +1270,7 @@ def live_forecast_data_bet(forecast_live, account):
     for f in forecast_live:
         date = current.date()
         forecast = f
-        bet_start = (forecast.expire).date()
+        bet_start = forecast.expire.date()
 
         if date == bet_start:
             start = f.expire + datetime.timedelta(hours=5, minutes=30)
@@ -1576,13 +1594,13 @@ def my_forecast_private(request):
                                                           "approval": forecast_invite_data(forecast_approval, account),
                                                           "user": "Guest" if request.user.is_anonymous() else request.user.username,
                                                           "heading": "Forecast Private",
-                                                          "title": "My Forecast",
+                                                          "title": "ForecastGuru",
                                                           })
     except Exception:
         return render(request, 'my_friend_nl.html',
                       {"user": "Guest" if request.user.is_anonymous() else request.user.username,
                        "heading": "Forecast Private",
-                       "title": "My Forecast",
+                       "title": "ForecastGuru",
                        })
 
 
@@ -1614,11 +1632,11 @@ def forecast_live_view(category, profile):
         bet_start = (forecast.expire).date()
 
         if date == bet_start:
-            start = f.expire
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
-            start = f.expire
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
 
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
@@ -1894,7 +1912,7 @@ def facebook_category(request):
     #     request.session['_auth_user_backend'] = "django.contrib.auth.backends.ModelBackend"
     return render(request, 'category.html', {'category': category,
                                              "heading": "Categories",
-                                             "title": "Categories",
+                                             "title": "ForecastGuru",
                                              "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
@@ -1991,9 +2009,7 @@ def import_csv(request):
         return HttpResponse(json.dumps(dict(message="File Uploaded Successful")))
     else:
         return render(request, 'import_csv.html', {"heading": "Import CSV",
-                                                   "title": "Import CSV",
-                                                   "user": "Guest" if request.user.is_anonymous() else request.user.username
-                                                   })
+                                                   "title": "ForecastGuru", })
 
 
 def device_data_android(request):
@@ -2028,14 +2044,14 @@ def thank_you(request):
             status.status = 1
             status.save()
             return render(request, "thank_you.html", {"heading": "Registration Complete",
-                                                      "title": "Registration Complete", "user": "Guest" if request.user.is_anonymous() else request.user.username})
+                                                      "title": "ForecastGuru", })
     except Exception:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         LoginStatus.objects.create(user=profile, status=1)
 
         return render(request, "thank_you.html", {"heading": "Registration Complete",
-                                                  "title": "Registration Complete", "user": "Guest" if request.user.is_anonymous() else request.user.username})
+                                                  "title": "ForecastGuru", })
 
 
 @csrf_exempt
@@ -2065,17 +2081,20 @@ def trending_forecast(request):
         bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
         bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
             'bet_against']
-        if bet_for + bet_against > 15000:
-            data.append(f)
+        if bet_for == None and bet_against == None:
+            pass
+        else:
+            if bet_for + bet_against > 15000:
+                data.append(f)
 
     if len(data) == 0:
-        return render(request, "no_trending.html", {"heading": "Trending Forecast", "title": "Trending Forecast", "user": "Guest" if request.user.is_anonymous() else request.user.username})
+        return render(request, "no_trending.html", {"heading": "Trending Forecast", "title": "ForecastGuru", })
     else:
 
         objects = data[:10]
 
         return render(request, 'trending.html',
-                      {"live": trending_data(objects), "heading": "Trending Forecast", "title": "Trending Forecast", "user": "Guest" if request.user.is_anonymous() else request.user.username})
+                      {"live": trending_data(objects), "heading": "Trending Forecast", "title": "ForecastGuru", })
 
 
 def trending_data(objects):
@@ -2090,7 +2109,7 @@ def trending_data(objects):
             start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
 
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
@@ -2143,23 +2162,7 @@ def result_save(request):
 
 
 def quiz(request):
-    return render(request, "quiz.html",{"heading": "Trivia Quiz", "title": "ForecastGuru", "user": "Guest" if request.user.is_anonymous() else request.user.username})
-
-
-@csrf_exempt
-def save_user_id(request):
-    if request.method == "POST":
-        user = request.POST.get('user', '')
-        sub_id = request.POST.get('sub_id', '')
-        try:
-            user = User.objects.get(id=int(user))
-            profile = SocialAccount.objects.get(user=user)
-            NotificationUser.objects.get(user=profile)
-        except Exception:
-            user = User.objects.get(id=int(user))
-            profile = SocialAccount.objects.get(user=user)
-            NotificationUser.objects.create(user=profile, subscriber_id=sub_id)
-        return HttpResponse('success')
+    return render(request, "quiz.html",{"heading": "Trivia Quiz", "title": "ForecastGuru", })
 
 
 def main_page(request):

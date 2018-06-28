@@ -63,6 +63,29 @@
     <div class="row">
       <div class="col-12">
         <h2>{{forecast.heading}}</h2>
+          {% if private == 'no' %}
+    <div class="clearfix"></div>
+      <div class="row white_box mr-0 ml-0 mb-3">
+
+          <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-12">
+                     Share<div class="addthis_inline_share_toolbox_a0ek"></div></div>
+                 </div>
+              </div>
+      </div>
+    {% else %}
+    {% if request.user.username == users %}
+            <div class="clearfix"></div>
+      <div class="row white_box mr-0 ml-0 mb-3">
+
+          <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-12">
+                     Invite Friends<div class="addthis_inline_share_toolbox_a0ek"></div></div>
+                 </div>
+              </div>
+      </div>{% endif %}{% endif %}
           {% if forecast.status.name == 'Closed' and private == 'yes' and request.user.username == users and won == "" %}
                   <hr>
           <h3> Please select a Result</h3>
@@ -193,7 +216,7 @@
 
 
         </div>
-      </div>
+      </div>{% comment %}
       <div class="clearfix"></div>
       <div class="row white_box mr-0 ml-0 mb-3">
 
@@ -203,7 +226,7 @@
                      Share<div class="addthis_inline_share_toolbox_a0ek"></div></div>
                  </div>
               </div>
-      </div>
+      </div>{% endcomment %}
 
       {% else %}
 
@@ -240,7 +263,7 @@
                   <label class="lbl_value"> {{p.bet_against}}</label>
               </div>
 
-            </div>{% endfor %}
+            </div>{% endfor %}{% comment %}
             {% if request.user.username == users %}
             <div class="clearfix"></div>
       <div class="row white_box mr-0 ml-0 mb-3">
@@ -251,7 +274,7 @@
                      Invite Friends<div class="addthis_inline_share_toolbox_a0ek"></div></div>
                  </div>
               </div>
-      </div>{% endif %}
+      </div>{% endif %}{% endcomment %}
       {% endif %}
         </div>
 
@@ -299,6 +322,11 @@
 
       </div>
     </div>
+<div class="right_fixed_btn">
+  <a href="{% url 'quiz' %}" class="vertical-text">
+    <img src="{% static 'images/play-quiz.png' %}" alt="">
+  </a>
+</div>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 <script>

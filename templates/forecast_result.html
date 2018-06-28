@@ -6,8 +6,8 @@
 <div class="container topnavlinks">
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
-      <li class="nav-item text-uppercase"> <a class="nav-link active" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'forecast_result' %}">Declared</a> </li>
-      <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'result_not_declared' %}">Not Declared</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link active" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'forecast_result' %}">ALL</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'result_not_declared' %}">My Result</a> </li>
       <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
     </ul>
   </nav>
@@ -128,6 +128,11 @@
       </ul>
     </nav>
   </footer>
+<div class="right_fixed_btn">
+  <a href="{% url 'quiz' %}" class="vertical-text">
+    <img src="{% static 'images/play-quiz.png' %}" alt="">
+  </a>
+</div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="js/jquery-slim.min.js"><\/script>')</script>
 <script src="js/bootstrap.min.js"></script>

@@ -6,6 +6,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Forecastguru</title>
+      <meta property="og:url" content="https://forecast.guru" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="ForecastGuru"/>
+<meta property="og:description" content="Play the hottest prediction game online and become a Forecast Guru!" />
+<meta property="og:image" content="https://forecast.guru/static/images/TutorialScreen-icon1.jpg" />
+<meta property="fb:app_id" content="186107225561354" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="HandheldFriendly" content="true" />
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
@@ -195,6 +201,11 @@
     </ul>
   </nav>
 </footer>
+<div class="right_fixed_btn">
+  <a href="{% url 'quiz' %}" class="vertical-text">
+    <img src="{% static 'images/play-quiz.png' %}" alt="">
+  </a>
+</div>
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120519459-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];

@@ -5,6 +5,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Forecastguru</title>
+        <meta property="og:url" content="https://forecast.guru" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="ForecastGuru"/>
+<meta property="og:description" content="Play the hottest prediction game online and become a Forecast Guru!" />
+<meta property="og:image" content="https://forecast.guru/static/images/TutorialScreen-icon1.jpg" />
+<meta property="fb:app_id" content="186107225561354" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="HandheldFriendly" content="true" />
 <script src="{% static 'js/jquery.min.js' %}"></script>
@@ -49,7 +55,7 @@
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
       <li class="nav-item text-uppercase"> <a class="nav-link active" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'my_forecast' %}">Public</a> </li>
-      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'private' %}" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;">Private</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'private' %}" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;">Me & My friends</a> </li>
       <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
     </ul>
   </nav>
@@ -379,7 +385,11 @@
         </div>
 
       </div>
-    </div>
+    </div><div class="right_fixed_btn">
+  <a href="{% url 'quiz' %}" class="vertical-text">
+    <img src="{% static 'images/play-quiz.png' %}" alt="">
+  </a>
+</div>
 
 
 <script src="{% static 'js/bootstrap.min.js' %}"></script>

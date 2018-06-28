@@ -4,11 +4,17 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>{% block title%} {{title}} {% endblock title %}</title>
+<title>Forecastguru</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="HandheldFriendly" content="true" />
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
+        <meta property="og:url" content="https://forecast.guru" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="ForecastGuru"/>
+<meta property="og:description" content="Play the hottest prediction game online and become a Forecast Guru!" />
+<meta property="og:image" content="https://forecast.guru/static/images/TutorialScreen-icon1.jpg" />
+<meta property="fb:app_id" content="186107225561354" />
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
@@ -49,8 +55,8 @@
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="{% url 'trending' %}">Popular</a>
-                    <!--<a class="dropdown-item" href="#">Closing time Desc</a>-->
-                    <!--<a class="dropdown-item" href="#">Closing time Asc</a>-->
+                    <a class="dropdown-item" href="{% url 'live_forecast' %}">Closing <i class="fa fa-clock-o" aria-hidden="true"></i> <i class="fa fa-sort-amount-asc"></i></a>
+                    <a class="dropdown-item" href="{% url 'live_forecast_desc' %}">Closing <i class="fa fa-clock-o" aria-hidden="true"></i> <i class="fa fa-sort-amount-desc"></i></a>
 
                   </div>
                 </div>
