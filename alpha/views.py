@@ -21,12 +21,31 @@ from django.template import RequestContext
 from allauth.socialaccount.models import SocialAccount, SocialToken
 import hashlib
 from django.conf import settings
-
+import requests
 current = datetime.datetime.now()
 
 
 def test(request):
     return render(request, 'main.html')
+
+
+def send_notification(text, message, url, subscriber_id, user):
+    headers = {
+        'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
+    }
+
+    data = [
+        ('title', text),
+        ('message', message),
+        ('url', "https://forecast.sirez.com" + url),
+        ('subscriber_id', str(subscriber_id)),
+
+    ]
+    print(data)
+    response = requests.post('https://pushcrew.com/api/v1/send/individual', headers=headers, data=data)
+    print(response.status_code)
+    NotificationPanel.objects.create(title=text, message=message, url=url, status=1, user=user)
+    return response.status_code
 
 
 @csrf_exempt
@@ -78,9 +97,25 @@ def create_forecast(request):
         admin = SocialAccount.objects.get(user__username="admin")
         Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
         if private.name == 'no':
+            try:
+                sub_id = NotificationUser.obects.get(user=users)
+
+                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
+                                  "/forecast/{}/".format(fid), sub_id.subscriber_id, users)
+            except Exception:
+                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
+                                  "/forecast/{}/".format(fid), "76ad5c6a96f1ced5d63f4c1c39eec5bf", users)
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
         else:
+
             InviteFriends.objects.create(user=admin, forecast=f)
+            try:
+                sub_id = NotificationUser.obects.get(user=users)
+                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
+                                  "/forecast/{}/".format(fid), sub_id.subscriber_id, users)
+            except Exception:
+                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
+                                  "/forecast/{}/".format(fid), "76ad5c6a96f1ced5d63f4c1c39eec5bf", users)
             return HttpResponse(json.dumps(
                 dict(status=200, message='Thank You for creating a private forecast', id=f.id)))  # except Exception:
         #
@@ -597,8 +632,10 @@ def betting(request, userid):
         try:
             success = SocialAccount.objects.get(user__username=request.user)
             success = success.successful_forecast
+            sums = betting_sum['bet_for'] + betting_sum['bet_against']
         except Exception:
             success = 0
+            sums = 0
         return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
                                                 'bet_for': betting_sum['bet_for'] if betting_sum['bet_for'] else 0,
                                                 'against': betting_sum['bet_against'] if betting_sum[
@@ -608,7 +645,7 @@ def betting(request, userid):
                                                 'status': status, "percent": percent,
                                                 "success": success,
                                                 "users": forecast.user.user.username,
-                                                "sums": betting_sum['bet_for'] + betting_sum['bet_against'],
+                                                "sums": sums,
                                                 "approved": approved,
                                                 "user": users,"won": won,
                                                 "heading": "Forecast Details",
@@ -771,6 +808,12 @@ def allocate_points(request):
             f.user.save()
             f.save()
             total -= total * 0.10
+        try:
+            sub_id = NotificationUser.objects.get(user=f.user)
+            send_notification("ForecastGuru", "You have collected {market} market fee for the forecast {fore}".format(market=(bet_against + bet_for) * 0.05, fore=f.heading),
+                              "https://forecast.sirez.com/forecast/{}".format(f.id), sub_id.subscriber_id, f.user)
+        except Exception:
+            pass
     return HttpResponse("success")
 
 
@@ -2158,6 +2201,23 @@ def result_save(request):
         return HttpResponse(request.path)
     else:
         return HttpResponse(json.dumps(dict(error="Try again later")))
+
+
+@csrf_exempt
+def save_user_id(request):
+    if request.method == "POST":
+        sub_id = request.POST.get('sub_id', '')
+        # try:
+        user = request.user
+        profile = SocialAccount.objects.get(user=user)
+        try:
+            NotificationUser.objects.get(user=profile)
+        except Exception:
+            NotificationUser.objects.create(user=profile, subscriber_id=sub_id)
+        return HttpResponse(json.dumps(dict(message='success')))
+        # except Exception:
+        #     return HttpResponse(json.dumps(dict(message='fail')))
+
 
 
 def quiz(request):
