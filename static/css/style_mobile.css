@@ -846,3 +846,4 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
 
 }
 .banner_slider img {display: inline-block; max-width: 100%}
+.slick-dots {bottom: -25px; left: 0; z-index: 10}
