@@ -180,25 +180,15 @@ $('#myInput').keypress(function (e) {
 
 </script>
 <script>
-//$(document).ready(function() {
-_pcq.push(['APIReady', callbackFunction]);
+$(document).ready(function() {
+if(pushcrew.isAPIReady) {
+    console.log(pushcrew.subscriberId); // will return something like this if current user is a subscriber '1c5d546172cfb4be65a8d51b047c4804'
 
-function callbackFunction() {
+  console.log(pushcrew.subscriberId); // will return false(boolean) if user is not subscribed to push notifications
 
-    alert(user + " " + pushcrew.subscriberId);
-    if(parseInt(user) > 0){
-    var sub_id = pushcrew.subscriberId;
-        $.ajax({
-                type: "POST",
-                url: "{% url 'notification_user' %}",
-                data: {'sub_id':sub_id},
-
-                success: function(resp){
-                    console.log(sub_id + " " + resp);
-                    }
-                });
-      }
+  console.log(pushcrew.subscriberId); // will return -1(integer) if user has blocked push notifications from your website
 }
-//});
+
+});
 </script>
 </body></html>
