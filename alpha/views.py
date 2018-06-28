@@ -116,7 +116,7 @@ def live_forecast_desc(request):
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
-                                                status__name='In-Progress').order_by("expire")
+                                                status__name='In-Progress').order_by("-expire")
         for f in forecast_live:
             date = current.date()
 
