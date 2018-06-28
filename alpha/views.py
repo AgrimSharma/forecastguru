@@ -41,9 +41,7 @@ def send_notification(text, message, url, subscriber_id, user):
         ('subscriber_id', str(subscriber_id)),
 
     ]
-    print(data)
     response = requests.post('https://pushcrew.com/api/v1/send/individual', headers=headers, data=data)
-    print(response.status_code)
     NotificationPanel.objects.create(title=text, message=message, url=url, status=1, user=user)
     return response.status_code
 
@@ -99,18 +97,19 @@ def create_forecast(request):
         Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
         if private.name == 'no':
 
-            sub_id = users.notificationuser_set.latest('id').subscriber_id
-
-            send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
-                              "/forecast/{}/?&utm_source&utm_medium&utm_campaign".format(fid), sub_id, users)
+            sub_id = users.notificationuser_set.all()
+            for i in sub_id:
+                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
+                                  "/forecast/{}/?&utm_source&utm_medium&utm_campaign".format(fid), i.subscriber_id, users)
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
         else:
 
             InviteFriends.objects.create(user=admin, forecast=f)
 
-            sub_id = users.notificationuser_set.latest('id').subscriber_id
-            send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
-                              "/forecast/{}/?&utm_source&utm_medium&utm_campaign".format(fid), sub_id, users)
+            sub_id = users.notificationuser_set.all()
+            for i in sub_id:
+                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
+                              "/forecast/{}/?&utm_source&utm_medium&utm_campaign".format(fid), i.subscriber_id, users)
             return HttpResponse(json.dumps(
                 dict(status=200, message='Thank You for creating a private forecast', id=f.id)))  # except Exception:
         #
@@ -804,9 +803,10 @@ def allocate_points(request):
             f.save()
             total -= total * 0.10
         try:
-            sub_id = NotificationUser.objects.get(user=f.user)
-            send_notification("ForecastGuru", "You have collected {market} market fee for the forecast {fore}".format(market=(bet_against + bet_for) * 0.05, fore=f.heading),
-                              "https://forecast.sirez.com/forecast/{}".format(f.id), sub_id.subscriber_id, f.user)
+            sub_id = f.user.notificationuser_set.all()
+            for i in sub_id:
+                send_notification("ForecastGuru", "You have collected {market} market fee for the forecast {fore}".format(market=(bet_against + bet_for) * 0.05, fore=f.heading),
+                              "https://forecast.sirez.com/forecast/{}".format(f.id), i.subscriber_id, f.user)
         except Exception:
             pass
     return HttpResponse("success")
@@ -2206,9 +2206,7 @@ def save_user_id(request):
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         try:
-            n = NotificationUser.objects.get(user=profile)
-            n.subscriber_id=sub_id
-            n.save()
+            n = NotificationUser.objects.get(user=profile, subscriber_id=sub_id)
         except Exception:
             NotificationUser.objects.create(user=profile, subscriber_id=sub_id)
         return HttpResponse(json.dumps(dict(message='success')))
