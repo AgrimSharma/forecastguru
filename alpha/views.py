@@ -1627,7 +1627,6 @@ def my_forecast_private(request):
 
         forecast_result = ForeCast.objects.filter(approved__name="yes", status__name='Result Declared',user=account, private__name='yes').order_by("expire")
         forecast_approval = InviteFriends.objects.filter(user=account).exclude(forecast__in=forecast_result).exclude(forecast__in=forecast_live).order_by("-forecast__expire")
-
         return render(request, 'my_friend_private.html', {"live": live_forecast_data_private(forecast_live, account),
                                                           "result": forecast_result_data_private(forecast_result,
                                                                                                  account),
