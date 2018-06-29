@@ -500,24 +500,20 @@ def profile(request):
     date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
     try:
         bet_for = \
-        Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_for=Sum('bet_for'))[
-            'bet_for']
+        Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_for=Sum('bet_for'))['bet_for']
     except Exception:
         bet_for = 0
     try:
         bet_for_close = \
-        Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_for=Sum('bet_for'))[
-            'bet_for']
+        Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_for=Sum('bet_for'))['bet_for']
     except Exception:
         bet_for_close = 0
     try:
-        bet_against = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(
-            bet_against=Sum('bet_against'))['bet_against']
+        bet_against = Betting.objects.filter(users=profile, forecast__status__name="In-Progress").aggregate(bet_against=Sum('bet_against'))['bet_against']
     except Exception:
         bet_against = 0
     try:
-        bet_against_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(
-            bet_against=Sum('bet_against'))['bet_against']
+        bet_against_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_against=Sum('bet_against'))['bet_against']
     except Exception:
         bet_against_close = 0
 
@@ -1114,6 +1110,9 @@ def my_forecast(request):
         forecast_result = Betting.objects.filter(forecast__approved__name="yes",
                                                  forecast__status__name='Result Declared', users=account,
                                                  forecast__private__name='no').order_by("forecast__expire")
+        forecast_closed = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='Closed',
+                                               users=account, forecast__private__name='no').order_by("forecast__expire")
+
         forecast_approval = ForeCast.objects.filter(approved__name="no", user=account, private__name='no').order_by(
             "expire")
         forecast_no_bet = ForeCast.objects.filter(approved__name="yes", user=account, private__name='no').order_by(
@@ -1128,6 +1127,7 @@ def my_forecast(request):
                                                   "result": forecast_result_data(forecast_result, account),
                                                   "approval": forecast_approval,
                                                   "forecast": live_forecast_data_bet(not_bet, account),
+                                                  "closed": live_forecast_data(forecast_closed, account),
                                                   "heading": "My Forecast",
                                                   "title": "ForecastGuru",
                                                   "user": "Guest" if request.user.is_anonymous() else request.user.username})
