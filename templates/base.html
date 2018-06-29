@@ -23,7 +23,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
 
     <link rel="manifest" href="/manifest.json" />
-<script>window._pcq.push(['triggerOptIn',{subscriberSegment: 'https://forecast.guru/category/', modal: {text: 'Get instant alerts from ForecastGuru. Please subscribe.', blackenBackground: true}}]);</script>
+
 </head>
 <body class="gray-bg">
 <header class="position-fixed w-100">
@@ -104,6 +104,10 @@
     });
   });
 
+</script>
+<script>$(document).ready(function() {
+window._pcq.push(['triggerOptIn',{subscriberSegment: 'https://forecast.guru/category/', modal: {text: 'Get instant alerts from ForecastGuru. Please subscribe.', blackenBackground: true}}]);
+});
 </script>
 <!-- End Facebook Pixel Code -->
 </body></html>

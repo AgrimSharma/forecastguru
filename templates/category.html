@@ -197,7 +197,6 @@ $('#myInput').keypress(function (e) {
 $(document).ready(function() {
 _pcq.push(['APIReady', callbackFunction]);
 
-//some code here
 
 function callbackFunction() {
       console.log(pushcrew.subscriberId); // will return something like this if current user is a subscriber '1c5d546172cfb4be65a8d51b047c4804'
@@ -206,6 +205,7 @@ function callbackFunction() {
 
   console.log(pushcrew.subscriberId); // will return -1(integer) if user has blocked push notifications from your website
     var sub_id = pushcrew.subscriberId;
+
         $.ajax({
                 type: "POST",
                 url: "{% url 'notification_user' %}",
