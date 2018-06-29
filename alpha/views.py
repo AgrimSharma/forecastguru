@@ -119,7 +119,7 @@ def create_forecast(request):
         try:
             user = request.user
             profile = SocialAccount.objects.get(user=user)
-            category = Category.objects.all().order_by('identifier')
+            category = Category.objects.all().order_by('identifier').exclude(name__icontains='Fifa')
             return render(request, 'create_forecast.html', {'category': category,
                                                             "current": datetime.datetime.now().strftime(
                                                                 "%Y-%m-%d %H:%M"),
