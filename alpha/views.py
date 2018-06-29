@@ -1712,6 +1712,7 @@ def forecast_live_fifa(forecast_live):
                          bet_against_user=bet_against_user if bet_against_user else 0,
                          bet_for_user=bet_for_user if bet_for_user else 0,
                          ))
+    print(data)
     return data
 
 
