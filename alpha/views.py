@@ -602,7 +602,7 @@ def betting(request, userid):
         won = 'no'
     else:
         won = ""
-    expires = forecast.expire 
+    expires = forecast.expire + datetime.timedelta(hours=5, minutes=30)
     end_date = datetime.datetime.strftime(expires, '%b %d, %Y')
     end_time = datetime.datetime.strftime(expires, '%H:%M')
     # try:/
