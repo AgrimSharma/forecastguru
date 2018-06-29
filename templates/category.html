@@ -90,6 +90,21 @@
 </div>
   <div class="row">
     <div class="col-md-12">
+        <div class="category_wrap">
+        <a href=" {% url 'fifa_rounds' %}">
+        <div class="cat_box">
+          <div class="row align-items-center">
+            <div class="col-3 text-center">
+                <img src="https://t3n9sm.c2.acecdn.net/wp-content/uploads/2017/03/fifa-russia.jpg" alt="">
+            </div>
+            <div class="col-9">
+              <p>Fifa Round of 16</p>
+            </div>
+          </div>
+        </div>
+        </a>
+
+      </div>
     {% for c in category %}
       <div class="category_wrap">
         <a href=" {% url 'category_search' c.id %}">
