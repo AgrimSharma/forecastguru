@@ -1881,7 +1881,7 @@ def update_close_status(request):
             sub_id = f.user.notificationuser_set.all()
             for i in sub_id:
                 send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + str(f.heading),
-                                  "/forecast/{}/".format(f.id), str(i.subscriber_id), f.user)
+                                  "https://forecast.guru/forecast/{}/".format(f.id), str(i.subscriber_id), f.user)
     return HttpResponse("updated")
 
 
