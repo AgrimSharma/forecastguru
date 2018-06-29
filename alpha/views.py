@@ -57,14 +57,17 @@ def create_forecast(request):
         cat = Category.objects.get(id=category)
         sub_cat = SubCategory.objects.get(id=sub_category)
 
-        verified = Verified.objects.get(id=2)
         private_name = request.POST.get("private", '')
         if private_name == "email":
             private = Private.objects.get(id=1)
             approved = Approved.objects.get(id=1)
+            verified = Verified.objects.get(id=1)
+
         else:
             private = Private.objects.get(id=2)
             approved = Approved.objects.get(id=2)
+            verified = Verified.objects.get(id=2)
+
         expires = datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M")
 
         if expires < current:
