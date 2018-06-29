@@ -1881,9 +1881,20 @@ def update_close_status(request):
                                       "/forecast/{}/".format(f.id), i.subscriber_id, f.user)
             except Exception:
                 pass
-        else:
-            pass
     return HttpResponse("updated")
+
+
+def send_notification_all(request):
+    notification = SendNotificationAll.objects.filter(status=0)
+    for f in notification:
+            try:
+                sub_id = NotificationUser.objects.all()
+                for i in sub_id:
+                    send_notification(f.title, f.heading,f.url, i.subscriber_id, i.user)
+            except Exception:
+                pass
+    return HttpResponse("updated")
+
 
 
 def privacy(request):
@@ -2197,17 +2208,15 @@ def result_save(request):
 def save_user_id(request):
     if request.method == "POST":
         sub_id = request.POST.get('sub_id', '')
-        # try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
+        if sub_id == 'false':
+            return HttpResponse(json.dumps(dict(message='fail')))
         try:
             n = NotificationUser.objects.get(user=profile, subscriber_id=sub_id)
         except Exception:
             NotificationUser.objects.create(user=profile, subscriber_id=sub_id)
         return HttpResponse(json.dumps(dict(message='success')))
-        # except Exception:
-        #     return HttpResponse(json.dumps(dict(message='fail')))
-
 
 def quiz(request):
     return render(request, "quiz.html",{"heading": "Trivia Quiz", "title": "ForecastGuru", "user": "Guest" if request.user.is_anonymous() else request.user.username})

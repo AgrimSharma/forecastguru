@@ -216,10 +216,10 @@ class LoginStatus(models.Model):
         return "{} : {}".format(self.user.user.username, self.status)
 
 
-
 class NotificationUser(models.Model):
     user = models.ForeignKey(to=SocialAccount, on_delete=models.CASCADE)
     subscriber_id = models.CharField(max_length=1000)
+    created = models.DateField(auto_now=True)
 
     class Meta:
         ordering = ['-user']
@@ -238,6 +238,7 @@ class NotificationPanel(models.Model):
     message = models.CharField(max_length=1000)
     url = models.URLField()
     status = models.IntegerField(default=0)
+    created = models.DateField(auto_now=True)
 
     class Meta:
         ordering = ['-user']
@@ -245,6 +246,23 @@ class NotificationPanel(models.Model):
 
     def __str__(self):
         return "{} : {}".format(self.user.user.username, self.status)
+
+    def __unicode__(self):
+        return "{} : {}".format(self.user.user.username, self.status)
+
+
+class SendNotificationAll(models.Model):
+    title = models.CharField(max_length=1000, default="Forecast Guru. Predict future.")
+    message = models.CharField(max_length=1000)
+    url = models.URLField()
+    status = models.IntegerField(default=0)
+    created = models.DateField(auto_now=True)
+    class Meta:
+        ordering = ['-user']
+        verbose_name_plural = 'Notification Panel'
+
+    def __str__(self):
+        return "{} : {}".format(self.title, self.status)
 
     def __unicode__(self):
         return "{} : {}".format(self.user.user.username, self.status)
