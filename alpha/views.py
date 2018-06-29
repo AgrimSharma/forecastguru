@@ -98,7 +98,7 @@ def create_forecast(request):
 
             sub_id = users.notificationuser_set.all()
             for i in sub_id:
-                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
+                send_notification("Forecast Guru", "Thank You for creating a forecast " + str(heading),
                                   "/forecast/{}/".format(fid), i.subscriber_id, users)
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
         else:
@@ -107,7 +107,7 @@ def create_forecast(request):
 
             sub_id = users.notificationuser_set.all()
             for i in sub_id:
-                send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
+                send_notification("Forecast Guru", "Thank You for creating a forecast " + str(heading),
                               "/forecast/{}/".format(fid), i.subscriber_id, users)
             return HttpResponse(json.dumps(
                 dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
@@ -785,7 +785,7 @@ def allocate_points(request):
         try:
             sub_id = f.user.notificationuser_set.all()
             for i in sub_id:
-                send_notification("ForecastGuru", "You have collected {market} market fee for the forecast {fore}".format(market=(bet_against + bet_for) * 0.05, fore=f.heading),
+                send_notification("ForecastGuru", "You have collected {market} market fee for the forecast {fore}".format(market=(bet_against + bet_for) * 0.05, fore=str(f.heading)),
                               "/forecast/{}".format(f.id), i.subscriber_id, f.user)
         except Exception:
             pass
@@ -873,7 +873,7 @@ def forecast_data(forecast, ratio, total, status, total_bets):
                 for i in sub_id:
                     send_notification("ForecastGuru",
                                       "You have collected {market} points for predicting a correct forecast {fore}".format(
-                                          market=bet_for * ratio, fore=f.heading),
+                                          market=bet_for * ratio, fore=str(f).heading),
                                       "/forecast/{}".format(forecast.id), i.subscriber_id,
                                       b.users)
             elif bet_against > 0 and status == 'no':
@@ -881,7 +881,7 @@ def forecast_data(forecast, ratio, total, status, total_bets):
                 for i in sub_id:
                     send_notification("ForecastGuru",
                                       "You have collected {market} points for predicting a correct forecast {fore}".format(
-                                          market=bet_against * ratio, fore=f.heading),
+                                          market=bet_against * ratio, fore=str(f.heading)),
                                       "/forecast/{}".format(forecast.id), i.subscriber_id, b.users)
             else:
                 pass
@@ -1877,22 +1877,26 @@ def update_close_status(request):
         if f.private.name == 'yes':
             sub_id = f.user.notificationuser_set.all()
             for i in sub_id:
-                send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + f.heading,
-                                  "/forecast/{}/".format(f.id), i.subscriber_id, f.user)
+                send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + str(f.heading),
+                                  "/forecast/{}/".format(f.id), str(i.subscriber_id), f.user)
     return HttpResponse("updated")
 
 
 def send_notification_all(request):
     notification = SendNotificationAll.objects.filter(status=0)
+    headers = {
+        'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
+    }
+
     for f in notification:
         f.status = 1
         f.save()
-        try:
-            sub_id = NotificationUser.objects.all()
-            for i in sub_id:
-                send_notification(f.title, f.heading,f.url, i.subscriber_id, i.user)
-        except Exception:
-            pass
+        data = [
+            ('title', str(f.title)),
+            ('message', str(f.message)),
+            ('url', f.url),
+        ]
+        response = requests.post('https://pushcrew.com/api/v1/send/all', headers=headers, data=data)
     return HttpResponse("updated")
 
 
