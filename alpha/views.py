@@ -1106,7 +1106,7 @@ def sub_category_data(request, userid):
 
 
 def my_forecast(request):
-    try:
+    # try:
         user = request.user
         account = SocialAccount.objects.get(user=user)
         forecast_live = Betting.objects.filter(forecast__approved__name="yes", forecast__status__name='In-Progress',
@@ -1135,10 +1135,10 @@ def my_forecast(request):
                                                   "heading": "My Forecast",
                                                   "title": "ForecastGuru",
                                                   "user": "Guest" if request.user.is_anonymous() else request.user.username})
-    except Exception:
-        return render(request, 'my_friend.html', {"heading": "My Forecast",
-                                                     "title": "ForecastGuru",
-                                                     "user": "Guest" if request.user.is_anonymous() else request.user.username})
+    # except Exception:
+    #     return render(request, 'my_friend.html', {"heading": "My Forecast",
+    #                                                  "title": "ForecastGuru",
+    #                                                  "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 def logout_view(request):
