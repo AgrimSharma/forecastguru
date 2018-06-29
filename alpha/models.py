@@ -260,7 +260,7 @@ class SendNotificationAll(models.Model):
 
     class Meta:
         ordering = ['-created']
-        verbose_name_plural = 'Notification Panel'
+        verbose_name_plural = 'Notification All'
 
     def __str__(self):
         return "{} : {}".format(self.title, self.status)
