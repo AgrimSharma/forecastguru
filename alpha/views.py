@@ -36,7 +36,7 @@ def send_notification(text, message, url, subscriber_id, user):
     data = [
         ('title', text),
         ('message', message),
-        ('url', "https://forecast.guru" + url),
+        ('url', url),
         ('subscriber_id', str(subscriber_id)),
 
     ]
@@ -102,7 +102,7 @@ def create_forecast(request):
             sub_id = users.notificationuser_set.all()
             for i in sub_id:
                 send_notification("Forecast Guru", "Thank You for creating a forecast " + str(heading),
-                                  "/forecast/{}/".format(fid), i.subscriber_id, users)
+                                  "https://forecast.guru/forecast/{}/".format(fid), i.subscriber_id, users)
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
         else:
 
@@ -111,7 +111,7 @@ def create_forecast(request):
             sub_id = users.notificationuser_set.all()
             for i in sub_id:
                 send_notification("Forecast Guru", "Thank You for creating a forecast " + str(heading),
-                              "/forecast/{}/".format(fid), i.subscriber_id, users)
+                              "https://forecast.guru/forecast/{}/.format(fid), i.subscriber_id, users)
             return HttpResponse(json.dumps(
                 dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
 
@@ -713,7 +713,7 @@ def bet_post(request):
                 for i in sub_id:
                     send_notification("ForecastGuru",
                                       "Thank you for participating in forecast {}".format(str(forecasts.heading)),
-                                      "/forecast/{}".format(forecasts.id), str(i.subscriber_id), account)
+                                      "https://forecast.guru/forecast/{}/".format(forecasts.id), str(i.subscriber_id), account)
             except Exception:
                 pass
             return HttpResponse(json.dumps(dict(message='success')))
@@ -789,7 +789,7 @@ def allocate_points(request):
             sub_id = f.user.notificationuser_set.all()
             for i in sub_id:
                 send_notification("ForecastGuru", "You have collected {market} market fee for the forecast {fore}".format(market=(bet_against + bet_for) * 0.05, fore=str(f.heading)),
-                          "/forecast/{}".format(f.id), i.subscriber_id, f.user)
+                          "https://forecast.guru/forecast/{}/".format(f.id), i.subscriber_id, f.user)
         except Exception:
             pass
     return HttpResponse("success")
@@ -870,26 +870,26 @@ def forecast_data(forecast, ratio, total, status, total_bets):
                 b.users.save()
                 b.save()
 
-        try:
-            if bet_for > 0 and status == 'yes':
-                sub_id = b.users.notificationuser_set.all()
-                for i in sub_id:
-                    send_notification("ForecastGuru",
-                                      "You have collected {market} points for predicting a correct forecast {fore}".format(
-                                          market=bet_for * ratio, fore=str(forecast.heading)),
-                                          "/forecast/{}".format(forecast.id), i.subscriber_id,
-                                      b.users)
-            elif bet_against > 0 and status == 'no':
-                sub_id = b.users.notificationuser_set.all()
-                for i in sub_id:
-                    send_notification("ForecastGuru",
-                                      "You have collected {market} points for predicting a correct forecast {fore}".format(
-                                          market=bet_against * ratio, fore=str(forecast.heading)),
-                                      "/forecast/{}".format(forecast.id), i.subscriber_id, b.users)
-            else:
-                pass
-        except Exception:
+        # try:
+        if bet_for > 0 and status == 'yes':
+            sub_id = b.users.notificationuser_set.all()
+            for i in sub_id:
+                send_notification("ForecastGuru",
+                                  "You have collected {market} points for predicting a correct forecast {fore}".format(
+                                      market=bet_for * ratio, fore=str(forecast.heading)),
+                                      "https://forecast.guru/forecast/{}/".format(forecast.id), i.subscriber_id,
+                                  b.users)
+        elif bet_against > 0 and status == 'no':
+            sub_id = b.users.notificationuser_set.all()
+            for i in sub_id:
+                send_notification("ForecastGuru",
+                                  "You have collected {market} points for predicting a correct forecast {fore}".format(
+                                      market=str(bet_against * ratio), fore=str(forecast.heading)),
+                                  "https://forecast.guru/forecast/{}/".format(forecast.id), i.subscriber_id, b.users)
+        else:
             pass
+        # except Exception:
+        #     pass
 
 @csrf_exempt
 def payments(request):
