@@ -441,6 +441,10 @@ def forecast_result_page_my(forecast):
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
             total = bet_against + bet_for
+            bet_for_user = Betting.objects.filter(forecast=f, users=profile).aggregate(bet_for=Sum('bet_for'))[
+                'bet_for']
+            bet_against_user = Betting.objects.filter(forecast=f, users=profile).aggregate(bet_against=Sum('bet_against'))[
+                    'bet_against']
         except Exception:
             total_wagered = 0
             percent_for = 0
@@ -448,6 +452,8 @@ def forecast_result_page_my(forecast):
             bet_for = 0
             bet_against = 0
             total = 0
+            bet_for_user = 0
+            bet_against_user = 0
         status = "yes" if forecast.won == "yes" else "no"
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
                          forecast=forecast, total=total, start=start,
@@ -456,8 +462,8 @@ def forecast_result_page_my(forecast):
                          participants=total_wagered, won="Yes" if forecast.won == 'yes' else 'No',
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for,
-                         bet_for_user=bet_for,
-                         bet_against_user=bet_against
+                         bet_for_user=bet_for_user,
+                         bet_against_user=bet_against_user
                          ))
     return data
 
