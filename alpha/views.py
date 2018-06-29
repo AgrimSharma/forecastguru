@@ -564,16 +564,16 @@ def profile(request):
 
 
 def predict_status(profile, suc_per):
-    if 0 <= profile.forecast_created < 10 and 0 <= suc_per < 50:
+    if 0 <= profile.forecast_participated < 10 and 0 <= suc_per < 50:
         status = "Beginner"
         return status
-    elif 10 <= profile.forecast_created < 30 and 50 <= suc_per < 70:
+    elif 10 <= profile.forecast_participated < 30 and 50 <= suc_per < 70:
         status = "Expert"
         return status
-    elif 30 <= profile.forecast_created < 50 and 70 <= suc_per < 90:
+    elif 30 <= profile.forecast_participated < 50 and 70 <= suc_per < 90:
         status = "INFLUENCER"
         return status
-    elif profile.forecast_created >= 50 and suc_per >= 90:
+    elif profile.forecast_participated >= 50 and suc_per >= 90:
         status = "Guru"
         return status
     else:
