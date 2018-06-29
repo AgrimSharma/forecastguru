@@ -1663,10 +1663,8 @@ def get_sub_source(request):
         return HttpResponse(json.dumps(cat.source))
 
 
-def forecast_live_fifa():
+def forecast_live_fifa(forecast_live):
     data = []
-    forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no', category=category,
-                                            status__name='In-Progress').order_by("expire")
 
     for f in forecast_live:
         date = current.date()
@@ -2300,7 +2298,7 @@ def fifa_rounds(request):
 
     return render(request, 'category_search_fifa.html',
                   {
-                      "live": forecast_live_fifa(),
+                      "live": forecast_live_fifa(forecast_live),
                       "heading": "Fifa Round 16",
                       "title": "ForecastGuru",
                       "user": "Guest" if request.user.is_anonymous() else request.user.username
