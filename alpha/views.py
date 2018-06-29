@@ -548,7 +548,9 @@ def profile(request):
     if profile.fg_points_total == 0:
         profile.fg_points_total = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won - \
                                   profile.fg_points_lost + profile.market_fee - profile.market_fee_paid
+    profile.market_fee_paid = profile.fg_points_won * 0.10
     profile.save()
+
     fore = ForeCast.objects.filter(user=profile).count()
     return render(request, 'user_profile.html', {"profile": profile,
                                                  "date_joined": date_joined,
