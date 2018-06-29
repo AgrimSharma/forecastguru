@@ -111,7 +111,7 @@ def create_forecast(request):
             sub_id = users.notificationuser_set.all()
             for i in sub_id:
                 send_notification("Forecast Guru", "Thank You for creating a forecast " + str(heading),
-                              "https://forecast.guru/forecast/{}/.format(fid), i.subscriber_id, users)
+                              "https://forecast.guru/forecast/{}/".format(fid), i.subscriber_id, users)
             return HttpResponse(json.dumps(
                 dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
 
