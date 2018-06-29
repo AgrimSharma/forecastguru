@@ -54,7 +54,7 @@
     </div>
 <div class="container fixed_p_footer">
     <div class="row mt-3">
-  <div class="col-12" style="padding-bottom:  50px;">
+  <div class="col-12" >
     <div class="banner_slider">
       <div class="item">
        <a href="{% url 'create_forecast' %}"><img src="{% static 'images/hero-banner1.jpg' %}" alt=""></a>
@@ -66,8 +66,8 @@
   </div>
 </div>
   <div class="row">
-      <div class="col-md-12">
-          <div class="forcast_home">
+      <div class="col-md-12" style="padding-bottom:  50px;">
+          <div class="forcast_home" style="margin-top: -38px;">
 
               {% for f in live %}
 
