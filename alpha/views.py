@@ -1669,7 +1669,7 @@ def forecast_live_fifa(forecast_live):
     for f in forecast_live:
         date = datetime.datetime.now().date()
         forecast = f
-        bet_start = (forecast.expire).date()
+        bet_start = forecast.expire.date()
 
         if date == bet_start:
             start = f.expire
@@ -1681,29 +1681,29 @@ def forecast_live_fifa(forecast_live):
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
-        try:
-            total_wagered = betting_against + betting_for
-            bet_for = Betting.objects.filter(forecast=forecast).aggregate(bet_for=Sum('bet_for'))['bet_for']
-            bet_for_user = Betting.objects.filter(forecast=forecast, users=profile).aggregate(bet_for=Sum('bet_for'))[
-                'bet_for']
-            bet_against = Betting.objects.filter(forecast=forecast).aggregate(bet_against=Sum('bet_against'))[
-                'bet_against']
-            bet_against_user = \
-            Betting.objects.filter(forecast=forecast, users=profile).aggregate(bet_against=Sum('bet_against'))[
-                'bet_against']
-            totl = bet_against + bet_for
-            percent_for = (bet_for / totl) * 100
-            percent_against = (100 - percent_for)
-            total = Betting.objects.filter(forecast=forecast).count()
-        except Exception:
-            total_wagered = 0
-            percent_for = 0
-            percent_against = 0
-            bet_for = 0
-            bet_for_user = bet_against_user = 0
-            bet_against = 0
+        # try:
+        total_wagered = betting_against + betting_for
+        bet_for = Betting.objects.filter(forecast=forecast).aggregate(bet_for=Sum('bet_for'))['bet_for']
+        bet_for_user = Betting.objects.filter(forecast=forecast, users=profile).aggregate(bet_for=Sum('bet_for'))[
+            'bet_for']
+        bet_against = Betting.objects.filter(forecast=forecast).aggregate(bet_against=Sum('bet_against'))[
+            'bet_against']
+        bet_against_user = \
+        Betting.objects.filter(forecast=forecast, users=profile).aggregate(bet_against=Sum('bet_against'))[
+            'bet_against']
+        totl = bet_against + bet_for
+        percent_for = (bet_for / totl) * 100
+        percent_against = (100 - percent_for)
+        total = Betting.objects.filter(forecast=forecast).count()
+        # except Exception:
+        #     total_wagered = 0
+        #     percent_for = 0
+        #     percent_against = 0
+        #     bet_for = 0
+        #     bet_for_user = bet_against_user = 0
+        #     bet_against = 0
 
-            total = Betting.objects.filter(forecast=forecast).count()
+        total = Betting.objects.filter(forecast=forecast).count()
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
