@@ -72,15 +72,14 @@
                         {% endif %}
                         </div>
                   </div>
-
+                {% if f.forecast.status.name == 'In-Progress' %}
                   <div class="col-6 text-right pl-0">
 
                       <form method="post">{% csrf_token %}
-                    <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
-
                         <button type="button" class="btn btn-orange shipment_solds" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.id}}">PLAY </button>
                           </form>
                 </div>
+                    {% endif %}
               </div>
                        {% if f.bet_against_user > 0 or f.bet_for_user > 0  %}
             <hr>

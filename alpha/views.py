@@ -1879,8 +1879,6 @@ def update_close_status(request):
             for i in sub_id:
                 send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + f.heading,
                                   "/forecast/{}/".format(f.id), i.subscriber_id, f.user)
-            # except Exception:
-            #     pass
     return HttpResponse("updated")
 
 
