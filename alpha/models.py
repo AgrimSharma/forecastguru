@@ -252,7 +252,7 @@ class NotificationPanel(models.Model):
 
 
 class SendNotificationAll(models.Model):
-    title = models.CharField(max_length=1000, default="Forecast Guru. Predict future.")
+    title = models.CharField(max_length=1000)
     message = models.CharField(max_length=1000)
     url = models.URLField()
     status = models.IntegerField(default=0)
