@@ -1663,7 +1663,7 @@ def get_sub_source(request):
         return HttpResponse(json.dumps(cat.source))
 
 
-def forecast_live_fifa(forecast_live):
+def forecast_live_fifa(forecast_live, profile):
     data = []
 
     for f in forecast_live:
@@ -1714,6 +1714,55 @@ def forecast_live_fifa(forecast_live):
                          ))
     print(data)
     return data
+
+
+def forecast_live_fifa_wp(forecast_live):
+    data = []
+
+    for f in forecast_live:
+        date = datetime.datetime.now().date()
+        forecast = f
+        bet_start = forecast.expire.date()
+
+        if date == bet_start:
+            start = f.expire
+            start = start.time()
+            today = 'yes'
+        else:
+            start = f.expire
+
+            today = "no"
+        betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
+        betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
+        # try:
+        total_wagered = betting_against + betting_for
+        bet_for = Betting.objects.filter(forecast=forecast).aggregate(bet_for=Sum('bet_for'))['bet_for']
+        bet_against = Betting.objects.filter(forecast=forecast).aggregate(bet_against=Sum('bet_against'))[
+            'bet_against']
+        totl = bet_against + bet_for
+        percent_for = (bet_for / totl) * 100
+        percent_against = (100 - percent_for)
+        total = Betting.objects.filter(forecast=forecast).count()
+        # except Exception:
+        #     total_wagered = 0
+        #     percent_for = 0
+        #     percent_against = 0
+        #     bet_for = 0
+        #     bet_for_user = bet_against_user = 0
+        #     bet_against = 0
+
+        total = Betting.objects.filter(forecast=forecast).count()
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
+                         total=total, start=start, total_user=betting_for + betting_against,
+                         betting_for=betting_for, betting_against=betting_against, today=today,
+                         participants=total_wagered, bet_for=bet_for,
+                         bet_against=bet_against,
+                         bet_against_user=0,
+                         bet_for_user=0,
+                         ))
+    print(data)
+    return data
+
 
 
 def forecast_live_view(category, profile):
@@ -2294,16 +2343,28 @@ def fifa_rounds(request):
     month = datetime.datetime.now().month
     current = str(year) + "-" + str(month) + "-" + str(date) + " 00:00:00"
     next_day = str(year) + "-" + str(month) + "-" + str(date + 1) + " 23:59:59"
-    forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no', sub_category__name='Football',status__name='In-Progress', expire__gte=current, expire__lte=next_day).order_by("expire")
+    forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
+                                            sub_category__name='Football', status__name='In-Progress',
+                                            expire__gte=current, expire__lte=next_day).order_by("expire")
+    try:
+        user = request.user
+        profile = SocialAccount.objects.get(user = user)
 
-    return render(request, 'category_search_fifa.html',
-                  {
-                      "live": forecast_live_fifa(forecast_live),
-                      "heading": "Fifa Round 16",
-                      "title": "ForecastGuru",
-                      "user": "Guest" if request.user.is_anonymous() else request.user.username
-                  })
-
+        return render(request, 'category_search_fifa.html',
+                      {
+                          "live": forecast_live_fifa(forecast_live, profile),
+                          "heading": "Fifa Round 16",
+                          "title": "ForecastGuru",
+                          "user": "Guest" if request.user.is_anonymous() else request.user.username
+                      })
+    except Exception:
+        return render(request, 'category_search_fifa.html',
+                      {
+                          "live": forecast_live_fifa_wp(forecast_live),
+                          "heading": "Fifa Round 16",
+                          "title": "ForecastGuru",
+                          "user": "Guest" if request.user.is_anonymous() else request.user.username
+                      })
 
 def main_page(request):
     user = request.user
