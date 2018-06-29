@@ -33,11 +33,10 @@ def send_notification(text, message, url, subscriber_id, user):
     headers = {
         'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
     }
-
     data = [
         ('title', text),
         ('message', message),
-        ('url', "https://forecast.sirez.com" + url),
+        ('url', "https://forecast.guru" + url),
         ('subscriber_id', str(subscriber_id)),
 
     ]
@@ -100,7 +99,7 @@ def create_forecast(request):
             sub_id = users.notificationuser_set.all()
             for i in sub_id:
                 send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
-                                  "/forecast/{}/?&utm_source&utm_medium&utm_campaign".format(fid), i.subscriber_id, users)
+                                  "/forecast/{}/".format(fid), i.subscriber_id, users)
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
         else:
 
@@ -109,11 +108,9 @@ def create_forecast(request):
             sub_id = users.notificationuser_set.all()
             for i in sub_id:
                 send_notification("Forecast Guru", "Thank You for creating a forecast " + heading,
-                              "/forecast/{}/?&utm_source&utm_medium&utm_campaign".format(fid), i.subscriber_id, users)
+                              "/forecast/{}/".format(fid), i.subscriber_id, users)
             return HttpResponse(json.dumps(
-                dict(status=200, message='Thank You for creating a private forecast', id=f.id)))  # except Exception:
-        #
-        #     return HttpResponse(json.dumps(dict(status=400, message='Try again later')))
+                dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
 
     else:
         try:
@@ -688,24 +685,15 @@ def bet_post(request):
             try:
                 b = Betting.objects.get(forecast=forecasts, users=account)
                 if vote == 'email':
-                    # if b.bet_for < points:
                     b.bet_for += points
                     b.users.fg_points_total = b.users.fg_points_total - points
                     b.users.save()
                     b.save()
-                    # else:
-                    #     return HttpResponse(json.dumps(
-                    #         dict(message="FG point for forecast should be greater than previous {}".format(b.bet_for))))
                 else:
-                    # if b.bet_against < points:
                     b.bet_against += points
                     b.users.fg_points_total = b.users.fg_points_total - points
                     b.users.save()
                     b.save()
-                    # else:
-                    #     return HttpResponse(json.dumps(
-                    #         dict(message="FG point for forecast should be greater than previous {}".format(
-                    #             b.bet_against))))
             except Exception:
                 if vote == 'email':
                     b = Betting.objects.create(forecast=forecasts, users=account, bet_for=points, bet_against=0)
@@ -715,29 +703,23 @@ def bet_post(request):
                     b.save()
                 else:
                     b = Betting.objects.create(forecast=forecasts, users=account, bet_for=0, bet_against=points)
-                    b.users.fg_points_total = b.users.fg_points_total - points
+                    b.users.fg_points_total = b.users.fg_poinsub_idts_total - points
                     b.users.forecast_participated += 1
                     b.users.save()
                     b.save()
+            try:
+                sub_id = account.notificationuser_set.all()
+                for i in sub_id:
+                    send_notification("ForecastGuru",
+                                      "Thank you for participating in forecast {}".format(forecast.heading),
+                                      "/forecast/{}".format(forecast.id), i.subscriber_id, account)
+            except Exception:
+                pass
             return HttpResponse(json.dumps(dict(message='success')))
         else:
             return HttpResponse(json.dumps(dict(message='balance')))
     else:
         return HttpResponse(json.dumps(dict(message='Please use POST')))
-
-
-# def deduct_points(account, points):
-#     if account.fg_points_bought > 0 and account.fg_points_bought > points:
-#         account.fg_points_bought -= points
-#     elif account.fg_points_won > 0 and account.fg_points_won> points:
-#         account.fg_points_won -= points
-#     elif account.market_fee > 0 and account.market_fee > points:
-#         account.market_fee -= account.market_fee - points
-#     elif account.fg_points_free > 0 and account.fg_points_free > points:
-#         account.fg_points_free -= points
-#
-#     account.fg_points_total = account.fg_points_won + account.fg_points_bought + account.market_fee + account.fg_points_free
-#     account.save()
 
 
 def allocate_points(request):
@@ -806,7 +788,7 @@ def allocate_points(request):
             sub_id = f.user.notificationuser_set.all()
             for i in sub_id:
                 send_notification("ForecastGuru", "You have collected {market} market fee for the forecast {fore}".format(market=(bet_against + bet_for) * 0.05, fore=f.heading),
-                              "https://forecast.sirez.com/forecast/{}".format(f.id), i.subscriber_id, f.user)
+                              "/forecast/{}".format(f.id), i.subscriber_id, f.user)
         except Exception:
             pass
     return HttpResponse("success")
@@ -816,9 +798,9 @@ def forecast_data(forecast, ratio, total, status, total_bets):
     betting = Betting.objects.filter(forecast=forecast)
     ratio += 1
     for b in betting:
-        print(b.users.user.username)
         bet_for = b.bet_for
         bet_against = b.bet_against
+
         if bet_for == 0 and bet_against == 0:
             b.forecast.won = "NA"
             b.forecast.save()
@@ -887,6 +869,26 @@ def forecast_data(forecast, ratio, total, status, total_bets):
                 b.users.save()
                 b.save()
 
+        try:
+            if bet_for > 0 and status == 'yes':
+                sub_id = b.users.notificationuser_set.all()
+                for i in sub_id:
+                    send_notification("ForecastGuru",
+                                      "You have collected {market} points for predicting a correct forecast {fore}".format(
+                                          market=bet_for * ratio, fore=f.heading),
+                                      "/forecast/{}".format(forecast.id), i.subscriber_id,
+                                      b.users)
+            elif bet_against > 0 and status == 'no':
+                sub_id = b.users.notificationuser_set.all()
+                for i in sub_id:
+                    send_notification("ForecastGuru",
+                                      "You have collected {market} points for predicting a correct forecast {fore}".format(
+                                          market=bet_against * ratio, fore=f.heading),
+                                      "/forecast/{}".format(forecast.id), i.subscriber_id, b.users)
+            else:
+                pass
+        except Exception:
+            pass
 
 @csrf_exempt
 def payments(request):
@@ -1886,7 +1888,19 @@ def e_handler500(request):
 def update_close_status(request):
     now = datetime.datetime.now()
     status = Status.objects.get(name='Closed')
-    ForeCast.objects.filter(approved=True, expire__lte=now, status__name='In-Progress').update(status=status)
+    forecast = ForeCast.objects.filter(approved=True, expire__lte=now, status__name='In-Progress')
+    for f in forecast:
+
+        if f.private.name == 'yes':
+            try:
+                sub_id = f.user.notificationuser_set.all()
+                for i in sub_id:
+                    send_notification("Forecast Guru", "Hello " + f.user.user.username + ". Please declare result for the forecast " + f.heading,
+                                      "/forecast/{}/".format(f.id), i.subscriber_id, f.user)
+            except Exception:
+                pass
+        else:
+            pass
     return HttpResponse("updated")
 
 
