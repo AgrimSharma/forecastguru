@@ -2243,7 +2243,7 @@ def fifa_rounds(request):
     next_day = str(year) + "-" + str(month) + "-" + str(date + 1) + " 23:59:59"
     data = []
     forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no', sub_category__name='Fifa',
-                                            status__name='In-Progress', exipre__gte=current, expire__lte=next_day).order_by("expire")
+                                            status__name='In-Progress', expire__gte=current, expire__lte=next_day).order_by("expire")
 
     for f in forecast_live:
         date = current.date()
