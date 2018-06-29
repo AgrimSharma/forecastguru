@@ -197,7 +197,6 @@ def live_forecast_desc(request):
             bet_start = (f.expire).date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                print(start)
                 start = start.time()
                 today = 'yes'
             else:
@@ -298,7 +297,6 @@ def live_forecast(request):
             bet_start = (f.expire).date()
             if date == bet_start:
                 start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                print(start)
                 start = start.time()
                 today = 'yes'
             else:
@@ -703,18 +701,18 @@ def bet_post(request):
                     b.save()
                 else:
                     b = Betting.objects.create(forecast=forecasts, users=account, bet_for=0, bet_against=points)
-                    b.users.fg_points_total = b.users.fg_poinsub_idts_total - points
+                    b.users.fg_points_total = b.users.fg_points_total - points
                     b.users.forecast_participated += 1
                     b.users.save()
                     b.save()
-            try:
-                sub_id = account.notificationuser_set.all()
-                for i in sub_id:
-                    send_notification("ForecastGuru",
-                                      "Thank you for participating in forecast {}".format(forecast.heading),
-                                      "/forecast/{}".format(forecast.id), i.subscriber_id, account)
-            except Exception:
-                pass
+            # try:
+            sub_id = account.notificationuser_set.all()
+            for i in sub_id:
+                send_notification("ForecastGuru",
+                                  "Thank you for participating in forecast {}".format(forecast.heading),
+                                  "/forecast/{}".format(forecast.id), i.subscriber_id, account)
+            # except Exception:
+            #     pass
             return HttpResponse(json.dumps(dict(message='success')))
         else:
             return HttpResponse(json.dumps(dict(message='balance')))
@@ -942,7 +940,6 @@ def get_hash_string(request, txnid, amount):
     email = so.user.email
     hash_string = config.KEY + "|" + txnid + "|" + str(float(constants.PAID_FEE_AMOUNT[amount])) + "|" + \
                   constants.PAID_FEE_PRODUCT_INFO[amount] + "|" + name + "|" + email + "|||||||||||" + config.SALT
-    print(hash_string)
     return hash_string
 
 
@@ -1026,13 +1023,11 @@ def payu_cancel(request):
 
 def category(request):
     category = Category.objects.all().order_by('identifier')
-    print(category.count())
     data = []
     for c in category:
         image = c.subcategory_set.get(name='Others').image
 
         data.append(dict(name=c.name, id=c.id, image=image))
-        print(data)
     return render(request, 'category.html', {'category': data,
                                              "heading": "Categories",
                                              "title": "ForecastGuru",
@@ -1174,7 +1169,6 @@ def search_result(request):
 
                     if date == bet_start:
                         start = f.expire + datetime.timedelta(hours=5, minutes=30)
-                        print(start)
                         start = start.time()
                         today = 'yes'
                     else:
@@ -1300,7 +1294,6 @@ def not_approved(forecast):
                          betting_for=0, betting_against=0, today=today,
                          participants=0, bet_for=0,
                          bet_against=0))
-        print(data)
     return data
 
 
@@ -1314,7 +1307,6 @@ def live_forecast_data_bet(forecast_live, account):
 
         if date == bet_start:
             start = f.expire + datetime.timedelta(hours=5, minutes=30)
-            print(start)
             start = start.time()
             today = 'yes'
         else:
@@ -1515,7 +1507,6 @@ def forecast_invite_data(forecast_live, account):
 def forecast_result_data(forecast_live, account):
     data = []
     for f in forecast_live:
-        print(f)
         forecast = f.forecast
         date = current.date()
         bet_start = forecast.expire.date()
@@ -1693,8 +1684,6 @@ def forecast_live_view(category, profile):
             totl = bet_against + bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            print(percent_for, percent_against)
-
             total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
             total_wagered = 0
@@ -1748,8 +1737,6 @@ def forecast_live_view_sub(category, profile):
             totl = bet_against + bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            print(percent_for, percent_against)
-
             total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
             total_wagered = 0
@@ -1783,7 +1770,6 @@ def forecast_live_view_bt(category_id):
 
         if date == bet_start:
             start = f.expire + datetime.timedelta(hours=5, minutes=30)
-            print(start)
             start = start.time()
             today = 'yes'
         else:
@@ -1800,8 +1786,6 @@ def forecast_live_view_bt(category_id):
             totl = bet_against + bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            print(percent_for, percent_against)
-
             total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
             total_wagered = 0
@@ -1849,8 +1833,6 @@ def forecast_live_view_bt_sub(category_id):
             totl = bet_against + bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            print(percent_for, percent_against)
-
             total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
             total_wagered = 0
@@ -2156,7 +2138,6 @@ def trending_data(objects):
         bet_start = forecast.expire.date()
         if date == bet_start:
             start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
-            print(start)
             start = start.time()
             today = 'yes'
         else:
