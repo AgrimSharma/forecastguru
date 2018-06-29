@@ -2245,7 +2245,7 @@ def fifa_rounds(request):
     forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no', sub_category__name='Football',status__name='In-Progress', expire__gte=current, expire__lte=next_day).order_by("expire")
 
     for f in forecast_live:
-        date = current.date()
+        date = datetime.datetime.now().date()
         forecast = f
         bet_start = (forecast.expire).date()
 
