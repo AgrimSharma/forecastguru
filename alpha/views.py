@@ -705,14 +705,14 @@ def bet_post(request):
                     b.users.forecast_participated += 1
                     b.users.save()
                     b.save()
-            # try:
-            sub_id = account.notificationuser_set.all()
-            for i in sub_id:
-                send_notification("ForecastGuru",
-                                  "Thank you for participating in forecast {}".format(str(forecasts.heading)),
-                                  "/forecast/{}".format(forecasts.id), str(i.subscriber_id), account)
-            # except Exception:
-            #     pass
+            try:
+                sub_id = account.notificationuser_set.all()
+                for i in sub_id:
+                    send_notification("ForecastGuru",
+                                      "Thank you for participating in forecast {}".format(str(forecasts.heading)),
+                                      "/forecast/{}".format(forecasts.id), str(i.subscriber_id), account)
+            except Exception:
+                pass
             return HttpResponse(json.dumps(dict(message='success')))
         else:
             return HttpResponse(json.dumps(dict(message='balance')))
