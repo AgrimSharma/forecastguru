@@ -1667,7 +1667,7 @@ def forecast_live_fifa(forecast_live):
     data = []
 
     for f in forecast_live:
-        date = current.date()
+        date = datetime.datetime.now().date()
         forecast = f
         bet_start = (forecast.expire).date()
 
@@ -2293,7 +2293,6 @@ def fifa_rounds(request):
     month = datetime.datetime.now().month
     current = str(year) + "-" + str(month) + "-" + str(date) + " 00:00:00"
     next_day = str(year) + "-" + str(month) + "-" + str(date + 1) + " 23:59:59"
-    data = []
     forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no', sub_category__name='Football',status__name='In-Progress', expire__gte=current, expire__lte=next_day).order_by("expire")
 
     return render(request, 'category_search_fifa.html',
