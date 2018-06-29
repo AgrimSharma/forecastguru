@@ -257,12 +257,13 @@ class SendNotificationAll(models.Model):
     url = models.URLField()
     status = models.IntegerField(default=0)
     created = models.DateField(auto_now=True)
+
     class Meta:
-        ordering = ['-user']
+        ordering = ['-created']
         verbose_name_plural = 'Notification Panel'
 
     def __str__(self):
         return "{} : {}".format(self.title, self.status)
 
     def __unicode__(self):
-        return "{} : {}".format(self.user.user.username, self.status)
+        return "{} : {}".format(self.title, self.status)
