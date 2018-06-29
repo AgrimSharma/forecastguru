@@ -60,8 +60,8 @@
 
                   <div class="col-6 text-right"> <span class="vote_no text-uppercase">No ({{f.bet_against}})</span> </div>
                 </div>
-                                  {% if f.forecast.status.name == 'In-Progress' %}
 
+                  {% if f.forecast.status.name == 'In-Progress' %}
                 <hr class="mt-2 mb-2">
                 <div class="row">
                   <div class="col-6 pr-0">
@@ -74,14 +74,18 @@
                         {% endif %}
                         </div>
                   </div>
+
                   <div class="col-6 text-right pl-0">
 
                       <form method="post">{% csrf_token %}
+                    <!--<input type="text" value="{{f.forecast.heading}}"  id="forecast_id" name="forecast_id">-->
+
                         <button type="button" class="btn btn-orange shipment_solds" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.id}}">PLAY </button>
                           </form>
                 </div>
-                    {% else %}
-                      <hr class="mt-2 mb-2">
+              </div>
+                  {% else %}
+                  <hr class="mt-2 mb-2">
                 <div class="row">
                   <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
@@ -112,14 +116,7 @@
                   </div>
 
                 </div>
-{% endif %}
-                      </div>
-                  </div>
-
-                </div>
-                    {% endif %}
-
-              </div>
+                  {% endif %}
                        {% if f.bet_against_user > 0 or f.bet_for_user > 0  %}
             <hr>
                 <div class="row">
@@ -233,18 +230,17 @@
       </div>
           {% endfor %}
 
-         {% for f in result %}
-          {% if f.bet_for > 0 %}
+          {% for f in result %}
         <div class="forcast_box">
           <div class="row align-items-center" >
             <div class="col-3 col-md-2 text-center">
-                <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="" >
+                            <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="" >
 
                   <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
-                </figure>
+                            </figure>
             </div>
             <div class="col-9 col-md-10">
-                <a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;">  <p class="title_desc"> {{f.forecast.heading}}</p></a>
+               <p class="title_desc"> <a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;">    {{f.forecast.heading}}</a></p>
             </div>
           </div>
           <div class="row">
@@ -273,35 +269,21 @@
                 <div class="row">
                   <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
-                        {% if f.forecast.won == 'yes' %}
-                      <label><i class="fa fa-clock-o"></i> Result: </label> <span class="result_yes">{% if f.ratio == 'NA' %} NA {% else %}YES {% endif %}<i class="fa fa-coins ml-1"></i></span>
-                        {% else %}
-                      <label><i class="fa fa-clock-o"></i> Result: </label> <span class="result_no">{% if f.ratio == 'NA' %} NA {% else %}NO {% endif %}<i class="fa fa-coins ml-1"></i></span>
-                        {% endif %}
-                    </div>
+                      <label><i class="fa fa-clock-o"></i> Result: </label> <span class="result_yes">{% if f.ratio == 'NA' %} NA {% else %}{{f.won}} {% endif %}<i class="fa fa-coins ml-1"></i> {{f.waggered}}</span>
+                       </div>
                   </div>
                   <div class="col-6 text-right">
                       <div class="time textwithicon pl-0">
-               {% if f.ratio == "NA" %}
-                          <label>Win Ratio: </label> <span class="winratio">NA</span>
+                          {% if f.ratio == "NA" %}
+                          <label>Win Ratio: </label> <span class="winratio">NA </span>
                           {% else %}
                       <label>Win Ratio: </label> <span class="winratio">1:{{f.ratio}}  </span>
 {% endif %}
                       </div>
                   </div>
 
-                </div>
-
-                  <div class="row">
-                  <div class="col-12 pr-0">
-                    <div class=" time textwithicon pl-0">
-                      <label>Source: </label> {{ f.forecast.sub_category.source }}
-                       </div>
-                  </div>
-
-                </div>
-                              {% if f.bet_against_user > 0 or f.bet_for_user > 0  %}
-                  <hr>
+                </div>                  {% if f.bet_against_user and f.bet_for_user %}
+<hr>
                 <div class="row">
                   <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
@@ -318,12 +300,11 @@
                     <div class="col-3 text-right pl-0">
                      No({{f.bet_against_user}})
                 </div>
-              </div>{% endif %}
               </div>
+              </div>{% endif %}
             </div>
           </div>
         </div>
-          {% endif %}
         {% endfor %}
   </div>
       </div></div></div>
