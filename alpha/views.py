@@ -1875,25 +1875,26 @@ def update_close_status(request):
         f.status = status
         f.save()
         if f.private.name == 'yes':
-            try:
-                sub_id = f.user.notificationuser_set.all()
-                for i in sub_id:
-                    send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + f.heading,
-                                      "/forecast/{}/".format(f.id), i.subscriber_id, f.user)
-            except Exception:
-                pass
+            sub_id = f.user.notificationuser_set.all()
+            for i in sub_id:
+                send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + f.heading,
+                                  "/forecast/{}/".format(f.id), i.subscriber_id, f.user)
+            # except Exception:
+            #     pass
     return HttpResponse("updated")
 
 
 def send_notification_all(request):
     notification = SendNotificationAll.objects.filter(status=0)
     for f in notification:
-            try:
-                sub_id = NotificationUser.objects.all()
-                for i in sub_id:
-                    send_notification(f.title, f.heading,f.url, i.subscriber_id, i.user)
-            except Exception:
-                pass
+        f.status = 1
+        f.save()
+        try:
+            sub_id = NotificationUser.objects.all()
+            for i in sub_id:
+                send_notification(f.title, f.heading,f.url, i.subscriber_id, i.user)
+        except Exception:
+            pass
     return HttpResponse("updated")
 
 
@@ -1904,19 +1905,10 @@ def privacy(request):
 
 def terms(request):
     return render(request, 'terms.html')
-    # with open('/home/lawrato/forecastguru/static/docs/terms.pdf', 'r') as pdf:
-    #     response = HttpResponse(pdf.read(), content_type='application/pdf')
-    #     response['Content-Disposition'] = 'inline;filename=some_file.pdf'
-    #     return response
 
 
 def faq(request):
     return render(request, 'faq.html')
-
-    # with open('/home/lawrato/forecastguru/static/docs/FAQ.pdf', 'r') as pdf:
-    #     response = HttpResponse(pdf.read(), content_type='application/pdf')
-    #     response['Content-Disposition'] = 'inline;filename=some_file.pdf'
-    #     return response
 
 
 def facebook_category(request):
