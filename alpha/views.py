@@ -1872,12 +1872,13 @@ def update_close_status(request):
     status = Status.objects.get(name='Closed')
     forecast = ForeCast.objects.filter(approved=True, expire__lte=now, status__name='In-Progress')
     for f in forecast:
-
+        f.status = status
+        f.save()
         if f.private.name == 'yes':
             try:
                 sub_id = f.user.notificationuser_set.all()
                 for i in sub_id:
-                    send_notification("Forecast Guru", "Hello " + f.user.user.username + ". Please declare result for the forecast " + f.heading,
+                    send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + f.heading,
                                       "/forecast/{}/".format(f.id), i.subscriber_id, f.user)
             except Exception:
                 pass
