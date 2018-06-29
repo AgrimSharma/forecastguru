@@ -456,8 +456,8 @@ def forecast_result_page_my(forecast):
                          participants=total_wagered, won="Yes" if forecast.won == 'yes' else 'No',
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for,
-                         bet_for_user=0,
-                         bet_against_user=0
+                         bet_for_user=bet_for,
+                         bet_against_user=bet_against
                          ))
     return data
 
