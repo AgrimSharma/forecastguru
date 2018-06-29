@@ -108,6 +108,48 @@
         </div>
           {% endif %}
         {% endfor %}
+          {% for f in closed %}
+        <div class="forcast_box">
+          <div class="row align-items-center" >
+            <div class="col-3 col-md-2 text-center">
+                            <figure class="icon"> <img src="{{f.forecast.sub_category.image}}" alt="" >
+
+                  <!--<span><img src="{% static 'images/icon-local.png' %}" alt=""></span> -->
+                            </figure>
+            </div>
+            <div class="col-9 col-md-10">
+              <p class="title_desc"> <a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;">{{f.forecast.heading}}</a></p>
+            </div>
+          </div>
+
+             <div class="row" style="background: #f98b8b;padding-left: 37%;padding-top: 5px;height: 26px;/* text-align:  center; */">
+                      <p>Pending for <strong>Result</strong> Verification</p>
+
+             </div>
+            {% if f.bet_against_user > 0 or f.bet_for_user > 0  %}
+            <hr>
+                <div class="row">
+                  <div class="col-6 pr-0">
+                    <div class="time textwithicon pl-0">
+
+
+                       <span>My Points in Play</span>
+
+                        </div>
+                  </div>
+
+                  <div class="col-3 text-right pl-0">
+                     Yes({{f.bet_for_user}})
+                </div>
+                    <div class="col-3 text-right pl-0">
+                     No({{f.bet_against_user}})
+                </div>
+              </div>
+{% endif %}
+
+          </div>
+
+        {% endfor %}
       </div>
     </div>
   </div>
