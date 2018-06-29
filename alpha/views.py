@@ -441,9 +441,9 @@ def forecast_result_page_my(forecast):
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
             total = bet_against + bet_for
-            bet_for_user = Betting.objects.filter(forecast=f, users=profile).aggregate(bet_for=Sum('bet_for'))[
+            bet_for_user = Betting.objects.filter(forecast=f, users=f.user).aggregate(bet_for=Sum('bet_for'))[
                 'bet_for']
-            bet_against_user = Betting.objects.filter(forecast=f, users=profile).aggregate(bet_against=Sum('bet_against'))[
+            bet_against_user = Betting.objects.filter(forecast=f, users=f.user).aggregate(bet_against=Sum('bet_against'))[
                     'bet_against']
         except Exception:
             total_wagered = 0
