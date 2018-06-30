@@ -1670,13 +1670,13 @@ def forecast_live_fifa(forecast_live, profile):
         date = datetime.datetime.now().date()
         forecast = f
         bet_start = forecast.expire.date()
-
+        print(forecast.expire(tzlocal()).tzname())
         if date == bet_start:
             start = f.expire
             start = start.time()
             today = 'yes'
         else:
-            start = f.expire
+            start = forecast.expire
 
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
@@ -2339,8 +2339,6 @@ def extra_page(request):
 def fifa_rounds(request):
     date_tod = datetime.datetime.now().date()
     date_tom = date_tod + datetime.timedelta(days=2)
-
-    print(datetime.datetime.now(tzlocal()))
     current = datetime.datetime.strptime(str(date_tod) + " 00:00:00", '%Y-%m-%d %H:%M:%S')
     next_day = datetime.datetime.strptime(str(date_tom) + " 00:00:00", '%Y-%m-%d %H:%M:%S')
     forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
