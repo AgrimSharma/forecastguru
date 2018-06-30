@@ -1670,13 +1670,12 @@ def forecast_live_fifa(forecast_live, profile):
         date = datetime.datetime.now().date()
         forecast = f
         bet_start = forecast.expire.date()
-        print(forecast.expire(tzlocal()).tzname())
         if date == bet_start:
             start = f.expire
             start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
 
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
@@ -1728,7 +1727,7 @@ def forecast_live_fifa_wp(forecast_live):
             start = start.time()
             today = 'yes'
         else:
-            start = f.expire
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
 
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
