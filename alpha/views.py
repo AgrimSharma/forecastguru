@@ -1759,7 +1759,6 @@ def forecast_live_fifa_wp(forecast_live):
                          bet_against_user=0,
                          bet_for_user=0,
                          ))
-    print(data)
     return data
 
 
