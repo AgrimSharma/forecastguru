@@ -96,12 +96,20 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class NotificationUserAdmin(admin.ModelAdmin):
+    date_hierarchy = 'created'
     list_display = ['user', 'subscriber_id']
     search_fields = ['user']
 
 
 class NotificationAdmin(admin.ModelAdmin):
+    date_hierarchy = 'created'
     list_display = ['user', 'title', "message", "url", "status"]
+    list_filter = ('status',)
+
+
+class NotificationAllAdmin(admin.ModelAdmin):
+    date_hierarchy = 'created'
+    list_display = ['title', "message", "url", "status", 'created']
     list_filter = ('status',)
 
 
@@ -109,6 +117,7 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(ForeCast, ForeCastAdmin)
 admin.site.register(NotificationUser, NotificationUserAdmin)
+admin.site.register(SendNotificationAll, NotificationAllAdmin)
 admin.site.register(NotificationPanel, NotificationAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(Betting, BettingAdmin)

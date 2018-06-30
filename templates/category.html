@@ -18,10 +18,11 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
-<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
   <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick.css' %}" />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick-theme.css' %}" />
-<link rel="manifest" href="/manifest.json" />
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
+
+    <link rel="manifest" href="/manifest.json" />
 <script type="text/javascript">
   (function(p,u,s,h){
       p._pcq=p._pcq||[];
@@ -74,8 +75,36 @@
 <div class="topspace"></div>
 
 <div class="container fixed_p_footer">
+
+<div class="row mt-3">
+  <div class="col-12">
+    <div class="banner_slider">
+      <div class="item">
+       <a href="{% url 'create_forecast' %}"><img src="{% static 'images/hero-banner1.jpg' %}" alt=""></a>
+      </div>
+      <div class="item">
+          <a href="{% url 'quiz' %}"><img src="{% static 'images/hero-banner2.jpg' %}" alt=""></a>
+        </div>
+    </div>
+  </div>
+</div>
   <div class="row">
     <div class="col-md-12">
+        <div class="category_wrap">
+        <a href=" {% url 'fifa_rounds' %}">
+        <div class="cat_box">
+          <div class="row align-items-center">
+            <div class="col-3 text-center">
+                <img src="{% static 'images/fifa-russia.jpeg' %}" alt="">
+            </div>
+            <div class="col-9">
+              <p>Fifa Round of 16</p>
+            </div>
+          </div>
+        </div>
+        </a>
+
+      </div>
     {% for c in category %}
       <div class="category_wrap">
         <a href=" {% url 'category_search' c.id %}">
@@ -183,7 +212,6 @@ $('#myInput').keypress(function (e) {
 $(document).ready(function() {
 _pcq.push(['APIReady', callbackFunction]);
 
-//some code here
 
 function callbackFunction() {
       console.log(pushcrew.subscriberId); // will return something like this if current user is a subscriber '1c5d546172cfb4be65a8d51b047c4804'
@@ -192,6 +220,7 @@ function callbackFunction() {
 
   console.log(pushcrew.subscriberId); // will return -1(integer) if user has blocked push notifications from your website
     var sub_id = pushcrew.subscriberId;
+
         $.ajax({
                 type: "POST",
                 url: "{% url 'notification_user' %}",
@@ -204,4 +233,21 @@ function callbackFunction() {
 }
 });
 </script>
+<script>
+        $(function(){
+
+            $('.banner_slider').slick({
+                dots: true,
+                arrows: false,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 1,
+                autoplay:true,
+                autoplaySpeed:10000,
+            });
+
+    })
+    </script>
+
+
 </body></html>

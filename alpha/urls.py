@@ -18,12 +18,14 @@ from .views import *
 
 urlpatterns = [
     url(r'^accounts/profile/', test, name='home_page'),
-    url(r'^notif_user/', save_user_id, name='notification_user'),
     url(r'^create_forecast/', create_forecast, name='create_forecast'),
+    url(r'^extra/', extra_page, name='extra'),
+    url(r'^notif_user/', save_user_id, name='notification_user'),
     url(r'^quiz/', quiz, name='quiz'),
     url(r'^trending/', trending_forecast, name='trending'),
     url(r'^result_declared/', forecast_result, name='forecast_result'),
     url(r'^my_result/', result_not_declared, name='result_not_declared'),
+    url(r'^fifa_rounds/', fifa_rounds, name='fifa_rounds'),
     url(r'^closing_soon/', closing_soon, name='closing_soon'),
     url(r'^invite_friends/', invite_friends, name='invite_friends'),
     url(r'^device_data_android/', device_data_android, name='device_data_android'),
@@ -62,6 +64,7 @@ urlpatterns = [
     url(r'^success$', payment_success, name="payment_success"),
     url(r'^failure$', payment_failure, name="payment_failure"),
     url(r'^closed_status/', update_close_status, name="closed_status"),
+    url(r'^send_notification_all/', send_notification_all, name="send_notification_all"),
     url(r'^terms_and_conditions/', terms, name="terms"),
     url(r'^faqs/', faq, name="faq"),
     url(r'^privacy_policy/', privacy, name="privacy_policy"),
