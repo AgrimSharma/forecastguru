@@ -1986,10 +1986,13 @@ def update_close_status(request):
         f.status = status
         f.save()
         if f.private.name == 'yes':
-            sub_id = f.user.notificationuser_set.all()
-            for i in sub_id:
-                send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + str(f.heading),
+            try:
+                sub_id = f.user.notificationuser_set.all()
+                for i in sub_id:
+                    send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + str(f.heading),
                                   "https://forecast.guru/forecast/{}/".format(f.id), str(i.subscriber_id), f.user)
+            except Exception:
+                pass
     return HttpResponse("updated")
 
 
