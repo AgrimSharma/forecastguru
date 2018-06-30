@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, division
 import json
-from dateutil.tz import *
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, render_to_response
 from django.views.decorators.csrf import csrf_exempt
