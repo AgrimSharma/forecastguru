@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, division
 import json
-
+from dateutil.tz import *
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, render_to_response
 from django.views.decorators.csrf import csrf_exempt
@@ -1712,7 +1712,6 @@ def forecast_live_fifa(forecast_live, profile):
                          bet_against_user=bet_against_user if bet_against_user else 0,
                          bet_for_user=bet_for_user if bet_for_user else 0,
                          ))
-    print(data)
     return data
 
 
@@ -2340,10 +2339,8 @@ def extra_page(request):
 def fifa_rounds(request):
     date_tod = datetime.datetime.now().date()
     date_tom = date_tod + datetime.timedelta(days=2)
-    # year = datetime.datetime.now().year
-    # month = datetime.datetime.now().month
-    # if date in [30,31]:
 
+    print(datetime.datetime.now(tzlocal()))
     current = datetime.datetime.strptime(str(date_tod) + " 00:00:00", '%Y-%m-%d %H:%M:%S')
     next_day = datetime.datetime.strptime(str(date_tom) + " 00:00:00", '%Y-%m-%d %H:%M:%S')
     forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
