@@ -2342,7 +2342,7 @@ def fifa_rounds(request):
     year = datetime.datetime.now().year
     month = datetime.datetime.now().month
     current = datetime.datetime.strptime(str(year) + "-" + str(0) +str(month) + "-" + str(date) + " 00:00:00", '%Y-%m-%d %H:%M:%S')
-    next_day = datetime.datetime.strptime(str(year) + "-" + str(0) + str(month) + "-" + str(date + 1) + " 23:59:59", '%Y-%m-%d %H:%M:%S'
+    next_day = datetime.datetime.strptime(str(year) + "-" + str(0) + str(month) + "-" + str(date + 1) + " 23:59:59", '%Y-%m-%d %H:%M:%S')
     forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
                                             sub_category__name='Football', status__name='In-Progress',
                                             expire__gte=current, expire__lte=next_day).order_by("expire")
