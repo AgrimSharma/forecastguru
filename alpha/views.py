@@ -151,7 +151,7 @@ def live_forecast_desc(request):
 
             bet_start = f.expire.date()
             if date == bet_start:
-                start = f.expire
+                start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 start = start.time()
                 today = 'yes'
             else:
@@ -199,7 +199,7 @@ def live_forecast_desc(request):
 
             bet_start = (f.expire).date()
             if date == bet_start:
-                start = f.expire
+                start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 start = start.time()
                 today = 'yes'
             else:
@@ -251,7 +251,7 @@ def live_forecast(request):
 
             bet_start = f.expire.date()
             if date == bet_start:
-                start = f.expire
+                start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 start = start.time()
                 today = 'yes'
             else:
@@ -299,7 +299,7 @@ def live_forecast(request):
 
             bet_start = (f.expire).date()
             if date == bet_start:
-                start = f.expire
+                start = f.expire + datetime.timedelta(hours=5, minutes=30)
                 start = start.time()
                 today = 'yes'
             else:
@@ -345,7 +345,7 @@ def forecast_result_page(forecast):
         date = current.date()
         bet_start = (f.expire).date()
         if date == bet_start:
-            start = f.expire 
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
@@ -427,7 +427,7 @@ def forecast_result_page_my(forecast):
         date = current.date()
         bet_start = forecast.expire.date()
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire  + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
@@ -1181,7 +1181,7 @@ def search_result(request):
                     bet_start = (f.expire).date()
 
                     if date == bet_start:
-                        start = f.expire 
+                        start = f.expire + datetime.timedelta(hours=5, minutes=30)
                         start = start.time()
                         today = 'yes'
                     else:
@@ -1296,7 +1296,7 @@ def not_approved(forecast):
         bet_start = (forecast.expire).date()
 
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
@@ -1319,7 +1319,7 @@ def live_forecast_data_bet(forecast_live, account):
         bet_start = forecast.expire.date()
 
         if date == bet_start:
-            start = f.expire 
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
@@ -1371,7 +1371,7 @@ def live_forecast_data_private(forecast_live, account):
         bet_start = forecast.expire.date()
 
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
@@ -1422,7 +1422,7 @@ def live_forecast_data(forecast_live, account):
         bet_start = forecast.expire.date()
 
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
@@ -1471,7 +1471,7 @@ def forecast_invite_data(forecast_live, account):
         date = current.date()
         bet_start = (forecast.expire).date()
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
@@ -1524,7 +1524,7 @@ def forecast_result_data(forecast_live, account):
         date = current.date()
         bet_start = forecast.expire.date()
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
@@ -1577,7 +1577,7 @@ def forecast_result_data_private(forecast_live, account):
         date = current.date()
         bet_start = forecast.expire.date()
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
@@ -1773,7 +1773,7 @@ def forecast_live_view(category, profile):
         bet_start = (forecast.expire).date()
 
         if date == bet_start:
-            start = f.expire
+            start = f.expire  + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
@@ -1827,7 +1827,7 @@ def forecast_live_view_sub(category, profile):
         bet_start = (forecast.expire).date()
 
         if date == bet_start:
-            start = forecast.expire
+            start = forecast.expire  + datetime.timedelta(hours=5, minutes=30)
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
@@ -1880,7 +1880,7 @@ def forecast_live_view_bt(category_id):
         bet_start = (forecast.expire).date()
 
         if date == bet_start:
-            start = f.expire 
+            start = f.expire  + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
@@ -1928,7 +1928,7 @@ def forecast_live_view_bt_sub(category_id):
         bet_start = (forecast.expire).date()
 
         if date == bet_start:
-            start = forecast.expire
+            start = forecast.expire  + datetime.timedelta(hours=5, minutes=30)
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
@@ -2254,7 +2254,7 @@ def trending_data(objects):
         forecast = f
         bet_start = forecast.expire.date()
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire  + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
