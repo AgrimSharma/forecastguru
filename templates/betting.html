@@ -166,6 +166,11 @@
                           {% if forecast.won == 'yes' %}(<span class="result_yes" style="color:green;">YES</span>){% elif forecast.won == 'no' %} (<span class="result_no" style="color:red;">NO</span>){% endif %}</strong>
                   </div>
                 </div>
+            <div class="row mb-2">
+                  <div class="col-12">
+                      Win Ratio : <strong> {% if ratio > 0 %} {{ ration }} {% else %} NA {% endif %}</strong>
+                  </div>
+                </div>
         </div>
 
       </div>
@@ -208,7 +213,7 @@
         <div class="col-12">
             <div class="row mb-2">
                 <div class="col-6">
-                    My Points for Yes
+                    My FG Points for Yes
                 </div>
                 <div class="col-6 text-right value-color">
                     {{bet_for_user}}
@@ -231,6 +236,16 @@
                       {{market_fee}}
                   </div>
                 </div>
+            {% if forecast.status.id == 3 %}
+            <div class="row mb-2">
+                  <div class="col-6">
+                    My Earning
+                  </div>
+                  <div class="col-6 text-right value-color">
+                      {{earned}}
+                  </div>
+                </div>
+            {% endif %}
         </div>
 
       </div>
