@@ -635,9 +635,17 @@ def betting(request, userid):
             success = SocialAccount.objects.get(user__username=request.user)
             success = success.successful_forecast
             sums = betting_sum['bet_for'] + betting_sum['bet_against']
+            user = request.user
+            social = SocialAccount.objects.get(user=user)
+            bet_for_user = Betting.objects.get(forecast=forecast, users=social).bet_for
+            bet_against_user = Betting.objects.get(forecast=forecast, users=social).bet_against
+            market_fee = sums * 0.10 if forecast.user == social else 0
         except Exception:
             success = 0
             sums = 0
+            bet_against_user = 0
+            bet_for_user = 0
+            market_fee = 0
         return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
                                                 'bet_for': betting_sum['bet_for'] if betting_sum['bet_for'] else 0,
                                                 'against': betting_sum['bet_against'] if betting_sum[
@@ -651,7 +659,9 @@ def betting(request, userid):
                                                 "approved": approved,
                                                 "user": users,"won": won,
                                                 "heading": "Forecast Details",
-                                                "title": "ForecastGuru","private": "no"
+                                                "title": "ForecastGuru","private": "no",
+                                                "bet_against_user":bet_against_user,
+                                                "bet_for_user" : bet_for_user, "market_fee": market_fee
                                                 })
     elif forecast.private.name == 'yes':
         points = []
