@@ -64,6 +64,7 @@ urlpatterns = [
     url(r'^success$', payment_success, name="payment_success"),
     url(r'^failure$', payment_failure, name="payment_failure"),
     url(r'^closed_status/', update_close_status, name="closed_status"),
+    url(r'^private_subscribe/', private_subscribe, name="private_subscribe"),
     url(r'^send_notification_all/', send_notification_all, name="send_notification_all"),
     url(r'^terms_and_conditions/', terms, name="terms"),
     url(r'^faqs/', faq, name="faq"),
