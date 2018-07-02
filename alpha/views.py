@@ -2000,7 +2000,7 @@ def update_close_status(request):
 
 
 def private_subscribe(request):
-    forecast = ForeCast.objects.filter(status__name == 'Closed')
+    forecast = ForeCast.objects.filter(status__name = 'Closed', private__name = 'yes')
     for f in forecast:
         if f.private.name == 'yes':
             try:
