@@ -168,7 +168,7 @@
                 </div>
             <div class="row mb-2">
                   <div class="col-12">
-                      Win Ratio : <strong> {% if ratio > 0 %} {{ ratio }}%  {% else %} NA {% endif %}</strong>
+                      Win Ratio : <strong> {% if forecast.status.id == 3 %} {{ ratio }}%  {% else %} NA {% endif %}</strong>
                   </div>
                 </div>
         </div>
