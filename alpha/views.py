@@ -98,20 +98,24 @@ def create_forecast(request):
         admin = SocialAccount.objects.get(user__username="admin")
         Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
         if private.name == 'no':
-
-            sub_id = users.notificationuser_set.all()
-            for i in sub_id:
-                send_notification("Forecast Guru", "Thank You for creating a forecast " + str(heading),
-                                  "https://forecast.guru/forecast/{}/".format(fid), i.subscriber_id, users)
+            try:
+                sub_id = users.notificationuser_set.all()
+                for i in sub_id:
+                    send_notification("Forecast Guru", "Thank You for creating a forecast " + str(heading),
+                                      "https://forecast.guru/forecast/{}/".format(fid), i.subscriber_id, users)
+            except Exception:
+                pass
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
         else:
 
             InviteFriends.objects.create(user=admin, forecast=f)
-
-            sub_id = users.notificationuser_set.all()
-            for i in sub_id:
-                send_notification("Forecast Guru", "Thank You for creating a forecast " + str(heading),
-                              "https://forecast.guru/forecast/{}/".format(fid), i.subscriber_id, users)
+            try:
+                sub_id = users.notificationuser_set.all()
+                for i in sub_id:
+                    send_notification("Forecast Guru", "Thank You for creating a forecast " + str(heading),
+                                  "https://forecast.guru/forecast/{}/".format(fid), i.subscriber_id, users)
+            except Exception:
+                pass
             return HttpResponse(json.dumps(
                 dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
 
@@ -119,7 +123,7 @@ def create_forecast(request):
         try:
             user = request.user
             profile = SocialAccount.objects.get(user=user)
-            category = Category.objects.all().order_by('identifier').exclude(name__icontains='Fifa')
+            category = Category.objects.all().order_by('identifier')
             return render(request, 'create_forecast.html', {'category': category,
                                                             "current": datetime.datetime.now().strftime(
                                                                 "%Y-%m-%d %H:%M"),
