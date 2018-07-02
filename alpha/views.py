@@ -1996,15 +1996,15 @@ def update_close_status(request):
     now = datetime.datetime.now()
     status = Status.objects.get(name='Closed')
     forecast = ForeCast.objects.filter(approved=True, expire__lte=now, status__name='In-Progress')
+    ForeCast.objects.filter(approved=True, expire__lte=now, status__name='In-Progress').update(status=status)
     for f in forecast:
-        f.status = status
-        f.save()
         if f.private.name == 'yes':
             try:
                 sub_id = f.user.notificationuser_set.all()
-                for i in sub_id:
-                    send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + str(f.heading),
-                                  "https://forecast.guru/forecast/{}/".format(f.id), str(i.subscriber_id), f.user)
+                if len(sub_id) > 0:
+                    for i in sub_id:
+                        send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + str(f.heading),
+                                      "https://forecast.guru/forecast/{}/".format(f.id), str(i.subscriber_id), f.user)
             except Exception:
                 pass
     return HttpResponse("updated")
