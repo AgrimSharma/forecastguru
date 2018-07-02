@@ -644,7 +644,7 @@ def betting(request, userid):
                 ratio = round(betting_sum['bet_for'] / sums, 2) + 1
                 earned = bet_for_user * ratio
             else:
-                ratio = round(betting_sum['bet_against'] / sums, 2)
+                ratio = round(betting_sum['bet_against'] / sums, 2) + 1
                 earned = bet_against_user * ratio
         except Exception:
             success = 0
