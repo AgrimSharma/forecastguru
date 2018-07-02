@@ -886,7 +886,7 @@ def forecast_data(forecast, ratio, total, status, total_bets):
             for i in sub_id:
                 send_notification("ForecastGuru",
                                   "You have collected {market} points for predicting a correct forecast {fore}".format(
-                                      market=bet_for * ratio, fore=str(forecast.heading)),
+                                      market=b.bet_for * ratio, fore=str(forecast.heading)),
                                       "https://forecast.guru/forecast/{}/".format(forecast.id), i.subscriber_id,
                                   b.users)
         elif bet_against > 0 and status == 'no':
@@ -894,7 +894,7 @@ def forecast_data(forecast, ratio, total, status, total_bets):
             for i in sub_id:
                 send_notification("ForecastGuru",
                                   "You have collected {market} points for predicting a correct forecast {fore}".format(
-                                      market=str(bet_against * ratio), fore=str(forecast.heading)),
+                                      market=str(b.bet_against * ratio), fore=str(forecast.heading)),
                                   "https://forecast.guru/forecast/{}/".format(forecast.id), i.subscriber_id, b.users)
         else:
             pass
