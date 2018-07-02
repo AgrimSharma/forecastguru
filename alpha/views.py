@@ -1995,8 +1995,12 @@ def e_handler500(request):
 def update_close_status(request):
     now = datetime.datetime.now()
     status = Status.objects.get(name='Closed')
-    forecast = ForeCast.objects.filter(approved=True, expire__lte=now, status__name='In-Progress')
     ForeCast.objects.filter(approved=True, expire__lte=now, status__name='In-Progress').update(status=status)
+    return HttpResponse("updated")
+
+
+def private_subscribe(request):
+    forecast = ForeCast.objects.filter(status__name == 'Closed')
     for f in forecast:
         if f.private.name == 'yes':
             try:
@@ -2007,8 +2011,6 @@ def update_close_status(request):
                                       "https://forecast.guru/forecast/{}/".format(f.id), str(i.subscriber_id), f.user)
             except Exception:
                 pass
-    return HttpResponse("updated")
-
 
 def send_notification_all(request):
     notification = SendNotificationAll.objects.filter(status=0)
