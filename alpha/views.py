@@ -669,12 +669,12 @@ def betting(request, userid):
                                                 "users": forecast.user.user.username,
                                                 "sums": sums,"earned": int(earned),
                                                 "approved": approved,"ratio": ratio,
-                                                "user": users,"won": won,"market_fee_paid": market_fee_paid,
+                                                "user": users,"won": won,"market_fee_paid": int(market_fee_paid),
                                                 "heading": "Forecast Details",
                                                 "title": "ForecastGuru","private": "no",
                                                 "bet_against_user":bet_against_user,
-                                                "bet_for_user" : bet_for_user, "market_fee": market_fee,
-                                                "total_earn": total_earning
+                                                "bet_for_user" : bet_for_user, "market_fee": int(market_fee),
+                                                "total_earn": int(total_earning)
                                                 })
     elif forecast.private.name == 'yes':
         points = []

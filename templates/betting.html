@@ -244,14 +244,6 @@
                       {{market_fee_paid}}
                   </div>
                 </div>
-            <div class="row mb-2">
-                  <div class="col-6">
-                    Total Earning
-                  </div>
-                  <div class="col-6 text-right value-color">
-                      {{total_earn}}
-                  </div>
-                </div>
             {% if forecast.status.id == 3 %}
             <div class="row mb-2">
                   <div class="col-6">
@@ -262,6 +254,14 @@
                   </div>
                 </div>
             {% endif %}
+            <div class="row mb-2">
+                  <div class="col-6">
+                   <strong>Total Earning</strong>
+                  </div>
+                  <div class="col-6 text-right value-color">
+                      <strong> {{total_earn}}</strong> 
+                  </div>
+                </div>
         </div>
 
       </div>
