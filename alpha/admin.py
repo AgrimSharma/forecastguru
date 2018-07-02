@@ -13,6 +13,13 @@ def approve(modeladmin, request, queryset):
         obj.save()
 
 
+def verified(modeladmin, request, queryset):
+    approved = Verified.objects.get(id=1)
+    for obj in queryset:
+        obj.verified = approved
+        obj.save()
+
+
 class InviteFriendAdmin(admin.ModelAdmin):
     list_display = ['forecast', "user"]
     # pass
@@ -59,7 +66,7 @@ class ForeCastAdmin(admin.ModelAdmin):
     search_fields = ['heading']
     list_filter = ("approved", "verified", 'status', 'category', 'private')
     ordering = ('-expire',)
-    actions = [approve]
+    actions = [approve, verified]
 
 
 class StatusAdmin(admin.ModelAdmin):
