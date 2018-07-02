@@ -1050,12 +1050,7 @@ def category_search(request, userid):
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         if len(forecast_live_view(category_id, profile)) == 0:
-            return render(request, 'my_friend_no.html',{
-                              "heading": category_id.name,
-                              "title": "ForecastGuru",
-                              "user": "Guest" if request.user.is_anonymous() else request.user.username
-                          })
-
+            return HttpResponseRedirect("/trending/")
         else:
             return render(request, 'category_search.html',
                           {
@@ -1084,11 +1079,7 @@ def sub_category_data(request, userid):
         user = request.user
         profile = SocialAccount.objects.get(user=user)
         if len(forecast_live_view_sub(subcategory, profile)) == 0:
-            return render(request, "my_friend_no.html",{
-                              "heading": subcategory.name,
-                              "title": "ForecastGuru",
-                              "user": "Guest" if request.user.is_anonymous() else request.user.username
-                          })
+            return HttpResponseRedirect("/trending/")
         else:
             return render(request, 'category_search.html',
                           {
@@ -1127,9 +1118,7 @@ def my_forecast(request):
             "expire")
         not_bet = [f for f in forecast_no_bet if f.betting_set.all().count() == 0]
         if forecast_live.count() == 0 and forecast_result.count() == 0 and forecast_approval.count() == 0 and forecast_no_bet.count() == 0:
-            return render(request, 'my_friend_no.html', {"heading": "My Forecast",
-                                                         "title": "ForecastGuru",
-                                                         "user": "Guest" if request.user.is_anonymous() else request.user.username})
+            return HttpResponseRedirect("/trending/")
         else:
             return render(request, 'my_friend.html', {"live": live_forecast_data(forecast_live, account),
                                                   "result": forecast_result_data(forecast_result, account),
@@ -1171,9 +1160,7 @@ def search_result(request):
                                                     status__name='In-Progress').order_by(
                 "-expire")
             if len(forecast_live) == 0:
-                return render(request, "search_data_nf.html", {"data": "No result found", "heading": "Search Forecast",
-                                                               "title": "ForecastGuru",
-                                                               "user": "Guest" if request.user.is_anonymous() else request.user.username})
+                return HttpResponseRedirect("/trending/")
             else:
                 for f in forecast_live:
                     date = current.date()
@@ -2241,7 +2228,7 @@ def trending_forecast(request):
                 data.append(f)
 
     if len(data) == 0:
-        return render(request, "no_trending.html", {"heading": "Trending Forecast", "title": "ForecastGuru", "user": "Guest" if request.user.is_anonymous() else request.user.username})
+        return HttpResponseRedirect("/trending/")
     else:
 
         objects = data[:10]
