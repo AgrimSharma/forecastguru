@@ -2011,6 +2011,8 @@ def private_subscribe(request):
                                       "https://forecast.guru/forecast/{}/".format(f.id), str(i.subscriber_id), f.user)
             except Exception:
                 pass
+    return HttpResponse("updated")
+
 
 def send_notification_all(request):
     notification = SendNotificationAll.objects.filter(status=0)
