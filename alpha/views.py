@@ -646,6 +646,8 @@ def betting(request, userid):
             else:
                 ratio = round(betting_sum['bet_against'] / sums, 2) + 1
                 earned = bet_against_user * ratio
+            market_fee_paid = earned * 0.10
+            total_earning = earned - market_fee_paid + market_fee
         except Exception:
             success = 0
             sums = 0
@@ -654,6 +656,8 @@ def betting(request, userid):
             market_fee = 0
             ratio = 0
             earned = 0
+            market_fee_paid = 0
+            total_earning = 0
         return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
                                                 'bet_for': betting_sum['bet_for'] if betting_sum['bet_for'] else 0,
                                                 'against': betting_sum['bet_against'] if betting_sum[
@@ -663,13 +667,14 @@ def betting(request, userid):
                                                 'status': status, "percent": percent,
                                                 "success": success,
                                                 "users": forecast.user.user.username,
-                                                "sums": sums,"earned": earned,
+                                                "sums": sums,"earned": int(earned),
                                                 "approved": approved,"ratio": ratio,
-                                                "user": users,"won": won,
+                                                "user": users,"won": won,"market_fee_paid": market_fee_paid,
                                                 "heading": "Forecast Details",
                                                 "title": "ForecastGuru","private": "no",
                                                 "bet_against_user":bet_against_user,
-                                                "bet_for_user" : bet_for_user, "market_fee": market_fee
+                                                "bet_for_user" : bet_for_user, "market_fee": market_fee,
+                                                "total_earn": total_earning
                                                 })
     elif forecast.private.name == 'yes':
         points = []

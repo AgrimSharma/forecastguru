@@ -168,7 +168,7 @@
                 </div>
             <div class="row mb-2">
                   <div class="col-12">
-                      Win Ratio : <strong> {% if ratio > 0 %} {{ ratio }} {% else %} NA {% endif %}</strong>
+                      Win Ratio : <strong> {% if ratio > 0 %} {{ ratio }}%  {% else %} NA {% endif %}</strong>
                   </div>
                 </div>
         </div>
@@ -230,10 +230,26 @@
                 </div>
             <div class="row mb-2">
                   <div class="col-6">
-                    Market Fee
+                    Market Fee Earned
                   </div>
                   <div class="col-6 text-right value-color">
                       {{market_fee}}
+                  </div>
+                </div>
+            <div class="row mb-2">
+                  <div class="col-6">
+                    Market Fee Paid
+                  </div>
+                  <div class="col-6 text-right value-color">
+                      {{market_fee_paid}}
+                  </div>
+                </div>
+            <div class="row mb-2">
+                  <div class="col-6">
+                    Total Earning
+                  </div>
+                  <div class="col-6 text-right value-color">
+                      {{total_earn}}
                   </div>
                 </div>
             {% if forecast.status.id == 3 %}
