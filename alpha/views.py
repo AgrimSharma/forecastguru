@@ -49,11 +49,13 @@ def send_notification(text, message, url, subscriber_id, user):
 def create_forecast(request):
     if request.method == 'POST':
         # try:
+        import pdb;pdb.set_trace()
         user = request.POST.get('user', '')
         category = request.POST.get('category', '')
         sub_category = request.POST.get('sub_cat', '')
         heading = request.POST.get('heading', '')
-        expire = request.POST.get('expire', '')
+        time = request.POST.get('time', '')
+        date = request.POST.get('date', '')
         cat = Category.objects.get(id=category)
         sub_cat = SubCategory.objects.get(id=sub_category)
 
@@ -68,7 +70,7 @@ def create_forecast(request):
             approved = Approved.objects.get(id=2)
             verified = Verified.objects.get(id=2)
 
-        expires = datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M")
+        expires = datetime.datetime.strptime(date + " " + time, "%d/%m/%Y %H:%M")
 
         if expires < current:
             return HttpResponse(json.dumps(dict(status=400, message='end')))
@@ -80,7 +82,7 @@ def create_forecast(request):
         status = Status.objects.get(name='In-Progress')
         ForeCast.objects.create(category=cat, sub_category=sub_cat,
                                 user=users, heading=heading,
-                                expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M"),
+                                expire=expires,
                                 start=datetime.datetime.now(),
                                 approved=approved,
                                 status=status, created=current,
@@ -135,6 +137,7 @@ def create_forecast(request):
             return render(request, 'create_forecast_nl.html', {"heading": "Create Forecast",
                                                                "title": "ForecastGuru",
                                                                "user": "Guest" if request.user.is_anonymous() else request.user.username, })
+
 
 
 def closing_soon(request):
