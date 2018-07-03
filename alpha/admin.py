@@ -110,9 +110,13 @@ class NotificationUserAdmin(admin.ModelAdmin):
 
 class NotificationAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'
-    list_display = ['user', 'title', "message", "url", "status"]
+    list_display = ['user', 'title', "message", "show_firm_url", "status"]
     list_filter = ('status',)
 
+    def show_firm_url(self, obj):
+        return '<a href="%s">%s</a>' % (obj.url, obj.url)
+
+    show_firm_url.allow_tags = True
 
 class NotificationAllAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'
