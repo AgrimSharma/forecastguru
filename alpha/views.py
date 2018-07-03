@@ -70,10 +70,8 @@ def create_forecast(request):
             approved = Approved.objects.get(id=2)
             verified = Verified.objects.get(id=2)
 
-        expires = datetime.datetime.strptime(date + " " + time, "%d/%m/%Y %H:%M")
+        expires = datetime.datetime.strptime(date + " " + time, "%d/%m/%Y %I:%M")
 
-        if expires < current:
-            return HttpResponse(json.dumps(dict(status=400, message='end')))
         try:
             users = SocialAccount.objects.get(user=request.user)
         except Exception:
