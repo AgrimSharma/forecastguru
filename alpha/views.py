@@ -52,6 +52,7 @@ def create_forecast(request):
         user = request.POST.get('user', '')
         category = request.POST.get('category', '')
         sub_category = request.POST.get('sub_cat', '')
+        tags = request.POST.get('tags', '')
         heading = request.POST.get('heading', '')
         time = request.POST.get('time', '')
         date = request.POST.get('date', '')
@@ -85,7 +86,7 @@ def create_forecast(request):
                                 start=datetime.datetime.now(),
                                 approved=approved,
                                 status=status, created=current,
-                                private=private, verified=verified
+                                private=private, verified=verified, tags=tags
                                 )
         f = ForeCast.objects.get(category=cat, sub_category=sub_cat,
                                  user=users, heading=heading,
@@ -100,10 +101,8 @@ def create_forecast(request):
         Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
         if private.name == 'no':
             try:
-                sub_id = users.notificationuser_set.all()
-                for i in sub_id:
-                    send_notification("Forecast Guru", "Thank You for creating a forecast " + str(heading),
-                                      "https://forecast.guru/forecast/{}/".format(fid), i.subscriber_id, users)
+                NotificationPanel.objects.create(title="Forecast Guru", message="Thank You for creating a forecast " + str(heading),
+                                  url="https://forecast.guru/forecast/{}/".format(fid), user=users, status=0)
             except Exception:
                 pass
             return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
@@ -111,10 +110,10 @@ def create_forecast(request):
 
             InviteFriends.objects.create(user=admin, forecast=f)
             try:
-                sub_id = users.notificationuser_set.all()
-                for i in sub_id:
-                    send_notification("Forecast Guru", "Thank You for creating a forecast " + str(heading),
-                                  "https://forecast.guru/forecast/{}/".format(fid), i.subscriber_id, users)
+                NotificationPanel.objects.create(title="Forecast Guru",
+                                                 message="Thank You for creating a forecast " + str(heading),
+                                                 url="https://forecast.guru/forecast/{}/".format(fid), user=users,
+                                                 status=0)
             except Exception:
                 pass
             return HttpResponse(json.dumps(
@@ -136,7 +135,6 @@ def create_forecast(request):
             return render(request, 'create_forecast_nl.html', {"heading": "Create Forecast",
                                                                "title": "ForecastGuru",
                                                                "user": "Guest" if request.user.is_anonymous() else request.user.username, })
-
 
 
 def closing_soon(request):
@@ -355,7 +353,7 @@ def forecast_result_page(forecast):
             start = start.time()
             today = 'yes'
         else:
-            start = f.expire 
+            start = f.expire
             today = 'no'
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
@@ -437,7 +435,7 @@ def forecast_result_page_my(forecast):
             start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire 
+            start = forecast.expire
             today = 'no'
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -744,11 +742,9 @@ def bet_post(request):
                     b.users.save()
                     b.save()
             try:
-                sub_id = account.notificationuser_set.all()
-                for i in sub_id:
-                    send_notification("ForecastGuru",
-                                      "Thank you for participating in forecast {}".format(str(forecasts.heading)),
-                                      "https://forecast.guru/forecast/{}/".format(forecasts.id), str(i.subscriber_id), account)
+                NotificationPanel.objects.create(title="ForecastGuru",
+                                  message="Thank you for participating in forecast {}".format(str(forecasts.heading)),
+                                  url="https://forecast.guru/forecast/{}/".format(forecasts.id), user=account, status=0)
             except Exception:
                 pass
             return HttpResponse(json.dumps(dict(message='success')))
@@ -1201,7 +1197,7 @@ def search_result(request):
                         start = start.time()
                         today = 'yes'
                     else:
-                        start = f.expire 
+                        start = f.expire
 
                         today = "no"
                     betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
@@ -1316,7 +1312,7 @@ def not_approved(forecast):
             start = start.time().strftime("%I:%M:%S")
             today = 'yes'
         else:
-            start = forecast.expire 
+            start = forecast.expire
             today = "no"
         data.append(dict(percent_for=0, percent_against=0, forecast=f,
                          total=0, start=start, total_user=0,
@@ -1339,7 +1335,7 @@ def live_forecast_data_bet(forecast_live, account):
             start = start.time()
             today = 'yes'
         else:
-            start = f.expire 
+            start = f.expire
 
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
@@ -1391,7 +1387,7 @@ def live_forecast_data_private(forecast_live, account):
             start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire 
+            start = forecast.expire
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -1442,7 +1438,7 @@ def live_forecast_data(forecast_live, account):
             start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire 
+            start = forecast.expire
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -1491,7 +1487,7 @@ def forecast_invite_data(forecast_live, account):
             start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire 
+            start = forecast.expire
             today = 'no'
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -1544,7 +1540,7 @@ def forecast_result_data(forecast_live, account):
             start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire 
+            start = forecast.expire
             today = 'no'
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -1597,7 +1593,7 @@ def forecast_result_data_private(forecast_live, account):
             start = start.time()
             today = 'yes'
         else:
-            start = forecast.expire 
+            start = forecast.expire
             today = 'no'
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
@@ -1900,7 +1896,7 @@ def forecast_live_view_bt(category_id):
             start = start.time()
             today = 'yes'
         else:
-            start = f.expire 
+            start = f.expire
 
             today = "no"
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
@@ -2013,6 +2009,29 @@ def private_subscribe(request):
                                       "https://forecast.guru/forecast/{}/".format(f.id), str(i.subscriber_id), f.user)
             except Exception:
                 pass
+    return HttpResponse("updated")
+
+
+def send_notification_user(request):
+    notification = NotificationPanel.objects.filter(status=0)
+    headers = {
+        'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
+    }
+
+    for n in notification:
+        n.status = 1
+        n.save()
+        sub_id = NotificationUser.objects.filter(user=n.user)
+        if len(sub_id) > 0:
+            for s in sub_id:
+                data = [
+                    ('title', n.text),
+                    ('message', n.message),
+                    ('url', n.url),
+                    ('subscriber_id', str(s.subscriber_id)),
+
+                ]
+                response = requests.post('https://pushcrew.com/api/v1/send/individual', headers=headers, data=data)
     return HttpResponse("updated")
 
 
