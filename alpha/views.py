@@ -2025,7 +2025,7 @@ def send_notification_user(request):
         if len(sub_id) > 0:
             for s in sub_id:
                 data = [
-                    ('title', n.text),
+                    ('title', n.title),
                     ('message', n.message),
                     ('url', n.url),
                     ('subscriber_id', str(s.subscriber_id)),
