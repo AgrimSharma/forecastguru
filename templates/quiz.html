@@ -35,7 +35,7 @@
   })(window,document);
 </script>
 </head>
-<body class="gray-bg" >
+<body class="gray-bg">
 <header class="position-fixed w-100">
   <div class="container">
     <div class="row align-items-center">
@@ -61,13 +61,13 @@
 
 <div class="container fixed_p_footer">
   <div class="row">
-        <div class="image" style="padding-top: 20px;padding-left:25%;">
+<div class="image" style="padding-top: 20px;padding-left:25%;">
             <p>Loading Quiz please wait </p><img src="https://media.giphy.com/media/y1ZBcOGOOtlpC/200.gif" width="200px" height="200px"/>
         </div>
       <div class="col-md-12 text-center main" style="padding-top: 20px;display:none;">
-          <div id="embed-quiz-382732"></div>
-          <div id="embed-quiz-382452"></div>
-          <div id="embed-quiz-382568"></div>
+          <div id="embed-quiz-382732">Loading <a href="https://www.onlinequizcreator.com/sanju-baba-quiz/quiz-382732">संजू बाबा Quiz</a></div>
+          <div id="embed-quiz-382452">Loading <a href="https://www.onlinequizcreator.com/fifa-world-cup-trivia/quiz-382452">FIFA World Cup Trivia</a></div>
+          <div id="embed-quiz-382568">Loading <a href="https://www.onlinequizcreator.com/sachin-tendulkar-trivia-quiz/quiz-382568">Sachin Tendulkar Trivia Quiz</a></div>
       </div>
   </div></div>
 <footer class="sticky-footer">
@@ -86,6 +86,16 @@
       </ul>
     </nav>
   </footer>
+<script>
+$(function() {
+setTimeout(function(){
+   $('.main').show();
+}, 5000);
+setTimeout(function(){
+   $('.image').hide();
+}, 5000);
+});
+</script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script type="text/javascript">
     var QuizWorks = window.QuizWorks || [];
@@ -98,16 +108,6 @@
             height: "640px" , adapter: "hubspot"
         }]
     );
-</script>
-<script>
-$(function() {
-setTimeout(function(){
-   $('.main').show();
-}, 5000);
-setTimeout(function(){
-   $('.image').hide();
-}, 5000);
-});
 </script>
 <script type="text/javascript">
     var QuizWorks = window.QuizWorks || [];
