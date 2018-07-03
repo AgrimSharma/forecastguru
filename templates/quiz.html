@@ -61,9 +61,11 @@
 
 <div class="container fixed_p_footer">
   <div class="row">
-
-      <div class="col-md-12 text-center" style="padding-top: 20px;">
-          <div id="embed-quiz-382732">Quiz is loading<br><img src="https://media.giphy.com/media/y1ZBcOGOOtlpC/200.gif" width="200px" height="200px"/></div>
+        <div class="image" style="padding-top: 20px;">
+            <p>Loading Quiz please wait </p><img src="https://media.giphy.com/media/y1ZBcOGOOtlpC/200.gif" width="200px" height="200px"/>
+        </div>
+      <div class="col-md-12 text-center main" style="padding-top: 20px;display:none;">
+          <div id="embed-quiz-382732"></div>
           <div id="embed-quiz-382452"></div>
           <div id="embed-quiz-382568"></div>
       </div>
@@ -96,6 +98,16 @@
             height: "640px" , adapter: "hubspot"
         }]
     );
+</script>
+<script>
+$(function() {
+setTimeout(function(){
+   $('.main').show();
+}, 5000);
+setTimeout(function(){
+   $('.image').hide();
+}, 5000);
+});
 </script>
 <script type="text/javascript">
     var QuizWorks = window.QuizWorks || [];
