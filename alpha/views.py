@@ -787,7 +787,7 @@ def allocate_points(request):
             bet_against = 0
             total = 0
         market_fee = total
-        if f.won.lower() == "yes" and market_fee > bet_against:
+        if f.won == "yes" and market_fee > bet_against:
             f.user.market_fee = bet_against * 0.05
             f.user.save()
             f.save()
@@ -797,7 +797,7 @@ def allocate_points(request):
             f.save()
         else:
             if bet_for == bet_against:
-                if f.won.lower() == "yes":
+                if f.won == "yes":
                     ratio = 1
                     forecast_data(f, ratio, total, "yes", bet_for)
                 else:
@@ -809,7 +809,7 @@ def allocate_points(request):
             elif bet_against > 0 and bet_for > 0 and f.won.lower() == 'yes':
                 ratio = round(bet_against / bet_for, 2)
                 forecast_data(f, ratio, total, "yes", bet_for)
-            elif f.won.lower() == 'no' and bet_against == 0 and bet_for > 0:
+            elif f.won == 'no' and bet_against == 0 and bet_for > 0:
                 ratio = 0
                 forecast_data(f, ratio, total, "no", bet_against)
 
@@ -819,7 +819,7 @@ def allocate_points(request):
             elif bet_for > 0 and f.won.lower() == 'no' and bet_against > 0:
                 ratio = round(bet_for / bet_against, 2)
                 forecast_data(f, ratio, total, "no", bet_against)
-            elif f.won.lower() == 'yes' and bet_for > 0 and bet_against == 0:
+            elif f.won == 'yes' and bet_for > 0 and bet_against == 0:
                 ratio = 0
                 forecast_data(f, ratio, total, "yes", bet_for)
             elif bet_for == 0 and bet_against == 0:
