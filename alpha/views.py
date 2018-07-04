@@ -374,11 +374,12 @@ def forecast_result_page(forecast):
             bet_for = 0
             bet_against = 0
             total = 0
-        if f.won.lower() == 'yes':
-            status = 'yes'
-        elif f.won.lower() == 'no':
-            status = 'no'
-        else:
+        try:
+            if f.won.lower() == 'yes':
+                status = 'yes'
+            elif f.won.lower() == 'no':
+                status = 'no'
+        except Exception:
             status = 'NA'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
                          forecast=f, total=total, start=start,
@@ -465,11 +466,12 @@ def forecast_result_page_my(forecast):
             total = 0
             bet_for_user = 0
             bet_against_user = 0
-        if forecast.won.lower() == 'yes':
-            status = 'yes'
-        elif forecast.won.lower() == 'no':
-            status = 'no'
-        else:
+        try:
+            if forecast.won.lower() == 'yes':
+                status = 'yes'
+            elif forecast.won.lower() == 'no':
+                status = 'no'
+        except Exception:
             status = 'NA'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
                          forecast=forecast, total=total, start=start,
@@ -610,11 +612,12 @@ def betting(request, userid):
         status = 'Currently Closed'
     else:
         status = 'Result Declared'
-    if forecast.won.lower() == 'yes':
-        won = 'yes'
-    elif forecast.won.lower() == 'no':
-        won = 'no'
-    else:
+    try:
+        if forecast.won.lower() == 'yes':
+            won = 'yes'
+        elif forecast.won.lower() == 'no':
+            won = 'no'
+    except Exception:
         won = ""
     expires = forecast.expire + datetime.timedelta(hours=5, minutes=30)
     end_date = datetime.datetime.strftime(expires, '%b %d, %Y')
@@ -1525,11 +1528,12 @@ def forecast_invite_data(forecast_live, account):
             bet_against = 0
             bet_against_user = 0
             total = 0
-        if forecast.won.lower() == 'yes':
-            status = 'yes'
-        elif forecast.won.lower() == 'no':
-            status = 'no'
-        else:
+        try:
+            if forecast.won.lower() == 'yes':
+                status = 'yes'
+            elif forecast.won.lower() == 'no':
+                status = 'no'
+        except Exception:
             status = 'NA'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
@@ -1583,11 +1587,12 @@ def forecast_result_data(forecast_live, account):
             bet_against = 0
             bet_against_user = 0
             total = 0
-        if forecast.won.lower() == 'yes':
-            status = 'yes'
-        elif forecast.won.lower() == 'no':
-            status = 'no'
-        else:
+        try:
+            if forecast.won.lower() == 'yes':
+                status = 'yes'
+            elif forecast.won.lower() == 'no':
+                status = 'no'
+        except Exception:
             status = 'NA'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
@@ -1641,11 +1646,12 @@ def forecast_result_data_private(forecast_live, account):
             bet_against = 0
             bet_against_user = 0
             total = 0
-        if forecast.won.lower() == 'yes':
-            status = 'yes'
-        elif forecast.won.lower() == 'no':
-            status = 'no'
-        else:
+        try:
+            if forecast.won.lower() == 'yes':
+                status = 'yes'
+            elif forecast.won.lower() == 'no':
+                status = 'no'
+        except Exception:
             status = 'NA'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
