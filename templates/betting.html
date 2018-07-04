@@ -87,7 +87,7 @@
                  </div>
               </div>
       </div>{% endif %}{% endif %}
-          {% if forecast.status.name == 'Closed' and private == 'yes' and request.user.username == users and forecast.status.name == "no" %}
+          {% if forecast.status.name == 'Closed' and private == 'yes' and request.user.username == users and forecast.verified.name == "no" %}
                   <hr>
           <h3> Please select a Result</h3>
            <div class="form-group form-inline">
