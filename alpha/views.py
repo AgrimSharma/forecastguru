@@ -374,12 +374,17 @@ def forecast_result_page(forecast):
             bet_for = 0
             bet_against = 0
             total = 0
-        status = "yes" if f.won == "yes" else "no"
+        if f.won.lower() == 'yes':
+            status = 'yes'
+        elif f.won.lower() == 'no':
+            status = 'no'
+        else:
+            status = 'NA'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
                          forecast=f, total=total, start=start,
                          total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
-                         participants=total_wagered, won="Yes" if f.won == 'yes' else 'No',
+                         participants=total_wagered, won=status,
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for,
                          bet_for_user=0,
@@ -460,12 +465,17 @@ def forecast_result_page_my(forecast):
             total = 0
             bet_for_user = 0
             bet_against_user = 0
-        status = "yes" if forecast.won == "yes" else "no"
+        if forecast.won.lower() == 'yes':
+            status = 'yes'
+        elif forecast.won.lower() == 'no':
+            status = 'no'
+        else:
+            status = 'NA'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
                          forecast=forecast, total=total, start=start,
                          total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
-                         participants=total_wagered, won="Yes" if forecast.won == 'yes' else 'No',
+                         participants=total_wagered, won=status,
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for,
                          bet_for_user=bet_for_user,
@@ -600,9 +610,9 @@ def betting(request, userid):
         status = 'Currently Closed'
     else:
         status = 'Result Declared'
-    if forecast.won == 'yes':
+    if forecast.won.lower() == 'yes':
         won = 'yes'
-    elif forecast.won == 'no':
+    elif forecast.won.lower() == 'no':
         won = 'no'
     else:
         won = ""
@@ -640,7 +650,7 @@ def betting(request, userid):
             bet_for_user = Betting.objects.get(forecast=forecast, users=social).bet_for
             bet_against_user = Betting.objects.get(forecast=forecast, users=social).bet_against
             market_fee = sums * 0.10 if forecast.user == social else 0
-            if forecast.won == "yes":
+            if forecast.won.lower() == "yes":
                 ratio = round(betting_sum['bet_for'] / sums, 2) + 1
                 earned = bet_for_user * ratio
             else:
@@ -774,39 +784,39 @@ def allocate_points(request):
             bet_against = 0
             total = 0
         market_fee = total
-        if f.won == "yes" and market_fee > bet_against:
+        if f.won.lower() == "yes" and market_fee > bet_against:
             f.user.market_fee = bet_against * 0.05
             f.user.save()
             f.save()
-        elif f.won == "no" and market_fee > bet_for:
+        elif f.won.lower() == "no" and market_fee > bet_for:
             f.user.market_fee = bet_for * 0.05
             f.user.save()
             f.save()
         else:
             if bet_for == bet_against:
-                if f.won == "yes":
+                if f.won.lower() == "yes":
                     ratio = 1
                     forecast_data(f, ratio, total, "yes", bet_for)
                 else:
                     ratio = 1
                     forecast_data(f, ratio, total, "no", bet_against)
-            elif bet_for > 0 and bet_against == 0 and f.won == 'yes':
+            elif bet_for > 0 and bet_against == 0 and f.won.lower() == 'yes':
                 ratio = 1
                 forecast_data(f, ratio, total, "yes", bet_for)
-            elif bet_against > 0 and bet_for > 0 and f.won == 'yes':
+            elif bet_against > 0 and bet_for > 0 and f.won.lower() == 'yes':
                 ratio = round(bet_against / bet_for, 2)
                 forecast_data(f, ratio, total, "yes", bet_for)
-            elif f.won == 'no' and bet_against == 0 and bet_for > 0:
+            elif f.won.lower() == 'no' and bet_against == 0 and bet_for > 0:
                 ratio = 0
                 forecast_data(f, ratio, total, "no", bet_against)
 
-            elif bet_against > 0 and bet_for == 0 and f.won == 'no':
+            elif bet_against > 0 and bet_for == 0 and f.won.lower()== 'no':
                 ratio = 1
                 forecast_data(f, ratio, total, "no", bet_against)
-            elif bet_for > 0 and f.won == 'no' and bet_against > 0:
+            elif bet_for > 0 and f.won.lower() == 'no' and bet_against > 0:
                 ratio = round(bet_for / bet_against, 2)
                 forecast_data(f, ratio, total, "no", bet_against)
-            elif f.won == 'yes' and bet_for > 0 and bet_against == 0:
+            elif f.won.lower() == 'yes' and bet_for > 0 and bet_against == 0:
                 ratio = 0
                 forecast_data(f, ratio, total, "yes", bet_for)
             elif bet_for == 0 and bet_against == 0:
@@ -1515,11 +1525,16 @@ def forecast_invite_data(forecast_live, account):
             bet_against = 0
             bet_against_user = 0
             total = 0
-        status = 'yes' if forecast.won == "yes" else 'no'
+        if forecast.won.lower() == 'yes':
+            status = 'yes'
+        elif forecast.won.lower() == 'no':
+            status = 'no'
+        else:
+            status = 'NA'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
-                         participants=total_wagered, won="Yes" if forecast.won == 'yes' else 'No',  # waggered=waggered,
+                         participants=total_wagered, won=status,  # waggered=waggered,
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for,
                          bet_for_user=bet_for_user if bet_for_user else 0,
@@ -1568,11 +1583,16 @@ def forecast_result_data(forecast_live, account):
             bet_against = 0
             bet_against_user = 0
             total = 0
-        status = 'yes' if forecast.won == "yes" else 'no'
+        if forecast.won.lower() == 'yes':
+            status = 'yes'
+        elif forecast.won.lower() == 'no':
+            status = 'no'
+        else:
+            status = 'NA'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
-                         participants=total_wagered, won="Yes" if forecast.won == 'yes' else 'No',  # waggered=waggered,
+                         participants=total_wagered, won=status,  # waggered=waggered,
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for,
                          bet_for_user=bet_for_user if bet_for_user else 0,
@@ -1621,11 +1641,16 @@ def forecast_result_data_private(forecast_live, account):
             bet_against = 0
             bet_against_user = 0
             total = 0
-        status = 'yes' if forecast.won == "yes" else 'no'
+        if forecast.won.lower() == 'yes':
+            status = 'yes'
+        elif forecast.won.lower() == 'no':
+            status = 'no'
+        else:
+            status = 'NA'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=forecast,
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
-                         participants=total_wagered, won="Yes" if forecast.won == 'yes' else 'No',  # waggered=waggered,
+                         participants=total_wagered, won=status,  # waggered=waggered,
                          ratio=get_ratio(bet_for, bet_against, total, status), bet_against=bet_against,
                          bet_for=bet_for,
                          bet_for_user=bet_for_user if bet_for_user else 0,
