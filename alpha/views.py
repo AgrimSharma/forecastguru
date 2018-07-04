@@ -618,7 +618,7 @@ def betting(request, userid):
         elif forecast.won.lower() == 'no':
             won = 'no'
     except Exception:
-        won = ""
+        won = "NA"
     expires = forecast.expire + datetime.timedelta(hours=5, minutes=30)
     end_date = datetime.datetime.strftime(expires, '%b %d, %Y')
     end_time = datetime.datetime.strftime(expires, '%H:%M')
