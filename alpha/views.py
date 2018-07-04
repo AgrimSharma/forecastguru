@@ -803,17 +803,17 @@ def allocate_points(request):
                 else:
                     ratio = 1
                     forecast_data(f, ratio, total, "no", bet_against)
-            elif bet_for > 0 and bet_against == 0 and f.won.lower() == 'yes':
+            elif bet_for > 0 and bet_against == 0 and f.won == 'yes':
                 ratio = 1
                 forecast_data(f, ratio, total, "yes", bet_for)
-            elif bet_against > 0 and bet_for > 0 and f.won.lower() == 'yes':
+            elif bet_against > 0 and bet_for > 0 and f.won == 'yes':
                 ratio = round(bet_against / bet_for, 2)
                 forecast_data(f, ratio, total, "yes", bet_for)
             elif f.won == 'no' and bet_against == 0 and bet_for > 0:
                 ratio = 0
                 forecast_data(f, ratio, total, "no", bet_against)
 
-            elif bet_against > 0 and bet_for == 0 and f.won.lower()== 'no':
+            elif bet_against > 0 and bet_for == 0 and f.won== 'no':
                 ratio = 1
                 forecast_data(f, ratio, total, "no", bet_against)
             elif bet_for > 0 and f.won.lower() == 'no' and bet_against > 0:
