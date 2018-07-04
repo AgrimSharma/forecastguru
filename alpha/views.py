@@ -2410,11 +2410,11 @@ def extra_page(request):
 def fifa_rounds(request):
     date_tod = datetime.datetime.now().date()
     date_tom = date_tod + datetime.timedelta(days=2)
-    current = datetime.datetime.strptime(str(date_tod) + " 00:00:00", '%Y-%m-%d %H:%M:%S')
-    next_day = datetime.datetime.strptime(str(date_tom) + " 00:00:00", '%Y-%m-%d %H:%M:%S')
+    # current = datetime.datetime.strptime(str(date_tod) + " 00:00:00", '%Y-%m-%d %H:%M:%S')
+    # next_day = datetime.datetime.strptime(str(date_tom) + " 00:00:00", '%Y-%m-%d %H:%M:%S')
     forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
-                                            sub_category__name='Football', status__name='In-Progress',
-                                            expire__gte=current, expire__lte=next_day).order_by("expire")
+                                            sub_category__name='Football', status__name='In-Progress').order_by("expire")
+                                            # expire__gte=current, expire__lte=next_day)
     try:
         user = request.user
         profile = SocialAccount.objects.get(user = user)
