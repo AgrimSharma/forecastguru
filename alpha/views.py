@@ -674,6 +674,13 @@ def betting(request, userid):
             total_earning = earned - market_fee_paid + market_fee
         else:
             ratio = "NA"
+            earned = 0
+            market_fee_paid = earned * 0.10
+            total_earning = earned - market_fee_paid + market_fee
+        if forecast.private.name == 'yes':
+            private = 'yes'
+        else:
+            private=no
         return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
                                                 'bet_for': betting_sum['bet_for'] if betting_sum['bet_for'] else 0,
                                                 'against': betting_sum['bet_against'] if betting_sum[
@@ -687,7 +694,7 @@ def betting(request, userid):
                                                 "approved": approved,"ratio": ratio,
                                                 "user": users,"won": won,"market_fee_paid": int(market_fee_paid),
                                                 "heading": "Forecast Details",
-                                                "title": "ForecastGuru","private": "no",
+                                                "title": "ForecastGuru","private": private,
                                                 "bet_against_user":bet_against_user,
                                                 "bet_for_user" : bet_for_user, "market_fee": int(market_fee),
                                                 "total_earn": int(total_earning)
