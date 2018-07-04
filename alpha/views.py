@@ -2425,7 +2425,7 @@ def fifa_rounds(request):
         return render(request, 'category_search_fifa.html',
                       {
                           "live": forecast_live_fifa(forecast_live, profile),
-                          "heading": "Fifa Round 16",
+                          "heading": "Fifa Quater Finals",
                           "title": "ForecastGuru",
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
@@ -2433,7 +2433,7 @@ def fifa_rounds(request):
         return render(request, 'category_search_fifa.html',
                       {
                           "live": forecast_live_fifa_wp(forecast_live),
-                          "heading": "Fifa Round 16",
+                          "heading": "Fifa Quater Finals",
                           "title": "ForecastGuru",
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
