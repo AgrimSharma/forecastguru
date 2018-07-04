@@ -701,13 +701,14 @@ def betting(request, userid):
         betting_sum = Betting.objects.filter(forecast=forecast).aggregate(
             bet_for=Sum('bet_for'), bet_against=Sum('bet_against'))
         sums = betting_sum['bet_for'] + betting_sum['bet_against']
-        if forecast.won.lower() == "yes":
-            ratio = round(betting_sum['bet_for'] / sums, 2) + 1
-            won = "yes"
-        elif forecast.won.lower() == "no":
-            ratio = round(betting_sum['bet_against'] / sums, 2) + 1
-            won = "no"
-        else:
+        try:
+            if forecast.won.lower() == "yes":
+                ratio = round(betting_sum['bet_for'] / sums, 2) + 1
+                won = "yes"
+            elif forecast.won.lower() == "no":
+                ratio = round(betting_sum['bet_against'] / sums, 2) + 1
+                won = "no"
+        except Exception:
             ratio = "NA"
             won = "NA"
         friends = InviteFriends.objects.filter(forecast=forecast)
