@@ -75,6 +75,8 @@
               </div>
       </div>
     {% else %}
+          {{ request.user.username }}
+          {{ users }}
     {% if request.user.username == users %}
             <div class="clearfix"></div>
       <div class="row white_box mr-0 ml-0 mb-3">
