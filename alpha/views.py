@@ -662,16 +662,17 @@ def betting(request, userid):
             bet_against_user = 0
             bet_for_user = 0
             market_fee = 0
-        if forecast.won.lower() == "yes":
-            ratio = round(betting_sum['bet_for'] / sums, 2) + 1
-            earned = bet_for_user * ratio
-            market_fee_paid = earned * 0.10
-            total_earning = earned - market_fee_paid + market_fee
-        elif forecast.won.lower() == "no":
-            ratio = round(betting_sum['bet_against'] / sums, 2) + 1
-            earned = bet_against_user * ratio
-            market_fee_paid = earned * 0.10
-            total_earning = earned - market_fee_paid + market_fee
+        if forecast.won:
+            if forecast.won.lower() == "yes":
+                ratio = round(betting_sum['bet_for'] / sums, 2) + 1
+                earned = bet_for_user * ratio
+                market_fee_paid = earned * 0.10
+                total_earning = earned - market_fee_paid + market_fee
+            elif forecast.won.lower() == "no":
+                ratio = round(betting_sum['bet_against'] / sums, 2) + 1
+                earned = bet_against_user * ratio
+                market_fee_paid = earned * 0.10
+                total_earning = earned - market_fee_paid + market_fee
         else:
             ratio = "NA"
             earned = 0
@@ -701,14 +702,14 @@ def betting(request, userid):
         betting_sum = Betting.objects.filter(forecast=forecast).aggregate(
             bet_for=Sum('bet_for'), bet_against=Sum('bet_against'))
         sums = betting_sum['bet_for'] + betting_sum['bet_against']
-        try:
+        if forecast.won:
             if forecast.won.lower() == "yes":
                 ratio = round(betting_sum['bet_for'] / sums, 2) + 1
                 won = "yes"
             elif forecast.won.lower() == "no":
                 ratio = round(betting_sum['bet_against'] / sums, 2) + 1
                 won = "no"
-        except Exception:
+        else:
             ratio = "NA"
             won = "NA"
         friends = InviteFriends.objects.filter(forecast=forecast)
