@@ -791,7 +791,7 @@ def allocate_points(request):
             f.user.market_fee = bet_against * 0.05
             f.user.save()
             f.save()
-        elif f.won.lower() == "no" and market_fee > bet_for:
+        elif f.won == "no" and market_fee > bet_for:
             f.user.market_fee = bet_for * 0.05
             f.user.save()
             f.save()
