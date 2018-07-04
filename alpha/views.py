@@ -653,24 +653,25 @@ def betting(request, userid):
             bet_for_user = Betting.objects.get(forecast=forecast, users=social).bet_for
             bet_against_user = Betting.objects.get(forecast=forecast, users=social).bet_against
             market_fee = sums * 0.10 if forecast.user == social else 0
-            if forecast.won.lower() == "yes":
-                ratio = round(betting_sum['bet_for'] / sums, 2) + 1
-                earned = bet_for_user * ratio
-            else:
-                ratio = round(betting_sum['bet_against'] / sums, 2) + 1
-                earned = bet_against_user * ratio
-            market_fee_paid = earned * 0.10
-            total_earning = earned - market_fee_paid + market_fee
+
         except Exception:
             success = 0
             sums = 0
             bet_against_user = 0
             bet_for_user = 0
             market_fee = 0
-            ratio = 0
-            earned = 0
             market_fee_paid = 0
             total_earning = 0
+        if forecast.won.lower() == "yes":
+            ratio = round(betting_sum['bet_for'] / sums, 2) + 1
+            earned = bet_for_user * ratio
+            market_fee_paid = earned * 0.10
+            total_earning = earned - market_fee_paid + market_fee
+        else:
+            ratio = round(betting_sum['bet_against'] / sums, 2) + 1
+            earned = bet_against_user * ratio
+            market_fee_paid = earned * 0.10
+            total_earning = earned - market_fee_paid + market_fee
         return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
                                                 'bet_for': betting_sum['bet_for'] if betting_sum['bet_for'] else 0,
                                                 'against': betting_sum['bet_against'] if betting_sum[
