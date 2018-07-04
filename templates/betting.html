@@ -75,8 +75,7 @@
               </div>
       </div>
     {% else %}
-          {{ request.user.username }}
-          {{ users }}
+
     {% if request.user.username == users %}
             <div class="clearfix"></div>
       <div class="row white_box mr-0 ml-0 mb-3">
@@ -88,7 +87,7 @@
                  </div>
               </div>
       </div>{% endif %}{% endif %}
-          {% if forecast.status.name == 'Closed' and private == 'yes' and request.user.username == users and won == "" %}
+          {% if forecast.status.name == 'Closed' and private == 'yes' and request.user.username == users and forecast.status.name == "no" %}
                   <hr>
           <h3> Please select a Result</h3>
            <div class="form-group form-inline">
