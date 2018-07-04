@@ -698,7 +698,18 @@ def betting(request, userid):
                                                 })
     elif forecast.private.name == 'yes':
         points = []
-
+        betting_sum = Betting.objects.filter(forecast=forecast).aggregate(
+            bet_for=Sum('bet_for'), bet_against=Sum('bet_against'))
+        sums = betting_sum['bet_for'] + betting_sum['bet_against']
+        if forecast.won.lower() == "yes":
+            ratio = round(betting_sum['bet_for'] / sums, 2) + 1
+            won = "yes"
+        elif forecast.won.lower() == "no":
+            ratio = round(betting_sum['bet_against'] / sums, 2) + 1
+            won = "no"
+        else:
+            ratio = "NA"
+            won = "NA"
         friends = InviteFriends.objects.filter(forecast=forecast)
         for f in friends:
             bet = Betting.objects.filter(forecast=forecast, users=f.user)
@@ -710,7 +721,7 @@ def betting(request, userid):
                                                 "user": users,'status': status,
                                                 "users": forecast.user.user.username,
                                                 "end_date": end_date, "end_time": end_time,
-                                                "won": won,
+                                                "won": won,"ratio": ratio
                                                 "heading": "Forecast Details",
                                                 "title": "ForecastGuru", "private": "yes",
                                                 "points": points})
