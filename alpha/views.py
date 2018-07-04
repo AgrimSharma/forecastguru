@@ -721,7 +721,7 @@ def betting(request, userid):
                                                 "user": users,'status': status,
                                                 "users": forecast.user.user.username,
                                                 "end_date": end_date, "end_time": end_time,
-                                                "won": won,"ratio": ratio
+                                                "won": won,"ratio": ratio,
                                                 "heading": "Forecast Details",
                                                 "title": "ForecastGuru", "private": "yes",
                                                 "points": points})
