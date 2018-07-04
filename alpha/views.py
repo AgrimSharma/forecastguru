@@ -2402,6 +2402,7 @@ def result_save(request):
         status = Status.objects.get(name='Closed')
         forecast = ForeCast.objects.get(id=int(id))
         ForeCast.objects.filter(id=id).update(won=vote, status=status, verified=verified)
+
         return HttpResponse(request.path)
     else:
         return HttpResponse(json.dumps(dict(error="Try again later")))
