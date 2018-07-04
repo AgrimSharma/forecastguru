@@ -63,7 +63,7 @@ def create_forecast(request):
         if private_name == "email":
             private = Private.objects.get(id=1)
             approved = Approved.objects.get(id=1)
-            verified = Verified.objects.get(id=1)
+            verified = Verified.objects.get(id=2)
 
         else:
             private = Private.objects.get(id=2)
@@ -677,10 +677,7 @@ def betting(request, userid):
             earned = 0
             market_fee_paid = earned * 0.10
             total_earning = earned - market_fee_paid + market_fee
-        if forecast.private.name == 'yes':
-            private = 'yes'
-        else:
-            private=no
+
         return render(request, 'betting.html', {'forecast': forecast, 'betting': betting,
                                                 'bet_for': betting_sum['bet_for'] if betting_sum['bet_for'] else 0,
                                                 'against': betting_sum['bet_against'] if betting_sum[
@@ -694,7 +691,7 @@ def betting(request, userid):
                                                 "approved": approved,"ratio": ratio,
                                                 "user": users,"won": won,"market_fee_paid": int(market_fee_paid),
                                                 "heading": "Forecast Details",
-                                                "title": "ForecastGuru","private": private,
+                                                "title": "ForecastGuru","private": "no",
                                                 "bet_against_user":bet_against_user,
                                                 "bet_for_user" : bet_for_user, "market_fee": int(market_fee),
                                                 "total_earn": int(total_earning)
@@ -781,71 +778,73 @@ def allocate_points(request):
     forecast = ForeCast.objects.filter(status__name='Closed', verified__name="yes")
     status = Status.objects.get(name='Result Declared')
     for f in forecast:
-        f.status = status
+        if f.won != "":
+            f.status = status
 
-        f.status.save()
-        f.save()
-        try:
-            betting_sum = Betting.objects.filter(forecast=f).aggregate(
-                bet_for=Sum('bet_for'), bet_against=Sum('bet_against'))
-            bet_for = betting_sum['bet_for']
-            bet_against = betting_sum['bet_against']
-            total = (bet_against + bet_for) * 0.10
+            f.status.save()
+            f.save()
 
-        except Exception:
-            bet_for = 0
-            bet_against = 0
-            total = 0
-        market_fee = total
-        if f.won == "yes" and market_fee > bet_against:
-            f.user.market_fee = bet_against * 0.05
-            f.user.save()
-            f.save()
-        elif f.won == "no" and market_fee > bet_for:
-            f.user.market_fee = bet_for * 0.05
-            f.user.save()
-            f.save()
-        else:
-            if bet_for == bet_against:
-                if f.won == "yes":
+            try:
+                betting_sum = Betting.objects.filter(forecast=f).aggregate(
+                    bet_for=Sum('bet_for'), bet_against=Sum('bet_against'))
+                bet_for = betting_sum['bet_for']
+                bet_against = betting_sum['bet_against']
+                total = (bet_against + bet_for) * 0.10
+
+            except Exception:
+                bet_for = 0
+                bet_against = 0
+                total = 0
+            market_fee = total
+            if f.won == "yes" and market_fee > bet_against:
+                f.user.market_fee = bet_against * 0.05
+                f.user.save()
+                f.save()
+            elif f.won == "no" and market_fee > bet_for:
+                f.user.market_fee = bet_for * 0.05
+                f.user.save()
+                f.save()
+            else:
+                if bet_for == bet_against:
+                    if f.won == "yes":
+                        ratio = 1
+                        forecast_data(f, ratio, total, "yes", bet_for)
+                    else:
+                        ratio = 1
+                        forecast_data(f, ratio, total, "no", bet_against)
+                elif bet_for > 0 and bet_against == 0 and f.won == 'yes':
                     ratio = 1
                     forecast_data(f, ratio, total, "yes", bet_for)
-                else:
+                elif bet_against > 0 and bet_for > 0 and f.won == 'yes':
+                    ratio = round(bet_against / bet_for, 2)
+                    forecast_data(f, ratio, total, "yes", bet_for)
+                elif f.won == 'no' and bet_against == 0 and bet_for > 0:
+                    ratio = 0
+                    forecast_data(f, ratio, total, "no", bet_against)
+
+                elif bet_against > 0 and bet_for == 0 and f.won== 'no':
                     ratio = 1
                     forecast_data(f, ratio, total, "no", bet_against)
-            elif bet_for > 0 and bet_against == 0 and f.won == 'yes':
-                ratio = 1
-                forecast_data(f, ratio, total, "yes", bet_for)
-            elif bet_against > 0 and bet_for > 0 and f.won == 'yes':
-                ratio = round(bet_against / bet_for, 2)
-                forecast_data(f, ratio, total, "yes", bet_for)
-            elif f.won == 'no' and bet_against == 0 and bet_for > 0:
-                ratio = 0
-                forecast_data(f, ratio, total, "no", bet_against)
-
-            elif bet_against > 0 and bet_for == 0 and f.won== 'no':
-                ratio = 1
-                forecast_data(f, ratio, total, "no", bet_against)
-            elif bet_for > 0 and f.won == 'no' and bet_against > 0:
-                ratio = round(bet_for / bet_against, 2)
-                forecast_data(f, ratio, total, "no", bet_against)
-            elif f.won == 'yes' and bet_for > 0 and bet_against == 0:
-                ratio = 0
-                forecast_data(f, ratio, total, "yes", bet_for)
-            elif bet_for == 0 and bet_against == 0:
-                f.won = "No Result."
+                elif bet_for > 0 and f.won == 'no' and bet_against > 0:
+                    ratio = round(bet_for / bet_against, 2)
+                    forecast_data(f, ratio, total, "no", bet_against)
+                elif f.won == 'yes' and bet_for > 0 and bet_against == 0:
+                    ratio = 0
+                    forecast_data(f, ratio, total, "yes", bet_for)
+                elif bet_for == 0 and bet_against == 0:
+                    f.won = "No Result."
+                    f.save()
+                f.user.market_fee += (bet_against + bet_for) * 0.05
+                f.user.save()
                 f.save()
-            f.user.market_fee += (bet_against + bet_for) * 0.05
-            f.user.save()
-            f.save()
-            total -= total * 0.10
-        try:
-            sub_id = f.user.notificationuser_set.all()
-            for i in sub_id:
-                send_notification("ForecastGuru", "You have collected {market} market fee for the forecast {fore}".format(market=(bet_against + bet_for) * 0.05, fore=str(f.heading)),
-                          "https://forecast.guru/forecast/{}/".format(f.id), i.subscriber_id, f.user)
-        except Exception:
-            pass
+                total -= total * 0.10
+            try:
+                sub_id = f.user.notificationuser_set.all()
+                for i in sub_id:
+                    send_notification("ForecastGuru", "You have collected {market} market fee for the forecast {fore}".format(market=(bet_against + bet_for) * 0.05, fore=str(f.heading)),
+                              "https://forecast.guru/forecast/{}/".format(f.id), i.subscriber_id, f.user)
+            except Exception:
+                pass
     return HttpResponse("success")
 
 
@@ -2385,9 +2384,11 @@ def result_save(request):
             vote = 'yes'
         else:
             vote = 'no'
+
+        verified = Verified.objects.get(id=1)
         status = Status.objects.get(name='Closed')
         forecast = ForeCast.objects.get(id=int(id))
-        ForeCast.objects.filter(id=id).update(won=vote, status=status)
+        ForeCast.objects.filter(id=id).update(won=vote, status=status, verified=verified)
         return HttpResponse(request.path)
     else:
         return HttpResponse(json.dumps(dict(error="Try again later")))
