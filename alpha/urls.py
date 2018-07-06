@@ -48,7 +48,7 @@ urlpatterns = [
     url(r'^category/', category, name='category'),
     url(r'^facebook/', facebook_category, name='facebook_category'),
     url(r'^thank_you/', thank_you, name='thank_you'),
-
+    url(r'^send_notification_user/', send_notification_user, name='send_notification_user'),
     url(r'^category_search/(?P<userid>\d+)/$', category_search, name='category_search'),
     url(r'^sub_category_data/(?P<userid>\d+)/$', sub_category_data, name='sub_category_data'),
     url(r'^my_forecast/', my_forecast, name='my_forecast'),
@@ -64,6 +64,7 @@ urlpatterns = [
     url(r'^success$', payment_success, name="payment_success"),
     url(r'^failure$', payment_failure, name="payment_failure"),
     url(r'^closed_status/', update_close_status, name="closed_status"),
+    url(r'^private_subscribe/', private_subscribe, name="private_subscribe"),
     url(r'^send_notification_all/', send_notification_all, name="send_notification_all"),
     url(r'^terms_and_conditions/', terms, name="terms"),
     url(r'^faqs/', faq, name="faq"),

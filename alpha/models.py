@@ -103,6 +103,7 @@ class ForeCast(models.Model):
     start = models.DateTimeField(auto_now=True)
     expire = models.DateTimeField()
     status = models.ForeignKey(to=Status, on_delete=models.CASCADE)
+    tags = models.CharField(max_length=1000, null=True, blank=True)
     market_fee = models.IntegerField(default=0)
     won = models.CharField(max_length=100, null=True, blank=True)
     created = models.DateField(auto_now=True)

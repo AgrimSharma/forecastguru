@@ -14,10 +14,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="HandheldFriendly" content="true" />
 <script src="{% static 'js/jquery.min.js' %}"></script>
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
-<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
-<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/date.css' %}" />
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap-datetimepicker.min.css' %}" />
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120519459-1"></script>
 <script>
@@ -90,32 +90,37 @@
         <textarea class="form-control" rows="4" cols="50" name="heading" id="heading" placeholder="Enter Heading (min 10 and max. length 100 characters)" style="width:100%"></textarea>
       </div>
     </div>
+    <div class="row mb-3">
+          <div class="col-12">
+            <input class="form-control" name="tags" id="tags" placeholder="Enter Tags (comma separated tags)"/>
+          </div>
+        </div>
       <div class="row mb-3">
-
-      <div class="col-12">
-                    <div class='input-group date' id='datetimepicker6'>
-                        <input type='text' class="form-control" name="expire" id="expire" placeholder="Select end date and time"/>
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-
-    </div>
+      <div class="col-6">
+        <div class="position-relative">
+          <input class="form-control" type="text" value=date() id="created_date" name="created_date" placeholder="Date">
+          <img src="{% static 'images/calender.png' %}" class="img-fluid input_icon"> </div>
       </div>
+      <div class="col-6">
+        <div class="position-relative">
+          <input class="form-control" type="text" value="" id="created_time" name="created_time" placeholder="Time">
+          <img src="{% static 'images/time.png' %}" class="img-fluid input_icon"> </div>
+      </div>
+    </div>
+
 <div class="row mb-2" >
       <div class="col-12">
           <label>Make this forecast </label><input type="radio" id="contactChoice1" name="contact" value="email" style="margin-left:10px;">
-                   &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">Private</label>
+                   &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">Me & My Friends</label>
 
                 <input type="radio" id="contactChoice2" checked name="contact" value="phone" style="margin-left:10px;">
                    &nbsp; <label for="contactChoice2" style="margin-bottom:5px;" >Public</label>
 
-        <!--<label>Private</label> &nbsp;<input type="checkbox" id="private"/>-->
-        <!--<label>Public</label> &nbsp;<input type="checkbox" checked id="public"/>-->
-      </div></div>
+        </div></div>
       <div class="row mb-2" >
       <div class="col-12">
-              <input type="checkbox" id="tnc"/>&nbsp;<label>I agree to terms and conditions</label>
+
+          <input type="checkbox" id="tnc"/>&nbsp;<label>I agree to terms and conditions</label>
       </div></div>
     <div class="row mb-2">
       <div class="col-12"> <input type="button" class="btn w-100 btn-orange text-uppercase create" value="Create Forecast" style="color:white;"/> </div>
@@ -151,15 +156,19 @@
 </div>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/moment.min.js' %}"></script>
-<script src="{% static 'js/date.js' %}"></script>
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+<script type="text/javascript">
+        $(function () {
+            $('#created_date').datetimepicker({
+                format: 'DD/MM/YYYY'
+            });
+            $('#created_time').datetimepicker({
+                    format: 'LT'
+            });
+        });
+    </script>
     <script type="text/javascript">
     $(document).ready(function() {
-            $(function () {
-                $('#datetimepicker6').datetimepicker();
-                $('#datetimepicker7').datetimepicker();
-
-            });
-
          $('#categories').on('change', function() {
          $('#subcategories').html('');
             var id = this.value;
@@ -216,8 +225,10 @@ $(".create").click(function(){
     var category = $("#categories").val();
     var sub_cat = $("#subcategories").val();
     var heading = $("#heading").val();
-    var expire = $("#expire").val();
+    var user_date = $("#created_date").val();
+    var user_time = $("#created_time").val();
     var user = $("#user").val();
+    var tags = $("#tags").val();
     var private = $("input[name='contact']:checked").val();
     var tnc = $("input[type='checkbox']").val();
     var isChecked = $('#contactChoice1').prop('checked');
@@ -226,17 +237,21 @@ $(".create").click(function(){
     if ($('#tnc ').is(":checked"))
         {
             var value = "";
-            if(expire == "" || heading == "" || category=="" || sub_cat == ""  ){
-                alert('All fields are mandatory');
+            if(user_date == ""){
+                alert('Please select date');
                 }
+            else if(user_time == ""){alert("Please select time");}
+            else if(tags == ""){alert("Please enter tags");}
+            else if(heading== ""){alert("Please enter Heading");}
+            else if(category== ""){alert("Please Select Category");}
+            else if(sub_cat== ""){alert("Please Select Sub-Category");}
             else{
-                if(heading.length > 10 && heading.length < 100 ){
+                if(heading.length > 10 && heading.length < 1000 ){
                     //if(private.length <= 6){
                         $.ajax({
                         type: "POST",
                         url: "{% url 'create_forecast' %}",
-                        data: {'heading': heading, "category":category, 'sub_cat':sub_cat,"expire":expire,"user":user, "private":private},
-
+                        data: {'heading': heading, "category":category, 'sub_cat':sub_cat,"time":user_time, "date":user_date,"user":user, "private":private, "tags":tags},
                         success: function(resp){
                             console.log(resp);
                             var data = JSON.parse(resp);
@@ -268,7 +283,7 @@ $(".create").click(function(){
                     }
                     }
 
-                 else if(heading.length > 1000){
+                else if(heading.length > 1000){
                     alert('Maximum Heading should be less than 100');
                     }
                 else if(heading.length < 10){

@@ -13,6 +13,13 @@ def approve(modeladmin, request, queryset):
         obj.save()
 
 
+def verified(modeladmin, request, queryset):
+    approved = Verified.objects.get(id=1)
+    for obj in queryset:
+        obj.verified = approved
+        obj.save()
+
+
 class InviteFriendAdmin(admin.ModelAdmin):
     list_display = ['forecast', "user"]
     # pass
@@ -59,7 +66,7 @@ class ForeCastAdmin(admin.ModelAdmin):
     search_fields = ['heading']
     list_filter = ("approved", "verified", 'status', 'category', 'private')
     ordering = ('-expire',)
-    actions = [approve]
+    actions = [approve, verified]
 
 
 class StatusAdmin(admin.ModelAdmin):
@@ -103,9 +110,13 @@ class NotificationUserAdmin(admin.ModelAdmin):
 
 class NotificationAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'
-    list_display = ['user', 'title', "message", "url", "status"]
+    list_display = ['user', 'title', "message", "show_firm_url", "status"]
     list_filter = ('status',)
 
+    def show_firm_url(self, obj):
+        return '<a href="%s">%s</a>' % (obj.url, obj.url)
+
+    show_firm_url.allow_tags = True
 
 class NotificationAllAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'

@@ -61,16 +61,17 @@
 
 <div class="container fixed_p_footer">
   <div class="row">
+      <div id="main" style="padding-top:20px;padding-left:25%;">Loading Quiz. Please wait <br><img src="https://media.giphy.com/media/y1ZBcOGOOtlpC/200.gif" width="200px" height="200px"/></div>
 
-      <div class="col-md-12 text-center" style="padding-top: 20px;">
-          <div id="embed-quiz-382732">Loading <a href="https://www.onlinequizcreator.com/sanju-baba-quiz/quiz-382732">संजू बाबा Quiz</a></div>
-          <div id="embed-quiz-382452">Loading <a href="https://www.onlinequizcreator.com/fifa-world-cup-trivia/quiz-382452">FIFA World Cup Trivia</a></div>
-          <div id="embed-quiz-382568">Loading <a href="https://www.onlinequizcreator.com/sachin-tendulkar-trivia-quiz/quiz-382568">Sachin Tendulkar Trivia Quiz</a></div>
+      <div class="col-md-12 text-center" id="quizes" style="padding-top: 20px;">
+          <div id="embed-quiz-382732"></div>
+          <div id="embed-quiz-382452"></div>
+          <div id="embed-quiz-382568"></div>
       </div>
   </div></div>
 <footer class="sticky-footer">
     <nav class="navbar">
-      <ul class="navbar-nav nav-fill w-100 text-center">
+      <ul class="navbar-nav nav-fill w-100 text-center" style="padding-top:20px;display:none;">
         <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
           Forecasts</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
@@ -165,5 +166,16 @@ var google_remarketing_only = false;
 <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/800617326/?label=Ww8PCPv4-IMBEO7m4f0C&amp;guid=ON&amp;script=0"/>
 </div>
 </noscript>
+<script type="text/javascript">
+$(function() {
+setTimeout(function(){
+   $('#main').hide();
 
+}, 3000);
+setTimeout(function(){
+   $('#quizes').show();
+
+}, 5000);});
+
+</script>
 </body></html>
