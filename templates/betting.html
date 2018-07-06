@@ -387,6 +387,61 @@
 
       </div>
     </div>
+
+<div id="public_modal" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px;padding-left:20%"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <p id="values"></p>
+				<a href="{% url 'betting' forecast.id %}" class="btn btn-success" >Success</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="error_modal" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px;padding-left:20%"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <i>Please try again</i><p id="details" style="color:red;"></p>
+				<button class="btn btn-success" data-dismiss="modal">Try Again</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="balance" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px;padding-left:20%"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <i>Please try again</i><p id="balance_low" style="color:red;"></p>
+				<a href="{% url 'payment' %}" class="btn btn-success" >Buy Points</a>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="right_fixed_btn">
   <a href="{% url 'quiz' %}" class="vertical-text">
     <img src="{% static 'images/play-quiz.png' %}" alt="">
@@ -427,19 +482,22 @@ $(".submit_forecast").click(function(){
                     var data = JSON.parse(resp);
                     if(data.message=="success"){
                     console.log(data.message);
-                                        onClick="ga('send', 'event', { eventCategory: 'play', eventAction: 'click', eventLabel: 'participate'});"
-                        alert("Forecast Placed");
-                        location.reload();
+                    onClick="ga('send', 'event', { eventCategory: 'play', eventAction: 'click', eventLabel: 'participate'});"
+                        $("#public_modal").modal('show');
+                        $("#values").text("Thank you for playing.");
+
                         }
                     else if(data.message=="balance"){
-                            alert("You ForeCast Guru Balance is low");
-                            window.location.href = "{% url 'payment' %}";
+                            $("#balace").modal('show');
+                            $("#balance_low").text("Your ForecastGuru balance is low.");
+
                     }
                     else if(data.message=="login"){
                             $("#not_login_modal").modal('show');
                     }
                     else{
-                        alert(data.message);
+                        $("#error_modal").modal('show');
+                        $("#details").text(data.message);
                         }
                     }
 
@@ -447,11 +505,13 @@ $(".submit_forecast").click(function(){
 
             }
         else{
-            alert("Points should be multiple of 1000");
+            $("#error_modal").modal('show');
+                        $("#details").text("Points should be multiple of 1000");
             }
             }
         else{
-            alert("Please select vote type");
+            $("#error_modal").modal('show');
+            $("#details").text("Please select Vote Type");
 
             }
 
@@ -467,8 +527,8 @@ $(".submit_forecast").click(function(){
                 data: {'vote': radioValue, 'forecast':forecast},
 
                 success: function(resp){
-                        alert("Result Saved");
-                        location.reload();
+                        $("#public_modal").modal('show');
+                        $("#values").text("Thank you for playing.");
 
                     }
 
@@ -476,8 +536,9 @@ $(".submit_forecast").click(function(){
 
             }
         else{
-            alert("Points should be multiple of 1000");
-            }
+            $("#error_modal").modal('show');
+            $("#details").text("Points should be multiple of 1000");
+                                    }
     });
 </script>
 <script>
