@@ -46,7 +46,7 @@ h2 {
 }
 @media (max-width: 480px) {
 .heading{
-    padding-left: 57%;
+    padding-left: 14%;
 }
 .splash {
 	margin-top: -85px;
@@ -103,6 +103,9 @@ h2 {
 	color: #fff
 }
 @media (max-width: 480px) {
+.heading{
+    padding-left: 14%;
+}
 .btn-lg {font-size: 14px; }
 .login_container {
 	padding-top: 70px
@@ -155,6 +158,9 @@ header .goback.position-absolute a{font-size: 30px; line-height: 1}
 	height: 60px
 }
 @media (max-width: 480px) {
+.heading{
+    padding-left: 14%;
+}
 header h1 {
 	font-size: 18px;
 }
@@ -257,6 +263,9 @@ header h1 {
 	padding: .5rem 1rem 0 0;
 }
  @media (max-width: 480px) {
+.heading{
+    padding-left: 14%;
+}
 .topnavlinks .navbar-nav {
 	font-size: 12px
 }
@@ -268,6 +277,9 @@ header h1 {
 	padding-bottom: 90px
 }
 @media (max-width: 480px){
+.heading{
+    padding-left: 14%;
+}
 	.fixed_p_footer {padding-bottom: 50px}
 }
 .forcast_box {
@@ -312,6 +324,9 @@ header h1 {
 }
 
  @media (max-width: 480px) {
+.heading{
+    padding-left: 14%;
+}
 .forcast_box .icon {
 	width: 75px;
 	height: 75px;
@@ -376,6 +391,9 @@ background-color: #e14938
 	top:0
 }
 @media (max-width: 480px) {
+.heading{
+    padding-left: 14%;
+}
 .progressbar_wrap .textwithicon {
 	padding-left: 20px;
 
@@ -415,6 +433,9 @@ background-color: #e14938
 	opacity: 1;
 }
 @media (max-width: 480px) {
+	.heading{
+    padding-left: 14%;
+}
 	.sticky-footer .navbar {padding:  0}
 	.sticky-footer .navbar-nav a {font-size: 12px; padding: 6px 0}
 .sticky-footer .navbar-nav a img {max-width: 30px; margin-bottom: 4px}
@@ -471,7 +492,9 @@ padding: .375rem .75rem
 	color: #fff
 }
  @media (max-width: 480px) {
-
+.heading{
+    padding-left: 14%;
+}
 .sel-cate .form-control {font-size: 14px;}
 .sel-cate p, .sel-cate .text, .sel-cate .btn, .sel-cate .note {
 	font-size: 14px;
@@ -560,6 +583,9 @@ padding: .375rem .75rem
 	color: #de0126!important
 }
 @media (max-width: 480px) {
+.heading{
+    padding-left: 14%;
+}
 .forcast_detail h2 {
 	font-size: 18px;
 }
@@ -616,6 +642,9 @@ padding: .375rem .75rem
 }
 .mostpopular, .bestdeals { position: absolute; right: 15px; top: -13px}
  @media (max-width: 480px) {
+.heading{
+    padding-left: 14%;
+}
 .buy_points .headrow {
 	font-size: 15px
 }
