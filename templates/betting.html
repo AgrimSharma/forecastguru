@@ -424,7 +424,7 @@
 	</div>
 </div>
 
-<div id="balance" class="modal fade">
+<div id="balance_modal" class="modal fade">
 	<div class="modal-dialog modal-confirm">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -488,7 +488,7 @@ $(".submit_forecast").click(function(){
 
                         }
                     else if(data.message=="balance"){
-                            $("#balace").modal('show');
+                            $("#balance_modal").modal('show');
                             $("#balance_low").text("Your ForecastGuru balance is low.");
 
                     }
