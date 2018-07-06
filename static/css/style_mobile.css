@@ -45,6 +45,9 @@ h2 {
 	font-size: 23px
 }
 @media (max-width: 480px) {
+.heading{
+    padding-left: 57%;
+}
 .splash {
 	margin-top: -85px;
 	margin-left: -72px
