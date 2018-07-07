@@ -647,9 +647,11 @@ def betting(request, userid):
         try:
             success = SocialAccount.objects.get(user__username=request.user)
             success = success.successful_forecast
-            sums = betting_sum['bet_for'] + betting_sum['bet_against']
         except Exception:
             success = 0
+        try:
+            sums = betting_sum['bet_for'] + betting_sum['bet_against']
+        except Exception:
             sums = 0
 
         try:
