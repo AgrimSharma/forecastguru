@@ -662,7 +662,7 @@ def betting(request, userid):
             bet_against_user = 0
             bet_for_user = 0
             market_fee = 0
-        if forecast.won:
+        if forecast.won and sums > 0:
             if forecast.won.lower() == "yes":
                 ratio = round(betting_sum['bet_for'] / sums, 2) + 1
                 earned = bet_for_user * ratio
