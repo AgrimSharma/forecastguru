@@ -432,7 +432,7 @@ $('#myInput').keypress(function (e) {
   }
 });
 
-$(".shipment_solds").click(function(){
+$(".shipment_sold").click(function(){
 var shipment_id=$(this).attr("shipment_id");
 var path=$("#path").val();
 
@@ -447,8 +447,6 @@ $.ajax({
         $("#heading").text(data.heading);
         $("#awb").val(data.id);
         $("#forecast").val(data.id);
-        <!--$("#shipment_sold_preview").html(resp);-->
-
     }
 });
 });
