@@ -5,11 +5,11 @@
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Forecastguru</title>
-        <meta property="og:url" content="https://forecast.guru" />
+        <meta property="og:url" content="https://forecast.sirez.com" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="ForecastGuru"/>
 <meta property="og:description" content="Play the hottest prediction game online and become a Forecast Guru!" />
-<meta property="og:image" content="https://forecast.guru/static/images/TutorialScreen-icon1.jpg" />
+<meta property="og:image" content="https://forecast.sirez.com/static/images/TutorialScreen-icon1.jpg" />
 <meta property="fb:app_id" content="186107225561354" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="HandheldFriendly" content="true" />
@@ -154,6 +154,81 @@
     <img src="{% static 'images/play-quiz.png' %}" alt="">
   </a>
 </div>
+<div id="myModal" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+				<i>Something went wrong.</i><p id="description" style="color:red;"></p>
+				<button class="btn btn-success" data-dismiss="modal" id="names">Try Again</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="private" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+				<i>Tank you for creating a private forecast</i><p id="private_heading"></p>
+				<a href="{% url 'private' %}" class="btn btn-success">Success</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="login" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <i>Please login</i>
+                <div class="btn_box mb-3 w-100" >
+                    <a href="https://forecast.sirez.com/facebook/login/?process=login&next={{request.path}}" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+<div id="public" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <i>Thank you for creating a forecast.</i><p id="public_heading"></p>
+				<a href="{% url 'my_forecast' %}" class="btn btn-success" >Success</a>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/moment.min.js' %}"></script>
 <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
@@ -238,13 +313,29 @@ $(".create").click(function(){
         {
             var value = "";
             if(user_date == ""){
-                alert('Please select date');
+                $("#myModal").modal('show');
+                $("#description").text("Please select Expire Date");
+            }
+            else if(user_time == ""){
+                $("#myModal").modal('show');
+                $("#description").text("Please select Expire Time");
                 }
-            else if(user_time == ""){alert("Please select time");}
-            else if(tags == ""){alert("Please enter tags");}
-            else if(heading== ""){alert("Please enter Heading");}
-            else if(category== ""){alert("Please Select Category");}
-            else if(sub_cat== ""){alert("Please Select Sub-Category");}
+            else if(tags == ""){
+                $("#myModal").modal('show');
+                $("#description").text("Please select Tags");
+                }
+            else if(heading== ""){
+                $("#myModal").modal('show');
+                $("#description").text("Please select Heading");
+                }
+            else if(category== ""){
+                $("#myModal").modal('show');
+                $("#description").text("Please select Category");
+                }
+            else if(sub_cat== ""){
+                $("#myModal").modal('show');
+                $("#description").text("Please select Sub-Category");
+                }
             else{
                 if(heading.length > 10 && heading.length < 1000 ){
                     //if(private.length <= 6){
@@ -257,41 +348,48 @@ $(".create").click(function(){
                             var data = JSON.parse(resp);
 
                             if(data.message=="Forecast Created"){
-                                 alert(data.message);
-                                 window.location.href = "{% url 'my_forecast' %}";
+                                $("#public").modal('show');
+                                 $("#public_heading").text(heading);
                                }
                             else if(data.message=="Thank You for creating a private forecast"){
-                                alert(data.message);
-                                 window.location.href = "{% url 'private' %}";
+                                $("#private").modal('show');
+                                $("#private_heading").text(heading);
+
+                                $("#description").text("Thank you for creating a private forecast");
+
                         }
                             else if(data.message == "Please Login"){
-                                 alert(data.message);
+                            $("#myModal").modal('show');
+                                $("#description").text("Please Login");
                                  window.location.href = "{% url 'blank_page' %}";
                             }
                             else if(data.message == "end"){
-                                 alert("End Time should be greater than Current Time");
+                            $("#myModal").modal('show');
+                                 $("#description").text("Expire datetime should be greater than current datetime");
                             }
                             else{
-                                alert(data.message);
+                            $("#myModal").modal('show');
+                                $("#description").text("All fields are mandatory. Please try again.");
                             }
                            }
 
                     });
                     }
-                    //}  else{alert('Please select Forecast Type');
-                    //}
                     }
                     }
 
                 else if(heading.length > 1000){
-                    alert('Maximum Heading should be less than 100');
+                $("#myModal").modal('show');
+                    $("#description").text("Maximum length for heading is 1000 characters");
                     }
                 else if(heading.length < 10){
-                    alert('Minimum Heading should be greater than 10');
+                $("#myModal").modal('show');
+                    $("#description").text("Minimum length for Heading should be greater than 10 characters");
                     }
 
                 else{
-                    alert("Please check Terms and Condition")
+                $("#myModal").modal('show');
+                    $("#description").text("Please check Terms and conditions");
                 }
                 });
 
