@@ -2462,6 +2462,11 @@ def fifa_rounds(request):
 def index_page(request):
     return render(request, "index.html")
 
+
+def index_page_debug(request):
+    return render(request, "index-debug.html")
+
+
 def main_page(request):
     user = request.user
     try:
