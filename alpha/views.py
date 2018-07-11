@@ -2458,6 +2458,10 @@ def fifa_rounds(request):
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
 
+
+def index_page(request):
+    return render(request, "index.html")
+
 def main_page(request):
     user = request.user
     try:
