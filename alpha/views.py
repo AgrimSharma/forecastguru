@@ -2434,10 +2434,10 @@ def extra_page(request):
 
 def fifa_rounds(request):
     forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
-                                            sub_category__name='Football', status__name='In-Progress').order_by("expire")
+                                            sub_category__name='Football', status__name='In-Progress', expire__gte="2018-07-15 00:00:00").order_by("expire")
     try:
         user = request.user
-        profile = SocialAccount.objects.get(user = user)
+        profile = SocialAccount.objects.get(user=user)
 
         return render(request, 'category_search_fifa.html',
                       {
