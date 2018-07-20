@@ -2433,8 +2433,8 @@ def extra_page(request):
 
 
 def fifa_rounds(request):
-    forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no',
-                                            sub_category__name='Football', status__name='In-Progress', expire__gte="2018-07-15 00:00:00").order_by("expire")
+    forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no', heading__icontains='INDIA',
+                                            sub_category__name='Cricket', status__name='In-Progress').order_by("expire")
     try:
         user = request.user
         profile = SocialAccount.objects.get(user=user)
@@ -2442,7 +2442,7 @@ def fifa_rounds(request):
         return render(request, 'category_search_fifa.html',
                       {
                           "live": forecast_live_fifa(forecast_live, profile),
-                          "heading": "Fifa World Cup Final",
+                          "heading": "India vs England Test Series",
                           "title": "ForecastGuru",
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
@@ -2450,7 +2450,7 @@ def fifa_rounds(request):
         return render(request, 'category_search_fifa.html',
                       {
                           "live": forecast_live_fifa_wp(forecast_live),
-                          "heading": "Fifa World Cup Final",
+                          "heading": "India vs England Test Series",
                           "title": "ForecastGuru",
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
