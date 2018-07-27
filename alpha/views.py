@@ -2432,7 +2432,8 @@ def extra_page(request):
 
 def interest(request):
     sub = SubCategory.objects.all()
-    return render(request, "interest_select.html", {"sub":sub})
+    return render(request, "interest_select.html", {"sub":sub,"heading": "Home", "title": "ForecastGuru",
+                                         "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
 def fifa_rounds(request):
