@@ -24,7 +24,19 @@
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
   <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick.css' %}" />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick-theme.css' %}" />
-
+<script>
+    $(document).ready(function() {
+  $.ajaxSetup({ cache: true });
+  $.getScript('https://connect.facebook.net/en_US/sdk.js', function(){
+    FB.init({
+      appId: '{your-app-id}',
+      version: 'v2.7',
+    });
+    $('#loginbutton,#feedbutton').removeAttr('disabled');
+    FB.getLoginStatus(updateStatusCallback);
+  });
+});
+</script>
 
 </head>
 <body class="home-bg">
@@ -47,8 +59,8 @@
                 <div class="text-center">
                     <button class="btn btn-orange text-uppercase" data-toggle="modal" data-target="#myModal">Earn 50,000 points on Joining</button>
                 </div>
-                <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
-  <div class="btn_box mb-3">
+<div class="fb-login-button" data-width="1" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                <div class="btn_box mb-3">
                     <a href="https://forecast.sirez.com/facebook/login/?process=login&next=/thank_you/" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
                 </div>
                 </div>
@@ -112,7 +124,7 @@
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1&appId=186107225561354&autoLogAppEvents=1';
+  js.src = 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.1&appId=186107225561354&autoLogAppEvents=1';
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
