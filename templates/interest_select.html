@@ -117,16 +117,17 @@
     <img src="{% static 'images/play-quiz.png' %}" alt="">
   </a>
 </div>
-<script>
-    $(document).ready(function ()
-{
-   $(":checkbox").change(function ()
-      {
-       alert('Success');
-      }
 
-});
-});
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'slick/slick.min.js' %}"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120519459-1"></script>
+<script>
+    $(document).ready(function (){
+        $(":checkbox").change(function (){
+            alert('Success');
+        });
+    });
 </script>
 <script>
 
@@ -147,10 +148,7 @@ $('#myInput').keypress(function (e) {
   }
 });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/slick/slick.min.js"></script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120519459-1"></script>
+
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -188,31 +186,6 @@ $('#myInput').keypress(function (e) {
 
 </script>
 <script>
-$(document).ready(function() {
-_pcq.push(['APIReady', callbackFunction]);
-
-
-function callbackFunction() {
-      console.log(pushcrew.subscriberId); // will return something like this if current user is a subscriber '1c5d546172cfb4be65a8d51b047c4804'
-
-  console.log(pushcrew.subscriberId); // will return false(boolean) if user is not subscribed to push notifications
-
-  console.log(pushcrew.subscriberId); // will return -1(integer) if user has blocked push notifications from your website
-    var sub_id = pushcrew.subscriberId;
-
-        $.ajax({
-                type: "POST",
-                url: "{% url 'notification_user' %}",
-                data: {'sub_id':sub_id},
-
-                success: function(resp){
-                    console.log(sub_id + " " + resp);
-                    }
-                });
-}
-});
-</script>
-<script>
         $(function(){
 
             $('.banner_slider').slick({
@@ -227,7 +200,7 @@ function callbackFunction() {
 
     })
     </script>
-<script src="{% static 'js/jquery-slim.min.js' %}"></script>
+
 
 
 </body></html>
