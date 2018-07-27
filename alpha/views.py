@@ -2467,6 +2467,10 @@ def index_page_debug(request):
     return render(request, "index-debug.html")
 
 
+def data_facebook(request):
+    return HttpResponse(request)
+
+
 def main_page(request):
     user = request.user
     try:
