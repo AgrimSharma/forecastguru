@@ -27,7 +27,7 @@
                             <img src="{% static 'images/TutorialScreen-icon3.jpg' %}" alt="">
                             <br>
 
-                        <a href="{% url 'category' %}" class="btn btn-orange text-uppercase">Play Forecast Guru</a>
+                        <a href="{% url 'interest' %}" class="btn btn-orange text-uppercase">Select Interest</a>
                         </p>
 
                         <p class="ml-auto mr-auto">
@@ -53,7 +53,7 @@
 window.setTimeout(function(){
 
         // Move to a new location or you can do something else
-        window.location.href = "{% url 'category' %}";
+        window.location.href = "{% url 'interest' %}";
 
     }, 10000);
 

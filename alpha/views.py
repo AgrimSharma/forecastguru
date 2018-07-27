@@ -2430,6 +2430,11 @@ def extra_page(request):
                                          "user": "Guest" if request.user.is_anonymous() else request.user.username})
 
 
+def interest(request):
+    sub = SubCategory.objects.all()
+    return render(request, "interest_select.html", {"sub":sub})
+
+
 def fifa_rounds(request):
     date_tod = datetime.datetime.now().date()
     date_tom = date_tod + datetime.timedelta(days=2)

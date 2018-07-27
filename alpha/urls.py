@@ -48,6 +48,7 @@ urlpatterns = [
     url(r'^category/', category, name='category'),
     url(r'^facebook/', facebook_category, name='facebook_category'),
     url(r'^thank_you/', thank_you, name='thank_you'),
+    url(r'^interest/', interest, name='interest'),
     url(r'^data_facebook/', data_facebook, name='data_facebook'),
     url(r'^send_notification_user/', send_notification_user, name='send_notification_user'),
     url(r'^category_search/(?P<userid>\d+)/$', category_search, name='category_search'),
