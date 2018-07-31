@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'alpha',
     "payu_biz",
     'django_social_share'
+    'social_django',
+
     ]
 
 MIDDLEWARE = [
@@ -55,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'fblogin.urls'
@@ -70,6 +73,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',  # <--
+                'social_django.context_processors.login_redirect', # <--
             ],
         },
     },
@@ -142,6 +147,7 @@ AUTHENTICATION_BACKENDS = (
 
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
 )
 SITE_ID = 1
 
@@ -155,6 +161,8 @@ SUCCESS_URL = "http://localhost:8000/payubiz-success/"
 FAILURE_URL = "http://localhost:8000/payubiz-failure/"
 CANCEL_URL = "http://localhost:8000/payubiz-cancel/"
 LOGIN_REDIRECT_URL = '/thank_you/'
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.MD5PasswordHasher',
@@ -192,3 +200,10 @@ EMAIL_HOST_PASSWORD = 'Chetu@123'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '186107225561354'
+SOCIAL_AUTH_FACEBOOK_SECRET = '77604d4a3cb85b118b72b0030a1e939b'
+
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False

@@ -23,6 +23,12 @@ import requests
 current = datetime.datetime.now()
 
 
+@login_required
+def home_test(request):
+    return render(request, 'registration/home.html')
+
+
+
 def test(request):
     return render(request, 'main.html')
 

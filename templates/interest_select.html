@@ -83,7 +83,7 @@
 
         <ul>
           {% for s in sub %}
-            <li><input type="checkbox" id="{{s.id}}" />
+            <li><input type="checkbox" id="{{s.id}}" class="test" value="{{s.id}}"/>
             <label for="{{s.id}}"><img src="{{s.image}}" /></label>
           </li>
         {% endfor %}
@@ -125,7 +125,8 @@
 <script>
     $(document).ready(function (){
         $(":checkbox").change(function (){
-            alert('Success');
+            var test = $(".test").val();
+            alert(test);
         });
     });
 </script>
