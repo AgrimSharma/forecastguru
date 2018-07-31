@@ -13,10 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from .views import *
 
 urlpatterns = [
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^minified/', home_test, name='home_test'),
     url(r'^accounts/profile/', test, name='home_page'),
     url(r'^create_forecast/', create_forecast, name='create_forecast'),
