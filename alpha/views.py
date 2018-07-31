@@ -20,6 +20,8 @@ from allauth.socialaccount.models import SocialAccount, SocialToken
 import hashlib
 from django.conf import settings
 import requests
+from django.contrib.auth.decorators import login_required
+
 current = datetime.datetime.now()
 
 
