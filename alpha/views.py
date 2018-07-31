@@ -27,7 +27,7 @@ current = datetime.datetime.now()
 
 @login_required
 def home_test(request):
-    return render(request, 'registration/home.html')
+    return render(request, 'registration/login.html')
 
 
 
