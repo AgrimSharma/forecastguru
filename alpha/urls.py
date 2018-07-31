@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import url
 from .views import *
-from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^minified/', home_test, name='home_test'),
