@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^', include('alpha.urls')),
     url(r'^', include('payu_biz.urls')),
     url(r'^webpush/', include('webpush.urls'))
-
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
     # url(r'^account/', include('django.contrib.auth.urls')),
 
 
