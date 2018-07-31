@@ -25,7 +25,6 @@ from django.contrib.auth.decorators import login_required
 current = datetime.datetime.now()
 
 
-@login_required
 def home_test(request):
     return render(request, 'registration/login.html')
 
