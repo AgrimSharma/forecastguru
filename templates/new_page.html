@@ -47,62 +47,12 @@
                 <div class="text-center">
                     <button class="btn btn-orange text-uppercase" data-toggle="modal" data-target="#myModal">Earn 50,000 points on Joining</button>
                 </div>
-                <div id='login'><a href="#" id='facebook-login' onclick='fblogin();'><img src="your image url here" /></a></div>
-<script>
-    function fblogin(){
-        FB.login(function(response) {
-            if (response.session) {
-                if (response.perms) {
-                    // user is logged in and granted some permissions.
-                    // perms is a comma separated list of granted permissions
-                    console.log(response.prems);
-                } else {
-                    // user is logged in, but did not grant any permissions
-                    alert(error);
-                }
-            } else {
-                // user is not logged in
-                window.location.href = "{% url 'blank_page' %}";
-            }
-        }, {perms:'email'});
-        return false;
-    }
-</script>
-                {% comment %}
-<form class="form-signin" role="form">
-            <div id="status"></div>
-        <h2 class="form-signin-heading">User Registration</h2>
 
-        <label for="inputFname" class="sr-only">First Name</label>
-            <input type="text" id="inputFname" class="form-control" placeholder="First Name" required autofocus>
-
-        <label for="inputLname" class="sr-only">First Name</label>
-            <input type="text" id="inputLname" class="form-control" placeholder="Last Name" required >
-
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required >
-
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-
-        <button class="btn btn-sm btn-primary btn-block" type="submit">Sign Up</button> <button class="btn btn-sm btn-primary btn-block" onclick="_login();" type="submit">Sign Up using Facebook</button>
-      </form>
-
-
-  <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
-{% endcomment %}
-  
   <div class="btn_box mb-3">
               <button class="btn btn-blue w-100 text-uppercase" onclick="_login();" type="submit">Sign Up using Facebook</button>
 
-                    <!--<a href="https://forecast.sirez.com/facebook/login/?process=login&next=/thank_you/" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>-->
                 </div>
-                </div>
+                </div>{% comment %}
               <div class="btn_box mb-3">
                     <a href="{% url 'extra' %}" class="btn btn-ghost w-100 text-uppercase">Continue as Guest</a>
                 </div>
@@ -111,7 +61,7 @@
                   <a href="{% url 'quiz' %}" class="btn btn-orange w-100 text-uppercase" >Play Quiz</a>
                     <a href="{% url 'quiz' %}" class="w-100 text-uppercase"><img src="{% static 'images/quiz.jpeg' %}" alt="" width="100%" height="150px"/></a>
 
-                </div>
+                </div>{% endcomment %}
 
 
             </div>
@@ -172,11 +122,11 @@
 
   window.fbAsyncInit = function() {
   FB.init({
-    appId      : '206827886449193', //Your APP ID
+    appId      : '186107225561354', //Your APP ID
     cookie     : true,  // enable cookies to allow the server to access
                         // the session
     xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.1' // use version 2.1
+    version    : 'v2.7' // use version 2.1
   });
 
   // These three cases are handled in the callback function.
@@ -193,6 +143,22 @@
       _i();
       alert("login success");
       console.log(response);
+      var data = response.perms.authResponse;
+      $.ajax({
+                type: "POST",
+                url: "{% url 'login' %}",
+                data: {'data': data,},
+
+                success: function(resp){
+                    var data = JSON.parse(resp);
+
+                    if(data.message == 'success'){
+                        console.log('Login Success');
+                    }else{
+                        console.log('Already Login');
+                        }
+                    }
+                });
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -206,7 +172,7 @@
        if(response.status==='connected') {
         _i();
         alert("login success");
-      console.log(response);
+        console.log(response);
        }
      }, {scope: 'public_profile,email'});
  }

@@ -59,6 +59,7 @@ urlpatterns = [
     url(r'^private/', my_forecast_private, name='private'),
     url(r'^logout_user/', logout_view, name='logout_user'),
     url(r'^home/', blank_page, name='blank_page'),
+    url(r'^new_page/', login_main, name='login_main'),
     url(r'^login_page/', login_page, name='login_page'),
     url(r'^signup_page/', signup_page, name='signup_page'),
     url(r'^get_forecast/', get_forecast, name='get_forecast'),

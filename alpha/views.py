@@ -2484,6 +2484,11 @@ def data_facebook(request):
     return HttpResponse(request)
 
 
+def login_main(request):
+    return render(request, "new_page.html", {})
+
+
+
 def main_page(request):
     user = request.user
     try:
@@ -2492,3 +2497,4 @@ def main_page(request):
         return HttpResponseRedirect("/category/")
     except Exception:
         return render(request, 'main_page.html')
+
