@@ -55,14 +55,14 @@
                 if (response.perms) {
                     // user is logged in and granted some permissions.
                     // perms is a comma separated list of granted permissions
-                    window.location.reload();
+                    console.log(response.prems);
                 } else {
                     // user is logged in, but did not grant any permissions
-                    window.location.href = "{% url 'live_forecast' %};
+                    alert(error);
                 }
             } else {
                 // user is not logged in
-                window.location.href = "{% url 'blank_page' %};
+                window.location.href = "{% url 'blank_page' %}";
             }
         }, {perms:'email'});
         return false;
