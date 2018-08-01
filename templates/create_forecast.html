@@ -183,7 +183,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			</div>
 			<div class="modal-body text-center">
-				<i>Tank you for creating a private forecast</i><p id="private_heading"></p>
+				<i>Thank you for creating a private forecast</i><p id="private_heading"></p>
 				<a href="{% url 'private' %}" class="btn btn-success">Success</a>
 			</div>
 		</div>
@@ -337,7 +337,11 @@ $(".create").click(function(){
                 $("#description").text("Please select Sub-Category");
                 }
             else{
-                if(heading.length > 10 && heading.length < 1000 ){
+                if(heading.length < 10){
+                $("#myModal").modal('show');
+                    $("#description").text("Minimum length for Heading should be greater than 10 characters");
+                    }
+                else if(heading.length > 10 && heading.length < 1000 ){
                     //if(private.length <= 6){
                         $.ajax({
                         type: "POST",
@@ -379,14 +383,9 @@ $(".create").click(function(){
                     }
 
                 else if(heading.length > 1000){
-                $("#myModal").modal('show');
+                    $("#myModal").modal('show');
                     $("#description").text("Maximum length for heading is 1000 characters");
                     }
-                else if(heading.length < 10){
-                $("#myModal").modal('show');
-                    $("#description").text("Minimum length for Heading should be greater than 10 characters");
-                    }
-
                 else{
                 $("#myModal").modal('show');
                     $("#description").text("Please check Terms and conditions");
