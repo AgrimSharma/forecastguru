@@ -68,6 +68,7 @@
         return false;
     }
 </script>
+                {% comment %}
 <form class="form-signin" role="form">
             <div id="status"></div>
         <h2 class="form-signin-heading">User Registration</h2>
@@ -94,10 +95,12 @@
 
 
   <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
-
+{% endcomment %}
   
   <div class="btn_box mb-3">
-                    <a href="https://forecast.sirez.com/facebook/login/?process=login&next=/thank_you/" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+              <button class="btn btn-sm btn-primary btn-block" onclick="_login();" type="submit">Sign Up using Facebook</button>
+
+                    <!--<a href="https://forecast.sirez.com/facebook/login/?process=login&next=/thank_you/" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>-->
                 </div>
                 </div>
               <div class="btn_box mb-3">
@@ -202,6 +205,8 @@
        // handle the response
        if(response.status==='connected') {
         _i();
+        alert("login success");
+      console.log(response);
        }
      }, {scope: 'public_profile,email'});
  }
