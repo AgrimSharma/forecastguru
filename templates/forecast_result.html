@@ -56,9 +56,9 @@
                 <div class="row">
                   <div class="col-6 pr-0">
                     <div class="time textwithicon pl-0">
-                        {% if f.forecast.won == 'yes' %}
+                       {% if f.forecast.won.name == 'Yes' %}
                       <label><i class="fa fa-clock-o"></i> Result: </label> <span class="result_yes">YES<i class="fa fa-coins ml-1"></i></span>
-                        {% elif f.forecast.won == 'no' %}
+                        {% elif f.forecast.won.name == 'No' %}
                         <label><i class="fa fa-clock-o"></i> Result: </label> <span class="result_no">NO<i class="fa fa-coins ml-1"></i></span>
                         {% else %}
                       <label><i class="fa fa-clock-o"></i> Result: </label> <span class="result_no">NA <i class="fa fa-coins ml-1"></i></span>
@@ -119,7 +119,7 @@
       <ul class="navbar-nav nav-fill w-100 text-center">
         <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
           Forecasts</a> </li>
-        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png'%}" alt=""><br>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
           Categories</a> </li>
         <li class="nav-item"> <a class="nav-link active" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
           Results</a> </li>
@@ -130,11 +130,7 @@
       </ul>
     </nav>
   </footer>
-<div class="right_fixed_btn">
-  <a href="{% url 'quiz' %}" class="vertical-text">
-    <img src="{% static 'images/play-quiz.png' %}" alt="">
-  </a>
-</div>
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="js/jquery-slim.min.js"><\/script>')</script>
 <script src="js/bootstrap.min.js"></script>

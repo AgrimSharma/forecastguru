@@ -7,7 +7,7 @@
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
       <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'create_forecast' %}">Create Forecast</a> </li>
-      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'payment' %}" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;">Buy FG Points</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="#" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;">Buy FG Points</a> </li>
       <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
     </ul>
   </nav>
@@ -96,10 +96,11 @@
     </div>
   </div>
 </div>
+
 <footer class="sticky-footer">
     <nav class="navbar">
       <ul class="navbar-nav nav-fill w-100 text-center">
-        <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+        <li class="nav-item"> <a class="nav-link active" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
           Forecasts</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
           Categories</a> </li>
@@ -112,11 +113,6 @@
       </ul>
     </nav>
   </footer>
-<div class="right_fixed_btn">
-  <a href="{% url 'quiz' %}" class="vertical-text">
-    <img src="{% static 'images/play-quiz.png' %}" alt="">
-  </a>
-</div>
 
   <div id="id_shipment_sold" class="modal modal-center fade" role="dialog">
       <div class="modal-dialog">
@@ -216,14 +212,11 @@
 			</div>
 			<div class="modal-body text-center">
                 <i>Please try again</i><p id="balance_low" style="color:red;"></p>
-				<a href="{% url 'payment' %}" class="btn btn-success" >Buy Points</a>
+				<a href="#" class="btn btn-success" >Buy Points</a>
 			</div>
 		</div>
 	</div>
 </div>
-
-
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 <script>
 $('#myInput').keypress(function (e) {
@@ -297,7 +290,16 @@ $(".submit_forecast").click(function(){
                     console.log(resp);
                     var data = JSON.parse(resp);
                     if(data.message=="success"){
-                    console.log(data.message);
+                        if("Notification" in window){
+                                    let ask = Notification.requestPermission();
+                                    ask.then( permission => {
+                                    let msg = new Notification("ForecastGuru" ,{
+                                        "body": "Thank you for playing forecast. " + data.heading,
+                                        });
+                                        msg.addEventListener("click", event => {
+                                            window.location.href = "https://fstage.sirez.com/forecast/" + data.id + "/" ;
+                                                })
+                                    });}
                         $("#id_shipment_sold").modal('hide');
                         $("#success_modal").modal('show');
                         $("#success_data").text("Thank you for playing this forecast.");
@@ -342,6 +344,5 @@ $(document).ready(function(){
     });
 });
 </script>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5b27599bd4efc40011702ef7&product=inline-share-buttons' async='async'></script>
 
 {% endblock %}

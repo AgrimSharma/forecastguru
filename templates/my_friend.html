@@ -1,55 +1,6 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Forecastguru</title>
-        <meta property="og:url" content="https://forecast.sirez.com" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="ForecastGuru"/>
-<meta property="og:description" content="Play the hottest prediction game online and become a Forecast Guru!" />
-<meta property="og:image" content="https://forecast.sirez.com/static/images/TutorialScreen-icon1.jpg" />
-<meta property="fb:app_id" content="186107225561354" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="HandheldFriendly" content="true" />
-<script src="{% static 'js/jquery.min.js' %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
-<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
-<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
-</head>
-<body class="gray-bg">
-<header class="position-fixed w-100">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-12 text-center position-relative">
-        <div class="header-logo position-absolute"><img src="{% static 'images/logo-small-white.png' %}" alt=""></div>
-        <h1>My Forecasts</h1>
-        <div class="header-right text-center with-btn position-absolute">
-            <!--<a href="{% url 'create_forecast' %}" class="btn btn-orange btn-sm"> Create New</a>-->
-          {% if user == 'Guest' %}
-          <div style="padding-top:7px;">Hi {{user|title}}!!</div>
-          {% else %}
-          <div style="padding-top:7px;">Hi {{user|title}}!!</div>
-            <div style="padding-top:5px;">FG Balance {{request.user.socialaccount_set.all.0.fg_points_total}}</div>
-          {% endif %}
-        </div>
-          </div>
-      </div>
-    </div>
-    <div class="row mt-2">
-      <div class="col-12">
-        <div class="form-group has-search m-0"> <span class="fa fa-search form-control-feedback"></span>
-          <form method="post" action="{% url 'search_result' %}">
-              <input type="text"  class="form-control" placeholder="Search Forecast" name='point' id="myInput"/>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
+{% block content %}
 <div class="topspace"></div>
 <div class="container topnavlinks">
   <nav class="navbar">
@@ -393,6 +344,7 @@
 
   </div>
       </div></div></div>
+
 <footer class="sticky-footer">
     <nav class="navbar">
       <ul class="navbar-nav nav-fill w-100 text-center">
@@ -508,38 +460,13 @@
 			</div>
 			<div class="modal-body text-center">
                 <i>Please try again</i><p id="balance_low" style="color:red;"></p>
-				<a href="{% url 'payment' %}" class="btn btn-success" >Buy Points</a>
+				<a href="#" class="btn btn-success" >Buy Points</a>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="right_fixed_btn">
-  <a href="{% url 'quiz' %}" class="vertical-text">
-    <img src="{% static 'images/play-quiz.png' %}" alt="">
-  </a>
-</div>
-
-
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 <script>
-$('#myInput').keypress(function (e) {
-  if (e.which == 13) {
-  var test = $("#myInput").val();
-
-  $.ajax({
-    type:"POST",
-    url: "{% url 'search_result' %}",
-    data: {'point': test},
-    success: function(resp){
-
-    }
-});
-    <!--$('form').submit();-->
-    <!--return false;-->
-  }
-});
-
 $(".shipment_sold").click(function(){
 var shipment_id=$(this).attr("shipment_id");
 var path=$("#path").val();
@@ -591,10 +518,19 @@ $(".submit_forecast").click(function(){
                 data: {'vote': radioValue, "points":point, 'forecast':forecast},
 
                 success: function(resp){
-                    console.log(resp);
+
                     var data = JSON.parse(resp);
                     if(data.message=="success"){
-                    console.log(data.message);
+                        if("Notification" in window){
+                                    let ask = Notification.requestPermission();
+                                    ask.then( permission => {
+                                    let msg = new Notification("ForecastGuru" ,{
+                                        "body": "Thank you for playing forecast. " + data.heading,
+                                        });
+                                        msg.addEventListener("click", event => {
+                                            window.location.href = "https://fstage.sirez.com/forecast/" + data.id + "/" ;
+                                                })
+                                    });}
                         $("#id_shipment_sold").modal('hide');
                         $("#success_modal").modal('show');
                         $("#success_data").text("Thank you for playing this forecast.");
@@ -639,9 +575,7 @@ $(document).ready(function(){
     });
 });
 </script>
-</body>
-</html>
-
+{% endblock %}
 
 
 

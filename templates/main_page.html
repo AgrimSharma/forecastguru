@@ -7,41 +7,24 @@
 <title>Forecastguru</title>
     <meta property="og:title" content="ForecastGuru"/>
 <meta property="og:description" content="Play the hottest prediction game online and become a Forecast Guru!" />
-<meta property="og:image" content="https://forecast.sirez.com/static/images/TutorialScreen-icon1.jpg" />
+<meta property="og:image" content="https://forecast.guru/static/images/TutorialScreen-icon1.jpg" />
 <meta property="fb:app_id" content="186107225561354" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="HandheldFriendly" content="true" />
     <script src="{% static 'js/jquery_new.js' %}"></script>
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
-<link rel="manifest" href="/manifest.json" />
-<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-<script>
-  var OneSignal = window.OneSignal || [];
-  OneSignal.push(function() {
-    OneSignal.init({
-      appId: "2cc9c746-a6e1-4585-b0ab-cba85d6a58cc",
-    });
-  });
-</script>
+    <link rel="manifest" href="/manifest.json" />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick.css' %}" />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick-theme.css' %}" />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120519459-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-120519459-1');
-</script>
 
 </head>
 <body class="homepage home-bg">
 
     <div class="splash">
-        <img class="logo" src="{% static 'images/logo-forcastguru.png' %}" alt="" class="img-fluid" />
+        <img class="logo" src="{% static 'images/logo-forcastguru.png' %}" alt=""  />
         <p class="text-center">Koi Hara Koi Jeeta</p>
     </div>
 
@@ -103,9 +86,9 @@
                                     <figure>
                                         <img src="{% static 'images/TutorialScreen-icon6.jpg' %}" alt="">
                                     </figure>
-                                    <h2>50,000 <span class="orange-color text-uppercase">free</span> FG points </h2>
+                                    <h2>{{points}} <span class="orange-color text-uppercase">free</span> FG points </h2>
                                     <p>
-                                        Register and get 50,000 free Forecast Guru points
+                                        Register and get {{points}} free Forecast Guru points
                                     </p>
 
                                 </div>
@@ -113,11 +96,11 @@
         </div>
         <div class="fixedbtn-btm">
             <div class="container text-center">
-                <a href="{% url 'blank_page' %}" class="btn btn-orange text-uppercase">Forecast Now</a>
+                <a href="{% url 'login' %}" class="btn btn-orange text-uppercase">Forecast Now</a>
                 </div>
         </div>
         <div class="btmskip">
-            <a href="{% url 'blank_page' %}">Skip</a>
+            <a href="{% url 'login' %}">Skip</a>
         </div>
         </div>
 </div>

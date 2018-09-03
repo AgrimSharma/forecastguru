@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Forecastguru</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="HandheldFriendly" content="true" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick-theme.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
+
+</head>
+<body class="homepage home-bg" style="background: #f6f8fd">
+
+    <div class="container">
+<div class="tutorial-container position-relative">
+
+        <div class="tutorial-slider">
+
+                <div class="item text-center">
+                    <p class="mb-4 pb-4 ml-auto mr-auto">
+
+                            <img src="{% static 'images/TutorialScreen-icon3.jpg' %}" alt="">
+                            <br>
+
+                        <a href="{% url 'interest' %}" class="btn btn-orange text-uppercase">Select Interest</a>
+                        </p>
+
+                        <p class="ml-auto mr-auto">
+
+                                    <img src="{% static 'images/playquiz_img.png' %}" alt="">
+                                    <br>
+
+                                <a href="{% url 'quiz' %}" class="btn btn-blue text-uppercase">Play Quiz</a>
+                                </p>
+
+
+
+                    </div>
+
+        </div>
+
+
+        </div>
+</div>
+        <script src="{% static 'js/jquery-slim.min.js' %}"></script>
+        <script src="{% static 'slick/slick.min.js' %}"></script>
+<script>
+window.setTimeout(function(){
+
+        // Move to a new location or you can do something else
+        window.location.href = "{% url 'interest' %}";
+
+    }, 10000);
+
+</script>
+
+</body>
+</html>

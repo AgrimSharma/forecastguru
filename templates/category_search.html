@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block content %}
 <div class="topspace"></div>
 <div class="tab-slider-container">
@@ -46,26 +45,14 @@
           <a href="{% url 'create_forecast' %}" class="btn btn-primary">Create Forecast</a>
         </div>
         <div class="col-6 text-center">
-            <a href="{% url 'payment' %}" class="btn btn-primary">Buy FG Points</a>
+            <a href="{% url 'earn_points' %}" class="btn btn-primary">Earn Points</a>
           </div>
       </div>
 </div>
 
     </div>
 <div class="container fixed_p_footer">
-    <div class="row mt-3">
-  <div class="col-12" >
-    <div class="banner_slider">
-      <div class="item">
-       <a href="{% url 'create_forecast' %}"><img src="{% static 'images/hero-banner1.jpg' %}" alt=""></a>
-      </div>
-      <div class="item">
-          <a href="{% url 'quiz' %}"><img src="{% static 'images/hero-banner2.jpg' %}" alt=""></a>
-        </div>
-    </div>
-  </div>
-</div>
-  <div class="row">
+    <div class="row">
       <div class="col-md-12" style="padding-bottom:  50px;">
           <div class="forcast_home" style="margin-top: 0px;">
 
@@ -294,9 +281,7 @@
 
 
              </div>
-
-
-</div>
+            </div>
           </div>
           <div class="modal-body">
             <div id="shipment_sold_preview">
@@ -355,19 +340,12 @@
 			</div>
 			<div class="modal-body text-center">
                 <i>Please try again</i><p id="balance_low" style="color:red;"></p>
-				<a href="{% url 'payment' %}" class="btn btn-success" >Buy Points</a>
+            <a href="{% url 'earn_points' %}" class="btn btn-primary">Earn Points</a>
 			</div>
 		</div>
 	</div>
 </div>
-<input type="text" value="{{request.path}}" style="display:none" id="path" name="path">
-<div class="right_fixed_btn">
-  <a href="{% url 'quiz' %}" class="vertical-text">
-    <img src="{% static 'images/play-quiz.png' %}" alt="">
-  </a>
-</div>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
- <!--<script src="{% static 'js/jquery-slim.min.js' %}"></script>-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
         <script src="{% static 'slick/slick.min.js' %}"></script>
         <script>
@@ -401,9 +379,6 @@
         slidesToScroll: 3
       }
     }
-    // You can unslick at a given breakpoint now by adding:
-    // settings: "unslick"
-    // instead of a settings object
   ]
 
 
@@ -426,8 +401,6 @@ $('#myInput').keypress(function (e) {
 
     }
 });
-    <!--$('form').submit();-->
-    <!--return false;-->
   }
 });
 
@@ -446,7 +419,6 @@ $.ajax({
         $("#heading").text(data.heading);
         $("#awb").val(data.id);
         $("#forecast").val(data.id);
-        <!--$("#shipment_sold_preview").html(resp);-->
 
     }
 });

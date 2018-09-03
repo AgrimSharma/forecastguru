@@ -1,0 +1,223 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Forecastguru</title>
+        <meta property="og:url" content="https://forecast.guru" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="ForecastGuru"/>
+<meta property="og:description" content="Play the hottest prediction game online and become a Forecast Guru!" />
+<meta property="og:image" content="https://forecast.guru/static/images/TutorialScreen-icon1.jpg" />
+<meta property="fb:app_id" content="186107225561354" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="HandheldFriendly" content="true" />
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
+  <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick-theme.css' %}" />
+
+
+</head>
+<body class="home-bg">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+
+        <div class="login_container">
+
+            <div class="logo text-center pb-4">
+                <img src="{% static 'images/logo-forcastguru.png' %}" alt="">
+            </div>
+            <div class="clearfix"></div>
+            <div class="btn_wrap mt-4">
+
+                <div class="text-center">
+                    <button class="btn btn-orange text-uppercase" data-toggle="modal" data-target="#myModal">Earn 50,000 points on Joining</button>
+                </div>
+                <div id='login'><a href="#" id='facebook-login' onclick='fblogin();'><img src="your image url here" /></a></div>
+<script>
+    function fblogin(){
+        FB.login(function(response) {
+            if (response.session) {
+                if (response.perms) {
+                    // user is logged in and granted some permissions.
+                    // perms is a comma separated list of granted permissions
+                    console.log(response.prems);
+                } else {
+                    // user is logged in, but did not grant any permissions
+                    alert(error);
+                }
+            } else {
+                // user is not logged in
+                window.location.href = "{% url 'blank_page' %}";
+            }
+        }, {perms:'email'});
+        return false;
+    }
+</script>
+                {% comment %}
+<form class="form-signin" role="form">
+            <div id="status"></div>
+        <h2 class="form-signin-heading">User Registration</h2>
+
+        <label for="inputFname" class="sr-only">First Name</label>
+            <input type="text" id="inputFname" class="form-control" placeholder="First Name" required autofocus>
+
+        <label for="inputLname" class="sr-only">First Name</label>
+            <input type="text" id="inputLname" class="form-control" placeholder="Last Name" required >
+
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required >
+
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+
+        <button class="btn btn-sm btn-primary btn-block" type="submit">Sign Up</button> <button class="btn btn-sm btn-primary btn-block" onclick="_login();" type="submit">Sign Up using Facebook</button>
+      </form>
+
+
+  <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
+{% endcomment %}
+  
+  <div class="btn_box mb-3">
+              <button class="btn btn-blue w-100 text-uppercase" onclick="_login();" type="submit">Sign Up using Facebook</button>
+
+                    <!--<a href="https://forecast.sirez.com/facebook/login/?process=login&next=/thank_you/" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>-->
+                </div>
+                </div>
+              <div class="btn_box mb-3">
+                    <a href="{% url 'extra' %}" class="btn btn-ghost w-100 text-uppercase">Continue as Guest</a>
+                </div>
+                <hr>
+              <div class="btn_box">
+                  <a href="{% url 'quiz' %}" class="btn btn-orange w-100 text-uppercase" >Play Quiz</a>
+                    <a href="{% url 'quiz' %}" class="w-100 text-uppercase"><img src="{% static 'images/quiz.jpeg' %}" alt="" width="100%" height="150px"/></a>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+        </div>
+<div id="myModal" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px;padding-left:20%"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <p>Forecast Guru (FG) is a decentralized platform for prediction markets. The events of FG’s prediction markets will be chosen by members that hold FG's native FG points token, who stake their tokens on the event.</p>
+                <p>FG points or “Forecast Guru” Points is a virtual token with which all forecasts are played. This token has no monetary value and cannot be exchanged for cash or gifts.</p>
+
+                <button class="btn btn-success" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '448296328916936');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=448296328916936&ev=PageView&noscript=1"
+/></noscript>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+ <script>
+  // Load the SDK asynchronously
+  (function(thisdocument, scriptelement, id) {
+    var js, fjs = thisdocument.getElementsByTagName(scriptelement)[0];
+    if (thisdocument.getElementById(id)) return;
+
+    js = thisdocument.createElement(scriptelement); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js"; //you can use
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '206827886449193', //Your APP ID
+    cookie     : true,  // enable cookies to allow the server to access
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.1' // use version 2.1
+  });
+
+  // These three cases are handled in the callback function.
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+
+  };
+
+  // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      _i();
+      alert("login success");
+      console.log(response);
+    } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    }
+  }
+
+  function _login() {
+    FB.login(function(response) {
+       // handle the response
+       if(response.status==='connected') {
+        _i();
+        alert("login success");
+      console.log(response);
+       }
+     }, {scope: 'public_profile,email'});
+ }
+
+ function _i(){
+     FB.api('/me', function(response) {
+        document.getElementById("inputFname").value = response.first_name;
+        document.getElementById("inputLname").value = response.last_name;
+        document.getElementById("inputEmail").value = response.email;
+    });
+ }
+
+</script>
+</html>

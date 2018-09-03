@@ -1,0 +1,421 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Forecastguru</title>
+        <meta property="og:url" content="https://forecast.sirez.com" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="ForecastGuru"/>
+<meta property="og:description" content="Play the hottest prediction game online and become a Forecast Guru!" />
+<meta property="og:image" content="https://forecast.sirez.com/static/images/TutorialScreen-icon1.jpg" />
+<meta property="fb:app_id" content="186107225561354" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="HandheldFriendly" content="true" />
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap-datetimepicker.min.css' %}" />
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120519459-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-120519459-1');
+</script>
+
+</head>
+<body class="gray-bg">
+<header class="position-fixed w-100">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-12 text-center">
+          <div class="goback position-absolute"><a href="{% url 'live_forecast' %}" class="text-white"><i class="fa fa-angle-left"></i></a></div>
+        <h1>Create Forecast</h1>
+          <div class="header-right text-center with-btn position-absolute">
+            <!--<a href="{% url 'create_forecast' %}" class="btn btn-orange btn-sm"> Create New</a>-->
+            <div style="padding-top:16px;">Hi {{user|title}}!!
+            </div>
+            <div style="padding-top:5px;">FG Balance {{request.user.socialaccount_set.all.0.fg_points_total}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="topspace2"></div>
+<!--<form action="{% url 'create_forecast' %}" method="post">-->
+<form method="post">
+
+<div class="sel-cate fixed_p_footer">
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col-12">
+        <select class="form-control" name="categories" id="categories">
+            <option value="">Select a Category</option>
+            {% for c in category %}
+                    <option value="{{c.id}}">{{c.name}}</option>
+                {% endfor %}
+        </select>
+      </div>
+    </div>
+      <div class="container" style="display:none;">
+       <input type="text" name="user" id="user" value="{{ user }}"/>
+   </div>
+    <div class="row mb-3">
+      <div class="col-12">
+        <select class="form-control" name="subcategories" id="subcategories" style="display:none;">
+            <option value="">Select a Sub Category</option>
+
+        </select>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-12">
+            <div class="form-group" style="display:none;" id="srcs">
+                <div class="row" style="display:flex;">
+                    <div class="col-12" ><p class="source_text" style="color: black;padding-left: 10px;"></p></div>
+
+
+            </div>
+      </div>
+    </div>
+
+    </div>
+      <div class="row mb-3">
+      <div class="col-12">
+        <textarea class="form-control" rows="4" cols="50" name="heading" id="heading" placeholder="Enter Heading (min 10 and max. length 100 characters)" style="width:100%"></textarea>
+      </div>
+    </div>
+    <div class="row mb-3">
+          <div class="col-12">
+            <input class="form-control" name="tags" id="tags" placeholder="Enter Tags (comma separated tags)"/>
+          </div>
+        </div>
+      <div class="row mb-3">
+      <div class="col-6">
+        <div class="position-relative">
+          <input class="form-control" type="text" value=date() id="created_date" name="created_date" placeholder="Date">
+          <img src="{% static 'images/calender.png' %}" class="img-fluid input_icon"> </div>
+      </div>
+      <div class="col-6">
+        <div class="position-relative">
+          <input class="form-control" type="text" value="" id="created_time" name="created_time" placeholder="Time">
+          <img src="{% static 'images/time.png' %}" class="img-fluid input_icon"> </div>
+      </div>
+    </div>
+
+<div class="row mb-2" >
+      <div class="col-12">
+          <label>Make this forecast </label><input type="radio" id="contactChoice1" name="contact" value="email" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">Me & My Friends</label>
+
+                <input type="radio" id="contactChoice2" checked name="contact" value="phone" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice2" style="margin-bottom:5px;" >Public</label>
+
+        </div></div>
+      <div class="row mb-2" >
+      <div class="col-12">
+
+          <input type="checkbox" id="tnc"/>&nbsp;<label>I agree to terms and conditions</label>
+      </div></div>
+    <div class="row mb-2">
+      <div class="col-12"> <input type="button" class="btn w-100 btn-orange text-uppercase create" value="Create Forecast" style="color:white;"/> </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-12">
+        <label >Note : All forecasts are subject to Admin Approval </label>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+<footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
+<div class="right_fixed_btn">
+  <a href="{% url 'quiz' %}" class="vertical-text">
+    <img src="{% static 'images/play-quiz.png' %}" alt="">
+  </a>
+</div>
+<div id="myModal" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+				<i>Something went wrong.</i><p id="description" style="color:red;"></p>
+				<button class="btn btn-success" data-dismiss="modal" id="names">Try Again</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="private" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+				<i>Tank you for creating a private forecast</i><p id="private_heading"></p>
+				<a href="{% url 'private' %}" class="btn btn-success">Success</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="login" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <i>Please login</i>
+                <div class="btn_box mb-3 w-100" >
+                    <a href="https://forecast.sirez.com/facebook/login/?process=login&next={{request.path}}" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+<div id="public" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <i>Thank you for creating a forecast.</i><p id="public_heading"></p>
+				<a href="{% url 'my_forecast' %}" class="btn btn-success" >Success</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+<script type="text/javascript">
+        $(function () {
+            $('#created_date').datetimepicker({
+                format: 'DD/MM/YYYY'
+            });
+            $('#created_time').datetimepicker({
+                    format: 'LT'
+            });
+        });
+    </script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+         $('#categories').on('change', function() {
+         $('#subcategories').html('');
+            var id = this.value;
+            $.ajax({
+                    type: "POST",
+                    url: "{% url 'get_sub_cat' %}",
+                    data: {'identifier': id,},
+                    success: function(resp){
+
+                    var data = JSON.parse(resp);
+                    console.log(data);
+                    var sub = data.data;
+                    $('#subcategories').append($('<option>', {
+                                value: "",
+                                text : "Select a Sub Category"
+                            }));
+                        console.log(sub);
+                        for(i=0; i < sub.length; i++){
+                             var values = JSON.parse(JSON.stringify(sub[i]));
+                            $('#subcategories').append($('<option>', {
+                                value: values.id,
+                                text : values.name
+                            }));
+                            }
+
+
+                            //$(".source_text").text(data.source);
+
+                            //$("#srcs").show();
+                            $("#subcategories").show();
+                            }
+                        });
+
+                        });
+
+
+             $('#subcategories').on('change', function() {
+            var id = this.value;
+            $.ajax({
+                    type: "POST",
+                    url: "{% url 'get_sub_source' %}",
+                    data: {'identifier': id,},
+                    success: function(resp){
+                        $(".source_text").text("Result will be verified from " + resp);
+                            $("#srcs").show();
+                            }
+                        });
+
+                        });
+
+
+
+$(".create").click(function(){
+    var category = $("#categories").val();
+    var sub_cat = $("#subcategories").val();
+    var heading = $("#heading").val();
+    var user_date = $("#created_date").val();
+    var user_time = $("#created_time").val();
+    var user = $("#user").val();
+    var tags = $("#tags").val();
+    var private = $("input[name='contact']:checked").val();
+    var tnc = $("input[type='checkbox']").val();
+    var isChecked = $('#contactChoice1').prop('checked');
+    var isChecked1 = $('#contactChoice2').prop('checked');
+    //alert(private.length);
+    if ($('#tnc ').is(":checked"))
+        {
+            var value = "";
+            if(user_date == ""){
+                $("#myModal").modal('show');
+                $("#description").text("Please select Expire Date");
+            }
+            else if(user_time == ""){
+                $("#myModal").modal('show');
+                $("#description").text("Please select Expire Time");
+                }
+            else if(tags == ""){
+                $("#myModal").modal('show');
+                $("#description").text("Please select Tags");
+                }
+            else if(heading== ""){
+                $("#myModal").modal('show');
+                $("#description").text("Please select Heading");
+                }
+            else if(category== ""){
+                $("#myModal").modal('show');
+                $("#description").text("Please select Category");
+                }
+            else if(sub_cat== ""){
+                $("#myModal").modal('show');
+                $("#description").text("Please select Sub-Category");
+                }
+            else{
+                if(heading.length > 10 && heading.length < 1000 ){
+                    //if(private.length <= 6){
+                        $.ajax({
+                        type: "POST",
+                        url: "{% url 'create_forecast' %}",
+                        data: {'heading': heading, "category":category, 'sub_cat':sub_cat,"time":user_time, "date":user_date,"user":user, "private":private, "tags":tags},
+                        success: function(resp){
+                            console.log(resp);
+                            var data = JSON.parse(resp);
+
+                            if(data.message=="Forecast Created"){
+                                $("#public").modal('show');
+                                 $("#public_heading").text(heading);
+                               }
+                            else if(data.message=="Thank You for creating a private forecast"){
+                                $("#private").modal('show');
+                                $("#private_heading").text(heading);
+
+                                $("#description").text("Thank you for creating a private forecast");
+
+                        }
+                            else if(data.message == "Please Login"){
+                            $("#myModal").modal('show');
+                                $("#description").text("Please Login");
+                                 window.location.href = "{% url 'blank_page' %}";
+                            }
+                            else if(data.message == "end"){
+                            $("#myModal").modal('show');
+                                 $("#description").text("Expire datetime should be greater than current datetime");
+                            }
+                            else{
+                            $("#myModal").modal('show');
+                                $("#description").text("All fields are mandatory. Please try again.");
+                            }
+                           }
+
+                    });
+                    }
+                    }
+                    }
+
+                else if(heading.length > 1000){
+                $("#myModal").modal('show');
+                    $("#description").text("Maximum length for heading is 1000 characters");
+                    }
+                else if(heading.length < 10){
+                $("#myModal").modal('show');
+                    $("#description").text("Minimum length for Heading should be greater than 10 characters");
+                    }
+
+                else{
+                $("#myModal").modal('show');
+                    $("#description").text("Please check Terms and conditions");
+                }
+                });
+
+
+
+        });
+</script>
+
+<!-- Facebook Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '406710686464682');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=406710686464682&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+</body>
+</html>
+
+

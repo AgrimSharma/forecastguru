@@ -7,7 +7,7 @@
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
       <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'create_forecast' %}">Create Forecast</a> </li>
-      <li class="nav-item text-uppercase"> <a class="nav-link" href="{% url 'payment' %}" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;">Buy FG Points</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="#" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;">Buy FG Points</a> </li>
       <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
     </ul>
   </nav>
@@ -29,10 +29,11 @@
     </div>
   </div>
 </div>
+
 <footer class="sticky-footer">
     <nav class="navbar">
       <ul class="navbar-nav nav-fill w-100 text-center">
-        <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+        <li class="nav-item"> <a class="nav-link active" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
           Forecasts</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
           Categories</a> </li>
@@ -45,7 +46,7 @@
       </ul>
     </nav>
   </footer>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
 
 <script>
 $('#myInput').keypress(function (e) {

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+  <div class="topspace2"></div>
+  <form method="post" action="%s" name="f1">
+    {% for key,value in param.items %}
+    <label>{{key}}</label> <input type="text" value="{{value}}" readonly> <br>
+  </form>
+{% endfor %}
+<script type="text/javascript">
+    document.f1.submit();
+    </script>
+{% endblock %}

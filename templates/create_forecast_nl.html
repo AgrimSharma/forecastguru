@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block content %}
-<div class="topspace"></div>
+
+
+<div class="topspace2"></div>
 <!--<form action="{% url 'create_forecast' %}" method="post">-->
 
 
@@ -13,16 +14,15 @@
 
       <div class="forcast_home" style="text-align:center;">
           <div><h4>Please Login</h4>
-              <h4>TO create a forecast</h4></div>
+              <h4>To create a forecast</h4></div>
         <div class="btn_box mb-3" >
-                    <a href="https://forecast.sirez.com/facebook/login/?process=login&next={{request.path}}" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+                    <a href="https://fsatge.sirez.com/login/&next={{request.path}}" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
                 </div>
 
 
     </div>
   </div>
   </div></div>
-
 
 <footer class="sticky-footer">
     <nav class="navbar">
@@ -40,29 +40,5 @@
       </ul>
     </nav>
   </footer>
-<div class="right_fixed_btn">
-  <a href="{% url 'quiz' %}" class="vertical-text">
-    <img src="{% static 'images/play-quiz.png' %}" alt="">
-  </a>
-</div>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/moment.min.js' %}"></script>
 
-<!-- Facebook Pixel Code -->
-<script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '406710686464682');
-  fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=406710686464682&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Facebook Pixel Code -->
 {% endblock %}

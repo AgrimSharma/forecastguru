@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+
+  <div class="topspace2"></div>
+
+  <div class="container fixed_p_footer">
+
+    <div class="row">
+      <div class="col-md-12">
+
+       <div class="earn_points mt-3">
+
+          <h2 class="section_heading mb-2">
+            You can earn points by doing these activities
+          </h2>
+
+          <div class="card mb-2">
+
+            <div class="card-body">
+                <i class="fa fa-user"></i>
+              <h3>Daily Login</h3>
+              <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+              </p>
+            </div>
+
+          </div>  
+
+          <div class="card mb-2">
+
+              <div class="card-body">
+                  <i class="fa fa-user-plus"></i>
+                <div class="row">
+                  <div class="col-7">
+                      <h3>Refer and Earn</h3>
+                  </div>
+                  <div class="col-5 text-right">
+                      <a href="{% url 'refer_and_earn' %}" class="btn badge btn-orange mb-2">Invite Now</a>
+                  </div>
+                </div>
+                  
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                </p>
+                
+              </div>
+  
+            </div>  
+
+            <div class="card mb-2">
+
+                <div class="card-body">
+                    <i><img src="{% static 'images/earnpoints-fgicon.png' %}" alt=""></i>
+                  <div class="row">
+                    <div class="col-7">
+                        <h3>Create Forecast</h3>
+                    </div>
+                    <div class="col-5 text-right">
+                        <a href="{% url 'create_forecast' %}" class="btn badge btn-orange mb-2">Create Forecast</a>
+                    </div>
+                  </div>
+                    
+                  <p>
+                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                  </p>
+                  
+                </div>
+    
+              </div>  
+
+              <div class="card mb-2">
+
+                  <div class="card-body">
+                      <i class="fa fa-share-alt"></i>
+                   
+                          <h3>Result and Forecast Share</h3>
+                      
+                    <p>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                    </p>
+                    
+                  </div>
+      
+                </div> 
+
+                <div class="card mb-2">
+
+                    <div class="card-body">
+                        <i class="fa fa-video-camera"></i>
+                      <div class="row">
+                        <div class="col-7">
+                            <h3>Watch Video</h3>
+                        </div>
+                        <div class="col-5 text-right">
+                            <a href="#" class="btn badge btn-orange mb-2">Watch Now</a>
+                        </div>
+                      </div>
+                        
+                      <p>
+                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                      </p>
+                      
+                    </div>
+        
+                  </div>  
+
+
+       </div>
+
+
+      </div>
+    </div>
+
+    
+  </div>
+
+
+
+ <footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
+
+
+{% endblock %}

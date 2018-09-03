@@ -327,6 +327,7 @@
         {% endfor %}
   </div>
       </div></div></div>
+
 <footer class="sticky-footer">
     <nav class="navbar">
       <ul class="navbar-nav nav-fill w-100 text-center">
@@ -336,7 +337,7 @@
           Categories</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
           Results</a> </li>
-          <li class="nav-item"> <a class="nav-link active" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+          <li class="nav-item"> <a class="nav-link active" href="{% url 'private' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
             My Forecasts</a> </li>
         <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
           My Account</a> </li>
@@ -443,17 +444,12 @@
 			</div>
 			<div class="modal-body text-center">
                 <i>Please try again</i><p id="balance_low" style="color:red;"></p>
-				<a href="{% url 'payment' %}" class="btn btn-success" >Buy Points</a>
+				<a href="#" class="btn btn-success" >Buy Points</a>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="right_fixed_btn">
-  <a href="{% url 'quiz' %}" class="vertical-text">
-    <img src="{% static 'images/play-quiz.png' %}" alt="">
-  </a>
-</div>
 
 <script>
 $('#myInput').keypress(function (e) {
@@ -549,7 +545,16 @@ $(".submit_forecast").click(function(){
                     console.log(resp);
                     var data = JSON.parse(resp);
                     if(data.message=="success"){
-                    console.log(data.message);
+                        if("Notification" in window){
+                                    let ask = Notification.requestPermission();
+                                    ask.then( permission => {
+                                    let msg = new Notification("ForecastGuru" ,{
+                                        "body": "Thank you for playing forecast. " + data.heading,
+                                        });
+                                        msg.addEventListener("click", event => {
+                                            window.location.href = "https://fstage.sirez.com/forecast/" + data.id + "/" ;
+                                                })
+                                    });}
                         $("#id_shipment_sold").modal('hide');
                         $("#success_modal").modal('show');
                         $("#success_data").text("Thank you for playing this forecast.");
