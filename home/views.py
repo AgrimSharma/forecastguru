@@ -2272,7 +2272,8 @@ def private_subscribe(request):
 
 
 def main_login(request):
-    return render(request, "home/login_main.html")
+    j = JoiningPoints.objects.latest('id').points
+    return render(request, "home/login_main.html",{"points": j})
 
 
 @csrf_exempt
