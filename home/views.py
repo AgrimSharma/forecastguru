@@ -143,11 +143,10 @@ def referral_code(request):
 def check_referral(request):
     if request.method == "POST":
         code = request.POST.get('referral_code')
-        users = SocialAccount.objects.get(user=request.user)
-        auth = Authentication.objects.get(facebook_id=users.uid)
         try:
+            users = SocialAccount.objects.get(user=request.user)
             reff = Authentication.objects.get(referral_code=code)
-            auth = Authentication.objects.get(facebook_id=user)
+            auth = Authentication.objects.get(facebook_id=users.uid)
             auth.referral_status = 2
             auth.save()
             return HttpResponse("success")
