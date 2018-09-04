@@ -1,0 +1,597 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Forecastguru</title>
+        <meta property="og:url" content="https://fstage.sirez.com" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="ForecastGuru"/>
+<meta property="og:description" content="Play the hottest prediction game online and become a Forecast Guru! Pleas join me using the following forecast {{forecast.heading}}" />
+<meta property="og:image" content="https://forecast.guru/static/images/TutorialScreen-icon1.jpg" />
+<meta property="fb:app_id" content="186107225561354" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="HandheldFriendly" content="true" />
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick-theme.css' %}" />
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
+
+    <link rel="manifest" href="/manifest.json" />
+{% block script %}
+{% endblock %}
+<script async="async" src="https://www.google.com/adsense/search/ads.js"></script>
+
+<!-- other head elements from your page -->
+
+<script type="text/javascript" charset="utf-8">
+(function(g,o){g[o]=g[o]||function(){(g[o]['q']=g[o]['q']||[]).push(
+  arguments)},g[o]['t']=1*new Date})(window,'_googCsa');
+</script>
+
+</head>
+<body class="gray-bg">
+<header class="position-fixed w-100">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-12 text-center position-relative">
+              <div class="goback position-absolute"><a href="#" class="text-white"><i class="fa fa-angle-left"></i></a>
+              </div>
+              <h1>{{heading}}</h1>
+                <div id="anim_search">
+                    <form method="post" action="{% url 'search_result' %}">
+                        <input type="search" class="form-control" placeholder="Search Forecast" name="point" id="myInput">
+                    </form>
+              </div>
+              <!-- reveal menu -->
+    <div class="revealmenu">
+
+      <div id="mobile-nav"></div>
+      <nav>
+
+        <figure class="userpic">
+            {% if first_name == 'Guest'%}
+                <img src="{% static 'images/account_image.jpg' %}" alt="">
+                <figcaption>GUEST</figcaption>
+            {% elif request.user.username == 'admin'%}
+                <img src="{% static 'images/account_image.jpg' %}" alt="">
+                <figcaption>Admin</figcaption>
+            {% else %}
+          <img src="https://graph.facebook.com/{{request.user.username}}/picture?type=large" alt="">
+          <figcaption>{{request.user.first_name}} {{request.user.last_name}}</figcaption>
+            {% endif %}
+        </figure>
+
+        <ul class="menu">
+          <li><a href="{% url 'refer_and_earn' %}"><i class="fa fa-user-plus"></i> Refer and Earn</a></li>
+          <li><a href="{% url 'earn_points' %}"><i class="fa fa-money"></i> Earn Points</a></li>
+            {% if first_name != 'Guest'%}
+                <li><a href="{% url 'notification' %}"><i class="fa fa-bell"></i> Notifications</a></li>
+                <li><a href="{% url 'create_forecast' %}"><i class="fa fa-file"></i> Create Forecast</a></li>
+                <li><a href="#"><i class="fa fa-star"></i> Rate App</a></li>
+            {% endif %}
+          <li><a href="{% url 'faq' %}"><i class="fa fa-question-circle"></i> FAQ</a></li>
+          <li><a href="{% url 'terms' %}"><i class="fa fa-info-circle"></i> Term and Conditions</a></li>
+          <li><a href="{% url 'privacy_policy' %}"><i class="fa fa-info-circle"></i>Privacy Policy</a></li>
+            {% if first_name != 'Guest'%}
+
+          <li><a href="{% url 'logout_user' %}"><i class="fa fa-sign-out"></i> Sign out</a></li>
+            {% endif %}
+        </ul>
+      </nav>
+      </div>
+            </div>
+          </div>
+
+        </div>
+      </header>
+
+<input type="text" value="{{forecast.private.name}}" name="private" id="private" style="display:none">
+<input type="text" value="{{forecast.id}}" name="forecast_id" id="forecast_id" style="display:none">
+<input type="text" value="{{request.user}}" name="user" id="user" style="display:none">
+<div class="topspace"></div>
+<div class="forcast_detail fixed_p_footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h2>{{forecast.heading}}</h2>
+          {% if private == 'no' %}
+
+                <div class="row white_box mr-0 ml-0 mb-3">
+
+          <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-12">
+                     Share<div class="addthis_inline_share_toolbox_a0ek"></div></div>
+                 </div>
+              </div>
+      </div>
+    {% else %}
+          <div class="row white_box mr-0 ml-0 mb-3">
+
+          <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-12">
+                     Invite Friends<div class="addthis_inline_share_toolbox_a0ek"></div></div>
+                 </div>
+              </div>
+      </div>
+    {% if request.user.username == users %}
+            <div class="clearfix"></div>
+      <div class="row white_box mr-0 ml-0 mb-3">
+
+          <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-12">
+                     Invite Friends<div class="addthis_inline_share_toolbox_a0ek"></div></div>
+                 </div>
+              </div>
+      </div>{% endif %}{% endif %}
+          {% if forecast.status.name == 'Closed' and private == 'yes' and request.user.username == users and forecast.verified.name == "no" %}
+                  <hr>
+          <h3> Please select a Result</h3>
+           <div class="form-group form-inline">
+        <input type="text" class="form-control" id="awbs" value="{{forecast.id}}" style="display:none;" ><br>
+        <div class="predictwrap">
+
+                <div style="display:flex;">
+                <input type="radio" id="contactChoice3" name="contact1" value="email" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">YES</label>
+
+                <input type="radio" id="contactChoice4" name="contact1" value="phone" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice2" style="margin-bottom:5px;">NO</label>
+                    </div>
+          <br></div>
+        </div>
+             <button class="btn btn-sm btn-orange text-uppercase submit_result"> Declare Result</button>
+      {% endif %}
+ {% if forecast.status.name == 'Progress' %}
+
+          <hr>
+           <div class="form-group form-inline">
+        <input type="text" class="form-control" id="awb" value="{{forecast.id}}" style="display:none;" ><br>
+        <div class="predictwrap">
+
+                <div style="display:flex;">
+                <input type="radio" id="contactChoice1" name="contact" value="email" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice1" style="margin-bottom:5px;">YES</label>
+
+                <input type="radio" id="contactChoice2" name="contact" value="phone" style="margin-left:10px;">
+                   &nbsp; <label for="contactChoice2" style="margin-bottom:5px;">NO</label>
+                    </div>
+          <br>
+          <div id="point_div">
+
+              <label for="points" style="justify-content: left; "><strong>FG Points</strong></label>
+            <input type="button" class="btn btn-danger btn-sm" id="sub" value="-" style="width:26px;"/>
+            &nbsp;
+            <input type="text" value="1000" id="points" name="points" style="height:30px;"/>
+
+            <input type="button" class="btn btn-success btn-sm" id="add" value="+" />
+            <input type="text" id="forecast" value="{{forecast.id}}" style="display:None">
+            <button class="btn btn-sm btn-orange text-uppercase submit_forecast"> PLAY</button>
+
+              </div>
+
+
+             </div>
+
+</div>
+          {% endif %}
+
+          <hr class="hr">
+            <p>Status :  <span>{{forecast.status.name}}</span> </p>
+          <p style="padding-left:20px;">Closing date and time  <img src="{% static 'images/calender-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_date}}</span> <img src="{% static 'images/time-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_time}}</span> </p>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="row white_box mr-0 ml-0 mb-3">
+
+        <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-12">
+                    Created By : <strong>{{request.user.first_name |title}}</strong>
+
+                </div>
+              </div>
+
+              <div class="row mb-2">
+                  <div class="col-12">
+                      Status :
+                      <strong><span>{{forecast.status.name}}</span>
+                          {% if forecast.won.name == 'Yes' %}(<span class="result_yes" style="color:green;">YES</span>){% elif forecast.won.name == 'No' %} (<span class="result_no" style="color:red;">NO</span>){% endif %}</strong>
+                  </div>
+                </div>
+            <div class="row mb-2">
+                  <div class="col-12">
+                      Win Ratio : <strong> {% if forecast.status.name == "Result Declared" %} {% if forecast.won.name == 'Yes' %}<span class="result_yes" style="color:green;">1:{{ ratio }}</span>{% elif forecast.won.name == 'no' %} <span class="result_no" style="color:red;">1:{{ratio}}{% endif %}  {% else %} NA {% endif %}</span></strong>
+                  </div>
+                </div>
+        </div>
+
+      </div>
+      {% if private == 'no' %}
+      <div class="clearfix"></div>
+      <div class="row white_box mr-0 ml-0 mb-3">
+
+        <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-6">
+                    Total FG Points for Yes
+                </div>
+                <div class="col-6 text-right value-color">
+                    {{bet_for}}
+                </div>
+              </div>
+
+              <div class="row mb-2">
+                  <div class="col-6">
+                    Total FG Points for No
+                  </div>
+                  <div class="col-6 text-right value-color">
+                      {{against}}
+                  </div>
+                </div>
+            <div class="row mb-2">
+                  <div class="col-6">
+                    Total FG points in play
+                  </div>
+                  <div class="col-6 text-right value-color">
+                      {{sums}}
+                  </div>
+                </div>
+        </div>
+
+      </div>
+      <div class="clearfix"></div>
+      <div class="row white_box mr-0 ml-0 mb-3">
+
+        <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-6">
+                    My FG Points for Yes
+                </div>
+                <div class="col-6 text-right value-color">
+                    {{bet_for_user}}
+                </div>
+              </div>
+
+              <div class="row mb-2">
+                  <div class="col-6">
+                    My FG Points for No
+                  </div>
+                  <div class="col-6 text-right value-color">
+                      {{bet_against_user}}
+                  </div>
+                </div>
+            <div class="row mb-2">
+                  <div class="col-6">
+                    Market Fee Earned
+                  </div>
+                  <div class="col-6 text-right value-color">
+                      {{market_fee}}
+                  </div>
+                </div>
+            {% if forecast.status.id == 3 %}
+            <div class="row mb-2">
+                  <div class="col-6">
+                    Market Fee Paid
+                  </div>
+                  <div class="col-6 text-right value-color">
+                      {{market_fee_paid}}
+                  </div>
+                </div>
+            <div class="row mb-2">
+                  <div class="col-6">
+                    My Earning
+                  </div>
+                  <div class="col-6 text-right value-color">
+                      {{earned}}
+                  </div>
+                </div>
+            <div class="row mb-2">
+                  <div class="col-6">
+                   <strong>Total Earning</strong>
+                  </div>
+                  <div class="col-6 text-right value-color">
+                      <strong> {{total_earn}}</strong>
+                  </div>
+                </div>
+                        {% endif %}
+
+        </div>
+
+      </div>
+    <div class="clearfix"></div>
+      <div class="row white_box mr-0 ml-0 mb-3">
+
+        <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-6">
+                    Source
+                    <strong>
+                    <a href="{{forecast.sub_category.source}}">{{forecast.sub_category.source}}</a></strong>
+                </div>
+              </div>
+
+
+        </div>
+      </div>
+
+      {% else %}
+
+        <div class="col-12 user_data_table">
+          <div class="row headrow mb-2 text-center">
+              <div class="col-3">
+                <label>User image</label>
+              </div>
+              <div class="col-3">
+                <label>User Name</label>
+              </div>
+              <div class="col-3">
+                  <label>Yes</label>
+              </div>
+
+              <div class="col-3">
+                  <label>No</label>
+              </div>
+
+            </div>
+            {% for p in points %}
+            <div class="row mb-2 text-center align-items-center">
+              <div class="col-3">
+                  <label class="lbl_value"> <img src="https://graph.facebook.com/{{p.user.uid}}/picture?type=large" alt="" width="50px" height="50px" style="border-radius:50%;"></label>
+              </div>
+                <div class="col-3">
+                  <label class="lbl_value"> {{p.user.user.username}}</label>
+              </div>
+              <div class="col-3">
+                <label class="lbl_value">{{p.bet_for}}</label>
+              </div>
+
+              <div class="col-3">
+                  <label class="lbl_value"> {{p.bet_against}}</label>
+              </div>
+
+            </div>{% endfor %}{% comment %}
+            {% if request.user.username == users %}
+            <div class="clearfix"></div>
+      <div class="row white_box mr-0 ml-0 mb-3">
+
+          <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-12">
+                     Invite Friends<div class="addthis_inline_share_toolbox_a0ek"></div></div>
+                 </div>
+              </div>
+      </div>{% endif %}{% endcomment %}
+      {% endif %}
+        </div>
+
+
+  </div>
+</div>
+
+<footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link active" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
+<div id="not_login_modal" class="modal modal-center fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="heading"></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title text-left heading"></h4>
+            <div class="clearfix"></div>
+
+          </div>
+          <div class="modal-body">
+            <div id="shipment_sold_preview">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2> Please login to play in a forecast</h2>
+                    </div>
+                <div class="btn_box col-12 text-center" >
+                    <a href="https://forecast.guru/facebook/login/?process=login&next={{request.path}}" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+                </div>
+                    </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+<div id="public_modal" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px;padding-left:20%"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <p id="values"></p>
+				<a href="{% url 'betting' forecast.id %}" class="btn btn-success" >Success</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="error_modal" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px;padding-left:20%"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <i>Please try again</i><p id="details" style="color:red;"></p>
+				<button class="btn btn-success" data-dismiss="modal">Try Again</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="balance_modal" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px;padding-left:20%"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <i>Please try again</i><p id="balance_low" style="color:red;"></p>
+				<a href="#" class="btn btn-success" >Buy Points</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+    $("#add").click(function(){
+        var awb = $("#points").val();
+        var vals = parseInt(awb) + 1000;
+        $("#points").val(vals);
+    });
+    $("#sub").click(function(){
+        var awb = $("#points").val();
+        var vals = parseInt(awb) - 1000;
+        if( vals < 100){
+               $("#points").val(1000);
+            }else{
+               $("#points").val(vals);
+            }
+    });
+
+$(".submit_forecast").click(function(){
+    var radioValue = $("input[name='contact']:checked").val();
+
+    var forecast = $("#forecast").val();
+    var point = $("#points").val();
+    if(radioValue === "email" || radioValue == "phone"){
+        if( parseInt(point) % 1000 === 0){
+            $.ajax({
+                type: "POST",
+                url: "{% url 'bet_save' %}",
+                data: {'vote': radioValue, "points":point, 'forecast':forecast},
+
+                success: function(resp){
+                    console.log(resp);
+                    var data = JSON.parse(resp);
+                    if(data.message=="success"){
+                        if("Notification" in window){
+                                    let ask = Notification.requestPermission();
+                                    ask.then( permission => {
+                                    let msg = new Notification("ForecastGuru" ,{
+                                        "body": "Thank you for playing forecast. " + data.heading,
+                                        });
+                                        msg.addEventListener("click", event => {
+                                            window.location.href = "https://fstage.sirez.com/forecast/" + data.id + "/" ;
+                                                })
+                                    });}
+
+                        $("#public_modal").modal('show');
+                        $("#values").text("Thank you for playing.");
+
+                        }
+                    else if(data.message=="balance"){
+                            $("#balance_modal").modal('show');
+                            $("#balance_low").text("Your ForecastGuru balance is low.");
+
+                    }
+                    else if(data.message=="login"){
+                            $("#not_login_modal").modal('show');
+                    }
+                    else{
+                        $("#error_modal").modal('show');
+                        $("#details").text(data.message);
+                        }
+                    }
+
+                });
+
+            }
+        else{
+            $("#error_modal").modal('show');
+                        $("#details").text("Points should be multiple of 1000");
+            }
+            }
+        else{
+            $("#error_modal").modal('show');
+            $("#details").text("Please select Vote Type");
+            }
+
+    });
+
+    $(".submit_result").click(function(){
+    var radioValue = $("input[name='contact1']:checked").val();
+    var forecast = $("#awbs").val();
+    if(radioValue === "email" || radioValue == "phone"){
+            $.ajax({
+                type: "POST",
+                url: "{% url 'result_save' %}",
+                data: {'vote': radioValue, 'forecast':forecast},
+
+                success: function(resp){
+                        $("#public_modal").modal('show');
+                        $("#values").text("Thank you for playing.");
+
+                    }
+
+                });
+
+            }
+        else{
+            $("#error_modal").modal('show');
+            $("#details").text("Points should be multiple of 1000");
+                                    }
+    });
+</script>
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+<script type="text/javascript">
+        $(function () {
+            $('#created_date').datetimepicker({
+                format: 'DD/MM/YYYY'
+            });
+            $('#created_time').datetimepicker({
+                    format: 'LT'
+            });
+        });
+    </script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5b20f3c3978f517f"></script>
+
+</body>
+</html>

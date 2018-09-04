@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+  <div class="topspace2"></div>
+    <form method="post" action="{% url 'payment' %}">
+        <label>Enter Amount</label><input type="number" name="bill_amount" id="bill_amount">
+        <input value="Submit" type="submit">
+    </form>
+{% endblock %}

@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+  <div class="topspace2"></div>
+
+  <div class="container fixed_p_footer">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="redeem_container mt-4">
+
+        <div class="white_box withshadow text-center mb-3 pt-3 pb-3">
+          <h2 class="section_heading mb-3">
+            You have
+          </h2>
+          <div class="row justify-content-center">
+            <div class="col-12">
+             <div class="num_of_points text-center">
+                <span class="rounded-circle">
+                  {{profile.points_won_public}}<br>
+                  points
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card withshadow mb-3">
+
+            <div class="card-header">
+          <h2 class="section_heading m-0">
+            Points and Cash Values</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-6">
+                  <label for="">Points to redeem</label>
+                  <div class="input-group">
+                      <input type="text" class="form-control" readonly value="{{redeem_from}}">
+                      <div class="input-group-append">
+                      <button class="btn btn-secondary"><i class="fa fa-edit"></i></button>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <label for="">Cash to be received</label>
+                  <input type="text" class="form-control" readonly value="{{redeem_to}}">
+                </div>
+              </div>
+        </div>
+
+        <div class="card-header">
+          <h2 class="section_heading m-0">
+            Points and Cash Calculator</h2>
+        </div>  
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-6">
+                  <label for="">Points to redeem</label>
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="from_points" name="from_points" placeholder="100">
+                      <div class="input-group-append">
+                      <button class="btn btn-secondary"><i class="fa fa-edit"></i></button>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <label for="">Cash to be received</label>
+                  <input type="text" class="form-control" readonly id="to_points" name="to_points" placeholder="100">
+                </div>
+              </div>
+              <div class="row">
+                 <div class="col-12">
+                  <label><input type="checkbox" name="" id=""> I agree to the Terms and Conditions</label>
+                 </div> 
+              </div>
+        </div>
+
+        <div class="card-footer text-right">
+            {% if redeem_from < profile.points_won_public %}
+                <form method="post" action="{% url 'payment' %}">
+                    <input type="text" id="to_point" name="to_point" style="display:none;">
+                    <input type="submit" class="btn btn-orange" value="Redeem Points"/>
+                </form>            {% else %}
+                <a href="#" class="btn btn-orange disabled" data-toggle="modal" data-target="#redeem_popup">Redeem with Paytm</a>
+            {% endif %}
+         </div>
+
+        </div>
+
+       </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+<div class="modal fade redeem_popup" id="redeem_popup" data-backdrop="static">
+
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+          <h2 class="section_heading">
+          Please enter the following question to get Paytm cashback</h2>
+        </div>
+
+      <div class="modal-body">
+
+        <div class="qa_div">
+        
+          <div class="mb-4">
+            <h6>What is the capital of India</h6>
+
+            <ul class="list-unstyled">
+              <li>
+                <label><input type="radio" name="q1" id=""> Delhi</label>
+              </li>
+              <li>
+                <label><input type="radio" name="q1" id="">  Mumbai</label>
+              </li>
+              <li>
+                <label><input type="radio" name="q1" id="">  Kolkata</label>
+              </li>
+              <li>
+                <label><input type="radio" name="q1" id="">  Chennai</label>
+              </li>
+            </ul>
+          </div>
+
+
+        </div>
+
+      </div>
+
+        <div class="modal-footer pt-2 pb-2">
+        </div>
+
+    </div>
+
+  </div>
+  
+
+</div>
+
+<div class="modal fade redeem_popup" id="redeem_popup2" data-backdrop="static">
+
+    <div class="modal-dialog">
+  
+      <div class="modal-content">
+  
+          <div class="modal-header">
+            <h2 class="section_heading w-100">
+              Redeem with Paytm</h2>
+          </div>
+  
+        <div class="modal-body">
+          <h6>Create a new account or link to an existing account with this number</h6>
+          <h5>+91 9898989898</h5>
+          </div>
+          <div class="modal-footer pt-2 pb-2">
+              <a href="#" class="btn btn-orange" data-dismiss="modal">Next</a>
+          </div>
+  
+      </div>
+  
+    </div>
+    
+  
+  </div>
+<footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
+<script>
+    $('input[name=from_points]').change(function() {
+        var points = $("#from_points").val();
+        var points_from = {{redeem_from}};
+        var points_to = {{redeem_to}};
+        var ratio = points /(points_from / points_to);
+        $("#to_points").val(ratio);
+        $("#to_point").val(ratio);
+
+        });
+
+
+</script>
+
+{% endblock %}

@@ -1,5 +1,12 @@
-$(document).ready(function(){
-    $('input[type="radio"]').click(function(){
-         $("#point_div").show();
-    });
+$('#mobile-nav').click(function(event) {
+  $(this).toggleClass('active');
+  $('nav').toggleClass('active');
+  event.stopPropagation();
+});
+$("nav").click(function(e){
+  e.stopPropagation();
+});
+$(document).click(function(){
+  $('#mobile-nav').removeClass('active');
+  $('nav').removeClass('active');
 });

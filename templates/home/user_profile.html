@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="topspace2"></div>
+<div class="my_account fixed_p_footer">
+  <div class="container">
+    <div class="account_header d-flex flex-column align-items-center justify-content-center">
+      <figure class="account-pic">
+            {% if first_name == 'Guest'%}
+                <img src="{% static 'images/account_image.jpg' %}" alt="">
+            {% elif request.user.username == 'admin'%}
+                <img src="{% static 'images/account_image.jpg' %}" alt="">
+          <h2 class="title">{{ profile.first_name}} {{profile.last_name}}</h2>
+            {% else %}
+                  <img src="https://graph.facebook.com/{{request.user.username}}/picture?type=large" alt="">
+          <h2 class="title">{{ profile.first_name}} {{profile.last_name}}</h2>
+
+            {% endif %}
+        </figure>
+                    {% if first_name != 'Guest'%}
+
+        <div style="text-align:center;">
+            <p class="color-white">Member Since {{date_joined}}
+            <br>
+                <a href="{% url 'logout_user' %}" style="color:#f8f9fa;">Logout</a>
+
+            </p>
+
+        </div>
+            {% endif %}
+    </div>
+    <div class="account_desc">
+
+        <div class="white_box mb-1">
+            <div class="row">
+                <div class="col-12 text-center">
+                  <h5 class="m-0">Total FG Balance: {{total}}</h5>
+                </div>
+              </div>
+        </div>
+
+      <div class="white_box mb-3">
+
+        <div class="row">
+          <div class="col-6 text-center position-relative">
+            <div class="seperator"></div>
+            <p class="mb-1"> FG points Won
+
+                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-placement="top"><i class="fa fa-info-circle"></i></a>
+
+            </p>
+            <p class="balance"> {{won}} </p>
+            <p class="m-0"><a href="{% url 'redeem_points' %}" class="btn btn-orange">Redeem Now</a></p>
+          </div>
+          <div class="col-6 text-center">
+            <p class="mb-1">FG Points Earn
+                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-placement="top"><i class="fa fa-info-circle"></i></a>
+            </p>
+            <p class="balance">{{profile.points_earned}}</p>
+            <p class="btnwrap m-0"> <a href="#" class="btn btn-orange">Earn More</a> </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="white_box mb-3">
+          <div class="row">
+            <div class="col-8">
+              <p class="m-0">Your Referral Code: {{profile.referral_code}}</p>
+            </div>
+            <div class="col-4 pl-0 text-right value-color">
+              <a href="#" class="btn btn-orange badge">Invite Friends</a>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+
+      <div class="white_box mb-3">
+        <div class="row mb-2">
+          <div class="col-12">
+            <p class="m-0">Forecasts Created: <span>{{profile.forecast_created}}</span> </p>
+          </div>
+
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+          <div class="col-9">
+            <p class="m-0">Forecasts Participated: <span>{{profile.forecast_participated}}</span></p>
+          </div>
+          <div class="col-3 text-right value-color">
+            <p class="m-0"></p>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="white_box mb-3">
+        <div class="row mb-2">
+          <div class="col-12">
+            <p class="m-0">Correct Forecasts: <span class="value-color">{{profile.successful_forecast}} ({{success}}%)</span></p>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+          <div class="col-12">
+            <p class="m-0">Incorrect Forecasts: <span class="value-color">{{profile.unsuccessful_forecast}} ({{unsuccess}}%)</span></p>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="points_leger mt-4">
+        <h2 class="mb-3">FG Points Leger</h2>
+        <div class="white_box mb-3">
+
+          <h6 class="text-uppercase font-weight-bold">Earned Points</h6>
+
+          <div class="row mb-2">
+            <div class="col-8">
+              <p class="m-0">Joining Bonus</p>
+            </div>
+            <div class="col-4 text-right value-color">
+              <p class="m-0">{{profile.joining_points}}</p>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="row mb-2">
+            <div class="col-8">
+              <p class="m-0">Earned Points</p>
+            </div>
+            <div class="col-4 text-right value-color">
+              <p class="m-0">{{profile.points_earned}}</p>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="row mb-2">
+            <div class="col-8">
+              <p class="m-0">Private Forecast Wins</p>
+            </div>
+            <div class="col-4 text-right value-color">
+              <p class="m-0">{{profile.points_won_private}}</p>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="row mb-2">
+            <div class="col-8">
+              <p class="m-0">Points Lost</p>
+            </div>
+            <div class="col-4 text-right value-color">
+              <p class="m-0">{{profile.points_lost_private}}</p>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+
+          <hr class="mt-2 mb-2">
+          <div class="row total_balance">
+              <div class="col-8">
+                <p class="m-0">Total</p>
+              </div>
+              <div class="col-4 text-right value-color">
+                <p class="m-0 font-weight-bold">{{total_private}}</p>
+              </div>
+            </div>
+
+
+        </div>
+
+        <div class="white_box mb-3">
+
+            <h6 class="text-uppercase font-weight-bold">Winning Points</h6>
+
+            <div class="clearfix"></div>
+            <div class="row mb-2">
+              <div class="col-8">
+                <p class="m-0">Public Forecast Wins</p>
+              </div>
+              <div class="col-4 text-right value-color">
+                <p class="m-0">{{profile.points_won_public}}</p>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row mb-2">
+              <div class="col-8">
+                <p class="m-0">Points Losts</p>
+              </div>
+              <div class="col-4 text-right value-color">
+                <p class="m-0">{{profile.points_lost_public}}</p>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+
+            <hr class="mt-2 mb-2">
+            <div class="row total_balance">
+                <div class="col-8">
+                  <p class="m-0">Total</p>
+                </div>
+                <div class="col-4 text-right value-color">
+                  <p class="m-0 font-weight-bold">{{total_public}}</p>
+                </div>
+              </div>
+
+
+          </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link active" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
+
+{% endblock %}

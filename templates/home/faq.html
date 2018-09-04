@@ -1,0 +1,372 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="topspace2"></div>
+
+<div class="container fixed_p_footer">
+  <div class="row">
+    <div class="col-md-12">
+      
+      <div class="faq_wrap">
+
+        <div id="faq_accordion" class="accordion">
+          <div class="card mb-0">
+            <div class="card_box">
+              <div class="card-header collapsed" data-toggle="collapse" href="#faq">
+                  <a class="card-title">
+                    What is Forecast Guru
+                  </a>
+              </div>
+              <div id="faq" class="card-body collapse" data-parent="#faq_accordion" >
+                  <p>Forecast Guru (FG) is a decentralized platform for prediction markets. The events of FG’s prediction markets will be chosen by members that hold FG's native FG points token, who stake their tokens on the event. 
+                  </p>
+              </div>
+              </div>
+              <div class="card_box">
+              <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq2">
+                  <a class="card-title">
+                    How does the prediction marketplace, Forecast Guru, Work
+                  </a>
+              </div>
+              <div id="faq2" class="card-body collapse" data-parent="#faq_accordion" >
+                  <p>Members can make forecasts or participate in live forecast events created by other members.  To participate in a live forecast event, members need to use their FG points token and make a YES or NO forecast. If the member’s forecast is correct, they will earn FG points from the pool of GF points in play for the respective forecast. If the member’s forecast is incorrect, they will lose all the FG points staked on the forecast event. 
+                    FG's incentive structure is designed to ensure that a large pool of popular events are created and in-play at any given point in time.
+                  </p>
+              </div>
+              </div>
+              <div class="card_box">
+              <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq3">
+                  <a class="card-title">
+                    Who makes Forecasts
+                  </a>
+              </div>
+              <div id="faq3" class="collapse" data-parent="#faq_accordion" >
+                  <div class="card-body">Any member can make a forecast. All forecasts are first submitted to Admin for approval. Once approved, the forecast is published on the Forecast.Guru website.
+                  </div>
+              </div>
+              </div>
+
+              <div class="card_box">
+
+              <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq4">
+                <a class="card-title">
+                  What is the benefit for members to create new forecast events 
+                </a>
+            </div>
+            <div id="faq4" class="collapse" data-parent="#faq_accordion" >
+                <div class="card-body">All members who create forecasts are entitled to a ‘market fee’ which is currently 5% of the total FG points in play. 
+                </div>
+            </div>
+            </div>
+
+            <div class="card_box">
+            <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq5">
+              <a class="card-title">
+                Who decides on the Forecast Results
+              </a>
+          </div>
+          <div id="faq5" class="collapse" data-parent="#faq_accordion" >
+              <div class="card-body">Forecast results are verified from a reputable source available to all in the public domain.  These results are further confirmed by the Forecast Guru Admin to ensure a fair and fast declaration of results.
+              </div>
+          </div>
+          </div>
+
+          <div class="card_box">
+          <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq6">
+            <a class="card-title">
+              Who all can participate in a live forecast
+            </a>
+        </div>
+        <div id="faq6" class="collapse" data-parent="#faq_accordion" >
+            <div class="card-body">All registered members can participate in a live forecast
+            </div>
+        </div>
+        </div>
+
+        <div class="card_box">
+        <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq7">
+          <a class="card-title">
+            Is there a limit to the number of participants in a live forecast
+          </a>
+      </div>
+      <div id="faq7" class="collapse" data-parent="#faq_accordion">
+          <div class="card-body">No, there is no such limit.
+          </div>
+      </div>
+      </div>
+      <div class="card_box">
+          <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq8">
+            <a class="card-title">
+                Is there a limit on the number of forecasts a single member can make
+            </a>
+        </div>
+        <div id="faq8" class="collapse" data-parent="#faq_accordion">
+            <div class="card-body">As per current policy, members can make unlimited forecasts.
+            </div>
+        </div>
+        </div>
+
+        <div class="card_box">
+            <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq9">
+              <a class="card-title">
+                  What are FG points
+              </a>
+          </div>
+          <div id="faq9" class="collapse" data-parent="#faq_accordion">
+              <div class="card-body">FG points or “Forecast Guru” Points is a virtual token with which all forecasts are played. This token has no monetary value and cannot be exchanged for cash or gifts.
+              </div>
+          </div>
+          </div>
+
+          <div class="card_box">
+              <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq10">
+                <a class="card-title">
+                    How do I earn FG points
+                </a>
+            </div>
+            <div id="faq10" class="collapse" data-parent="#faq_accordion">
+                <div class="card-body">You earn FG points by winning or correctly predicting forecasts and by creating forecasts (in which case you are entitled to a part of the ‘market fee’)
+                </div>
+            </div>
+            </div>
+
+            <div class="card_box">
+                <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq11">
+                  <a class="card-title">
+                      What is FG points “Win Ratio”
+                  </a>
+              </div>
+              <div id="faq11" class="collapse" data-parent="#faq_accordion">
+                  <div class="card-body">The Win Ratio defines the FG points a member can win for every 1 FG point staked on a valid forecast, if the member was to predict the correct result for the said forecast. The ratio is defined as 1:x where “x” stands for the number of FG points the member will win i.e. a win ratio of 1:3 would imply that the member will get 3 FG points against each FG point staked on a forecast, if the member correctly predicts the result of that forecast. *Please note that this includes the 1 FG point staked and is subject to market fees payout.
+                  </div>
+              </div>
+              </div>
+
+              <div class="card_box">
+                  <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq12">
+                    <a class="card-title">
+                        How is the “Win Ratiao” decided 
+                    </a>
+                </div>
+                <div id="faq12" class="collapse" data-parent="#faq_accordion">
+                    <div class="card-body">Win Ratio is decided by the number of FG staked on both outcomes i.e. Yes and No. For example, if a forecast has 100 FG points stakes on ‘Yes’ outcome and 200 FG points staked on ‘No’ outcome, then the win ratio for ‘Yes’ outcome is 1:3 , whereas the win ratio for the ‘No outcome’ is 1:1.5
+                    </div>
+                </div>
+                </div>
+
+                <div class="card_box">
+                    <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq13">
+                      <a class="card-title">
+                          Is there a limit to the number of FG points I can earn
+                      </a>
+                  </div>
+                  <div id="faq13" class="collapse" data-parent="#faq_accordion">
+                      <div class="card-body">No, there is no such limit.
+                      </div>
+                  </div>
+                  </div>
+
+                  <div class="card_box">
+                      <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq14">
+                        <a class="card-title">
+                            Whats I ‘Market Fee’
+                        </a>
+                    </div>
+                    <div id="faq14" class="collapse" data-parent="#faq_accordion">
+                        <div class="card-body">The FG website collected 10% of total FG points staked on each foreacst as Market fee. This is further distributed equally between the creator of the forecast (who is entitled to half of the market fee collected or 5% of total FG points staked) and the FG Administrator (as administrative fee)
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="card_box">
+                        <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq15">
+                          <a class="card-title">
+                              What if I exaust my FG points but still want to participate in Forecasts
+                          </a>
+                      </div>
+                      <div id="faq15" class="collapse" data-parent="#faq_accordion">
+                          <div class="card-body">All members have the option to purchase additional FG points from the ‘Buy FG Points’ page on the website/App.
+                          </div>
+                      </div>
+                      </div>
+
+                      <div class="card_box">
+                          <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq16">
+                            <a class="card-title">
+                                Do my FG points expire
+                            </a>
+                        </div>
+                        <div id="faq16" class="collapse" data-parent="#faq_accordion">
+                            <div class="card-body">All members have the option to purchase additional FG points from the ‘Buy FG Points’ page on the website/App.
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="card_box">
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq17">
+                              <a class="card-title">
+                                  How do you ensure forecast results are settled correctly & fairly
+                              </a>
+                          </div>
+                          <div id="faq17" class="collapse" data-parent="#faq_accordion">
+                              <div class="card-body">All Forecast categories have pre-defined sources from where results will be verified. All these sources are reputed national/international publishers and access to them is easily available over the internet for FREE to the public at large. These results are further confirmed by the Forecast Guru Admin to ensure a fair and fast declaration of results.
+                              </div>
+                          </div>
+                          </div>
+
+                          <div class="card_box">
+                              <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq18">
+                                <a class="card-title">
+                                     What if there is a dispute in declared results of a completed forecast
+                                </a>
+                            </div>
+                            <div id="faq18" class="collapse" data-parent="#faq_accordion">
+                                <div class="card-body">All disputes are to be raised with the Forecast Guru Admin via email to info@forecast.guru within 7 days of declaration of forecast result. The Admin will do a thourogh investigation and declare its verdict on the dispute, which will be final and binding on all members. 
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="card_box">
+                                <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq19">
+                                  <a class="card-title">
+                                      What is member status 
+                                  </a>
+                              </div>
+                              <div id="faq19" class="collapse" data-parent="#faq_accordion">
+                                  <div class="card-body">As a member makes more correct forecasts, the membership status changes accordingly. A guide to various membership ststaus is given below:
+                                    <table class="table-bordered mt-2">
+                                      <tr>
+                                      <th>S. No.</th>
+                                      <th>Status</th>
+                                      <th>Minimum Forecasts</th>
+                                      <th>Min. Correct Forecast %</th>
+                                    </tr> 
+                                    <tr>
+                                      <td>1</td>
+                                      <td>NOVICE</td>
+                                      <td>NIL</td>
+                                      <td>NA</td>
+                                    </tr>
+                                    <tr>
+                                      <td>2</td>
+                                      <td>EXPERT</td>
+                                      <td>10</td>
+                                      <td>50%</td>
+                                    </tr>
+                                    <tr>
+                                      <td>3</td>
+                                      <td>INFLUENCER</td>
+                                      <td>30</td>
+                                      <td>70%</td>
+                                    </tr>
+                                    <tr>
+                                      <td>4</td>
+                                      <td>GURU</td>
+                                      <td>50</td>
+                                      <td>90%</td>
+                                    </tr>
+                                    </table> 
+                                  </div>
+                              </div>
+                              </div>
+
+                              <div class="card_box">
+                                  <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq20">
+                                    <a class="card-title">
+                                        How do I become a ‘Forecast Guru’
+                                    </a>
+                                </div>
+                                <div id="faq20" class="collapse" data-parent="#faq_accordion">
+                                    <div class="card-body">By predicting  minimum 50 forecasts with minimum 90% accuracy (see table above). 
+                                    </div>
+                                </div>
+                                </div>
+
+                                <div class="card_box">
+                                    <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq21">
+                                      <a class="card-title">
+                                          Can my membership status be downgraded 
+                                      </a>
+                                  </div>
+                                  <div id="faq21" class="collapse" data-parent="#faq_accordion">
+                                      <div class="card-body">Yes. The membership staus gets upgraded or downgraded as per table given above.  
+                                      </div>
+                                  </div>
+                                  </div>
+
+                                  <div class="card_box">
+                                      <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq22">
+                                        <a class="card-title">
+                                            Can I make a forecast for anything
+                                        </a>
+                                    </div>
+                                    <div id="faq22" class="collapse" data-parent="#faq_accordion">
+                                        <div class="card-body">You can make forecasts for events under the approved categories on the website. All forecasts need to be an objective in nature with a clear Yes or No result possibility.  
+                                        </div>
+                                    </div>
+                                    </div>
+
+                                    <div class="card_box">
+                                        <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq23">
+                                          <a class="card-title">
+                                               Will more categories be added in the future
+                                          </a>
+                                      </div>
+                                      <div id="faq23" class="collapse" data-parent="#faq_accordion">
+                                          <div class="card-body">Yes. We will keep adding/changing the list of categories. Please check the website/App for more details from time to time. 
+                                          </div>
+                                      </div>
+                                      </div>
+
+                                      <div class="card_box">
+                                          <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq24">
+                                            <a class="card-title">
+                                                Can members suggest forecast categories
+                                            </a>
+                                        </div>
+                                        <div id="faq24" class="collapse" data-parent="#faq_accordion">
+                                            <div class="card-body">Yes. Please send your suggestions to info@forecast.guru
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                        <div class="card_box">
+                                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#faq_accordion" href="#faq25">
+                                              <a class="card-title">
+                                                  Can I exchange my FG points for money or gifts
+                                              </a>
+                                          </div>
+                                          <div id="faq25" class="collapse" data-parent="#faq_accordion">
+                                              <div class="card-body">No. FG points have no monetary value and caanot be exchanged for cash or gifts.
+                                              </div>
+                                          </div>
+                                          </div>
+
+          </div>
+      </div>
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
+
+{% endblock %}

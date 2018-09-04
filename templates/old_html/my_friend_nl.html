@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="topspace"></div>
+
+
+<div class="container fixed_p_footer">
+  <div class="row">
+
+      <div class="col-md-12 text-center" style="padding-top: 20px;">
+          <p style="font-size: 16px;"> Please login first to view your forecasts</p>
+      </div>
+  </div>
+    <div class="row">
+
+      <div class="col-md-12">
+
+             <div class="btn_box mb-3" >
+                    <a href="https://forecast.guru/facebook/login/?process=login&next={{request.path}}" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+                </div>
+    </div>
+  </div>
+</div>
+<footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link active" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
+
+  <div id="id_shipment_sold" class="modal modal-center fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="heading"></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title text-left heading"></h4>
+            <div class="clearfix"></div>
+
+          </div>
+          <div class="modal-body">
+            <div id="shipment_sold_preview">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+<div class="right_fixed_btn">
+  <a href="{% url 'quiz' %}" class="vertical-text">
+    <img src="{% static 'images/play-quiz.png' %}" alt="">
+  </a>
+</div>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<script>
+$('#myInput').keypress(function (e) {
+  if (e.which == 13) {
+    $('form').submit();
+    return false;
+  }
+});
+
+$(".shipment_sold").click(function(){
+var shipment_id=$(this).attr("shipment_id");
+$.ajax({
+    type:"POST",
+    url: "{% url 'get_forecast' %}",
+    data: {'id': shipment_id},
+    success: function(resp){
+        $("#id_shipment_sold").modal('show');
+
+        $("#shipment_sold_preview").html(resp);
+
+    }
+});
+});
+
+</script>
+{% endblock %}

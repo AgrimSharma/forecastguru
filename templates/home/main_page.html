@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Forecastguru</title>
+    <meta property="og:title" content="ForecastGuru"/>
+<meta property="og:description" content="Play the hottest prediction game online and become a Forecast Guru!" />
+<meta property="og:image" content="https://forecast.guru/static/images/TutorialScreen-icon1.jpg" />
+<meta property="fb:app_id" content="186107225561354" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="HandheldFriendly" content="true" />
+    <script src="{% static 'js/jquery_new.js' %}"></script>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick-theme.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
+
+</head>
+<body class="homepage home-bg">
+
+    <div class="splash">
+        <img class="logo" src="{% static 'images/logo-forcastguru.png' %}" alt=""  />
+        <p class="text-center">Koi Hara Koi Jeeta</p>
+    </div>
+
+    <div class="container" style="display: none">
+<div class="tutorial-container position-relative">
+
+        <div class="tutorial-slider">
+            <div class="item text-center">
+                <figure>
+                    <img src="{% static 'images/TutorialScreen-icon1.jpg' %}" alt="">
+                </figure>
+                <h2>Forecast Guru</h2>
+                <p>
+                    Koi Hara Koi Jeeta
+                </p>
+
+            </div>
+            <div class="item text-center">
+                    <figure>
+                        <img src="{% static 'images/TutorialScreen-icon2.jpg' %}" alt="">
+                    </figure>
+                    <h2>Future Events</h2>
+                    <p>
+                        Predict future events in sports, politics, stock market etc.
+                    </p>
+
+                </div>
+                <div class="item text-center">
+                        <figure>
+                            <img src="{% static 'images/TutorialScreen-icon3.jpg' %}" alt="">
+                        </figure>
+                        <h2>Predict &amp; Win</h2>
+                        <p>
+                            Make predictions and win FG points
+                        </p>
+
+                    </div>
+                    <div class="item text-center">
+                            <figure>
+                                <img src="{% static 'images/TutorialScreen-icon4.jpg' %}" alt="">
+                            </figure>
+                            <h2>Create Forecast</h2>
+                            <p>
+                               Get members to predict on a forecast created by you
+                            </p>
+
+                        </div>
+                        <div class="item text-center">
+                                <figure>
+                                    <img src="{% static 'images/TutorialScreen-icon5.jpg' %}" alt="">
+                                </figure>
+                                <h2>Become a Forecast Guru</h2>
+                                <p>
+                                    Get 90% predictions correct to become a Guru
+                                </p>
+
+                            </div>
+                            <div class="item text-center">
+                                    <figure>
+                                        <img src="{% static 'images/TutorialScreen-icon6.jpg' %}" alt="">
+                                    </figure>
+                                    <h2>{{points}} <span class="orange-color text-uppercase">free</span> FG points </h2>
+                                    <p>
+                                        Register and get {{points}} free Forecast Guru points
+                                    </p>
+
+                                </div>
+
+        </div>
+        <div class="fixedbtn-btm">
+            <div class="container text-center">
+                <a href="{% url 'main_login' %}" class="btn btn-orange text-uppercase">Forecast Now</a>
+                </div>
+        </div>
+         <div class="btmskip">
+            <a href="{% url 'category' %}">Skip</a>
+        </div>
+        </div>
+</div>
+        <!--<script src="{% static 'js/jquery-slim.min.js' %}"></script>-->
+        <script src="{% static 'slick/slick.min.js' %}"></script>
+        <script>
+        $(function(){
+
+        setTimeout(function() {
+            $(".splash").fadeOut('slow');
+            $('body').removeClass('home-bg');
+            $('.container').fadeIn('slow');
+            $('.tutorial-slider').slick({
+                dots: true,
+                arrows: false,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 1,
+                autoplay:true,
+                autoplaySpeed:2000,
+            });
+        }, 2000);
+
+    })
+    </script>
+
+<!-- Facebook Pixel Code -->
+
+<!-- End Facebook Pixel Code -->
+</body>
+</html>

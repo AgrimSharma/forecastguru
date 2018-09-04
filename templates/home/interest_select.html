@@ -1,0 +1,291 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{% block title%} {{title}} {% endblock title %}</title>
+    <meta property="og:url" content="https://forecast.sirez.com" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="ForecastGuru"/>
+<meta property="og:description" content="Choose from the most popular categories or suggest to add more info@forecast.guru" />
+<meta property="og:image" content="https://forecast.sirez.com/static/images/TutorialScreen-icon1.jpg" />
+<meta property="fb:app_id" content="186107225561354" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="HandheldFriendly" content="true" />
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'slick/slick-theme.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style_mobile.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/interest.css' %}" />
+
+    <link rel="manifest" href="/manifest.json" />
+    <style>
+        .img_listing {margin: 0 auto; text-align: center}
+.img_listing ul {
+	list-style-type: none;
+	margin: 0; padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center
+  }
+
+ .img_listing li {
+	display: flex;
+	max-width: 95px;
+	vertical-align: top
+  }
+
+ .img_listing input[type="checkbox"][id^="cb"] {
+	display: none;
+  }
+  .img_listing label {
+	border: 1px solid #fff;
+	padding: 0px;
+	display: block;
+	position: relative;
+	margin: 5px;
+	cursor: pointer;
+	box-shadow: 0 0 5px rgba(0,0,0,.2)
+  }
+  .img_listing label:before {
+	background-color: white;
+	color: white;
+	content: " ";
+	display: block;
+	border-radius: 50%;
+	border: 1px solid grey;
+	position: absolute;
+	top: -5px;
+	left: -5px;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	line-height: 28px;
+	transition-duration: 0.4s;
+	transform: scale(0);
+	z-index: 10;
+  }
+
+  .img_listing label img {
+	height: 70px;
+	width: 70px;
+	transition-duration: 0.2s;
+	transform-origin: 50% 50%;
+	margin-bottom: 5px
+  }
+
+  .img_listing :checked + label {
+	border-color: #ddd;
+  }
+
+  .img_listing :checked + label:before {
+	content: "✓";
+	background-color: #ff4d00;
+	transform: scale(1);
+  }
+
+  .img_listing :checked + label img {
+	box-shadow: 0 0 5px #333;
+	z-index: -1;
+  }
+  .cat_accordion .card-header {padding: 0}
+  .cat_accordion .card-header a{padding: 10px 15px; display: block; position: relative; cursor: pointer}
+  .cat_accordion .card-header a:after{position: absolute; font-family: 'FontAwesome'; content: "\f078"; right: 15px; top: 10px}
+  .cat_accordion .card-header a.collapsed:after {content: "\f054";}
+
+    </style>
+</head>
+<body class="gray-bg">
+<header class="position-fixed w-100">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-12 text-center position-relative">
+        <div class="header-logo position-absolute"><img src="{% static 'images/logo-small-white.png' %}" alt=""></div>
+        <h1>{{heading}}</h1>
+       <div class="header-right text-center with-btn position-absolute">
+
+          {% if user == 'Guest' %}
+          <div style="padding-top:7px;">Hi {{first_name|title}}!!</div>
+          {% else %}
+          <div style="padding-top:7px;">Hi {{first_name|title}}!!</div>
+            <div style="padding-top:5px;">FG Balance {{total}}</div>
+          {% endif %}
+        </div>
+          </div>
+      </div>
+    </div>
+
+
+</header>
+
+<div class="topspace" ></div>
+
+<div class="container fixed_p_footer" style="padding-bottom:10px;">
+
+  <div class="row">
+    <div class="col-md-12">
+                  {% for category in sub %}
+
+        <div class="cat_accordion" id="cat_accordion">
+              <div class="card">
+                <div class="card-header" >
+                  <h5 class="mb-0">
+                <a class="text-left collapsed" id="cats{{category.id}}" data-toggle="collapse" data-target="#cat{{category.id}}" aria-expanded="true" aria-controls="">
+                  {{category.name}}
+
+                </a>
+                </h5>
+                </div>
+
+                <div id="cat{{category.id}}" class="collapse fade" aria-labelledby="" data-parent="#cat_accordion">
+                  <div class="card-body">
+
+                      <div class="img_listing" style="width:100%;text-align:center;">
+
+            <ul>
+              {% for s in category.subcategory_set.all %}
+                <li>
+                    <input type="checkbox" id="{{s.id}}" style="display:none;"/>
+                    <label for="{{s.id}}"><img src="{{s.image}}" width="50px" height="50px"/><br><b>{{s.name|upper}}</b></label>
+                </li>
+            {% endfor %}
+            </ul>
+
+          </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div>{% endfor %}
+            </div>
+
+
+    </div>
+  </div>
+<div style="text-align:center;">
+
+            <input type="button" id="submit" class="btn btn-success btn-sm" value="Submit" />
+    <br><br><br>
+            <a href="{% url 'interest_skip' %}" style="font-size:16px;">Skip</a>
+
+        </div>
+<div id="public" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <p style="font-size:16px;">Interest Saved success</p>
+                <a href="{% url 'live_forecast' %}" class="btn btn-success" >Success</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="fail" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <p style="font-size:16px;">Please select a interest</p>
+				<button class="btn btn-danger" data-dismiss="modal" >Try Again</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'slick/slick.min.js' %}"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120519459-1"></script>
+<script>
+    $(document).ready(function (){
+        var data = [];
+
+        $(":checkbox").change(function (){
+            var id = $(this).attr('id');
+            if( data.length == 0){
+                 data.push(id);
+
+            }
+            else{
+                if(data.indexOf(id) == -1 ){
+                    data.push(id);
+                }
+                else{
+                    data.pop(id);
+                }
+            }
+        
+
+        });
+        $("#submit").click(function (){
+            if(data.length == 0){
+                $("#fail").modal('show');
+            }
+            else if(data.length > 0){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'interest_select' %}",
+                    data: {'data': data,},
+                    success: function(resp){
+                        if(resp === 'login'){
+                            alert("Please login");
+                            window.location.href == "{% url 'login' %}";
+                        }
+                        else if(resp === 'interest'){
+                            $("#fail").modal('show');
+                            }
+                        else if(resp === 'success'){
+                            $("#public").modal('show');
+
+                        }
+                        }
+                    });
+               }
+        });
+        $('#cats2').removeClass('collapsed');
+        $('#cat2').addClass('show');
+    });
+</script>
+
+<script>
+
+
+        $(function(){
+
+            $('.banner_slider').slick({
+                dots: true,
+                arrows: false,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 1,
+                autoplay:true,
+                autoplaySpeed:10000,
+            });
+
+    })
+    </script>
+
+
+
+</body></html>

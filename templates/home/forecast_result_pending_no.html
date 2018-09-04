@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="topspace"></div>
+<div class="container topnavlinks">
+  <nav class="navbar">
+    <ul class="navbar-nav nav-fill w-100 text-center">
+       <li class="nav-item text-uppercase"> <a class="nav-link " style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'forecast_result' %}">ALL</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link active" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'result_not_declared' %}">My Result</a> </li>
+
+      <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
+    </ul>
+  </nav>
+</div>
+
+<input type="text" value="{{request.path}}" style="display:none" id="path" name="path">
+
+<div class="container fixed_p_footer">
+  <div class="row">
+
+      <div class="col-md-12 text-center" style="padding-top: 20px;">
+          <p style="font-size: 18px;"> You have not participated in forecasts</p>
+      </div>
+  </div>
+    <div class="row">
+
+      <div class="col-md-12">
+
+            <div class="col-12 text-center pl-0">
+                <a href="{% url 'live_forecast' %}" type="button" class="btn btn-orange">Explore Forecasts</a>
+            </div>
+    </div>
+  </div>
+</div>
+
+<footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link " href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link active" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<script>
+$('#myInput').keypress(function (e) {
+  if (e.which == 13) {
+  var test = $("#myInput").val();
+
+  $.ajax({
+    type:"POST",
+    url: "{% url 'search_result' %}",
+    data: {'point': test},
+    success: function(resp){
+
+    }
+});
+    <!--$('form').submit();-->
+    <!--return false;-->
+  }
+});
+
+$(".shipment_sold").click(function(){
+var shipment_id=$(this).attr("shipment_id");
+var path=$("#path").val();
+
+$.ajax({
+    type:"POST",
+    url: "{% url 'get_forecast' %}",
+    data: {'id': shipment_id, "url":path},
+    success: function(resp){
+        $("#id_shipment_sold").modal('show');
+
+        $("#shipment_sold_preview").html(resp);
+
+    }
+});
+});
+
+</script>
+{% endblock %}

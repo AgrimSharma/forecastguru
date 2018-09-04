@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 * {
 	outline: none!important
@@ -8,7 +9,7 @@ input:focus {
 body {
 	font-family: Helvetica, Arial, sans-serif;
 	color: #303030;
-	 font-size: 13px;
+	font-size: 13px;
 }
 a, a:hover {
 	text-decoration: none
@@ -24,6 +25,10 @@ h2 {
 	color: #fff;
 	text-decoration: none;
 	border-radius: 5px;
+}
+.btn.badge {font-weight: 400; text-shadow: none}
+@media (max-width: 767px){
+	.btn {font-size: 13px;}
 }
 .mobile_contianer {
 	max-width: 640px;
@@ -134,7 +139,8 @@ header {
 }
 header h1 {
 	font-size: 26px;
-	color: #fff
+	color: #fff;
+	margin: 0
 }
 .header-logo {left: 15px; top: 0px}
 .header-logo img{max-width: 50px;}
@@ -146,7 +152,7 @@ header .goback.position-absolute a{font-size: 30px; line-height: 1}
 .header-right span {font-size: 14px;}
 .header-right a{color: #fff}
 .topspace {
-	height: 110px
+	height: 50px
 }
 .topspace2 {
 	height: 60px
@@ -154,9 +160,10 @@ header .goback.position-absolute a{font-size: 30px; line-height: 1}
 @media (max-width: 480px) {
 header h1 {
 	font-size: 18px;
+	margin: 0
 }
 .topspace {
-	height: 100px
+	height: 50px
 }
 .topspace2 {
 	height: 50px
@@ -304,7 +311,7 @@ header h1 {
 	position: relative!important;
 }
 .forcast_box .title_desc {
-	font-size: 18px
+	font-size: 18px;
 	color: black;
 }
 
@@ -326,7 +333,7 @@ header h1 {
 	max-width: 10px;
 }
 .forcast_box .title_desc {
-	font-size: 16px
+	font-size: 16px;
 	color: black;
 }
 }
@@ -458,11 +465,10 @@ padding: .375rem .75rem
 	text-align:center;
 }
 .btn-create {
-	padding: 15px;
 	text-transform: uppercase;
 	background:#403c55;
 	color:#fff;
-	font-size:21px;
+	
 }
 .btn-create:hover, .btn-create:focus {
 	color: #fff
@@ -530,6 +536,7 @@ padding: .375rem .75rem
 .color-darkblue {
 	color: #403c55
 }
+.color-white {color: #fff}
 /* ================================================ forcast detail ============================================================= */
 .forcast_detail {
 	margin-top: 20px;
@@ -548,7 +555,7 @@ padding: .375rem .75rem
 .white_box {
 	background-color: #fff;
 	border-radius:5px;
-	padding: 20px
+	padding: 10px
 }
 .value-color {
 	color: #403c55!important
@@ -638,7 +645,7 @@ padding: .375rem .75rem
 }
 .my_account .account_header h2 {
 	color: #fff;
-	font-size: 26px;
+	font-size: 20px;
 	margin: 0;
 	text-transform: uppercase
 }
@@ -671,7 +678,7 @@ padding: .375rem .75rem
 	right: 0px;
 	top: 0;
 	width: 2px;
-	height: 60px;
+	height: 100%;
 	background: #e5e5e5
 }
 .my_account .account_desc .balance {
@@ -688,7 +695,6 @@ padding: .375rem .75rem
 }
 .my_account .account_desc .points_leger h2 {
 	font-size:  20px;
-	color: #737373
 }
 .my_account .account_desc .total_balance {
 	font-size: 18px;
@@ -698,7 +704,7 @@ padding: .375rem .75rem
 	min-height: 250px
 }
 .my_account .account_desc {
-	padding: 0 10px
+	padding: 0 2%
 }
 .my_account .account_header .account-pic img {
 	width: 100px
@@ -714,6 +720,10 @@ padding: .375rem .75rem
 	font-size: 16px
 }
 }
+.my_account .account_desc .white_box{
+ 	box-shadow: 0px 0px 10px rgba(0,0,0,.2)
+}
+.my_account .account_desc a .fa-info-circle {color: #333; font-size: 16px}
 header .btn-orange {padding: 4px 10px; font-size: 13px; text-transform: uppercase; line-height: 1.1; text-align: left}
 header .header-right.with-btn{top: -5px}
 header .btn-header {color: #fff; background: none; border: none; box-shadow: none; font-size: 13px; text-transform: none}
@@ -849,29 +859,33 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
 .slick-dots {bottom: -25px; left: 0; z-index: 10}
 
 /* checkbox images */
-.img_listing { margin: 0 auto; }
+.img_listing {margin: 0 auto; text-align: center}
 .img_listing ul {
 	list-style-type: none;
-	margin: 0; padding: 0
+	margin: 0; padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center
   }
-
+ 
  .img_listing li {
-	display: inline-block;
+	display: flex;
+	max-width: 95px;
+	vertical-align: top
   }
-
+  
  .img_listing input[type="checkbox"][id^="cb"] {
 	display: none;
   }
-
   .img_listing label {
 	border: 1px solid #fff;
 	padding: 0px;
 	display: block;
 	position: relative;
-	margin: 10px;
+	margin: 5px;
 	cursor: pointer;
+	box-shadow: 0 0 5px rgba(0,0,0,.2)
   }
-
   .img_listing label:before {
 	background-color: white;
 	color: white;
@@ -890,26 +904,201 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
 	transform: scale(0);
 	z-index: 10;
   }
-
+  
   .img_listing label img {
-	height: 50px;
-	width: 50px;
+	height: 70px;
+	width: 70px;
 	transition-duration: 0.2s;
 	transform-origin: 50% 50%;
+	margin-bottom: 5px
   }
-
+  
   .img_listing :checked + label {
 	border-color: #ddd;
   }
-
+  
   .img_listing :checked + label:before {
 	content: "✓";
 	background-color: #ff4d00;
 	transform: scale(1);
   }
-
+  
   .img_listing :checked + label img {
-	transform: scale(0.9);
 	box-shadow: 0 0 5px #333;
 	z-index: -1;
   }
+  .cat_accordion .card-header {padding: 0}
+  .cat_accordion .card-header a{padding: 10px 15px; display: block; position: relative; cursor: pointer}
+  .cat_accordion .card-header a:after{position: absolute; font-family: 'FontAwesome'; content: "\f078"; right: 15px; top: 10px}
+  .cat_accordion .card-header a.collapsed:after {content: "\f054";}
+
+  /* menu */
+  .revealmenu .menu {
+	list-style: none;
+	margin: auto;
+	padding-left: 0;
+	width: 250px;
+	text-align: right
+  }
+  
+  .revealmenu .menu a {
+	color: #ddd;
+	text-decoration: none;
+	text-transform: uppercase;
+	display: block;
+	width: 100%;
+	padding-right: 30px;
+	position: relative
+  }
+  .revealmenu .menu a i{position: absolute; right: 0; top: 0px; font-size: 18px}
+  
+  .revealmenu .menu a:hover {
+	-webkit-transition: all .5s;
+	-o-transition: all .5s;
+	transition: all .5s;
+	color: #fff
+  }
+  
+  .revealmenu .menu li {
+	margin-bottom: 10px;
+	padding: 7px 15px;
+	-webkit-transition: all .5s;
+	-o-transition: all .5s;
+	transition: all .5s;
+	box-shadow: 0px 3px 6px rgba(0,0,0,.3)
+  }
+
+  .revealmenu nav {
+	background: #403c55;
+	padding-left: .25em;
+	position: fixed;
+	right: -254px;
+	top: 0;
+	padding-top: 55px;
+	box-sizing: border-box;
+	z-index: 20;
+	height: 100%;
+	-webkit-transition: all .3s;
+	-o-transition: all .3s;
+	transition: all .3s;
+	overflow-y: auto;
+  }
+.revealmenu nav.active { right: 0; } 
+.revealmenu nav.active:before {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    content: "";
+    right: 0;
+    top: 0;
+	z-index: -1;
+	visibility: visible
+}
+.revealmenu nav:before {
+	visibility: hidden;
+	display: none
+}  
+  
+
+  .revealmenu #mobile-nav {
+	background-image: url(../images/menu-icon.png);
+	cursor: pointer;
+	right: 15px;
+	height: 30px;
+	position: absolute;
+	top: -4px;
+	width: 30px;
+	z-index: 100;
+	background-repeat: no-repeat
+  }
+  .revealmenu #mobile-nav.active {
+	background-image: url(../images/icon-cross-white.png);
+  }
+  .revealmenu figure {box-shadow: 0px 3px 6px rgba(0,0,0,.3); padding-bottom: 15px; text-align: center; padding-right: 15px; text-transform: uppercase; font-style: italic; font-weight: 600} 
+  .revealmenu .fg_balance{font-style: normal; font-weight: normal; display: inline-block; margin-top: 6px}
+  .revealmenu .userpic img {width: 70px; height: 70px; border-radius: 50%; margin-bottom: 6px}
+header .logo img {max-width: 35px}
+  @media(max-width: 767px){
+  	.section_heading {font-size: 18px}	
+  }
+  .earn_points h3{ font-size: 14px; font-weight: 600}
+  .earn_points .card-body {padding-left: 45px; position: relative}
+  .earn_points .card-body i{position: absolute; left: 10px; top: 20px; width: 30px; height: 30px; font-size: 20px; text-align: center}
+  .earn_points .card-body i img{max-width: 30px; vertical-align: top}
+  .earn_points .card-body p:last-child {margin: 0}
+  .earn_points .card-body .btn {font-size: 13px; text-shadow: none; font-weight: 400}
+  .withshadow {box-shadow: 0px 0px 10px rgba(0,0,0,.2)}
+  .num_of_points { display: flex;align-items: center;justify-content: center;} 
+  .num_of_points span{width: 120px; height: 120px; background: #ff4d00; display: flex;align-items: center;justify-content: center; color: #fff; font-size: 20px; line-height: 1.2}
+  .redeem_popup .section_heading {padding-bottom: 10px; border-bottom: solid 1px #ccc; }
+
+  .refer_container .card-header {background: #ff4d00; color: #fff}
+  .refer_container .card-header .invite_code {display: inline-block; padding: 3px 10px; background: #fff; color: #333}
+  .refer_container .card-body li {padding: 0 0 0 30px; position: relative; margin-bottom: 7px; padding-bottom: 7px; border-bottom: solid 1px #cecece}
+  .refer_container .card-body li:before {position: absolute; left: 0; top: -4px; font-family: 'FontAwesome'; content: "\f046"; font-size: 20px; color: #403c55}
+  .hp_container .card-body{ padding-left: 80px; position: relative;}
+  .hp_container .card-body .feed_img {position: absolute; left: 10px; top: 15px;}
+  .hp_container .card-body .feed_img img {width: 60px; height: 60px; border-radius: 50%}
+
+  /* top search */
+  #anim_search {position: absolute; right: 60px; top: -5px}
+  #anim_search input[type=search] {
+	background: transparent url(../images/search-icon.png) no-repeat 9px center;
+	border: none;
+	padding: 6px 22px 6px 10px;
+	width: 55px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-transition: all .5s;
+	-moz-transition: all .5s;
+	transition: all .5s;
+}
+#anim_search input[type=search]:focus {
+	width: 240px;
+	background-color: #fff;
+	border-color: #66CC75;
+	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	box-shadow: 0 0 5px rgba(109,207,246,.5);
+	background-image: url(../images/search-icon-black.png)
+}
+#anim_search input:-moz-placeholder {
+	color: #999;
+}
+#anim_search input::-webkit-input-placeholder {
+	color: #999;
+}
+#anim_search input[type=search] {
+	width: 15px;
+	padding-left: 10px;
+	color: transparent;
+	cursor: pointer;
+}
+#anim_search input[type=search]:hover {
+	background-color: #fff;
+	background-image: url(../images/search-icon-black.png)
+}
+#anim_search input[type=search]:focus {
+	width: 260px;
+	padding-left: 32px;
+	color: #000;
+	background-color: #fff;
+	cursor: auto;
+}
+#anim_search input:-moz-placeholder {
+	color: transparent;
+}
+#anim_search input::-webkit-input-placeholder {
+	color: transparent;
+}
+.otp_inputs input{width: 45px; height: 45px; border: solid 1px #ccc; margin: 0 15px; text-align: center; font-size: 20px}
+.resend_otp a{ color: #333}
+
+.thankyou_redeemed{
+	height: 85vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
