@@ -2,6 +2,7 @@ from django.conf.urls import url
 from .views import *
 urlpatterns = [
     url(r'^main_login/', main_login, name='main_login'),
+    url(r'^main_login_after/', main_login_after, name='main_login_after'),
     url(r'^login_user/', login_user, name='login_user'),
     url(r'^referral_code/', referral_code, name='referral_code'),
     url(r'^check_referral/', check_referral, name='check_referral'),
