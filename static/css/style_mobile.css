@@ -847,3 +847,69 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
 }
 .banner_slider img {display: inline-block; max-width: 100%}
 .slick-dots {bottom: -25px; left: 0; z-index: 10}
+
+/* checkbox images */
+.img_listing { margin: 0 auto; }
+.img_listing ul {
+	list-style-type: none;
+	margin: 0; padding: 0
+  }
+
+ .img_listing li {
+	display: inline-block;
+  }
+
+ .img_listing input[type="checkbox"][id^="cb"] {
+	display: none;
+  }
+
+  .img_listing label {
+	border: 1px solid #fff;
+	padding: 0px;
+	display: block;
+	position: relative;
+	margin: 10px;
+	cursor: pointer;
+  }
+
+  .img_listing label:before {
+	background-color: white;
+	color: white;
+	content: " ";
+	display: block;
+	border-radius: 50%;
+	border: 1px solid grey;
+	position: absolute;
+	top: -5px;
+	left: -5px;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	line-height: 28px;
+	transition-duration: 0.4s;
+	transform: scale(0);
+	z-index: 10;
+  }
+
+  .img_listing label img {
+	height: 50px;
+	width: 50px;
+	transition-duration: 0.2s;
+	transform-origin: 50% 50%;
+  }
+
+  .img_listing :checked + label {
+	border-color: #ddd;
+  }
+
+  .img_listing :checked + label:before {
+	content: "✓";
+	background-color: #ff4d00;
+	transform: scale(1);
+  }
+
+  .img_listing :checked + label img {
+	transform: scale(0.9);
+	box-shadow: 0 0 5px #333;
+	z-index: -1;
+  }
