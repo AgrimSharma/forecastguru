@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Sum
 import json, random
-from django.shortcuts import render, HttpResponse, redirect, render_to_response
+from django.shortcuts import render, HttpResponseRedirect, redirect, render_to_response
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -119,7 +119,8 @@ def referral_code(request):
 def check_referral(request):
     if request.method == "POST":
         code = request.POST.get('referral_code')
-        user = request.user.username
+        users = SocialAccount.objects.get(user=request.user)
+        auth = Authentication.objects.get(facebook_id=users.uid)
         try:
             reff = Authentication.objects.get(referral_code=code)
             auth = Authentication.objects.get(facebook_id=user)
@@ -130,8 +131,8 @@ def check_referral(request):
             return HttpResponse("error")
 
     else:
-        user = request.user.username
-        auth = Authentication.objects.get(facebook_id=user)
+        users = SocialAccount.objects.get(user=request.user)
+        auth = Authentication.objects.get(facebook_id=users.uid)
         auth.referral_status = 1
         auth.save()
         return redirect("/interest_select/")
@@ -142,8 +143,8 @@ def check_referral(request):
 def interest(request):
     if request.method == 'GET':
         try:
-            user = request.user.username
-            profile = Authentication.objects.get(facebook_id=user)
+            users = SocialAccount.objects.get(user=request.user)
+            profile = Authentication.objects.get(facebook_id=users.uid)
             interest = UserInterest.objects.filter(user=profile)
             total = profile.joining_points + profile.points_won_public\
                     + profile.points_won_private + profile.points_earned - profile.points_lost_public - profile.points_lost_private
@@ -172,8 +173,8 @@ def interest(request):
             interest = [int(d) for d in data]
             interest_list = SubCategory.objects.filter(id__in=interest)
             try:
-                user = request.user.username
-                profile = Authentication.objects.get(facebook_id=user)
+                users = SocialAccount.objects.get(user=request.user)
+                profile = Authentication.objects.get(facebook_id=users.uid)
                 for i in interest_list:
                     interest = UserInterest.objects.filter(user=profile, interest=i)
                     if len(interest) == 0:
@@ -188,8 +189,8 @@ def interest(request):
 
 @login_required
 def interest_skip(request):
-    user = request.user.username
-    auth = Authentication.objects.get(facebook_id=user)
+    users = SocialAccount.objects.get(user=request.user)
+    auth = Authentication.objects.get(facebook_id=users.uid)
     auth.interest_status = 1
     auth.save()
     return redirect("/live_forecast/")
@@ -199,8 +200,8 @@ def interest_skip(request):
 def live_forecast(request):
     data = []
     try:
-        user = request.user.username
-        profile = Authentication.objects.get(facebook_id=user)
+        users = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=users.uid)
         today = datetime.datetime.now().date()
         diff = today - profile.last_login
         if diff.days == 1:
@@ -280,8 +281,8 @@ def live_forecast(request):
 def live_forecast_descending(request):
     data = []
     try:
-        user = request.user.username
-        profile = Authentication.objects.get(facebook_id=user)
+        users = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=users.uid)
         interest = UserInterest.objects.filter(user=profile)
         intrest = [i.interest.id for i in interest]
         forecast_live = ForeCast.objects.filter(status__name='Progress',
@@ -345,8 +346,8 @@ def live_forecast_descending(request):
 def bet_post(request):
     if request.method == 'POST':
         try:
-            user = request.user.username
-            account = Authentication.objects.get(facebook_id=user)
+            users = SocialAccount.objects.get(user=request.user)
+            account = Authentication.objects.get(facebook_id=users.uid)
         except Exception:
             return HttpResponse(json.dumps(dict(message='login')))
         vote = request.POST.get('vote')
@@ -415,8 +416,8 @@ def bet_post(request):
 def get_forecast(request):
     if request.method == "POST":
         try:
-            user = request.user.username
-            profile = Authentication.objects.get(facebook_id=user)
+            users = SocialAccount.objects.get(user=request.user)
+            profile = Authentication.objects.get(facebook_id=users.uid)
             forecast = ForeCast.objects.get(id=request.POST.get('id', ''))
             return HttpResponse(json.dumps(dict(heading=forecast.heading, id=forecast.id)))
         except Exception:
@@ -443,8 +444,8 @@ def create_forecast(request):
         if expires < current:
             return HttpResponse(json.dumps(dict(status=400, message='end')))
         try:
-            user = request.user.username
-            users = Authentication.objects.get(facebook_id=user)
+            user = SocialAccount.objects.get(user=request.user)
+            users = Authentication.objects.get(facebook_id=user.uid)
         except Exception:
             return HttpResponse(json.dumps(dict(status=400, message='Please Login')))
         private = Private.objects.get(id=1)
@@ -473,8 +474,8 @@ def create_forecast(request):
 
     else:
         try:
-            user = request.user.username
-            profile = Authentication.objects.get(facebook_id=user)
+            users = SocialAccount.objects.get(user=request.user)
+            profile = Authentication.objects.get(facebook_id=users.uid)
             category = Category.objects.all().order_by('identifier')
             return render(request, 'home/create_forecast.html', {
                 'category': category,
@@ -634,8 +635,8 @@ def betting(request, userid):
 @csrf_exempt
 def result_save(request):
     if request.method == "POST":
-        user = request.user
-        profile = Authentication.objects.get(facebook_id=user.username)
+        users = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=users.uid)
         vote = request.POST.get("vote","")
         id = request.POST.get('forecast', '')
         if vote == 'email':
@@ -719,8 +720,8 @@ def forecast_result(request):
 
 def result_not_declared(request):
     try:
-        user = request.user.username
-        profile = Authentication.objects.get(facebook_id=user)
+        users = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=users.uid)
         forecast_result = Betting.objects.filter(users=profile, forecast__status__name='Result Declared').order_by("-forecast__expire")
         # forecast_closed = Betting.objects.filter(forecast__status__name='Closed', users=profile).order_by("forecast__expire")
         return render(request, 'home/forecast_result_pending.html',
@@ -824,8 +825,8 @@ def get_ratio(bet_for, bet_against, total, status):
 
 def profile(request):
     try:
-        user = request.user.username
-        profile = Authentication.objects.get(facebook_id=user)
+        users = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=users.uid)
     except Exception:
         user = request.user.last_name
         return render(request, 'home/user_profile_nl.html', {
@@ -1031,8 +1032,8 @@ def forecast_data(forecast, ratio, total, status, total_bets):
 
 def my_forecast(request):
     try:
-        user = request.user
-        account = Authentication.objects.get(facebook_id=user)
+        users = SocialAccount.objects.get(user=request.user)
+        account = Authentication.objects.get(facebook_id=users.uid)
         forecast_live = Betting.objects.filter(forecast__status__name='Progress',
                                                users=account, forecast__private__name='No').order_by("forecast__expire")
         forecast_result = Betting.objects.filter(forecast__status__name='Result Declared', users=account,
@@ -1465,8 +1466,8 @@ def forecast_result_data_private(forecast_live, account):
 
 def my_forecast_private(request):
     try:
-        user = request.user.username
-        account = Authentication.objects.get(facebook_id=user)
+        users = SocialAccount.objects.get(user=request.user)
+        account = Authentication.objects.get(facebook_id=users.uid)
         forecast_live = ForeCast.objects.filter(status__name='Progress', user=account,
                                                 private__name='Yes').order_by("expire")
 
@@ -1627,8 +1628,8 @@ def import_csv(request):
 
 def thank_you(request):
     try:
-        user = request.user.username
-        profile = Authentication.objects.get(facebook_id=user)
+        users = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=users.uid)
         status = LoginStatus.objects.get(user=profile)
         if status.status == 1:
             return redirect("/extra/")
@@ -1642,8 +1643,8 @@ def thank_you(request):
                               "user": "Guest" if request.user.is_anonymous() else request.user.first_name
                           })
     except Exception:
-        user = request.user.username
-        profile = Authentication.objects.get(facebook_id=user)
+        users = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=users.uid)
         LoginStatus.objects.create(user=profile, status=1)
 
         return render(request, "home/thank_you.html",
@@ -1801,7 +1802,8 @@ def search_result(request):
 
 def refer_earn(request):
     try:
-        profile = Authentication.objects.get(facebook_id=request.user.username)
+        users = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=users.uid)
     except Exception:
         profile =[]
     return render(request, "home/refer_earn.html",
@@ -1814,7 +1816,8 @@ def refer_earn(request):
 
 def earn_points(request):
     try:
-        profile = Authentication.objects.get(facebook_id=request.user.username)
+        users = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=users.uid)
     except Exception:
         profile =[]
     return render(request, "home/earn_points.html",
@@ -1827,7 +1830,8 @@ def earn_points(request):
 
 def redeem_points(request):
     try:
-        profile = Authentication.objects.get(facebook_id=request.user.username)
+        users = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=users.uid)
     except Exception:
         profile =[]
     redeem = RedeemPoints.objects.latest('id')
@@ -2149,8 +2153,8 @@ def test_notif(request):
 
 
 def notification(request):
-    user = request.user.username
-    profile = Authentication.objects.get(facebook_id=user)
+    users = SocialAccount.objects.get(user=request.user)
+    profile = Authentication.objects.get(facebook_id=users.uid)
     notification = UserNotifications.objects.filter(user=profile)
     return render(request, "home/notification.html", {"notification": notification,
                                                       "heading": "Notification"})
@@ -2160,8 +2164,8 @@ def notification(request):
 def save_user_id(request):
     if request.method == "POST":
         sub_id = request.POST.get('sub_id', '')
-        user = request.user.username
-        profile = Authentication.objects.get(facebook_id=user)
+        users = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=users.uid)
         if sub_id == 'false':
             return HttpResponse(json.dumps(dict(message='fail')))
         try:
