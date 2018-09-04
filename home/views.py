@@ -19,6 +19,7 @@ from django.http import HttpResponse
 from paytm.payments import VerifyPaytmResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import requests
+from allauth.socialaccount.models import SocialAccount, SocialToken
 
 current = datetime.datetime.now()
 
@@ -87,9 +88,12 @@ def index(request):
 
 @login_required
 def referral_code(request):
-    user = request.user.username
-    auth = Authentication.objects.get(facebook_id=user)
-
+    try:
+        users = SocialAccount.objects.get(user=request.user)
+        auth = Authentication.objects.get(facebook_id=users.uid)
+    except Exception:
+        users = SocialAccount.objects.get(user=request.user)
+        auth = Authentication.objects.create(facebook_id=users.uid)
     if auth.referral_status == 0:
         total = auth.joining_points + auth.points_won_public + auth.points_won_private + auth.points_earned \
                 - auth.points_lost_public - auth.points_lost_private
