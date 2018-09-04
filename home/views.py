@@ -122,18 +122,20 @@ def referral_code(request):
         user = request.user
         user.username = users.uid
         user.save()
-        fuser = Authentication.objects.create(facebook_id=users.uid, first_name=user.first_name, last_name=user.last_name,
-                                              email=user.email)
-        fuser.referral_code = id_generator(users.user.first_name, users.user.last_name)
-        fuser.points_earned = JoiningPoints.objects.latest('id').points
+        fuser1 = Authentication.objects.filter(facebook_id=users.uid)
+        if len(fuser1) == 0:
+            fuser = Authentication.objects.create(facebook_id=users.uid, first_name=user.first_name, last_name=user.last_name,
+                                                  email=user.email)
+            fuser.referral_code = id_generator(users.user.first_name, users.user.last_name)
+            fuser.points_earned = JoiningPoints.objects.latest('id').points
 
-        if fuser.referral_status == 0:
-            total = int(fuser.joining_points) + int(fuser.points_won_public) + int(fuser.points_won_private) + int(fuser.points_earned) - int(fuser.points_lost_public) - int(fuser.points_lost_private)
-            fuser.save()
-            return render(request, "home/referral_code.html", {
-                "first_name": fuser.first_name,
-                "total": total
-            })
+            if fuser.referral_status == 0:
+                total = int(fuser.joining_points) + int(fuser.points_won_public) + int(fuser.points_won_private) + int(fuser.points_earned) - int(fuser.points_lost_public) - int(fuser.points_lost_private)
+                fuser.save()
+                return render(request, "home/referral_code.html", {
+                    "first_name": fuser.first_name,
+                    "total": total
+                })
         else:
             return redirect("/interest_select/")
 
