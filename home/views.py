@@ -29,6 +29,19 @@ def id_generator(fname, lname):
     return r.sub("", str(fname)).capitalize() + str(lname).capitalize() + str(random.randrange(1111, 9999))
 
 
+def main_login_after(request):
+    try:
+        users = SocialAccount.objects.get(user=request.user)
+        auth = Authentication.objects.get(facebook_id=users.uid)
+    except Exception:
+        users = SocialAccount.objects.get(user=request.user)
+        fuser = Authentication.objects.create(facebook_id=users.uid)
+        fuser.referral_code = id_generator(users.user.first_name, users.user.last_name)
+        fuser.points_earned = JoiningPoints.objects.latest('id').points
+        fuser.save()
+    return redirect("/referral_code/")
+
+
 @csrf_exempt
 def login_user(request):
     if request.method == "POST":
@@ -88,12 +101,8 @@ def index(request):
 
 @login_required
 def referral_code(request):
-    try:
-        users = SocialAccount.objects.get(user=request.user)
-        auth = Authentication.objects.get(facebook_id=users.uid)
-    except Exception:
-        users = SocialAccount.objects.get(user=request.user)
-        auth = Authentication.objects.create(facebook_id=users.uid)
+    users = SocialAccount.objects.get(user=request.user)
+    auth = Authentication.objects.get(facebook_id=users.uid)
     if auth.referral_status == 0:
         total = auth.joining_points + auth.points_won_public + auth.points_won_private + auth.points_earned \
                 - auth.points_lost_public - auth.points_lost_private
