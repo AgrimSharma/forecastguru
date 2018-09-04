@@ -29,21 +29,21 @@ def id_generator(fname, lname):
     return r.sub("", str(fname)).capitalize() + str(lname).capitalize() + str(random.randrange(1111, 9999))
 
 
-def main_login_after(request):
-    try:
-        users = SocialAccount.objects.get(user=request.user)
-        auth = Authentication.objects.get(facebook_id=users.uid)
-    except Exception:
-        users = SocialAccount.objects.get(user=request.user)
-        user = request.user
-        user.username = users.uid
-        user.save()
-        fuser = Authentication.objects.create(facebook_id=users.uid, first_name=user.first_name, last_name=user.last_name,
-                                              email=user.email)
-        fuser.referral_code = id_generator(users.user.first_name, users.user.last_name)
-        fuser.points_earned = JoiningPoints.objects.latest('id').points
-        fuser.save()
-    return redirect("/referral_code/")
+# def main_login_after(request):
+#     try:
+#         users = SocialAccount.objects.get(user=request.user)
+#         auth = Authentication.objects.get(facebook_id=users.uid)
+#     except Exception:
+#         users = SocialAccount.objects.get(user=request.user)
+#         user = request.user
+#         user.username = users.uid
+#         user.save()
+#         fuser = Authentication.objects.create(facebook_id=users.uid, first_name=user.first_name, last_name=user.last_name,
+#                                               email=user.email)
+#         fuser.referral_code = id_generator(users.user.first_name, users.user.last_name)
+#         fuser.points_earned = JoiningPoints.objects.latest('id').points
+#         fuser.save()
+#     return redirect("/referral_code/")
 
 
 @csrf_exempt
@@ -105,17 +105,37 @@ def index(request):
 
 @login_required
 def referral_code(request):
-    users = SocialAccount.objects.get(user=request.user)
-    auth = Authentication.objects.get(facebook_id=users.uid)
-    if auth.referral_status == 0:
-        total = auth.joining_points + auth.points_won_public + auth.points_won_private + auth.points_earned \
-                - auth.points_lost_public - auth.points_lost_private
-        return render(request, "home/referral_code.html", {
-            "first_name": auth.first_name,
-            "total": total
-        })
-    else:
-        return redirect("/interest_select/")
+    try:
+        users = SocialAccount.objects.get(user=request.user)
+        fuser = Authentication.objects.get(facebook_id=users.uid)
+        if fuser.referral_status == 0:
+            total = fuser.joining_points + fuser.points_won_public + fuser.points_won_private + fuser.points_earned \
+                    - fuser.points_lost_public - fuser.points_lost_private
+            return render(request, "home/referral_code.html", {
+                "first_name": fuser.first_name,
+                "total": total
+            })
+        else:
+            return redirect("/interest_select/")
+    except Exception:
+        users = SocialAccount.objects.get(user=request.user)
+        user = request.user
+        user.username = users.uid
+        user.save()
+        fuser = Authentication.objects.create(facebook_id=users.uid, first_name=user.first_name, last_name=user.last_name,
+                                              email=user.email)
+        fuser.referral_code = id_generator(users.user.first_name, users.user.last_name)
+        fuser.points_earned = JoiningPoints.objects.latest('id').points
+        fuser.save()
+        if fuser.referral_status == 0:
+            total = fuser.joining_points + fuser.points_won_public + fuser.points_won_private + fuser.points_earned \
+                    - fuser.points_lost_public - fuser.points_lost_private
+            return render(request, "home/referral_code.html", {
+                "first_name": fuser.first_name,
+                "total": total
+            })
+        else:
+            return redirect("/interest_select/")
 
 
 @login_required
