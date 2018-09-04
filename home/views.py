@@ -174,7 +174,7 @@ def interest(request):
             total = profile.joining_points + profile.points_won_public\
                     + profile.points_won_private + profile.points_earned - profile.points_lost_public - profile.points_lost_private
             if len(interest) == 0 and profile.interest_status == 0:
-                sub = Category.objects.all().order_by('id')
+                sub = Category.objects.exclude(sub_category__name = 'Others').order_by('id')
                 return render(request, "home/interest_select.html", {
                     "sub": sub,
                     "heading": "Select Interest",
