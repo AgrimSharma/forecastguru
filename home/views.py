@@ -35,7 +35,11 @@ def main_login_after(request):
         auth = Authentication.objects.get(facebook_id=users.uid)
     except Exception:
         users = SocialAccount.objects.get(user=request.user)
-        fuser = Authentication.objects.create(facebook_id=users.uid)
+        user = request.user
+        user.username = users.uid
+        user.save()
+        fuser = Authentication.objects.create(facebook_id=users.uid, first_name=user.first_name, last_name=user.last_name,
+                                              email=user.email)
         fuser.referral_code = id_generator(users.user.first_name, users.user.last_name)
         fuser.points_earned = JoiningPoints.objects.latest('id').points
         fuser.save()
