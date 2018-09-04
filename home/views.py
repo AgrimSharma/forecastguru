@@ -107,7 +107,7 @@ def index(request):
 def referral_code(request):
     try:
         users = SocialAccount.objects.get(user=request.user)
-        fuser = Authentication.objects.get(facebook_id=users.uid)
+        fuser = Authentication.objects.get(facebook_id=req)
         if fuser.referral_status == 0:
             total = fuser.joining_points + fuser.points_won_public + fuser.points_won_private + fuser.points_earned \
                     - fuser.points_lost_public - fuser.points_lost_private
@@ -126,10 +126,10 @@ def referral_code(request):
                                               email=user.email)
         fuser.referral_code = id_generator(users.user.first_name, users.user.last_name)
         fuser.points_earned = JoiningPoints.objects.latest('id').points
-        fuser.save()
+
         if fuser.referral_status == 0:
-            total = fuser.joining_points + fuser.points_won_public + fuser.points_won_private + fuser.points_earned \
-                    - fuser.points_lost_public - fuser.points_lost_private
+            total = fuser.joining_points + fuser.points_won_public + fuser.points_won_private + fuser.points_earned - fuser.points_lost_public - fuser.points_lost_private
+            fuser.save()
             return render(request, "home/referral_code.html", {
                 "first_name": fuser.first_name,
                 "total": total
