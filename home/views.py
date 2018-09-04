@@ -128,7 +128,7 @@ def referral_code(request):
         fuser.points_earned = JoiningPoints.objects.latest('id').points
 
         if fuser.referral_status == 0:
-            total = fuser.joining_points + fuser.points_won_public + fuser.points_won_private + fuser.points_earned - fuser.points_lost_public - fuser.points_lost_private
+            total = int(fuser.joining_points) + int(fuser.points_won_public) + int(fuser.points_won_private) + int(fuser.points_earned) - int(fuser.points_lost_public) - int(fuser.points_lost_private)
             fuser.save()
             return render(request, "home/referral_code.html", {
                 "first_name": fuser.first_name,
