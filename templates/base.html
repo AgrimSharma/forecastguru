@@ -62,7 +62,7 @@
                 <img src="{% static 'images/account_image.jpg' %}" alt="">
                 <figcaption>Admin</figcaption>
             {% else %}
-          <img src="https://graph.facebook.com/{{request.user.uid}}/picture?type=large" alt="">
+          <img src="https://graph.facebook.com/{{request.user.username}}/picture?type=large" alt="">
           <figcaption>{{request.user.first_name}} {{request.user.last_name}}</figcaption>
             {% endif %}
         </figure>
