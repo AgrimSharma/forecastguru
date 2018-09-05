@@ -16,11 +16,13 @@
                       </a>
                     </div>
                     {% for s in sub %}
+                  {% if s.name != 'Others' %}
                     <div class="item">
                       <a href="{% url 'sub_category_data' s.id %}"><img src="{{s.image}}" alt="">
                         <figcaption>{{s.name}}</figcaption>
                       </a>
                     </div>
+                  {% endif %}
                     {% endfor %}
 
                 </div>
