@@ -726,7 +726,6 @@ def forecast_result_page(forecast):
                          bet_for_user=0,
                          bet_against_user=0
                          ))
-    print(data)
     return data
 
 
@@ -748,7 +747,6 @@ def result_not_declared(request):
         users = SocialAccount.objects.get(user=request.user)
         profile = Authentication.objects.get(facebook_id=users.uid)
         forecast_result = Betting.objects.filter(users=profile, forecast__status__name='Result Declared').order_by("-forecast__expire")
-        # forecast_closed = Betting.objects.filter(forecast__status__name='Closed', users=profile).order_by("forecast__expire")
         return render(request, 'home/forecast_result_pending.html',
                       {
                           "live": forecast_result_page_my(forecast_result),
