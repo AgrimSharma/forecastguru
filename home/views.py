@@ -1888,7 +1888,8 @@ def category_search(request, userid):
     sub = SubCategory.objects.filter(category=category_id).order_by('identifier')
     try:
         user = request.user
-        profile = SocialAccount.objects.get(user=user)
+        acc = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=acc.uid)
         if len(forecast_live_view(category_id, profile)) == 0:
             return HttpResponseRedirect("/trending/")
         else:
