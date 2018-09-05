@@ -1691,7 +1691,7 @@ def trending_forecast(request):
         if bet_for == None and bet_against == None:
             pass
         else:
-            if bet_for + bet_against > 15000:
+            if bet_for + bet_against > 0:
                 data.append(f)
 
     if len(data) == 0:
