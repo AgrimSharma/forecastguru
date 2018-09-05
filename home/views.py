@@ -1761,7 +1761,7 @@ def trending_data(objects):
                          bet_against=bet_against,
                          bet_for_user=bet_for_user if bet_for_user else 0,
                          bet_against_user=bet_against_user if bet_against_user else 0))
-    return data_all
+    return data
 
 
 @csrf_exempt
