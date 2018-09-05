@@ -1886,30 +1886,29 @@ def category(request):
 def category_search(request, userid):
     category_id = Category.objects.get(id=userid)
     sub = SubCategory.objects.filter(category=category_id).order_by('identifier')
-    try:
-        user = request.user
-        acc = SocialAccount.objects.get(user=request.user)
-        profile = Authentication.objects.get(facebook_id=acc.uid)
-        if len(forecast_live_view(category_id, profile)) == 0:
-            return HttpResponseRedirect("/trending/")
-        else:
-            return render(request, 'home/category_search.html',
-                          {
-                              "live": forecast_live_view(category_id, profile),
-                              "heading": category_id.name, "sub": sub,
-                              "title": "ForecastGuru", 'category_id': category_id.id,
-                              "user": "Guest" if request.user.is_anonymous() else request.user.username
-                          })
-
-    except Exception:
-
+    # try:
+    acc = SocialAccount.objects.get(user=request.user)
+    profile = Authentication.objects.get(facebook_id=acc.uid)
+    if len(forecast_live_view(category_id, profile)) == 0:
+        return HttpResponseRedirect("/trending/")
+    else:
         return render(request, 'home/category_search.html',
                       {
-                          "live": forecast_live_view_bt(category_id),
+                          "live": forecast_live_view(category_id, profile),
                           "heading": category_id.name, "sub": sub,
                           "title": "ForecastGuru", 'category_id': category_id.id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
+
+    # except Exception:
+    #
+    #     return render(request, 'home/category_search.html',
+    #                   {
+    #                       "live": forecast_live_view_bt(category_id),
+    #                       "heading": category_id.name, "sub": sub,
+    #                       "title": "ForecastGuru", 'category_id': category_id.id,
+    #                       "user": "Guest" if request.user.is_anonymous() else request.user.username
+    #                   })
 
 
 def sub_category_data(request, userid):
