@@ -282,7 +282,7 @@ def live_forecast(request):
             bet_for_user = 0
             bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
             bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
-            totl = float(bet_against + bet_for)
+            totl = 0
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
             total = Betting.objects.filter(forecast=f).count()
@@ -1886,59 +1886,59 @@ def category(request):
 def category_search(request, userid):
     category_id = Category.objects.get(id=userid)
     sub = SubCategory.objects.filter(category=category_id).order_by('identifier')
-    # try:
-    acc = SocialAccount.objects.get(user=request.user)
-    profile = Authentication.objects.get(facebook_id=acc.uid)
-    if len(forecast_live_view(category_id, profile)) == 0:
-        return HttpResponseRedirect("/trending/")
-    else:
+    try:
+        acc = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=acc.uid)
+        if len(forecast_live_view(category_id, profile)) == 0:
+            return HttpResponseRedirect("/trending/")
+        else:
+            return render(request, 'home/category_search.html',
+                          {
+                              "live": forecast_live_view(category_id, profile),
+                              "heading": category_id.name, "sub": sub,
+                              "title": "ForecastGuru", 'category_id': category_id.id,
+                              "user": "Guest" if request.user.is_anonymous() else request.user.username
+                          })
+
+    except Exception:
+
         return render(request, 'home/category_search.html',
                       {
-                          "live": forecast_live_view(category_id, profile),
+                          "live": forecast_live_view_bt(category_id),
                           "heading": category_id.name, "sub": sub,
                           "title": "ForecastGuru", 'category_id': category_id.id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
-
-    # except Exception:
-    #
-    #     return render(request, 'home/category_search.html',
-    #                   {
-    #                       "live": forecast_live_view_bt(category_id),
-    #                       "heading": category_id.name, "sub": sub,
-    #                       "title": "ForecastGuru", 'category_id': category_id.id,
-    #                       "user": "Guest" if request.user.is_anonymous() else request.user.username
-    #                   })
 
 
 def sub_category_data(request, userid):
     subcategory = SubCategory.objects.get(id=userid)
     sub = SubCategory.objects.filter(category=subcategory.category).order_by('identifier')
     category = Category.objects.get(id=subcategory.category.id)
-    # try:
+    try:
 
-    acc = SocialAccount.objects.get(user=request.user)
-    profile = Authentication.objects.get(facebook_id=acc.uid)
-    if len(forecast_live_view_sub(subcategory, profile)) == 0:
-        return HttpResponseRedirect("/trending/")
-    else:
+        acc = SocialAccount.objects.get(user=request.user)
+        profile = Authentication.objects.get(facebook_id=acc.uid)
+        if len(forecast_live_view_sub(subcategory, profile)) == 0:
+            return HttpResponseRedirect("/trending/")
+        else:
+            return render(request, 'home/category_search.html',
+                          {
+                              "live": forecast_live_view_sub(subcategory, profile),
+                              "heading": subcategory.name, "sub": sub,
+                              "title": "ForecastGuru", "category_id": category.id,
+                              "user": "Guest" if request.user.is_anonymous() else request.user.username
+                          })
+
+    except Exception:
+
         return render(request, 'home/category_search.html',
                       {
-                          "live": forecast_live_view_sub(subcategory, profile),
+                          "live": forecast_live_view_bt_sub(subcategory),
                           "heading": subcategory.name, "sub": sub,
                           "title": "ForecastGuru", "category_id": category.id,
                           "user": "Guest" if request.user.is_anonymous() else request.user.username
                       })
-
-    # except Exception:
-    #
-    #     return render(request, 'home/category_search.html',
-    #                   {
-    #                       "live": forecast_live_view_bt_sub(subcategory),
-    #                       "heading": subcategory.name, "sub": sub,
-    #                       "title": "ForecastGuru", "category_id": category.id,
-    #                       "user": "Guest" if request.user.is_anonymous() else request.user.username
-    #                   })
 
 
 def forecast_live_view_sub(category, profile):
