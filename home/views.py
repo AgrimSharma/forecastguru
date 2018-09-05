@@ -1735,11 +1735,10 @@ def trending_data(objects):
             bet_for = Betting.objects.filter(forecast=forecast).aggregate(bet_for=Sum('bet_for'))['bet_for']
             bet_against = Betting.objects.filter(forecast=forecast).aggregate(bet_against=Sum('bet_against'))[
                 'bet_against']
-            totl = bet_against + bet_for
+            totl = float(bet_against + bet_for)
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-
-            total = Betting.objects.filter(forecast=forecast).count()
+            total = Betting.objects.filter(forecast=f).count()
         except Exception:
             total_wagered = 0
             percent_for = 0
