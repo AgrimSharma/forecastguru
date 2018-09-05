@@ -283,8 +283,8 @@ def live_forecast(request):
             bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
             bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
             totl = 0
-            percent_for = (bet_for / totl) * 100
-            percent_against = (100 - percent_for)
+            percent_for = 0
+            percent_against = 0
             total = Betting.objects.filter(forecast=f).count()
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
                          total=total, start=start, total_user=betting_for + betting_against,
