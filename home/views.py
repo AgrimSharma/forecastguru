@@ -682,34 +682,33 @@ def forecast_result_page(forecast):
     data = []
     for f in forecast:
         date = current.date()
-
         bet_start = f.expire.date()
         if date == bet_start:
             start = f.expire
             start = start.time()
-            today = 'yes'
+            today = 'Yes'
         else:
             start = f.expire
-
-            today = "no"
+            today = 'No'
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
+
         try:
-            total_wagered = betting_against + betting_for
             bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
             bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
                 'bet_against']
+            total_wagered = betting_against + betting_for
             totl = float(bet_against + bet_for)
-            percent_for = (bet_for / totl) * 100
+            percent_for = (float(bet_for) / totl) * 100
             percent_against = (100 - percent_for)
-            total = Betting.objects.filter(forecast=f).count()
+            total = bet_against + bet_for
         except Exception:
             total_wagered = 0
-            bet_for = 0
-            bet_against = 0
             percent_for = 0
             percent_against = 0
-            total = Betting.objects.filter(forecast=f).count()
+            bet_for = 0
+            bet_against = 0
+            total = 0
 
         if f.won.name.lower() == 'yes':
             status = 'Yes'
