@@ -8,7 +8,7 @@
   <nav class="navbar">
     <ul class="navbar-nav nav-fill w-100 text-center">
       <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'create_forecast' %}">Create Forecast</a> </li>
-      <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="#">Buy FG Points</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'earn_points' %}">Earn Points</a> </li>
       <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
     </ul>
   </nav>
@@ -232,7 +232,7 @@
 			</div>
 			<div class="modal-body text-center">
                 <i>Please try again</i><p id="balance_low" style="color:red;"></p>
-				<a href="#" class="btn btn-success" >Buy Points</a>
+				<a href="{% url 'earn_points' %}" class="btn btn-success" >Earn Points</a>
 			</div>
 		</div>
 	</div>
