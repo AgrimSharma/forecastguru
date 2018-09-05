@@ -3,6 +3,15 @@
 
 {% block content %}
 <div class="topspace"></div>
+<div class="container topnavlinks">
+  <nav class="navbar">
+    <ul class="navbar-nav nav-fill w-100 text-center">
+      <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'forecast_result' %}">ALL</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link active" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'result_not_declared' %}">My Result</a> </li>
+      <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
+    </ul>
+  </nav>
+</div>
 <div class="container fixed_p_footer">
   <div class="row">
     <div class="col-md-12">
@@ -163,6 +172,7 @@
       </ul>
     </nav>
   </footer>
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="js/jquery-slim.min.js"><\/script>')</script>
 <script src="js/bootstrap.min.js"></script>
