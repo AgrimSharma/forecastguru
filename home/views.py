@@ -280,11 +280,11 @@ def live_forecast(request):
             total_wagered = 0
             bet_against_user = 0
             bet_for_user = 0
-            bet_for = 0
-            bet_against = 0
-            totl = 0
-            percent_for = 0
-            percent_against = 0
+            bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
+            totl = float(bet_against + bet_for)
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
             total = Betting.objects.filter(forecast=f).count()
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
                          total=total, start=start, total_user=betting_for + betting_against,
@@ -821,7 +821,6 @@ def forecast_result_page_my(forecast):
                          bet_against_user=bet_against_user
                          ))
     return data
-
 
 
 def get_ratio(bet_for, bet_against, total, status):
@@ -1736,10 +1735,11 @@ def trending_data(objects):
             bet_for = Betting.objects.filter(forecast=forecast).aggregate(bet_for=Sum('bet_for'))['bet_for']
             bet_against = Betting.objects.filter(forecast=forecast).aggregate(bet_against=Sum('bet_against'))[
                 'bet_against']
-            totl = float(bet_against + bet_for)
+            totl = bet_against + bet_for
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-            total = Betting.objects.filter(forecast=f).count()
+
+            total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
             total_wagered = 0
             percent_for = 0
@@ -1887,8 +1887,8 @@ def category_search(request, userid):
     category_id = Category.objects.get(id=userid)
     sub = SubCategory.objects.filter(category=category_id).order_by('identifier')
     try:
-        acc = SocialAccount.objects.get(user=request.user)
-        profile = Authentication.objects.get(facebook_id=acc.uid)
+        user = request.user
+        profile = SocialAccount.objects.get(user=user)
         if len(forecast_live_view(category_id, profile)) == 0:
             return HttpResponseRedirect("/trending/")
         else:
@@ -1916,9 +1916,8 @@ def sub_category_data(request, userid):
     sub = SubCategory.objects.filter(category=subcategory.category).order_by('identifier')
     category = Category.objects.get(id=subcategory.category.id)
     try:
-
-        acc = SocialAccount.objects.get(user=request.user)
-        profile = Authentication.objects.get(facebook_id=acc.uid)
+        user = request.user
+        profile = SocialAccount.objects.get(user=user)
         if len(forecast_live_view_sub(subcategory, profile)) == 0:
             return HttpResponseRedirect("/trending/")
         else:
