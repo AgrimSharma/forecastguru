@@ -1715,7 +1715,7 @@ def trending_forecast(request):
 
 
 def trending_data(objects):
-    data_all = []
+    data = []
     for f in objects:
         date = current.date()
 
