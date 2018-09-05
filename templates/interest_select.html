@@ -149,7 +149,9 @@
 
             <ul>
               {% for s in category.subcategory_set.all %}
-                {% if s.name != 'Others' %}
+                {% if s.name == 'Others' %}
+                <li></li>
+                {% else %}
                 <li>
                     <input type="checkbox" id="{{s.id}}" style="display:none;"/>
                     <label for="{{s.id}}"><img src="{{s.image}}" width="50px" height="50px"/><br><b>{{s.name|upper}}</b></label>
