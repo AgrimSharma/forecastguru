@@ -254,7 +254,7 @@ def live_forecast(request):
         bet_start = (forecast.expire).date()
 
         if date == bet_start:
-            start = f.expire  + datetime.timedelta(hours=5, minutes=30)
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
             start = start.time()
             today = 'yes'
         else:
@@ -294,14 +294,16 @@ def live_forecast(request):
                          bet_against_user=bet_against_user if bet_against_user else 0,
                          bet_for_user=bet_for_user if bet_for_user else 0,
                          ))
-    return render(request, 'home/live_forecast.html',
-                  {
-                      "live": data,
-                      "heading": "Forecasts",
-                      "title": "ForecastGuru",
-                      "first_name": "Guest" if request.user.is_anonymous() else request.user.first_name
-                  })
-
+    if data:
+        return render(request, 'home/live_forecast.html',
+                      {
+                          "live": data,
+                          "heading": "Forecasts",
+                          "title": "ForecastGuru",
+                          "first_name": "Guest" if request.user.is_anonymous() else request.user.first_name
+                      })
+    else:
+        return redirect("/trending/")
 
 @login_required
 def live_forecast_descending(request):
