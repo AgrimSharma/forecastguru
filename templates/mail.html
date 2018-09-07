@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="shortcut icon" href="uploads/pix-favicon.ico">  
+	<meta name="description" content="FitImage, Measure your body fat with your mobile app">
+	<meta name="keywords" content="fitimage, fitness, health, mobile app, free, AI, Artificial Intelligence, body building, excercise">
+	<!-- CSS dependencies -->
+</head>
+<body>
+    E-mail <input type="email" id="emailID" />
+    <button onclick="sendemail()"> Submit </button>
+
+    <script>
+        function sendemail()
+        {
+            var email = document.getElementById("emailID").value;
+            var subject = ('My permanent subject line');
+            var body = ('My permanent body contents');
+            document.write('<a href="mailto:' + email + '?subject=' +subject+ '&body=' +body+ '">' + 'Click here to send email as well' + '<'+'/a>');
+        }
+    </script>
+</body>
+</html>
