@@ -1,19 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<input type="text" value="{{request.path}}" style="display:none" id="path" name="path">
-
 <div class="topspace"></div>
-<div class="container topnavlinks">
-  <nav class="navbar">
-    <ul class="navbar-nav nav-fill w-100 text-center">
-      <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'create_forecast' %}">Create Forecast</a> </li>
-      <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'earn_points' %}">Earn Points</a> </li>
-      <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
-    </ul>
-  </nav>
-</div>
-
+<input type="text" value="{{request.path}}" style="display:none" id="path" name="path">
 <div class="container fixed_p_footer">
   <div class="row">
 
@@ -21,7 +10,7 @@
 
 
       <div class="forcast_home">
-{% for f in live %}
+ {% for f in live %}
 
         <div class="forcast_box">
 
@@ -31,12 +20,9 @@
 
                             </figure>
             </div>
-            <div class="col-9 col-md-10" >
-                <p class="title_desc"> <a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;">{{ f.forecast.heading }}</a>
-
-                </p>
+            <div class="col-9 col-md-10">
+                <p class="title_desc"> <a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;">{{ f.forecast.heading }}</a></p>
             </div>
-
           </div>
           <div class="row">
             <div class="col-12">
@@ -62,7 +48,7 @@
 
                   <div class="col-6 text-right"> <span class="vote_no text-uppercase">No ({{f.bet_against}})</span> </div>
                 </div>
-                                                  <hr class="mt-2 mb-2">
+                                <hr class="mt-2 mb-2">
 
                 <div class="row">
                   <div class="col-6 pr-0">
@@ -84,8 +70,8 @@
                 </div>
 
 
-                </div>
 
+                </div>
                               {% if f.bet_against_user > 0 or f.bet_for_user > 0  %}
                 <hr>
                 <div class="row">
@@ -134,7 +120,8 @@
       </ul>
     </nav>
   </footer>
-<div id="id_shipment_sold" class="modal modal-center fade" role="dialog">
+
+  <div id="id_shipment_sold" class="modal modal-center fade" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -196,7 +183,7 @@
 			</div>
 			<div class="modal-body text-center">
                 <p id="success_data" ></p>
-				<a href=href="{{request.path}}" class="btn btn-success" >Thank You</a>
+				<a href="{% url 'live_forecast' %}" class="btn btn-success" >Thank You</a>
 			</div>
 		</div>
 	</div>
@@ -238,31 +225,8 @@
 	</div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-        <script src="{% static 'js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'slick/slick.min.js' %}"></script>
 <script>
-    $(function(){
-        $(".st-label").hide();
-    })
-</script>
-<script>
-$('#myInput').keypress(function (e) {
-  if (e.which == 13) {
-  var test = $("#myInput").val();
 
-  $.ajax({
-    type:"POST",
-    url: "{% url 'search_result' %}",
-    data: {'point': test},
-    success: function(resp){
-
-    }
-});
-    <!--$('form').submit();-->
-    <!--return false;-->
-  }
-});
 
 $(".shipment_sold").click(function(){
 var shipment_id=$(this).attr("shipment_id");
@@ -275,11 +239,15 @@ $.ajax({
     success: function(resp){
         console.log(resp);
         var data = JSON.parse(resp);
+        if(data.error == 'login'){
+            window.location.href = "/login/&next=/live_forecast/";
+        }
+        else{
         $("#id_shipment_sold").modal('show');
         $("#heading").text(data.heading);
         $("#awb").val(data.id);
         $("#forecast").val(data.id);
-        <!--$("#shipment_sold_preview").html(resp);-->
+        }
 
     }
 });
@@ -319,16 +287,15 @@ $(".submit_forecast").click(function(){
                     var data = JSON.parse(resp);
                     if(data.message=="success"){
                         if("Notification" in window){
-                            let ask = Notification.requestPermission();
-                            ask.then( permission => {
-                            let msg = new Notification("ForecastGuru" ,{
-                                "body": "Thank you for playing forecast. " + data.heading,
-                                });
-                                msg.addEventListener("click", event => {
-                                    window.location.href = "https://fstage.sirez.com/forecast/" + data.id + "/" ;
-                                        })
-                                });
-                            }
+                                    let ask = Notification.requestPermission();
+                                    ask.then( permission => {
+                                    let msg = new Notification("ForecastGuru" ,{
+                                        "body": "Thank you for playing forecast. " + data.heading,
+                                        });
+                                        msg.addEventListener("click", event => {
+                                            window.location.href = "https://fstage.sirez.com/forecast/" + data.id + "/" ;
+                                                })
+                                    });}
                         $("#id_shipment_sold").modal('hide');
                         $("#success_modal").modal('show');
                         $("#success_data").text("Thank you for playing this forecast.");
@@ -372,5 +339,31 @@ $(document).ready(function(){
          $("#point_div").show();
     });
 });
+
+</script>
+<script>
+    if("Notification" in window){
+        let ask = Notification.requestPermission();
+        ask.then( permission => {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'notif' %}",
+                data: {'vote': "radioValue",},
+                success: function(resp){
+                    let data = JSON.parse(resp);
+                    for(i=0; i < data.length; i++){
+                        let msg = new Notification("ForecastGuru" ,{
+                        "body": data[i].body,
+                        });
+                        msg.addEventListener("click", event => {
+                            for(i=0; i < data.length; i++){
+                                window.location.href = data[i].url;
+                                }
+                        })
+                    }
+                }
+            });
+        });
+    }
 </script>
 {% endblock %}
