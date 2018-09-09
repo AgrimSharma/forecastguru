@@ -1,14 +1,14 @@
-{% load static %}
+r{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Forecastguru</title>
-        <meta property="og:url" content="https://forecast.guru" />
+        <meta property="og:url" content="https://forecast.sirez.com" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="ForecastGuru"/>
-<meta property="og:description" content="Play the hottest prediction game online and become a Forecast Guru! Please join me using following referal code {{profile}}" />
+<meta property="og:description" content="Play the hottest prediction game online and become a Forecast Guru! Please join me using following referal code {{profile.referral_code}}" />
 <meta property="og:image" content="https://forecast.guru/static/images/TutorialScreen-icon1.jpg" />
 <meta property="fb:app_id" content="186107225561354" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -111,7 +111,7 @@
             <div class="card-header">
              <h6 class="m-0">
               Your invite code: <span class="invite_code"> {% if first_name != 'Guest' %}
-                                            {{profile}}
+                                            {{profile.referral_code}}
                {% else %}
                XX209288
               {% endif %}
