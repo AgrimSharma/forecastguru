@@ -268,10 +268,6 @@ $(".shipment_sold").click(function(){
 var shipment_id=$(this).attr("shipment_id");
 var path=$("#path").val();
 
-$(".shipment_solds").click(function(){
-var shipment_id=$(this).attr("shipment_id");
-var path=$("#path").val();
-
 $.ajax({
     type:"POST",
     url: "{% url 'get_forecast' %}",
