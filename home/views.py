@@ -342,7 +342,7 @@ def live_forecast(request):
                       })
     else:
         return redirect("/trending/")
-    
+
 
 def live_forecast_descending(request):
     data = []
@@ -896,7 +896,8 @@ def profile(request):
         profile = Authentication.objects.get(facebook_id=users.uid)
     except Exception:
         return render(request, 'home/user_profile_nl.html', {
-            "users": "GUEST",
+            "users": "GUEST",        "heading": "User Profile",
+
 
         })
     date_joined = datetime.datetime.strftime(profile.created, '%b %d, %Y')
