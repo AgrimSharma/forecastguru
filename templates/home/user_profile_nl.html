@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="topspace2"></div>
+<div class="my_account fixed_p_footer">
+  <div class="container">
+    <div class="account_header d-flex flex-column align-items-center justify-content-center">
+      <figure class="account-pic"> <img src="{% static 'images/logo-small-white.png' %}" alt="" width="80px" height="90px"> </figure>
+      <div style="text-align:center;"><h2 class="title">Please login</h2>
+      <h2>to view profile</h2></div>
+    </div>
+    <div class="account_desc">
+      <div class="white_box mb-3">
+        <div class="row">
+
+         <div class="btn_box mb-3 w-100" >
+                    <a href="https://forecast.sirez.com/facebook/login/?process=login&next={{request.path}}" class="btn btn-blue w-100 text-uppercase"><i class="fa fa-facebook mr-1"></i> Login with facebook</a>
+                </div>
+          </div>
+       <div class="row mb-2 btn_wrap">
+        <div class="col-4 text-left"> <a href="{% url 'privacy_policy' %}" class="text-uppercase">Privacy</a> </div>
+        <div class="col-4 text-center"> <a href="{% url 'terms' %}" class="text-uppercase">Terms</a> </div>
+         <div class="col-4 text-right"> <a href="{% url 'faq' %}" class="">FAQs</a> </div>
+
+      </div>
+        </div>
+      </div>
+     </div>
+
+  </div>
+<footer class="sticky-footer">
+  <nav class="navbar">
+    <ul class="navbar-nav nav-fill w-100 text-center">
+      <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+        Forecasts</a> </li>
+      <li class="nav-item"> <a class="nav-link" href="{% url 'category' %}"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+        Categories</a> </li>
+      <li class="nav-item"> <a class="nav-link" href="{% url 'forecast_result' %}"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+        Results</a> </li>
+      <li class="nav-item"> <a class="nav-link" href="{% url 'my_forecast' %}"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+      <li class="nav-item"> <a class="nav-link active" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+        My Account</a> </li>
+    </ul>
+  </nav>
+</footer>
+{% endblock %}

@@ -221,7 +221,6 @@ def interest_skip(request):
     return redirect("/live_forecast/")
 
 
-@login_required
 def live_forecast(request):
     data = []
     try:
@@ -305,7 +304,6 @@ def live_forecast(request):
     else:
         return redirect("/trending/")
 
-@login_required
 def live_forecast_descending(request):
     data = []
     try:
@@ -857,9 +855,8 @@ def profile(request):
         users = SocialAccount.objects.get(user=request.user)
         profile = Authentication.objects.get(facebook_id=users.uid)
     except Exception:
-        user = request.user.last_name
         return render(request, 'home/user_profile_nl.html', {
-            "users": user,
+            "users": "GUEST",
 
         })
     date_joined = datetime.datetime.strftime(profile.created, '%b %d, %Y')
@@ -2174,8 +2171,8 @@ def response(request):
 
 
 def test_notif(request):
-    # data = [dict(title='ForecastGuru', body='INDIA TOUR OF IRELAND AND ENGLAND 2018.03:30PM 4th Test,IND vs ENG at Southampton, Aug 30-Sep 3.INDIA will win.',forward='https://forecast.guru/forecast/925/'),
-    #         dict(title='ForecastGuru', body='INDIA TOUR OF IRELAND AND ENGLAND 201803:30 PM 5th Test, IND vs ENG at London, Sep 7-11 2018.INDIA will win.', forward='https://forecast.guru/forecast/926/')]
+    # data = [dict(title='ForecastGuru', body='INDIA TOUR OF IRELAND AND ENGLAND 2018.03:30PM 4th Test,IND vs ENG at Southampton, Aug 30-Sep 3.INDIA will win.',forward='https://forecast.sirez.com/forecast/925/'),
+    #         dict(title='ForecastGuru', body='INDIA TOUR OF IRELAND AND ENGLAND 201803:30 PM 5th Test, IND vs ENG at London, Sep 7-11 2018.INDIA will win.', forward='https://forecast.sirez.com/forecast/926/')]
     data = [dict(body=s.body, url=s.url) for s in SendNotification.objects.filter(status=0)]
     SendNotification.objects.filter(status=0).update(status=1)
     return HttpResponse(json.dumps(data))
@@ -2270,7 +2267,7 @@ def private_subscribe(request):
                 if len(sub_id) > 0:
                     for i in sub_id:
                         send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + str(f.heading),
-                                      "https://forecast.guru/forecast/{}/".format(f.id), str(i.subscriber_id), f.user)
+                                      "https://forecast.sirez.com/forecast/{}/".format(f.id), str(i.subscriber_id), f.user)
             except Exception:
                 pass
     return HttpResponse("updated")
